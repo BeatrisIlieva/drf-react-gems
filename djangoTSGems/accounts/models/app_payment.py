@@ -5,7 +5,7 @@ from django.db import models
 UserModel = get_user_model()
 
 
-class Payment(models.Model):
+class AppPayment(models.Model):
     user = models.OneToOneField(
         to=UserModel,
         on_delete=models.CASCADE,

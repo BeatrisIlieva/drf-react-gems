@@ -1,9 +1,9 @@
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser
-from djangoTSGems.accounts.managers import UserManager
+from djangoTSGems.accounts.managers import AppUserManager
 
 
-class User(AbstractBaseUser):
+class AppUser(AbstractBaseUser):
     email = models.EmailField(
         unique=True,
     )
@@ -19,4 +19,4 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-    objects = UserManager()
+    objects = AppUserManager()

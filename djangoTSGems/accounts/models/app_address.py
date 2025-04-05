@@ -5,7 +5,7 @@ from django.core.validators import RegexValidator
 UserModel = get_user_model()
 
 
-class Contact(models.Model):
+class AppAddress(models.Model):
     user = models.OneToOneField(
         to=UserModel,
         on_delete=models.CASCADE,
