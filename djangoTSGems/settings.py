@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from django.urls import reverse_lazy
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -11,7 +13,8 @@ ALLOWED_HOSTS = []
 
 
 CUSTOM_APPS = [
-    'djangoTSGems.accounts'
+    'djangoTSGems.accounts',
+    'djangoTSGems.products',
 ]
 
 INSTALLED_APPS = [
@@ -38,7 +41,7 @@ ROOT_URLCONF = 'djangoTSGems.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -104,3 +107,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Inform Django that we replace the default user with a custom one
 AUTH_USER_MODEL = 'accounts.AppUser'
+
+# Inform Django to which url to redirect to after successful login
+LOGIN_REDIRECT_URL = reverse_lazy('home')
+
+# Inform Django to which url to redirect to after logout
+LOGOUT_REDIRECT_URL = reverse_lazy('login')
