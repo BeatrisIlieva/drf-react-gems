@@ -15,6 +15,7 @@ ALLOWED_HOSTS = []
 CUSTOM_APPS = [
     'djangoTSGems.accounts',
     'djangoTSGems.products',
+    'djangoTSGems.inventories',
 ]
 
 INSTALLED_APPS = [
