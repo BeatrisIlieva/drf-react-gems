@@ -1,53 +1,43 @@
-from djangoTSGems.products.models import (
-    DropEarring,
-    StudEarring,
-    Necklace,
-    Pendant,
-    Charm,
-    Bracelet,
-    Ring
-)
-
 products_by_size_and_price = [
     {
-        'class': Charm,
+        'category': 'CH',
         'sizes': [1.6],
         'prices': [3000],
     },
     {
-        'class': Pendant,
+        'category': 'PE',
         'sizes': [39.53, 41.64, 44.18, 46.72, 48.46],
         'prices': [33000, 34000, 35000, 36000, 37000],
     },
     {
-        'class': StudEarring,
+        'category': 'SE',
         'sizes': [0.51],
         'prices': [6000],
     },
     {
-        'class': Bracelet,
+        'category': 'BR',
         'sizes': [13.1, 15.2, 17.8, 19.3, 20.2],
         'prices': [16000, 17000, 18000, 19000, 20000],
     },
     {
-        'class': Ring,
+        'category': 'RI',
         'sizes': [3.04, 4.05, 4.98, 5.86, 6.34],
         'prices': [11000, 12000, 13000, 14000, 15000],
     },
     {
-        'class': Necklace,
+        'category': 'NE',
         'sizes': [38.53, 40.64, 43.18, 45.72, 47.46],
         'prices': [39000, 40000, 41000, 42000, 43000],
     },
     {
-        'class': DropEarring,
+        'category': 'DR',
         'sizes': [4.6],
         'prices': [22000],
     },
 ]
 
 products_by_images_and_description = {
-    'Charm': {
+    'CH': {
         'PS': {
             'first_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957286/forget_me_not_charm_diamond_and_pink_sapphire_cmpsprfflrfmn_e-1_f3fwf3_sj5caa.avif',
             'second_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957291/forget_me_not_charm_diamond_and_pink_sapphire_cmpsprfflrfmn_e-2_xteknd_h3qsgy.avif',
@@ -64,7 +54,7 @@ products_by_images_and_description = {
             'description': '6 pear-shaped and 1 round brilliant diamond weighing a total of approximately 0.60 carats, set in platinum'
         }
     },
-    'Pendant': {
+    'PE': {
         'PS': {
             'first_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957270/forget_me_not_pendant_diamond_and_pink_sapphire_pepsprfflrfmn_e_1_ddzgzr_rm1pic.webp',
             'second_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957270/forget_me_not_pendant_diamond_and_pink_sapphire_pepsprfflrfmn_e_2_alppwn_i4obp0.avif',
@@ -81,7 +71,7 @@ products_by_images_and_description = {
             'description': '6 pear-shaped and 1 round brilliant diamond weighing a total of approximately 1.07 carats, set in platinum'
         }
     },
-    'StudEarring': {
+    'SE': {
         'PS': {
             'first_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957286/forget_me_not_earrings_diamond_and_pink_sapphire_eapsp1mflrfmn_ee-1_z57oqb_u5wgnp.webp',
             'second_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957283/forget_me_not_earrings_diamond_and_pink_sapphire_eapsp1mflrfmn_ee-2_fdeq4k_uqkvie.webp',
@@ -98,7 +88,7 @@ products_by_images_and_description = {
             'description': '12 pear-shaped diamonds and 2 round brilliant diamonds weighing a total of approximately 1.70 carats, set in platinum'
         }
     },
-    'Bracelet': {
+    'BR': {
         'PS': {
             'first_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957299/forget_me_not_bracelet_diamond_and_pink_sapphire_brpsprfflrfmn_e_1_vz9pv4_ojgh1x.avif',
             'second_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957296/forget_me_not_bracelet_diamond_and_pink_sapphire_brpsprfflrfmn_e_2_kdpnm6_c8locj.avif',
@@ -115,7 +105,7 @@ products_by_images_and_description = {
             'description': '78 pear-shaped, marquise, and round brilliant diamonds, weighing a total of approximately 7.46 carats, set in platinum'
         }
     },
-    'Ring': {
+    'RI': {
         'PS': {
             'first_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957295/forget_me_not_ring_diamond_and_pink_sapphire_frpsprfflrfmn_e_1_qfumu3_tkws9f.webp',
             'second_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957296/forget_me_not_ring_diamond_and_pink_sapphire_frpsprfflrfmn_e_2_k7nhpe_ay3lie.avif',
@@ -132,7 +122,7 @@ products_by_images_and_description = {
             'description': '6 pear-shaped and 1 round brilliant diamond, weighing a total of approximately 1.66 carats, set in platinum'
         }
     },
-    'Necklace': {
+    'NE': {
         'PS': {
             'first_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957294/forget_me_not_lariat_necklace_diamond_and_pink_sapphire_nkpspltflrfmn_e_1_kuxbds_h3z6kz.webp',
             'second_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957294/forget_me_not_lariat_necklace_diamond_and_pink_sapphire_nkpspltflrfmn_e_2_d2fc78_nf6ni1.webp',
@@ -149,7 +139,7 @@ products_by_images_and_description = {
             'description': '177 pear-shaped, marquise, and round brilliant diamonds, weighing a total of approximately 15.35 carats, set in platinum'
         }
     },
-    'DropEarring': {
+    'DE': {
         'PS': {
             'first_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957283/forget_me_not_drop_earrings_diamond_and_pink_sapphire_eapspdrflrfmn_ee-1_zzaw4q_yqmref.webp',
             'second_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957283/forget_me_not_drop_earrings_diamond_and_pink_sapphire_eapspdrflrfmn_ee-2_p9jicb_aedtpz.webp',
