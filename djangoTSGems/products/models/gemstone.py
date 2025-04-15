@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Color(models.Model):
+class Gemstone(models.Model):
 
     TITLE_MAX_LENGTH = 30
 

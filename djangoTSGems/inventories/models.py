@@ -25,3 +25,7 @@ class Inventory(models.Model):
         to='products.Product',
         on_delete=models.CASCADE,
     )
+
+    created_at = models.DateField(
+        auto_now_add=True,
+    )

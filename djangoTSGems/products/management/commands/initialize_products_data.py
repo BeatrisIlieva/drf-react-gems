@@ -6,7 +6,7 @@ from django.core.management.base import (
 
 from djangoTSGems.products.management.products_data import products_by_size_and_price, products_by_images_and_description
 
-from djangoTSGems.products.models import Product
+from djangoTSGems.products.models import Product, Category, Gemstone, Description
 from djangoTSGems.inventories.models import Inventory
 
 
@@ -25,6 +25,19 @@ class Command(BaseCommand):
         self.stdout.write(
             self.style.SUCCESS("Data initialization completed successfully.")
         )
+
+    def initialize_products_data(self):
+        bracelet_category = Category.objects.create(title='Bracelet')
+        charm_category = Category.objects.create(title='Charm')
+        drop_earring_category = Category.objects.create(title='Drop Earring')
+        necklace_category = Category.objects.create(title='Necklace')
+        pendant_category = Category.objects.create(title='Pendant')
+        ring_category = Category.objects.create(title='Ring')
+        stud_earring_category = Category.objects.create(title='Stud Earring')
+
+        blue_gemstone = Gemstone.objects.create(title='Blue Sapphire')
+        pink_gemstone = Gemstone.objects.create(title='Pink Sapphire')
+        brilliant_gemstone = Gemstone.objects.create(title='Brilliant Diamond')
 
     def create_products(self):
 
@@ -66,7 +79,6 @@ class Command(BaseCommand):
 
                     size = sizes[size_index]
                     price = prices[size_index]
-                    
 
                     Inventory.objects.create(
                         product=product,
