@@ -92,17 +92,17 @@ products_by_images_and_description = {
         'PS': {
             'first_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957299/forget_me_not_bracelet_diamond_and_pink_sapphire_brpsprfflrfmn_e_1_vz9pv4_ojgh1x.avif',
             'second_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957296/forget_me_not_bracelet_diamond_and_pink_sapphire_brpsprfflrfmn_e_2_kdpnm6_c8locj.avif',
-            'description': '45 pear-shaped and round brilliant pink sapphires weighing a total of approximately 4.36 carats and 33 pear-shaped, marquise and round brilliant diamonds weighing a total of approximately 4.24 carats, set in platinum'
+            'description': '45 pear-shaped and round brilliant pink sapphires weighing a total of approximately 4.36 carats and 33 pear-shaped, aquamarines and round brilliant diamonds weighing a total of approximately 4.24 carats, set in platinum'
         },
         'BS': {
             'first_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957297/forget_me_not_bracelet_diamond_and_sapphire_brsprfflrfmn_e_1_fokzrw_gpf0s4.webp',
             'second_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957298/forget_me_not_bracelet_diamond_and_sapphire_brsprfflrfmn_e_2_ojfbze_amxejs.avif',
-            'description': '45 pear-shaped and round brilliant sapphires weighing a total of approximately 4.17 carats and 33 pear-shaped, marquise and round brilliant diamonds weighing a total of approximately 4.24 carats, set in platinum'
+            'description': '45 pear-shaped and round brilliant sapphires weighing a total of approximately 4.17 carats and 33 pear-shaped, aquamarines and round brilliant diamonds weighing a total of approximately 4.24 carats, set in platinum'
         },
         'BD': {
             'first_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957299/forget_me_not_diamond_bracelet_brdprfflrfmn_e-1_muieri_xwqirj.avif',
             'second_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957297/forget_me_not_bracelet_diamond_and_pink_sapphire_brpsprfflrfmn_e_2_1_pvbpcb_rxum0y.png',
-            'description': '78 pear-shaped, marquise, and round brilliant diamonds, weighing a total of approximately 7.46 carats, set in platinum'
+            'description': '78 pear-shaped, aquamarines, and round brilliant diamonds, weighing a total of approximately 7.46 carats, set in platinum'
         }
     },
     'RI': {
@@ -126,34 +126,34 @@ products_by_images_and_description = {
         'PS': {
             'first_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957294/forget_me_not_lariat_necklace_diamond_and_pink_sapphire_nkpspltflrfmn_e_1_kuxbds_h3z6kz.webp',
             'second_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957294/forget_me_not_lariat_necklace_diamond_and_pink_sapphire_nkpspltflrfmn_e_2_d2fc78_nf6ni1.webp',
-            'description': '78 pear-shaped and round brilliant pink sapphires weighing a total of approximately 8.61 carats and 99 marquise and round brilliant diamonds weighing a total of approximately 8.60 carats, set in platinum'
+            'description': '78 pear-shaped and round brilliant pink sapphires weighing a total of approximately 8.61 carats and 99 aquamarines and round brilliant diamonds weighing a total of approximately 8.60 carats, set in platinum'
         },
         'BS': {
             'first_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957294/forget_me_not_lariat_necklace_diamond_and_sapphire_nkspltflrfmn_e_1_p2uxlj_hqfg4a.webp',
             'second_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957294/forget_me_not_lariat_necklace_diamond_and_sapphire_nkspltflrfmn_e_2_hxgdcy_vf9epk.avif',
-            'description': '78 pear-shaped and round brilliant sapphires weighing a total of approximately 8.61 carats and 99 marquise and round brilliant diamonds weighing a total of approximately 8.37 carats, set in platinum'
+            'description': '78 pear-shaped and round brilliant sapphires weighing a total of approximately 8.61 carats and 99 aquamarines and round brilliant diamonds weighing a total of approximately 8.37 carats, set in platinum'
         },
         'BD': {
             'first_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957294/forget_me_not_lariat_diamond_necklace_nkdpltflrfmn_e-1_u0gwpv_jv0o2i.avif',
             'second_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957292/forget_me_not_lariat_diamond_necklace_nkdpltflrfmn_e-2_tuh8ru_acwgee.webp',
-            'description': '177 pear-shaped, marquise, and round brilliant diamonds, weighing a total of approximately 15.35 carats, set in platinum'
+            'description': '177 pear-shaped, aquamarines, and round brilliant diamonds, weighing a total of approximately 15.35 carats, set in platinum'
         }
     },
     'DE': {
         'PS': {
             'first_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957283/forget_me_not_drop_earrings_diamond_and_pink_sapphire_eapspdrflrfmn_ee-1_zzaw4q_yqmref.webp',
             'second_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957283/forget_me_not_drop_earrings_diamond_and_pink_sapphire_eapspdrflrfmn_ee-2_p9jicb_aedtpz.webp',
-            'description': '28 pear-shaped and round brilliant pink sapphires weighing a total of approximately 3.20 carats and 28 marquise and round brilliant diamonds weighing a total of approximately 1.98 carats, set in platinum'
+            'description': '28 pear-shaped and round brilliant pink sapphires weighing a total of approximately 3.20 carats and 28 aquamarines and round brilliant diamonds weighing a total of approximately 1.98 carats, set in platinum'
         },
         'BS': {
             'first_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957283/forget_me_not_drop_earrings_diamond_and_sapphire_easpdrflrfmn_ee-1_zx2cga_fuwje2.webp',
             'second_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957281/forget_me_not_drop_earrings_diamond_and_sapphire_easpdrflrfmn_ee-2_vtkyhb_g8xu2n.webp',
-            'description': '28 pear-shaped and round brilliant sapphires weighing a total of approximately 3.00 carats and 28 marquise and round brilliant diamonds weighing a total of approximately 1.98 carats, set in platinum'
+            'description': '28 pear-shaped and round brilliant sapphires weighing a total of approximately 3.00 carats and 28 aquamarines and round brilliant diamonds weighing a total of approximately 1.98 carats, set in platinum'
         },
         'BD': {
             'first_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957281/forget_me_not_diamond_drop_earrings_eadpdrflrfmn_ee-1_knlt2u_wcd0o9.webp',
             'second_image_url': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1743957280/forget_me_not_diamond_drop_earrings_eadpdrflrfmn_ee-2_sksk7o_jkcjag.webp',
-            'description': 'A medley of marquise, pear-shaped, and round brilliant diamonds, weighing a total of approximately 4.38 carats, set in platinum'
+            'description': 'A medley of aquamarines, pear-shaped, and round brilliant diamonds, weighing a total of approximately 4.38 carats, set in platinum'
         }
     }
 }

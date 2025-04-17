@@ -16,6 +16,7 @@ CUSTOM_APPS = [
     'djangoTSGems.accounts',
     'djangoTSGems.products',
     'djangoTSGems.inventories',
+    'djangoTSGems.addresses',
 ]
 
 INSTALLED_APPS = [
