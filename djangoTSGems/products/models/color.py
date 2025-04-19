@@ -4,23 +4,24 @@ from django.db import models
 from djangoTSGems.products.mixins import ChoicesMaxLengthMixin
 
 
-class Category(models.Model):
-
-    class Meta:
-        verbose_name_plural = 'Categories'
-
+class Color(models.Model):
+    
     class TitleChoices(ChoicesMaxLengthMixin, models.TextChoices):
-        BRACELET = 'B', _('Bracelet')
-        DROP_EARRING = 'DE', _('Drop Earring')
-        NECKLACE = 'N', _('Necklace')
-        PENDANT = 'P', _('Pendant')
-        RING = 'R', _('Ring')
-        STUD_EARRING = 'SE', _('Stud Earring')
+        AQUAMARINE = "AQ", _("Aquamarine")
+        BLACK = "BL", _('Black')
+        BLUE = "BU", _('Blue')
+        GREEN = "GR", _('Green')
+        PINK = "PI", _('Pink')
+        RED = "RE", _('Red')
+        WHITE = "WH", _('White')
+        YELLOW = "YE", _('Yellow')
 
     title = models.CharField(
         max_length=TitleChoices.max_length(),
         choices=TitleChoices.choices,
     )
 
+    image = models.URLField()
+    
     def __str__(self):
         return self.get_title_display()

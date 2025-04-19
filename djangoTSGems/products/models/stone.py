@@ -2,24 +2,28 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 from djangoTSGems.products.mixins import ChoicesMaxLengthMixin
+from djangoTSGems.products.models.color import Color
 
 
-class Category(models.Model):
-
-    class Meta:
-        verbose_name_plural = 'Categories'
+class Stone(models.Model):
 
     class TitleChoices(ChoicesMaxLengthMixin, models.TextChoices):
-        BRACELET = 'B', _('Bracelet')
-        DROP_EARRING = 'DE', _('Drop Earring')
-        NECKLACE = 'N', _('Necklace')
-        PENDANT = 'P', _('Pendant')
-        RING = 'R', _('Ring')
-        STUD_EARRING = 'SE', _('Stud Earring')
+        BLACK_SPINEL = 'BS', _('Spinel')
+        DIAMOND = 'DI', _('Diamond')
+        EMERALD = 'EM', _('Emerald')
+        RUBY = 'RU', _('Ruby')
+        SAPPHIRE = 'SA', _('Sapphire')
 
     title = models.CharField(
         max_length=TitleChoices.max_length(),
         choices=TitleChoices.choices,
+    )
+
+    image = models.URLField()
+
+    colors = models.ManyToManyField(
+        to=Color,
+        through='StoneColor',
     )
 
     def __str__(self):

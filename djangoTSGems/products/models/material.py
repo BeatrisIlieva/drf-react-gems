@@ -4,18 +4,15 @@ from django.db import models
 from djangoTSGems.products.mixins import ChoicesMaxLengthMixin
 
 
-class Category(models.Model):
+class Material(models.Model):
 
     class Meta:
-        verbose_name_plural = 'Categories'
+        verbose_name_plural = 'Metals'
 
     class TitleChoices(ChoicesMaxLengthMixin, models.TextChoices):
-        BRACELET = 'B', _('Bracelet')
-        DROP_EARRING = 'DE', _('Drop Earring')
-        NECKLACE = 'N', _('Necklace')
-        PENDANT = 'P', _('Pendant')
-        RING = 'R', _('Ring')
-        STUD_EARRING = 'SE', _('Stud Earring')
+        YELLOW_GOLD = "YG", _("Yellow Gold")
+        ROSE_GOLD = "RG", _("Rose Gold")
+        PLATINUM = "PT", _("Platinum")
 
     title = models.CharField(
         max_length=TitleChoices.max_length(),
