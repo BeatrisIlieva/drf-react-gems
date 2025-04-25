@@ -1,0 +1,3 @@
+earrings = {
+    'stud_earrings': ''
+}

@@ -1,17 +1,22 @@
 from django.db import models
 
 
-class CategoryChoices(models.TextChoices):
-    BRACELET = 'BR', 'Bracelet'
-    CHARM = 'CH', 'Charm'
-    DROP_EARRING = 'DE', 'Drop Earring'
-    NECKLACE = 'NE', 'Necklace'
-    PENDANT = 'PE', 'Pendant'
-    RING = 'RI', 'Ring'
-    STUD_EARRING = 'SE', 'Stud Earring'
+class BraceletTypeChoices(models.TextChoices):
+    CHAIN = 'CH', 'Chain'
+    BEAD = 'BE', 'Bead'
+    BANGLE = 'BA', 'Bangle'
+    CUFF = 'CU', 'Cuff'
 
 
-class ColorChoices(models.TextChoices):
-    BLUE = 'BL', 'Blue'
-    PINK = 'PI', 'Pink'
-    WHITE = 'WH', 'White'
+class EarringTypeChoices(models.TextChoices):
+    DROP = 'DR', 'Drop'
+    STUD = 'ST', 'Stud'
+    HOOP = 'HO', 'Hoop'
+    CHANDELIER = 'CH', 'Chandelier'
+
+
+class RingTypeChoices(models.TextChoices):
+    BAND = 'BA', 'Band'
+    PETITE = 'PE', 'Petite'
+    PINKY = 'PI', 'Pinky'
+    STATEMENT = 'ST', 'Statement'
