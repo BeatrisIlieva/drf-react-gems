@@ -12,12 +12,12 @@ class CategoryChoices(ChoicesMaxLengthMixin, models.TextChoices):
 
 
 class CollectionChoices(ChoicesMaxLengthMixin, models.TextChoices):
-    CLASSICS = 'CL', _('Classics')
-    DAISY = 'DA', _('Daisy')
-    FORGET_ME_NOT = 'FMN', _('Forget-Me-Not')
-    LILY = 'LI', _('Lily')
-    LOTUS = 'LO', _('Lotus')
-    RADIANT = 'RA', _('Radiant')
+    DAISY_DELIGHT = 'DD', _('Daisy Delight')
+    ENGAGEMENT_WEDDING = 'EW', _('Engagement & Wedding')
+    FORGET_ME_NOT = 'FMN', _('Forget Me Not')
+    LILY_BLOOM = 'LIB', _('Lily Bloom')
+    LOTUS_BLOSSOM = 'LOB', _('Lotus Blossom')
+    RADIANT_CLUSTER = 'RC', _('Radiant Cluster')
     SUNFLOWER = 'SU', _('Sunflower')
 
 
