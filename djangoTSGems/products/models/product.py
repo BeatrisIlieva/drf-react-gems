@@ -1,27 +1,24 @@
 from django.db import models
 
-
-from djangoTSGems.products.choices import BraceletTypeChoices
-from djangoTSGems.products.mixins import ChoicesMaxLengthMixin
-from djangoTSGems.products.models.description import Description
-from djangoTSGems.products.models.label import Label
-from djangoTSGems.products.models.material import Material
-from djangoTSGems.products.models.media import Media
-from djangoTSGems.products.models.size import Size
-from djangoTSGems.products.models.stone_color import StoneColor
+from djangoTSGems.products.models.references.category import Category
+from djangoTSGems.products.models.references.collection import Collection
+from djangoTSGems.products.models.references.description import Description
+from djangoTSGems.products.models.references.material import Material
+from djangoTSGems.products.models.references.media import Media
+from djangoTSGems.products.models.references.stone_color import StoneColor
 
 
 class Product(models.Model):
     class Meta:
         abstract = True
 
-    media = models.ForeignKey(
-        to=Media,
+    category = models.ForeignKey(
+        to=Category,
         on_delete=models.CASCADE,
     )
 
-    label = models.ForeignKey(
-        to=Label,
+    collection = models.ForeignKey(
+        to=Collection,
         on_delete=models.CASCADE,
     )
 
@@ -34,21 +31,11 @@ class Product(models.Model):
         to=Material,
     )
 
+    media = models.ForeignKey(
+        to=Media,
+        on_delete=models.CASCADE,
+    )
+
     stone_color = models.ManyToManyField(
         to=StoneColor,
     )
-
-
-class Bracelet(Product):
-    pass
-
-class Earring(Product):
-    pass
-
-
-class Necklace(Product):
-    pass
-
-
-class Ring(Product):
-    pass

@@ -1,8 +1,8 @@
 
 from django.db import models
 
-from djangoTSGems.products.models.color import Color
-from djangoTSGems.products.models.stone import Stone
+from djangoTSGems.products.models.references.color import Color
+from djangoTSGems.products.models.references.stone import Stone
 
 
 class StoneColor(models.Model):
