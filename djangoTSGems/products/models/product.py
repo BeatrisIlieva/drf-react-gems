@@ -9,9 +9,6 @@ from djangoTSGems.products.models.references.stone_color import StoneColor
 
 
 class Product(models.Model):
-    class Meta:
-        abstract = True
-
     category = models.ForeignKey(
         to=Category,
         on_delete=models.CASCADE,
