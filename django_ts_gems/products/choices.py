@@ -62,3 +62,8 @@ class SizeChoices(ChoicesMaxLengthMixin, models.TextChoices):
     L = 'L', _('L')
     XL = 'XL', _('XL')
     ONE_SIZE = 'OS', _('OS')
+
+
+class ReferenceChoices(ChoicesMaxLengthMixin, models.TextChoices):
+    FULL_MOTIF = 'FM', _('Full Motif')
+

@@ -1,18 +1,24 @@
 from django.db import models
 
-from django_ts_gems.products.models.references.category import Category
-from django_ts_gems.products.models.references.collection import Collection
-from django_ts_gems.products.models.references.color import Color
-from django_ts_gems.products.models.references.description import Description
-from django_ts_gems.products.models.references.material import Material
-from django_ts_gems.products.models.references.media import Media
-from django_ts_gems.products.models.references.primary_stone import PrimaryStone
-from django_ts_gems.products.models.references.stone import Stone
+from django_ts_gems.products.models.relationships.category import Category
+from django_ts_gems.products.models.relationships.collection import Collection
+from django_ts_gems.products.models.relationships.color import Color
+from django_ts_gems.products.models.relationships.description import Description
+from django_ts_gems.products.models.relationships.material import Material
+from django_ts_gems.products.models.relationships.media import Media
+from django_ts_gems.products.models.relationships.primary_stone import PrimaryStone
+from django_ts_gems.products.models.relationships.reference import Reference
+from django_ts_gems.products.models.relationships.stone import Stone
 
 
 class Product(models.Model):
     class Meta:
-        unique_together = ('category', 'collection', 'primary_stone')
+        unique_together = (
+            'category',
+            'collection',
+            'primary_stone',
+            'reference',
+        )
 
     category = models.ForeignKey(
         to=Category,
@@ -45,6 +51,11 @@ class Product(models.Model):
 
     materials = models.ManyToManyField(
         to=Material,
+    )
+
+    reference = models.ForeignKey(
+        to=Reference,
+        on_delete=models.CASCADE,
     )
 
     stones = models.ManyToManyField(
