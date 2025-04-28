@@ -13,7 +13,8 @@ class CategoryChoices(ChoicesMaxLengthMixin, models.TextChoices):
 
 class CollectionChoices(ChoicesMaxLengthMixin, models.TextChoices):
     DAISY_DELIGHT = 'DA', _('Daisy Delight')
-    ENGAGEMENT_WEDDING = 'EN', _('Engagement & Wedding')
+    CLASSICS = 'EN', _('Classics')
+    GERBERA_DAISY = 'GE', _('Gerbera Daisy')
     FORGET_ME_NOT = 'FO', _('Forget Me Not')
     LILY_BLOOM = 'LI', _('Lily Bloom')
     LOTUS_BLOSSOM = 'LO', _('Lotus Blossom')
@@ -65,5 +66,10 @@ class SizeChoices(ChoicesMaxLengthMixin, models.TextChoices):
 
 
 class ReferenceChoices(ChoicesMaxLengthMixin, models.TextChoices):
-    FULL_MOTIF = 'FM', _('Full Motif')
-
+    STUD = 'STU', _('Stud')
+    DROP = 'DR', _('Drop')
+    PENDANT = 'PE', _('Pendant')
+    LARIAT = 'LA', _('Lariat')
+    TENNIS = 'TE', _('Tennis')
+    CHAIN = 'CH', _('Chain')
+    STATEMENT = 'STA', _('Statement')

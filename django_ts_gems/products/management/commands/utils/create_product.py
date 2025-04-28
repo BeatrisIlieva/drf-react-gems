@@ -1,12 +1,13 @@
 from django_ts_gems.products.models.product import Product
-from django_ts_gems.products.models.references.category import Category
-from django_ts_gems.products.models.references.collection import Collection
-from django_ts_gems.products.models.references.color import Color
-from django_ts_gems.products.models.references.description import Description
-from django_ts_gems.products.models.references.material import Material
-from django_ts_gems.products.models.references.media import Media
-from django_ts_gems.products.models.references.primary_stone import PrimaryStone
-from django_ts_gems.products.models.references.stone import Stone
+from django_ts_gems.products.models.relationships.category import Category
+from django_ts_gems.products.models.relationships.collection import Collection
+from django_ts_gems.products.models.relationships.color import Color
+from django_ts_gems.products.models.relationships.description import Description
+from django_ts_gems.products.models.relationships.material import Material
+from django_ts_gems.products.models.relationships.media import Media
+from django_ts_gems.products.models.relationships.primary_stone import PrimaryStone
+from django_ts_gems.products.models.relationships.reference import Reference
+from django_ts_gems.products.models.relationships.stone import Stone
 
 
 def create_product(product_data):
@@ -23,6 +24,10 @@ def create_product(product_data):
         primary_stone=product_data['primary_stone']
     )
 
+    reference = Reference.objects.get(
+        reference=product_data['reference'],
+    )
+
     description = Description.objects.create(
         description=product_data['description']
     )
@@ -32,6 +37,7 @@ def create_product(product_data):
         collection=collection,
         description=description,
         primary_stone=primary_stone,
+        reference=reference,
     )
 
     product.colors.set(
