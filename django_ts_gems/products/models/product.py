@@ -12,13 +12,9 @@ from django_ts_gems.products.models.relationships.stone import Stone
 
 
 class Product(models.Model):
+    
     class Meta:
-        unique_together = (
-            'category',
-            'collection',
-            'primary_stone',
-            'reference',
-        )
+        ordering = ('?',)
 
     category = models.ForeignKey(
         to=Category,
@@ -61,3 +57,6 @@ class Product(models.Model):
     stones = models.ManyToManyField(
         to=Stone,
     )
+
+    def __str__(self):
+        return f'{self.collection} {self.reference} {self.category}'

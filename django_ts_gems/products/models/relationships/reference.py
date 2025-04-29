@@ -14,4 +14,4 @@ class Reference(models.Model):
     )
 
     def __str__(self):
-        return self.get_collection_display()
+        return self.get_reference_display()

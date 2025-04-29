@@ -3,12 +3,11 @@ from django_ts_gems.inventories.models import Inventory
 from django_ts_gems.products.models.size import Size
 
 
-def create_inventory(product):
+def create_inventory(product, price):
     sizes = Size.objects.all()
     one_size = sizes.get(size='OS')
     quantity = random.randint(2, 5)
-    category = product.category.get_title_display()  
-    price = product.price
+    category = product.category.get_category_display()  
 
     category_mapping = {
         'Earrings': [one_size],

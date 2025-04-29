@@ -5,19 +5,19 @@ from django_ts_gems.products.mixins import ChoicesMaxLengthMixin
 
 
 class CategoryChoices(ChoicesMaxLengthMixin, models.TextChoices):
-    BRACELET = 'BR', _('Bracelets')
-    EARRING = 'EA', _('Earrings')
-    NECKLACE = 'NE', _('Necklaces')
-    RING = 'RI', _('Rings')
+    BRACELET = 'BR', _('Bracelet')
+    EARRING = 'EA', _('Earring')
+    NECKLACE = 'NE', _('Necklace')
+    RING = 'RI', _('Ring')
 
 
 class CollectionChoices(ChoicesMaxLengthMixin, models.TextChoices):
     DAISY_DELIGHT = 'DA', _('Daisy Delight')
-    CLASSICS = 'EN', _('Classics')
+    CLASSICS = 'CL', _('Classics')
     GERBERA_DAISY = 'GE', _('Gerbera Daisy')
     FORGET_ME_NOT = 'FO', _('Forget Me Not')
     LILY_BLOOM = 'LI', _('Lily Bloom')
-    LOTUS_BLOSSOM = 'LO', _('Lotus Blossom')
+    SPARKLING_LOTUS = 'SP', _('Sparkling Lotus')
     RADIANT_CLUSTER = 'RA', _('Radiant Cluster')
     SUNFLOWER = 'SU', _('Sunflower')
 

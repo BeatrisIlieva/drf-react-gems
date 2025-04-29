@@ -32,12 +32,20 @@ def create_product(product_data):
         description=product_data['description']
     )
 
+    media = Media.objects.create(
+        first_image=product_data['first_image'],
+        second_image=product_data['second_image'],
+        third_image=product_data['third_image'],
+        fourth_image=product_data['fourth_image'],
+    )
+
     product = Product.objects.create(
         category=category,
         collection=collection,
         description=description,
         primary_stone=primary_stone,
         reference=reference,
+        media=media,
     )
 
     product.colors.set(
@@ -52,15 +60,5 @@ def create_product(product_data):
     product.stones.set(Stone.objects.filter(
         stone__in=product_data['stones']
     ))
-
-    media = Media.objects.create(
-        first_image=product_data['first_image'],
-        second_image=product_data['second_image'],
-        third_image=product_data['third_image'],
-        fourth_image=product_data['fourth_image'],
-    )
-
-    product.media = media
-    product.save()
 
     return product

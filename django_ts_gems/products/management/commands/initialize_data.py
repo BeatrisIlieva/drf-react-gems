@@ -23,7 +23,7 @@ class Command(BaseCommand):
             "Starting data initialization..."
         ))
 
-        self.initialize_products_data()
+        self.initialize_data()
 
         self.stdout.write(
             self.style.SUCCESS(
@@ -37,5 +37,6 @@ class Command(BaseCommand):
 
         for product_data in products_data:
             product = create_product(product_data)
+            price = product_data['price']
 
-            create_inventory(product)
+            create_inventory(product, price)
