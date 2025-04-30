@@ -1,4 +1,5 @@
 from django.contrib import admin
+from unfold.admin import ModelAdmin
 from django.utils.html import format_html
 
 from django_ts_gems.products.models import Product
@@ -7,7 +8,7 @@ from django_ts_gems.products.models.relationships.media import Media
 
 
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(ModelAdmin):
     list_display = (
         'image',
         'category',
@@ -15,13 +16,17 @@ class ProductAdmin(admin.ModelAdmin):
         'primary_stone',
         'reference',
     )
+    
     list_filter = (
-        'category',
         'category',
         'collection',
         'primary_stone',
         'reference',
     )
+    
+    ordering = ('primary_stone', 'materials', 'collection', )
+    
+    search_fields = ('primary_stone', 'materials', 'collection', 'category',)
 
     fieldsets = (
         ('Summary', {
@@ -71,7 +76,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 @admin.register(Media)
-class MediaAdmin(admin.ModelAdmin):
+class MediaAdmin(ModelAdmin):
     fields = (
         'first_image',
         'second_image',
@@ -82,5 +87,5 @@ class MediaAdmin(admin.ModelAdmin):
 
 
 @admin.register(Description)
-class DescriptionAdmin(admin.ModelAdmin):
+class DescriptionAdmin(ModelAdmin):
     pass

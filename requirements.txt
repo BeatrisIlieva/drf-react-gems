@@ -4,6 +4,7 @@ charset-normalizer==3.4.1
 Django==5.2
 django-autoslug==1.9.9
 django-cities-light==3.10.1
+django-unfold==0.55.3
 Faker==37.1.0
 idna==3.10
 mimesis==18.0.0

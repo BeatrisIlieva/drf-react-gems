@@ -13,8 +13,8 @@ from django_ts_gems.products.models.relationships.stone import Stone
 
 class Product(models.Model):
     
-    class Meta:
-        ordering = ('?',)
+    # class Meta:
+    #     ordering = ('?',)
 
     category = models.ForeignKey(
         to=Category,
