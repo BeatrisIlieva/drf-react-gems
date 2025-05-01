@@ -2,6 +2,9 @@ from django.db import models
 
 
 class Product(models.Model):
+    first_image = models.URLField()
+
+    second_image = models.URLField()
 
     category = models.ForeignKey(
         to='Category',
@@ -13,18 +16,8 @@ class Product(models.Model):
         on_delete=models.CASCADE,
     )
 
-    description = models.ForeignKey(
-        to='Description',
-        on_delete=models.CASCADE,
-    )
-
     material = models.ForeignKey(
         to='Material',
-        on_delete=models.CASCADE,
-    )
-
-    media = models.ForeignKey(
-        to='Media',
         on_delete=models.CASCADE,
     )
 
