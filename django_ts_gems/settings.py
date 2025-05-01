@@ -12,7 +12,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-CUSTOM_APPS = [
+PROJECT_APPS = [
     'django_ts_gems.accounts',
     'django_ts_gems.products',
     'django_ts_gems.inventories',
@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-] + CUSTOM_APPS
+] + PROJECT_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

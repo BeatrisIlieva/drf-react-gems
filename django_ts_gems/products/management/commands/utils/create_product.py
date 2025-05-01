@@ -5,9 +5,9 @@ from django_ts_gems.products.models.relationships.color import Color
 from django_ts_gems.products.models.relationships.description import Description
 from django_ts_gems.products.models.relationships.material import Material
 from django_ts_gems.products.models.relationships.media import Media
-from django_ts_gems.products.models.relationships.primary_stone import PrimaryStone
 from django_ts_gems.products.models.relationships.reference import Reference
 from django_ts_gems.products.models.relationships.stone import Stone
+from django_ts_gems.products.models.relationships.stones_colors import StonesColors
 
 
 def create_product(product_data):
@@ -20,12 +20,12 @@ def create_product(product_data):
         collection=product_data['collection']
     )
 
-    primary_stone = PrimaryStone.objects.get(
-        primary_stone=product_data['primary_stone']
-    )
-
     reference = Reference.objects.get(
         reference=product_data['reference'],
+    )
+
+    material = Material.objects.get(
+        name=product_data['material']
     )
 
     description = Description.objects.create(
@@ -35,30 +35,25 @@ def create_product(product_data):
     media = Media.objects.create(
         first_image=product_data['first_image'],
         second_image=product_data['second_image'],
-        third_image=product_data['third_image'],
-        fourth_image=product_data['fourth_image'],
     )
 
     product = Product.objects.create(
         category=category,
         collection=collection,
         description=description,
-        primary_stone=primary_stone,
         reference=reference,
+        material=material,
         media=media,
     )
 
-    product.colors.set(
-        Color.objects.filter(
-            color__in=product_data['colors']
-        ))
+    for element in product_data['stones_colors']:
+        color_name, stone_name = element.split(' ')
 
-    product.materials.set(Material.objects.filter(
-        material__in=product_data['materials']
-    ))
+        color = Color.objects.get(name=color_name)
+        stone = Stone.objects.get(name=stone_name)
 
-    product.stones.set(Stone.objects.filter(
-        stone__in=product_data['stones']
-    ))
+        stone_color = StonesColors.objects.get(color=color, stone=stone)
+
+        product.stones_colors.add(stone_color)
 
     return product

@@ -10,14 +10,14 @@ body {
 .left {
     flex: 0 0 58%;
     display: flex;
-    gap: 0.3em;
+    gap: 0.5em;
     flex-direction: column;
 }
 
 .inner {
     display: flex;
     flex-direction: column;
-    gap: 0.3em;
+    gap: 0.5em;
 }
 
 .media {

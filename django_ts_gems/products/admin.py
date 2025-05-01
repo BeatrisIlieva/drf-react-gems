@@ -24,9 +24,9 @@ class ProductAdmin(ModelAdmin):
         'reference',
     )
     
-    ordering = ('primary_stone', 'materials', 'collection', )
+    ordering = ('primary_stone', 'materials', 'collection',)
     
-    search_fields = ('primary_stone', 'materials', 'collection', 'category',)
+    search_fields = ('category__category',)
 
     fieldsets = (
         ('Summary', {

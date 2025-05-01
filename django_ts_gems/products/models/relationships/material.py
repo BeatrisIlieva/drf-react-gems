@@ -5,7 +5,7 @@ from django_ts_gems.products.choices import MaterialChoices
 
 class Material(models.Model):
 
-    material = models.CharField(
+    name = models.CharField(
         max_length=MaterialChoices.max_length(),
         choices=MaterialChoices.choices,
         unique=True,
@@ -13,6 +13,3 @@ class Material(models.Model):
             'unique': 'This material already exists.'
         }
     )
-
-    def __str__(self):
-        return self.get_material_display()

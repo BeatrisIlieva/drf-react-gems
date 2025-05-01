@@ -5,12 +5,12 @@ from django_ts_gems.products.models.size import Size
 
 def create_inventory(product, price):
     sizes = Size.objects.all()
-    one_size = sizes.get(size='OS')
+    one_size = sizes.get(size='One Size')
     quantity = random.randint(2, 5)
-    category = product.category.get_category_display()  
+    category = product.category 
 
     category_mapping = {
-        'Earrings': [one_size],
+        'Earring': [one_size],
     }
 
     default_sizes = sizes
