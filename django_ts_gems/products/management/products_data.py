@@ -1,5 +1,5 @@
 stones_colors = {
-    'Aquamarine Aquamarine': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748232/aquamarine_b4dtyx.webp',
+    'Blue Aquamarine': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748232/aquamarine_b4dtyx.webp',
     'White Diamond': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748236/diamond_dkg8rb.webp',
     'Yellow Diamond': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745853383/brown-diamond-CD_xvzlf6.webp',
     'Green Emerald': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748237/emerald_auiwk4.webp',
@@ -25,7 +25,7 @@ stones_colors = {
 products_data = [
     # BERRY
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Berry',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115862/9_zuupv7.webp',
@@ -35,7 +35,7 @@ products_data = [
         'price': 3600,
     },
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Berry',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115870/7_oxmuys.webp',
@@ -45,7 +45,7 @@ products_data = [
         'price': 3700,
     },
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Berry',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115868/11_ntbstg.webp',
@@ -55,7 +55,7 @@ products_data = [
         'price': 3400,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Berry',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115862/5_rlufar.webp',
@@ -65,7 +65,7 @@ products_data = [
         'price': 4400,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Berry',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115867/3_bhkuqr.webp',
@@ -75,7 +75,7 @@ products_data = [
         'price': 4600,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Berry',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115868/1_rcfsir.webp',
@@ -85,7 +85,7 @@ products_data = [
         'price': 4800,
     },
     {
-        'category': 'Ring',
+        'category': 'Fingerwear',
         'collection': 'Berry',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115867/16_rkceku.avif',
@@ -95,7 +95,7 @@ products_data = [
         'price': 2800,
     },
     {
-        'category': 'Ring',
+        'category': 'Fingerwear',
         'collection': 'Berry',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115867/14_jaiuit.webp',
@@ -106,7 +106,7 @@ products_data = [
     },
     # FORGET ME NOT
     {
-        'category': 'Bracelet',
+        'category': 'Wristwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115880/37_yydycy.webp',
@@ -116,7 +116,7 @@ products_data = [
         'price': 5200,
     },
     {
-        'category': 'Bracelet',
+        'category': 'Wristwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115880/35_tl8ef4.avif',
@@ -126,7 +126,7 @@ products_data = [
         'price': 5400,
     },
     {
-        'category': 'Bracelet',
+        'category': 'Wristwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115880/39_ec0wun.avif',
@@ -136,7 +136,7 @@ products_data = [
         'price': 5100,
     },
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115871/19_cp3mbf.webp',
@@ -146,7 +146,7 @@ products_data = [
         'price': 3800,
     },
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115870/15_wi6mrj.webp',
@@ -156,7 +156,7 @@ products_data = [
         'price': 4100,
     },
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115880/17_ej3xxw.webp',
@@ -166,7 +166,7 @@ products_data = [
         'price': 3800,
     },
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115876/25_ohyxwk.webp',
@@ -176,7 +176,7 @@ products_data = [
         'price': 4800,
     },
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115873/23_xi7kdz.webp',
@@ -186,7 +186,7 @@ products_data = [
         'price': 4800,
     },
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115880/21_sspkef.webp',
@@ -196,7 +196,7 @@ products_data = [
         'price': 5100,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115871/7_bxav8b.avif',
@@ -206,7 +206,7 @@ products_data = [
         'price': 6700,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115871/5_tstc0a.webp',
@@ -216,7 +216,7 @@ products_data = [
         'price': 6700,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115876/3_ovmsps.webp',
@@ -226,7 +226,7 @@ products_data = [
         'price': 7000,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115877/1_20.58.26_rzrysl.avif',
@@ -236,7 +236,7 @@ products_data = [
         'price': 6800,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115874/33_ctp104.webp',
@@ -246,7 +246,7 @@ products_data = [
         'price': 8400,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115876/31_qt3bmf.webp',
@@ -256,7 +256,7 @@ products_data = [
         'price': 8400,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115877/29_hxlfiw.avif',
@@ -266,7 +266,7 @@ products_data = [
         'price': 8700,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115876/27_mz3g3o.webp',
@@ -276,7 +276,7 @@ products_data = [
         'price': 8500,
     },
     {
-        'category': 'Ring',
+        'category': 'Fingerwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115876/13_jvc89m.webp',
@@ -286,7 +286,7 @@ products_data = [
         'price': 4400,
     },
     {
-        'category': 'Ring',
+        'category': 'Fingerwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115876/11_kmd9oy.avif',
@@ -296,7 +296,7 @@ products_data = [
         'price': 4400,
     },
     {
-        'category': 'Ring',
+        'category': 'Fingerwear',
         'collection': 'Forget Me Not',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115873/9_pfybkq.webp',
@@ -307,7 +307,7 @@ products_data = [
     },
     # GERBERA
     {
-        'category': 'Bracelet',
+        'category': 'Wristwear',
         'collection': 'Gerbera',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115898/7_dyy0ui.webp',
@@ -317,7 +317,7 @@ products_data = [
         'price': 3400,
     },
     {
-        'category': 'Bracelet',
+        'category': 'Wristwear',
         'collection': 'Gerbera',
         'material': 'Rose Gold',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115897/11_fnhj5z.webp',
@@ -327,7 +327,7 @@ products_data = [
         'price': 3200,
     },
     {
-        'category': 'Bracelet',
+        'category': 'Wristwear',
         'collection': 'Gerbera',
         'material': 'Yellow Gold',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115890/9_hgiify.webp',
@@ -337,7 +337,7 @@ products_data = [
         'price': 3200,
     },
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Gerbera',
         'material': 'Rose Gold',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115890/23_riwfc0.webp',
@@ -347,7 +347,7 @@ products_data = [
         'price': 1600,
     },
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Gerbera',
         'material': 'Yellow Gold',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115898/21_o5ytzr.webp',
@@ -357,7 +357,7 @@ products_data = [
         'price': 1600,
     },
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Gerbera',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115890/19_yq40yi.webp',
@@ -367,7 +367,7 @@ products_data = [
         'price': 1900,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Gerbera',
         'material': 'Rose Gold',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115898/5_ltcjn8.avif',
@@ -377,7 +377,7 @@ products_data = [
         'price': 2600,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Gerbera',
         'material': 'Yellow Gold',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115893/3_nfudoh.avif',
@@ -387,7 +387,7 @@ products_data = [
         'price': 2600,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Gerbera',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115892/1_mxaw0n.webp',
@@ -397,7 +397,7 @@ products_data = [
         'price': 2900,
     },
     {
-        'category': 'Ring',
+        'category': 'Fingerwear',
         'collection': 'Gerbera',
         'material': 'Rose Gold',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115898/17_sve1ov.webp',
@@ -407,7 +407,7 @@ products_data = [
         'price': 1900,
     },
     {
-        'category': 'Ring',
+        'category': 'Fingerwear',
         'collection': 'Gerbera',
         'material': 'Yellow Gold',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115889/15_vhtm13.webp',
@@ -417,7 +417,7 @@ products_data = [
         'price': 1900,
     },
     {
-        'category': 'Ring',
+        'category': 'Fingerwear',
         'collection': 'Gerbera',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115892/13_c91ddg.webp',
@@ -428,7 +428,7 @@ products_data = [
     },
     # LEAF
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Leaf',
         'material': 'Yellow Gold',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115848/3_eqrpuo.webp',
@@ -438,7 +438,7 @@ products_data = [
         'price': 3300,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Leaf',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115848/1_y1wtvj.avif',
@@ -448,7 +448,7 @@ products_data = [
         'price': 3500,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Leaf',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115848/9_cglk2f.webp',
@@ -458,7 +458,7 @@ products_data = [
         'price': 4300,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Leaf',
         'material': 'Yellow Gold',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115848/11_mvguf6.avif',
@@ -468,7 +468,7 @@ products_data = [
         'price': 4100,
     },
     {
-        'category': 'Ring',
+        'category': 'Fingerwear',
         'collection': 'Leaf',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115847/5_mbpwau.webp',
@@ -478,7 +478,7 @@ products_data = [
         'price': 2700,
     },
     {
-        'category': 'Ring',
+        'category': 'Fingerwear',
         'collection': 'Leaf',
         'material': 'Yellow Gold',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115848/7_u3mjub.webp',
@@ -489,7 +489,7 @@ products_data = [
     },
     # LILY
     {
-        'category': 'Bracelet',
+        'category': 'Wristwear',
         'collection': 'Lily',
         'material': 'Yellow Gold',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115861/3_z0khec.webp',
@@ -499,7 +499,7 @@ products_data = [
         'price': 2900,
     },
     {
-        'category': 'Bracelet',
+        'category': 'Wristwear',
         'collection': 'Lily',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115861/1_ra0at7.webp',
@@ -509,7 +509,7 @@ products_data = [
         'price': 3100,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Lily',
         'material': 'Rose Gold',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115856/7_kkhuqt.avif',
@@ -519,7 +519,7 @@ products_data = [
         'price': 4000,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Lily',
         'material': 'Yellow Gold',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115862/5_jg8e9x.avif',
@@ -529,7 +529,7 @@ products_data = [
         'price': 4000,
     },
     {
-        'category': 'Ring',
+        'category': 'Fingerwear',
         'collection': 'Lily',
         'material': 'Yellow Gold',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115862/9_ug9qjk.avif',
@@ -539,7 +539,7 @@ products_data = [
         'price': 2400,
     },
     {
-        'category': 'Ring',
+        'category': 'Fingerwear',
         'collection': 'Lily',
         'material': 'Rose Gold',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115861/11_qwmmry.avif',
@@ -550,7 +550,7 @@ products_data = [
     },
     # Lily of the Valley
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Lily of the Valley',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115885/9_nrvzgx.webp',
@@ -560,27 +560,27 @@ products_data = [
         'price': 5500,
     },
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Lily of the Valley',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115886/1_zaesmv.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115886/2_omxh92.webp',
         'reference': 'Drop',
-        'stones_colors': ['White Diamond', 'Aquamarine Aquamarine', 'Blue Sapphire'],
+        'stones_colors': ['White Diamond', 'Blue Aquamarine', 'Blue Sapphire'],
         'price': 5200,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Lily of the Valley',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115884/5_azojfd.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115889/6_xefvoj.webp',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond', 'Aquamarine Aquamarine', 'Blue Sapphire'],
+        'stones_colors': ['White Diamond', 'Blue Aquamarine', 'Blue Sapphire'],
         'price': 7100,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Lily of the Valley',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115889/14_rmtgtc.avif',
@@ -590,7 +590,7 @@ products_data = [
         'price': 7900,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Lily of the Valley',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115889/16_ghdpy4.webp',
@@ -600,27 +600,27 @@ products_data = [
         'price': 9100,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Lily of the Valley',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115889/7_mflsat.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115889/8_z0yovn.avif',
         'reference': 'Lariat',
-        'stones_colors': ['White Diamond',  'Aquamarine Aquamarine', 'Blue Sapphire'],
+        'stones_colors': ['White Diamond',  'Blue Aquamarine', 'Blue Sapphire'],
         'price': 8800,
     },
     {
-        'category': 'Ring',
+        'category': 'Fingerwear',
         'collection': 'Lily of the Valley',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115886/3_onvsdq.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115885/4_k2z9sm.webp',
         'reference': 'Statement',
-        'stones_colors': ['White Diamond',  'Aquamarine Aquamarine', 'Blue Sapphire'],
+        'stones_colors': ['White Diamond',  'Blue Aquamarine', 'Blue Sapphire'],
         'price': 4900,
     },
     {
-        'category': 'Ring',
+        'category': 'Fingerwear',
         'collection': 'Lily of the Valley',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115885/11_gxtusc.avif',
@@ -631,7 +631,7 @@ products_data = [
     },
     # LOTUS
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Lotus',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115849/5_akqszw.webp',
@@ -641,7 +641,7 @@ products_data = [
         'price': 6200,
     },
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Lotus',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115854/3_pwfqbd.avif',
@@ -651,7 +651,7 @@ products_data = [
         'price': 6400,
     },
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Lotus',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115854/1_dthftn.webp',
@@ -661,7 +661,7 @@ products_data = [
         'price': 6600,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Lotus',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115849/9_elxmpl.webp',
@@ -671,7 +671,7 @@ products_data = [
         'price': 7600,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Lotus',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115849/7_kfghke.avif',
@@ -681,7 +681,7 @@ products_data = [
         'price': 7400,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Lotus',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115854/13_shljw5.avif',
@@ -691,7 +691,7 @@ products_data = [
         'price': 7200,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Lotus',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115854/11_grxxeo.webp',
@@ -701,7 +701,7 @@ products_data = [
         'price': 7400,
     },
     {
-        'category': 'Ring',
+        'category': 'Fingerwear',
         'collection': 'Lotus',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115855/17_txm6ur.webp',
@@ -711,7 +711,7 @@ products_data = [
         'price': 5200,
     },
     {
-        'category': 'Ring',
+        'category': 'Fingerwear',
         'collection': 'Lotus',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115855/15_jxzwza.avif',
@@ -722,7 +722,7 @@ products_data = [
     },
     # SUNFLOWER
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Sunflower',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115904/9_sqhg38.webp',
@@ -732,7 +732,7 @@ products_data = [
         'price': 2100,
     },
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Sunflower',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115907/7_biz36z.webp',
@@ -742,7 +742,7 @@ products_data = [
         'price': 1900,
     },
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Sunflower',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115904/5_tdbnmb.webp',
@@ -752,7 +752,7 @@ products_data = [
         'price': 2200,
     },
     {
-        'category': 'Ring',
+        'category': 'Fingerwear',
         'collection': 'Sunflower',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115907/13_b96r6b.avif',
@@ -762,7 +762,7 @@ products_data = [
         'price': 3300,
     },
     {
-        'category': 'Ring',
+        'category': 'Fingerwear',
         'collection': 'Sunflower',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115904/11_gzogqa.avif',
@@ -773,7 +773,7 @@ products_data = [
     },
     # Daisy
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Daisy',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121005/9_sciejy.webp',
@@ -783,7 +783,7 @@ products_data = [
         'price': 1500,
     },
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Daisy',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121145/7_nvuh9g.webp',
@@ -793,7 +793,7 @@ products_data = [
         'price': 1700,
     },
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Daisy',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121009/13_mjvoux.webp',
@@ -803,17 +803,17 @@ products_data = [
         'price': 1500,
     },
     {
-        'category': 'Earring',
+        'category': 'Earwear',
         'collection': 'Daisy',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121010/11_momftr.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121013/12_ou80ul.webp',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond', 'Aquamarine Aquamarine'],
+        'stones_colors': ['White Diamond', 'Blue Aquamarine'],
         'price': 1500,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Daisy',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121005/5_mvon0h.webp',
@@ -823,17 +823,17 @@ products_data = [
         'price': 4400,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Daisy',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121011/3_uskksz.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121262/4_cetexv.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond', 'Aquamarine Aquamarine'],
+        'stones_colors': ['White Diamond', 'Blue Aquamarine'],
         'price': 4400,
     },
     {
-        'category': 'Necklace',
+        'category': 'Neckwear',
         'collection': 'Daisy',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121014/1_hgm4vf.webp',
@@ -842,5 +842,86 @@ products_data = [
         'stones_colors': ['White Diamond', 'Pink Sapphire'],
         'price': 4400,
     },
-
+    # Elegant
+    {
+        'category': 'Wristwear',
+        'collection': 'Watch',
+        'material': 'Yellow Gold',
+        'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196508/1_cviir7.png',
+        'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196508/2_kb2pnx.png',
+        'reference': 'Elegant',
+        'stones_colors': ['Green Emerald', 'White Diamond'],
+        'price': 14100,
+    },
+    {
+        'category': 'Wristwear',
+        'collection': 'Watch',
+        'material': 'Yellow Gold',
+        'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196509/1_cveecw.png',
+        'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196509/2_jnlzu9.png',
+        'reference': 'Elegant',
+        'stones_colors': ['Red Ruby', 'White Diamond'],
+        'price': 14500,
+    },
+    {
+        'category': 'Wristwear',
+        'collection': 'Watch',
+        'material': 'Platinum',
+        'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196508/1_zaou5v.png',
+        'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196508/2_xadphd.png',
+        'reference': 'Elegant',
+        'stones_colors': ['Pink Sapphire', 'White Diamond'],
+        'price': 14900,
+    },
+    {
+        'category': 'Wristwear',
+        'collection': 'Watch',
+        'material': 'Yellow Gold',
+        'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196508/1_sgyfdp.png',
+        'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196508/2_zpbdin.png',
+        'reference': 'Elegant',
+        'stones_colors': ['Blue Sapphire', 'White Diamond'],
+        'price': 14900,
+    },
+    # Classics
+    {
+        'category': 'Wristwear',
+        'collection': 'Watch',
+        'material': 'Yellow Gold',
+        'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196509/1_ohgirz.png',
+        'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196509/2_v3q4n1.png',
+        'reference': 'Classics',
+        'stones_colors': ['Green Emerald', 'White Diamond'],
+        'price': 16200,
+    },
+    {
+        'category': 'Wristwear',
+        'collection': 'Watch',
+        'material': 'Platinum',
+        'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196512/1_uesg5z.png',
+        'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196511/2_agllhx.png',
+        'reference': 'Classics',
+        'stones_colors': ['Red Ruby', 'White Diamond'],
+        'price': 17300,
+    },
+    {
+        'category': 'Wristwear',
+        'collection': 'Watch',
+        'material': 'Yellow Gold',
+        'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196510/1_vh9sj4.png',
+        'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196510/2_nmhjr2.png',
+        'reference': 'Classics',
+        'stones_colors': ['Blue Sapphire', 'White Diamond'],
+        'price': 16100,
+    },
+    {
+        'category': 'Wristwear',
+        'collection': 'Watch',
+        'material': 'Platinum',
+        'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196509/1_yicqjg.png',
+        'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196509/2_mdolsb.png',
+        'reference': 'Classics',
+        'stones_colors': ['Pink Sapphire', 'White Diamond'],
+        'price': 16100,
+    },
 ]

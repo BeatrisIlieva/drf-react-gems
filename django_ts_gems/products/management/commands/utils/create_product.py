@@ -11,15 +11,15 @@ from django_ts_gems.products.models.relationships.stones_colors import StonesCol
 def create_product(product_data):
 
     category = Category.objects.get(
-        category=product_data['category']
+        name=product_data['category']
     )
 
     collection = Collection.objects.get(
-        collection=product_data['collection']
+        name=product_data['collection']
     )
 
     reference = Reference.objects.get(
-        reference=product_data['reference'],
+        name=product_data['reference'],
     )
 
     material = Material.objects.get(

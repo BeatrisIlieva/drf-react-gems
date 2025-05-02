@@ -5,6 +5,7 @@ from django.core.management.base import BaseCommand
 from django_ts_gems.products.management.commands.utils.create_inventory import create_inventory
 from django_ts_gems.products.management.commands.utils.create_product import create_product
 from django_ts_gems.products.management.commands.utils.create_choices import create_choices
+from django_ts_gems.products.management.commands.utils.create_stones_colors import create_stones_colors 
 from django_ts_gems.products.management.products_data import products_data
 
 
@@ -34,6 +35,8 @@ class Command(BaseCommand):
     def initialize_data(self):
 
         create_choices()
+        
+        create_stones_colors()
 
         for product_data in products_data:
             product = create_product(product_data)

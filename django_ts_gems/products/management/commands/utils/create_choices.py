@@ -39,33 +39,33 @@ colors = {
 def create_choices():
     for choice in CategoryChoices:
         Category.objects.get_or_create(
-            category=choice.value,
+            name=choice.value,
         )
 
     for choice in CollectionChoices:
         Collection.objects.get_or_create(
-            collection=choice.value,
+            name=choice.value,
         )
 
     for choice in ColorChoices:
         Color.objects.get_or_create(
-            color=choice.value,
+            name=choice.value,
             hex_code=colors[choice.value]
         )
 
     for choice in MaterialChoices:
         Material.objects.get_or_create(
-            material=choice.value,
+            name=choice.value,
         )
 
     for choice in ReferenceChoices:
         Reference.objects.get_or_create(
-            reference=choice.value,
+            name=choice.value,
         )
 
     for choice in StoneChoices:
         Stone.objects.get_or_create(
-            stone=choice.value,
+            name=choice.value,
             image=stones[choice.value],
         )
 

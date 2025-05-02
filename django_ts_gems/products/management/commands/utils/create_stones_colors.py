@@ -4,7 +4,7 @@ from django_ts_gems.products.models.relationships.stones_colors import StonesCol
 
 
 stones_colors = {
-    'Aquamarine Aquamarine': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748232/aquamarine_b4dtyx.webp',
+    'Blue Aquamarine': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748232/aquamarine_b4dtyx.webp',
     'White Diamond': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748236/diamond_dkg8rb.webp',
     'Yellow Diamond': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745853383/brown-diamond-CD_xvzlf6.webp',
     'Green Emerald': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748237/emerald_auiwk4.webp',
@@ -14,14 +14,17 @@ stones_colors = {
     'Yellow Sapphire': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745853383/yellow-sapphire_tukm7x.webp',
 }
 
-for key, value in stones_colors.items():
-    color_name, stone_name = key.split(' ')
 
-    stone = Stone.objects.get(name=stone_name)
-    color = Color.objects.get(name=color_name)
+def create_stones_colors():
 
-    StonesColors.objects.get_or_create(
-        image=value,
-        color=color,
-        stone=stone,
-    )
+    for key, value in stones_colors.items():
+        color_name, stone_name = key.split(' ')
+
+        stone = Stone.objects.get(name=stone_name)
+        color = Color.objects.get(name=color_name)
+
+        StonesColors.objects.get_or_create(
+            image=value,
+            color=color,
+            stone=stone,
+        )

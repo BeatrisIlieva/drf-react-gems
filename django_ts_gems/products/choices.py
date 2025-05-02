@@ -4,10 +4,10 @@ from django_ts_gems.products.mixins import ChoicesMaxLengthMixin
 
 
 class CategoryChoices(ChoicesMaxLengthMixin, models.TextChoices):
-    BRACELET = 'Bracelet', 'Bracelet'
-    EARRING = 'Earring', 'Earring'
-    NECKLACE = 'Necklace', 'Necklace'
-    RING = 'Ring', 'Ring'
+    WRISTWEAR = 'Wristwear', 'Wristwear'
+    EARWEAR = 'Earwear', 'Earwear'
+    NECKWEAR = 'Neckwear', 'Neckwear'
+    FINGERWEAR = 'Fingerwear', 'Fingerwear'
 
 
 class CollectionChoices(ChoicesMaxLengthMixin, models.TextChoices):
@@ -16,9 +16,11 @@ class CollectionChoices(ChoicesMaxLengthMixin, models.TextChoices):
     FORGET_ME_NOT = 'Forget Me Not', 'Forget Me Not'
     LILY = 'Lily', 'Lily'
     LOTUS = 'Lotus', 'Lotus'
+    LEAF = 'Leaf', 'Leaf'
     BERRY = 'Berry', 'Berry'
     SUNFLOWER = 'Sunflower', 'Sunflower'
     LILY_OF_THE_VALLEY = 'Lily of the Valley', 'Lily of the Valley'
+    WATCH = 'Watch', 'Watch'
 
 
 class ColorChoices(ChoicesMaxLengthMixin, models.TextChoices):
@@ -60,5 +62,8 @@ class ReferenceChoices(ChoicesMaxLengthMixin, models.TextChoices):
     LARIAT = 'Lariat', 'Lariat'
     TENNIS = 'Tennis', 'Tennis'
     CHAIN = 'Chain', 'Chain'
+    WATCH = 'Watch', 'Watch'
     STATEMENT = 'Statement', 'Statement'
     BAND = 'Band', 'Band'
+    CLASSICS = 'Classics', 'Classics'
+    ELEGANT = 'Elegant', 'Elegant'
