@@ -13,3 +13,6 @@ class Material(models.Model):
             'unique': 'This material already exists.'
         }
     )
+
+    def __str__(self):
+        return self.name

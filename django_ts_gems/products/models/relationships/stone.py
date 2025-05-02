@@ -15,3 +15,6 @@ class Stone(models.Model):
     )
 
     image = models.URLField()
+
+    def __str__(self):
+        return self.name

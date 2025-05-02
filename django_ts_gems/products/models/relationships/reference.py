@@ -12,3 +12,6 @@ class Reference(models.Model):
             'unique': 'This reference already exists.'
         }
     )
+
+    def __str__(self):
+        return self.name

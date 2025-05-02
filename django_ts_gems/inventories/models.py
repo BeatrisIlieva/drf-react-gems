@@ -4,6 +4,7 @@ from django.db import models
 class Inventory(models.Model):
     class Meta:
         unique_together = ('product', 'size')
+        verbose_name_plural = 'Inventories'
 
     price = models.DecimalField(
         max_digits=7,

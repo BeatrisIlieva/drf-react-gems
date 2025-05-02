@@ -18,3 +18,6 @@ class Color(models.Model):
     hex_code = models.CharField(
         max_length=HEX_CODE_MAX_LENGTH,
     )
+
+    def __str__(self):
+        return self.name

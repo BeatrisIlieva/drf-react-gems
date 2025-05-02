@@ -14,3 +14,6 @@ class Category(models.Model):
             'unique': 'This category already exists.'
         }
     )
+
+    def __str__(self):
+        return self.name

@@ -13,3 +13,6 @@ class Collection(models.Model):
             'unique': 'This collection already exists.'
         }
     )
+
+    def __str__(self):
+        return self.name

@@ -15,4 +15,4 @@ class Size(models.Model):
     )
 
     def __str__(self):
-        return self.get_size_display()
+        return self.size
