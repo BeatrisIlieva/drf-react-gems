@@ -27,6 +27,8 @@ class UserProfile(models.Model):
         validators=[
             NameValidator(),
         ],
+        null=True,
+        blank=False,
     )
 
     last_name = models.CharField(
@@ -34,6 +36,8 @@ class UserProfile(models.Model):
         validators=[
             NameValidator(),
         ],
+        null=True,
+        blank=False,
     )
 
     phone_number = models.CharField(
@@ -42,4 +46,6 @@ class UserProfile(models.Model):
             MinLengthValidator(PHONE_NUMBER_MIN_LENGTH),
             OnlyDigitsValidator(),
         ],
+        null=True,
+        blank=False,
     )

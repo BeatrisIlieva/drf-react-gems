@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 
 from django.urls import reverse_lazy
@@ -11,6 +12,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
+
 
 PROJECT_APPS = [
     'django_ts_gems.accounts',
@@ -20,19 +25,61 @@ PROJECT_APPS = [
 ]
 
 INSTALLED_APPS = [
-    "unfold",
-    "unfold.contrib.filters",
-    "unfold.contrib.forms",
-    
+    'unfold',
+    'unfold.contrib.filters',
+    'unfold.contrib.forms',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # pip install django-restframework
+    'rest_framework',  
+    # pip install djangorestframework-simplejwt
+    'rest_framework_simplejwt',  
+    # pip install drf-spectacular (swagger)
+    'drf_spectacular',  
+    # we do not install `token_blacklist`
+    # we just add it to installed apps
+    # so the blacklisting of the refresh token
+    # can happen
+    'rest_framework_simplejwt.token_blacklist',  
+    # pip install django-cors-headers
+    'corsheaders',
+
 ] + PROJECT_APPS
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    # this setting says that, except explicitly specified,
+    # all views will expect the user to be authenticated
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',  # for swagger
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(weeks=1),
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Django App',
+    'DESCRIPTION': 'Online store',
+    'VERSION': '1.0.0',
+}
+
 MIDDLEWARE = [
+    # middleware that checks if the Client that sends the request is allowed to
+    # this is done through a preflight request with a method `OPTIONS`
+    'corsheaders.middleware.CorsMiddleware',
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -47,7 +94,9 @@ ROOT_URLCONF = 'django_ts_gems.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [
+            BASE_DIR / 'templates'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -115,7 +164,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.UserCredential'
 
 # Inform Django to which url to redirect to after successful login
-LOGIN_REDIRECT_URL = reverse_lazy('home')
+# LOGIN_REDIRECT_URL = reverse_lazy('home')
 
 # Inform Django to which url to redirect to after logout
-LOGOUT_REDIRECT_URL = reverse_lazy('login')
+# LOGOUT_REDIRECT_URL = reverse_lazy('login')

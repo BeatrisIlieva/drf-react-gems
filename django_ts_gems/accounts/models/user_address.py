@@ -22,19 +22,27 @@ class UserAddress(models.Model):
     state = models.ForeignKey(
         to='addresses.State',
         on_delete=models.CASCADE,
+        null=True,
+        blank=False,
     )
 
     city = models.ForeignKey(
         to='addresses.City',
         on_delete=models.CASCADE,
+        null=True,
+        blank=False,
     )
 
     street_address = models.ForeignKey(
         to='addresses.StreetAddress',
         on_delete=models.CASCADE,
+        null=True,
+        blank=False,
     )
 
     zip_code = models.ForeignKey(
         to='addresses.ZipCode',
         on_delete=models.CASCADE,
+        null=True,
+        blank=False,
     )

@@ -1,15 +1,16 @@
-# from django.contrib.auth.views import LogoutView
-# from django.urls import path
-# import django_ts_gems.accounts.views as views
+from django.urls import path
 
-# urlpatterns = [
-#     path('register/', views.UserCredentialRegisterView.as_view(), name='register'),
-#     path('login/', views.UserCredentialLoginView.as_view(), name='login'),
-#     path('logout/', LogoutView.as_view(), name='logout'),
-#     path('home/', views.index, name='home')
-#     # path('home/', views.HomeView.as_view(), name='home')
+from rest_framework_simplejwt.views import TokenRefreshView
 
-#     # path('account/<int:pk>/', include([
-#     #     path('', views.account_)
-#     # ]))
-# ]
+from django_ts_gems.accounts.views import (
+    UserRegisterView,
+    UserLoginView,
+    UserLogoutView,
+)
+
+urlpatterns = [
+    path('register/', UserRegisterView.as_view(), name='register'),
+    path('login/', UserLoginView.as_view(), name='login'),
+    path('logout/', UserLogoutView.as_view(), name='logout'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='refresh-token'),
+]

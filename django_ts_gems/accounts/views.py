@@ -1,48 +1,111 @@
-# from django.contrib.auth import get_user_model, login
-# from django.shortcuts import render, redirect
-# from django.urls import reverse_lazy
-# from django.views.generic import CreateView
-# from django.views.generic.base import TemplateView
-# from django.contrib.auth.views import LoginView
+from django.contrib.auth import get_user_model, authenticate
+from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import AllowAny
+from drf_spectacular.utils import extend_schema
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError
 
-# from django_ts_gems.accounts.forms import UserCredentialCreationForm, PaymentForm
-
-
-# UserModel = get_user_model()
-
-# def index(request):
-#     form = PaymentForm(request.POST or None)
-    
-#     context = {
-#         'form': form,
-#     }
-    
-#     if request.method == 'POST':
-    
-#         if form.is_valid():
-#             form.save()
-            
-#             return redirect(request, 'common/home.html', context)
-    
-#     return render(request, 'common/home.html', context)
-
-# # class HomeView(TemplateView):
-# #     template_name = 'common/home.html'
+from django_ts_gems.accounts.serializers import (
+    UserLoginRequestSerializer,
+    UserLoginResponseSerializer,
+    UserLogoutRequestSerializer,
+    UserRegisterSerializer,
+)
 
 
-# class UserCredentialRegisterView(CreateView):
-#     model = UserModel
-#     form_class = UserCredentialCreationForm
-#     template_name = 'accounts/register-page.html'
-#     success_url = reverse_lazy('home')
-
-#     def form_valid(self, form):
-#         response = super().form_valid(form)
-
-#         login(self.request, self.object)
-
-#         return response
+UserModel = get_user_model()
 
 
-# class UserCredentialLoginView(LoginView):
-#     template_name = 'accounts/login-page.html'
+class UserRegisterView(CreateAPIView):
+    queryset = UserModel.objects.all()
+    serializer_class = UserRegisterSerializer
+    # because in `settings.py` we defined that by default
+    # we expect the user to be authenticated
+    # we need to add `AllowAny` permission for the `UserRegisterView`
+    permission_classes = [AllowAny]
+
+
+@extend_schema(
+    tags=['Authentication'],
+    summary='Login endpoint',
+    description='Authenticate user and get back access and refresh tokens',
+    request=UserLoginRequestSerializer,
+    responses={
+        200: UserLoginResponseSerializer,
+        401: 'Invalid username or password'
+    }
+)
+class UserLoginView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        # in DRF `request.data` is like `request.POST` and `request.GET` in Django
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        user = authenticate(
+            username=username,
+            password=password,
+        )
+
+        if user is None:
+            return Response(
+                {
+                    'error': 'Invalid username or password',
+                },
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+
+        # if the user credentials are valid we issue both `access token` and `refresh token`
+        refresh = RefreshToken.for_user(user)
+
+        return Response(
+            {
+                'refresh': str(refresh),
+                # the refresh token has a property `access_token`
+                'access': str(refresh.access_token),
+                'message': 'Login successful',
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
+@extend_schema(
+    tags=['Authentication'],
+    summary='Logout endpoint',
+    description='Blacklist the refresh token',
+    request=UserLogoutRequestSerializer,
+    responses={
+        200: UserLogoutRequestSerializer,
+        401: 'Invalid or expired token'
+    }
+)
+class UserLogoutView(APIView):
+    # upon logout we need to blacklist the token so it can be no longer used
+    def post(self, request, *args, **kwargs):
+        try:
+            # we get the token from the request as a string
+            refresh_token = request.data.get('refresh')
+            # we create a token object
+            token = RefreshToken(refresh_token)
+            # in order to call its method `blacklist` which adds the token
+            # into the table containing the blacklisted tokens
+            token.blacklist()
+
+            return Response(
+                {
+                    'message': 'Logout successful',
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        except TokenError:
+            return Response(
+                {
+                    'error': 'Invalid or expired token',
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
