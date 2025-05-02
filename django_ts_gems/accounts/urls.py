@@ -1,15 +1,15 @@
-from django.contrib.auth.views import LogoutView
-from django.urls import path
-import django_ts_gems.accounts.views as views
+# from django.contrib.auth.views import LogoutView
+# from django.urls import path
+# import django_ts_gems.accounts.views as views
 
-urlpatterns = [
-    path('register/', views.UserCredentialRegisterView.as_view(), name='register'),
-    path('login/', views.UserCredentialLoginView.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
-    path('home/', views.index, name='home')
-    # path('home/', views.HomeView.as_view(), name='home')
+# urlpatterns = [
+#     path('register/', views.UserCredentialRegisterView.as_view(), name='register'),
+#     path('login/', views.UserCredentialLoginView.as_view(), name='login'),
+#     path('logout/', LogoutView.as_view(), name='logout'),
+#     path('home/', views.index, name='home')
+#     # path('home/', views.HomeView.as_view(), name='home')
 
-    # path('account/<int:pk>/', include([
-    #     path('', views.account_)
-    # ]))
-]
+#     # path('account/<int:pk>/', include([
+#     #     path('', views.account_)
+#     # ]))
+# ]

@@ -1,3 +1,0 @@
-earrings = {
-    'stud_earrings': ''
-}

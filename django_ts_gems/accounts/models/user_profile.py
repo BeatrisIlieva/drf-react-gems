@@ -1,11 +1,13 @@
 from django.core.validators import MinLengthValidator
+from django.contrib.auth import get_user_model
 from django.db import models
 
-from django_ts_gems.accounts.admin import UserModel
 from django_ts_gems.accounts.validators import (
     OnlyDigitsValidator,
     NameValidator
 )
+
+UserModel = get_user_model()
 
 
 class UserProfile(models.Model):

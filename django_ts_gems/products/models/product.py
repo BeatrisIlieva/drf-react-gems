@@ -7,27 +7,27 @@ class Product(models.Model):
     second_image = models.URLField()
 
     category = models.ForeignKey(
-        to='Category',
+        to='products.Category',
         on_delete=models.CASCADE,
     )
 
     collection = models.ForeignKey(
-        to='Collection',
+        to='products.Collection',
         on_delete=models.CASCADE,
     )
 
     material = models.ForeignKey(
-        to='Material',
+        to='products.Material',
         on_delete=models.CASCADE,
     )
 
     reference = models.ForeignKey(
-        to='Reference',
+        to='products.Reference',
         on_delete=models.CASCADE,
     )
 
     stones_colors = models.ManyToManyField(
-        to='StonesColors',
+        to='products.StonesColors',
     )
 
     def __str__(self):

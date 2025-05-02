@@ -1,48 +1,48 @@
-from django.contrib.auth import get_user_model, login
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
-from django.views.generic import CreateView
-from django.views.generic.base import TemplateView
-from django.contrib.auth.views import LoginView
+# from django.contrib.auth import get_user_model, login
+# from django.shortcuts import render, redirect
+# from django.urls import reverse_lazy
+# from django.views.generic import CreateView
+# from django.views.generic.base import TemplateView
+# from django.contrib.auth.views import LoginView
 
-from django_ts_gems.accounts.forms import UserCredentialCreationForm, PaymentForm
+# from django_ts_gems.accounts.forms import UserCredentialCreationForm, PaymentForm
 
 
-UserModel = get_user_model()
+# UserModel = get_user_model()
 
-def index(request):
-    form = PaymentForm(request.POST or None)
+# def index(request):
+#     form = PaymentForm(request.POST or None)
     
-    context = {
-        'form': form,
-    }
+#     context = {
+#         'form': form,
+#     }
     
-    if request.method == 'POST':
+#     if request.method == 'POST':
     
-        if form.is_valid():
-            form.save()
+#         if form.is_valid():
+#             form.save()
             
-            return redirect(request, 'common/home.html', context)
+#             return redirect(request, 'common/home.html', context)
     
-    return render(request, 'common/home.html', context)
+#     return render(request, 'common/home.html', context)
 
-# class HomeView(TemplateView):
-#     template_name = 'common/home.html'
-
-
-class UserCredentialRegisterView(CreateView):
-    model = UserModel
-    form_class = UserCredentialCreationForm
-    template_name = 'accounts/register-page.html'
-    success_url = reverse_lazy('home')
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-
-        login(self.request, self.object)
-
-        return response
+# # class HomeView(TemplateView):
+# #     template_name = 'common/home.html'
 
 
-class UserCredentialLoginView(LoginView):
-    template_name = 'accounts/login-page.html'
+# class UserCredentialRegisterView(CreateView):
+#     model = UserModel
+#     form_class = UserCredentialCreationForm
+#     template_name = 'accounts/register-page.html'
+#     success_url = reverse_lazy('home')
+
+#     def form_valid(self, form):
+#         response = super().form_valid(form)
+
+#         login(self.request, self.object)
+
+#         return response
+
+
+# class UserCredentialLoginView(LoginView):
+#     template_name = 'accounts/login-page.html'

@@ -1,91 +1,70 @@
-from django.contrib import admin
-from unfold.admin import ModelAdmin
-from django.utils.html import format_html
+# from django.contrib import admin
+# from unfold.admin import ModelAdmin
+# from django.utils.html import format_html
 
-from django_ts_gems.products.models import Product
-from django_ts_gems.products.models.relationships.description import Description
-from django_ts_gems.products.models.relationships.media import Media
+# from django_ts_gems.products.models import Product
 
 
-@admin.register(Product)
-class ProductAdmin(ModelAdmin):
-    list_display = (
-        'image',
-        'category',
-        'collection',
-        'primary_stone',
-        'reference',
-    )
-    
-    list_filter = (
-        'category',
-        'collection',
-        'primary_stone',
-        'reference',
-    )
-    
-    ordering = ('primary_stone', 'materials', 'collection',)
-    
-    search_fields = ('category__category',)
+# @admin.register(Product)
+# class ProductAdmin(ModelAdmin):
+#     list_display = (
+#         'image',
+#         'category',
+#         'collection',
+#         'reference',
+#     )
 
-    fieldsets = (
-        ('Summary', {
-            'fields': (
-                'description',
-            )
-        }),
-        ('Images', {
-            'fields': (
-                'media',
-            )
-        }),
-        ('Labels', {
-            'fields': (
-                'category',
-                'collection',
-                'reference',
-            )
-        }
-        ),
-        ('Materials', {
-            'fields': (
-                'primary_stone',
-                'stones',
-                'colors',
-                'materials',
-            )
-        }),
-    )
+#     list_filter = (
+#         'category',
+#         'collection',
+#         'reference',
+#     )
 
-    def image(self, obj):
-        return format_html(
-            '<img src="{}" width="100" height="100" style="object-fit: cover;" />',
-            obj.media.first_image)
+#     ordering = ('materials', 'collection',)
 
-    def category(self, obj):
-        return obj.category.get_category_display()
+#     search_fields = ('category__category',)
 
-    def collection(self, obj):
-        return obj.category.get_collection_display()
+#     fieldsets = (
+#         # ('Summary', {
+#         #     'fields': (
+#         #         'description',
+#         #     )
+#         # }),
+#         ('Images', {
+#             'fields': (
+#                 'media',
+#             )
+#         }),
+#         ('Labels', {
+#             'fields': (
+#                 'category',
+#                 'collection',
+#                 'reference',
+#             )
+#         }
+#         ),
+#         ('Materials', {
+#             'fields': (
+#                 'stones',
+#                 'colors',
+#                 'materials',
+#             )
+#         }),
+#     )
 
-    def primary_stone(self, obj):
-        return obj.category.get_primary_stone_display()
+#     def image(self, obj):
+#         return format_html(
+#             '<img src="{}" width="100" height="100" style="object-fit: cover;" />',
+#             obj.media.first_image)
 
-    def obj_description(self, obj):
-        return obj.description.description
+#     def category(self, obj):
+#         return obj.category.get_category_display()
 
+#     def collection(self, obj):
+#         return obj.category.get_collection_display()
 
-@admin.register(Media)
-class MediaAdmin(ModelAdmin):
-    fields = (
-        'first_image',
-        'second_image',
-        'third_image',
-        'fourth_image',
-        'fifth_image',
-    )
+#     def primary_stone(self, obj):
+#         return obj.category.get_primary_stone_display()
 
-
-@admin.register(Description)
-class DescriptionAdmin(ModelAdmin):
-    pass
+#     def obj_description(self, obj):
+#         return obj.description.description

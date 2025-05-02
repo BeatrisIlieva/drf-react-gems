@@ -6,11 +6,11 @@ class StonesColors(models.Model):
     image = models.URLField()
 
     color = models.ForeignKey(
-        to='Color',
+        to='products.Color',
         on_delete=models.CASCADE,
     )
 
     stone = models.ForeignKey(
-        to='Stone',
+        to='products.Stone',
         on_delete=models.CASCADE,
     )
