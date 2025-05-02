@@ -112,7 +112,7 @@ MEDIA_ROOT = BASE_DIR / 'mediafiles/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Inform Django that we replace the default user with a custom one
-AUTH_USER_MODEL = 'accounts.AppUser'
+AUTH_USER_MODEL = 'accounts.UserCredential'
 
 # Inform Django to which url to redirect to after successful login
 LOGIN_REDIRECT_URL = reverse_lazy('home')

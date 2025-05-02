@@ -1,15 +1,15 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth import get_user_model
-from django_ts_gems.accounts.forms import AppUserCreationForm, AppUserChangeForm
+from django_ts_gems.accounts.forms import UserCredentialCreationForm, UserCredentialChangeForm
 
 UserModel = get_user_model()
 
 @admin.register(UserModel)
-class AppUserAdmin(UserAdmin):
+class UserCredentialAdmin(UserAdmin):
     model = UserModel
-    add_form = AppUserCreationForm
-    form = AppUserChangeForm
+    add_form = UserCredentialCreationForm
+    form = UserCredentialChangeForm
     list_display = ('pk', 'email', 'is_staff', 'is_superuser')
     search_fields = ('email',)
     ordering = ('pk',)

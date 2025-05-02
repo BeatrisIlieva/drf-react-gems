@@ -5,7 +5,7 @@ from django.views.generic import CreateView
 from django.views.generic.base import TemplateView
 from django.contrib.auth.views import LoginView
 
-from django_ts_gems.accounts.forms import AppUserCreationForm, PaymentForm
+from django_ts_gems.accounts.forms import UserCredentialCreationForm, PaymentForm
 
 
 UserModel = get_user_model()
@@ -30,9 +30,9 @@ def index(request):
 #     template_name = 'common/home.html'
 
 
-class AppUserRegisterView(CreateView):
+class UserCredentialRegisterView(CreateView):
     model = UserModel
-    form_class = AppUserCreationForm
+    form_class = UserCredentialCreationForm
     template_name = 'accounts/register-page.html'
     success_url = reverse_lazy('home')
 
@@ -44,5 +44,5 @@ class AppUserRegisterView(CreateView):
         return response
 
 
-class AppUserLoginView(LoginView):
+class UserCredentialLoginView(LoginView):
     template_name = 'accounts/login-page.html'

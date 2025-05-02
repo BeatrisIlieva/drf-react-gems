@@ -1,3 +1,3 @@
-from .app_user import *
-from .app_address import *
-from .app_payment import *
+from .user_address import *
+from .user_credential import *
+from .user_profile import *

@@ -4,9 +4,10 @@ from django_ts_gems.addresses.models.state import State
 
 
 class City(models.Model):
-    
+    NAME_MAX_LENGTH = 100
+
     name = models.CharField(
-        max_length=100,
+        max_length=NAME_MAX_LENGTH,
     )
 
     state = models.ForeignKey(

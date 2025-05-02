@@ -4,9 +4,10 @@ from django_ts_gems.addresses.models.city import City
 
 
 class ZipCode(models.Model):
+    ZIP_CODE_MAX_LENGTH = 20
 
-    code = models.CharField(
-        max_length=20,
+    zip_code = models.CharField(
+        max_length=ZIP_CODE_MAX_LENGTH,
     )
 
     city = models.ForeignKey(

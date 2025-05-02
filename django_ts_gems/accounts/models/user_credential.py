@@ -1,10 +1,11 @@
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser
-from django_ts_gems.accounts.managers import AppUserManager
+
+from django_ts_gems.accounts.managers import UserCredentialManager
 
 
-class AppUser(AbstractBaseUser, PermissionsMixin):
+class UserCredential(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         unique=True,
     )
@@ -20,4 +21,4 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-    objects = AppUserManager()
+    objects = UserCredentialManager()

@@ -8,13 +8,13 @@ from django import forms
 UserModel = get_user_model()
 
 
-class AppUserCreationForm(UserCreationForm):
+class UserCredentialCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = UserModel
         fields = ('email',)
 
 
-class AppUserChangeForm(UserChangeForm):
+class UserCredentialChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = UserModel
 
