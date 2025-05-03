@@ -1,0 +1,18 @@
+<!-- <h3>Hello my first Angular application</h3>
+
+<app-nav /> -->
+
+<!-- <app-navigation /> -->
+
+<!-- <app-playground color="{{colorRedForPlayground}}"/> -->
+<!-- <app-playground color="{{colorGreenForPlayground}}" (onTestOutput)="onOutputFromChild($event)"/> -->
+
+<app-user-list [users]="users" />
+
+{{ this.title }}
+
+<div>
+    <input type="text" placeholder="name" #inputName />
+    <input type="text" placeholder="age" #inputAge />
+    <button (click)="addUser(inputName, inputAge)">Add user</button>
+</div>

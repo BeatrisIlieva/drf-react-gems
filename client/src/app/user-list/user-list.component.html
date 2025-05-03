@@ -1,0 +1,16 @@
+<!-- <ul>
+    <li *ngFor="let user of users; index as i">
+        <span *ngIf="i % 2 == 0"> Name: {{ user.name }} </span>
+    </li>
+</ul>
+
+<button (click)="handleClick($event)">Click</button>
+
+<div *ngIf="isToggle">Toggle me!</div> -->
+
+
+<ul>
+    <li *ngFor="let user of userListData">
+        <app-user-item [user]="user" />
+    </li>
+</ul>
