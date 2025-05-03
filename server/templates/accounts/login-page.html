@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="POST">
+        {% csrf_token %}
+
+        {{ form.username }}
+        {{ form.username.errors }}
+
+        {{ form.password }}
+        {{ form.password.errors}}
+
+        <input type="submit" value="Sign In">
+    </form>
+</body>
+</html>
