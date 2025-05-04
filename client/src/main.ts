@@ -4,5 +4,4 @@ import { AppModule } from './app/app.module';
 
 platformBrowserDynamic()
     .bootstrapModule(AppModule)
-    // .bootstrapModule(AppModule, { ngZone: 'noop' })
     .catch((err) => console.error(err));

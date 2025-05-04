@@ -1,0 +1,8 @@
+<div *ngIf="isLoading">
+    <app-loader /> 
+</div>
+<ul *ngIf="!isLoading">
+    <li *ngFor="let product of products">
+        <app-product-item [product]="product" />
+    </li>
+</ul>

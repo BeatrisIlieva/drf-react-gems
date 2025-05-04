@@ -47,4 +47,5 @@ class ProductItemStonesColors(models.Model):
 
     stones_colors = models.ForeignKey(
         to='products.StonesColors',
-        on_delete=models.CASCADE)
+        on_delete=models.CASCADE
+    )

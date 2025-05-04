@@ -3,7 +3,7 @@ from django.contrib import admin
 from unfold.admin import ModelAdmin
 from django.utils.html import format_html
 
-from src.products.models.characteristics.stones_colors import ProductItemStonesColors
+from src.products.models.product_item import ProductItemStonesColors
 from src.products.models.product_variant import ProductVariant
 from src.products.models import ProductItem
 from src.products.models.characteristics.color import Color
