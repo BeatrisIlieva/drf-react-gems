@@ -22,12 +22,24 @@ class ProductPagination(PageNumberPagination):
     page_size = 10
 
 
-class ProductItemListView(APIView):
+# class ProductItemListView(APIView):
+#     permission_classes = [AllowAny]
+
+#     def get(self, request):
+#         products = ProductItem.objects.all()
+#         paginator = ProductPagination()
+#         result_page = paginator.paginate_queryset(products, request)
+#         serializer = ProductItemSerializer(result_page, many=True)
+#         return paginator.get_paginated_response(serializer.data)
+
+
+class ProductItemByCategoryView(APIView):
     permission_classes = [AllowAny]
 
-    def get(self, request):
-        products = ProductItem.objects.all()
+    def get(self, request, category_id):
+        products = ProductItem.objects.filter(category_id=category_id)
         paginator = ProductPagination()
         result_page = paginator.paginate_queryset(products, request)
         serializer = ProductItemSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
+
