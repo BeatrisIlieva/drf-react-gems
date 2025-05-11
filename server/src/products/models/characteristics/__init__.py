@@ -5,4 +5,4 @@ from .material import *
 from .reference import *
 from .size import *
 from .stone import *
-from .stones_colors import *
+from .stone_by_color import *

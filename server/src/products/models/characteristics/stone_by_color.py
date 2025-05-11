@@ -1,7 +1,8 @@
 from django.db import models
 
 
-class StonesColors(models.Model):
+class StoneByColor(models.Model):
+
 
     image = models.URLField()
 
@@ -14,6 +15,6 @@ class StonesColors(models.Model):
         to='products.Stone',
         on_delete=models.CASCADE,
     )
-
+    
     def __str__(self):
-        return f'{self.color} {self.stone}'
+        return f'{self.color.name} {self.stone.name}'

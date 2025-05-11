@@ -5,7 +5,7 @@ from src.products.models.characteristics.color import Color
 from src.products.models.characteristics.material import Material
 from src.products.models.characteristics.reference import Reference
 from src.products.models.characteristics.stone import Stone
-from src.products.models.characteristics.stones_colors import StonesColors
+from src.products.models.characteristics.stone_by_color import StoneByColor
 
 
 def create_product_item(product_data):
@@ -41,11 +41,11 @@ def create_product_item(product_data):
         color = Color.objects.get(name=color_name)
         stone = Stone.objects.get(name=stone_name)
 
-        stone_color = StonesColors.objects.get(
+        stone_color = StoneByColor.objects.get(
             color=color,
             stone=stone,
         )
 
-        product.stones_colors.add(stone_color)
+        product.stone_by_color.add(stone_color)
 
     return product

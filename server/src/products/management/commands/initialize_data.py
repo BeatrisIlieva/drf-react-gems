@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 from src.products.management.commands.utils.create_product_variant import create_product_variant
 from src.products.management.commands.utils.create_product_item import create_product_item
 from src.products.management.commands.utils.create_choices import create_choices
-from src.products.management.commands.utils.create_stones_colors import create_stones_colors
+from src.products.management.commands.utils.create_stone_by_color import create_stone_by_color
 from src.products.management.products_data import products_data
 
 
@@ -36,7 +36,7 @@ class Command(BaseCommand):
 
         create_choices()
 
-        create_stones_colors()
+        create_stone_by_color()
 
         for product_data in products_data:
             product = create_product_item(product_data)

@@ -1,9 +1,9 @@
 from src.products.models.characteristics.color import Color
 from src.products.models.characteristics.stone import Stone
-from src.products.models.characteristics.stones_colors import StonesColors
+from src.products.models.characteristics.stone_by_color import StoneByColor
 
 
-stones_colors = {
+stone_by_color = {
     'Blue Aquamarine': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748232/aquamarine_b4dtyx.webp',
     'White Diamond': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748236/diamond_dkg8rb.webp',
     'Yellow Diamond': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745853383/brown-diamond-CD_xvzlf6.webp',
@@ -15,15 +15,15 @@ stones_colors = {
 }
 
 
-def create_stones_colors():
+def create_stone_by_color():
 
-    for key, value in stones_colors.items():
+    for key, value in stone_by_color.items():
         color_name, stone_name = key.split(' ')
 
         stone = Stone.objects.get(name=stone_name)
         color = Color.objects.get(name=color_name)
 
-        StonesColors.objects.get_or_create(
+        StoneByColor.objects.get_or_create(
             image=value,
             color=color,
             stone=stone,

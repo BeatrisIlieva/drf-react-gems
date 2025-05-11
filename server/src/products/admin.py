@@ -3,7 +3,7 @@ from django.contrib import admin
 from unfold.admin import ModelAdmin
 from django.utils.html import format_html
 
-from src.products.models.product_item import ProductItemStonesColors
+from src.products.models.product_item import ProductItemStoneByColor
 from src.products.models.product_variant import ProductVariant
 from src.products.models import ProductItem
 from src.products.models.characteristics.color import Color
@@ -44,14 +44,14 @@ class ProductVariantInline(admin.TabularInline):
     extra = 1
 
 
-class ProductItemStonesColorsInline(admin.TabularInline):
-    model = ProductItemStonesColors
+class ProductItemStoneByColorInline(admin.TabularInline):
+    model = ProductItemStoneByColor
     extra = 1
 
 
 @admin.register(ProductItem)
 class ProductAdmin(ModelAdmin):
-    inlines = [ProductVariantInline, ProductItemStonesColorsInline]
+    inlines = [ProductVariantInline, ProductItemStoneByColorInline]
 
     list_display = (
         'first_picture',
@@ -75,6 +75,7 @@ class ProductAdmin(ModelAdmin):
     search_fields = ('category__name', 'color__name', 'stone__name',)
 
     readonly_fields = ('description', 'stones', 'colors',)
+    
 
     fieldsets = (
         (None, {
@@ -83,6 +84,7 @@ class ProductAdmin(ModelAdmin):
             )
         }),
         ('Images', {
+            'classes': ('collapse',),
             'fields': (
                 'first_image',
                 'second_image',

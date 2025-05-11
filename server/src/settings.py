@@ -178,7 +178,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.UserCredential'
 
 # Inform Django to which url to redirect to after successful login
-LOGIN_REDIRECT_URL = reverse_lazy('home')
+# LOGIN_REDIRECT_URL = reverse_lazy('')
 
 # Inform Django to which url to redirect to after logout
-LOGOUT_REDIRECT_URL = reverse_lazy('login')
+# LOGOUT_REDIRECT_URL = reverse_lazy('login')

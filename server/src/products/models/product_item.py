@@ -26,26 +26,31 @@ class ProductItem(models.Model):
         on_delete=models.CASCADE,
     )
 
-    stones_colors = models.ManyToManyField(
-        to='products.StonesColors',
-        through='products.ProductItemStonesColors',
+    stone_by_color = models.ManyToManyField(
+        to='products.StoneByColor',
+        through='products.ProductItemStoneByColor',
     )
 
     def __str__(self):
         return f'{self.collection} {self.reference} {self.category}'
 
 
-class ProductItemStonesColors(models.Model):
+class ProductItemStoneByColor(models.Model):
 
     class Meta:
-        unique_together = ('product_item', 'stones_colors')
+        unique_together = ('product', 'stone')
+        verbose_name_plural = 'Stone by Color'
 
-    product_item = models.ForeignKey(
+    product = models.ForeignKey(
         to='products.ProductItem',
         on_delete=models.CASCADE
     )
 
-    stones_colors = models.ForeignKey(
-        to='products.StonesColors',
+    stone = models.ForeignKey(
+        to='products.StoneByColor',
         on_delete=models.CASCADE
     )
+    
+
+    def __str__(self):
+        return f'{self.stone.color.name} {self.stone.stone.name}'

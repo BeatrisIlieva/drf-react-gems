@@ -5,6 +5,6 @@ from .characteristics.material import *
 from .characteristics.reference import *
 from .characteristics.size import *
 from .characteristics.stone import *
-from .characteristics.stones_colors import *
+from .characteristics.stone_by_color import *
 from .product_item import *
 from .product_variant import *
