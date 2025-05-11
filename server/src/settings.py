@@ -1,21 +1,26 @@
-from datetime import timedelta
 from pathlib import Path
-
+from datetime import timedelta
 from django.urls import reverse_lazy
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = 'django-insecure-#3e+5_yj^r==&n+bo3b6o%s4i2882q73ct5c3im6x(9vvy8!n)'
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'django-insecure-f$$t_6jn+jj(my7bgs(sub#^brednrr*fdje+6$(ro%so&yo0_'
+
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
+
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200',
 ]
-
 
 PROJECT_APPS = [
     'src.accounts',
@@ -36,19 +41,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # pip install django-restframework
-    'rest_framework',  
+    'rest_framework',
     # pip install djangorestframework-simplejwt
-    'rest_framework_simplejwt',  
+    'rest_framework_simplejwt',
     # pip install drf-spectacular (swagger)
-    'drf_spectacular',  
+    'drf_spectacular',
     # we do not install `token_blacklist`
     # we just add it to installed apps
     # so the blacklisting of the refresh token
     # can happen
-    'rest_framework_simplejwt.token_blacklist',  
+    'rest_framework_simplejwt.token_blacklist',
     # pip install django-cors-headers
     'corsheaders',
-
 ] + PROJECT_APPS
 
 REST_FRAMEWORK = {
@@ -78,7 +82,7 @@ MIDDLEWARE = [
     # middleware that checks if the Client that sends the request is allowed to
     # this is done through a preflight request with a method `OPTIONS`
     'corsheaders.middleware.CorsMiddleware',
-    
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -113,7 +117,7 @@ WSGI_APPLICATION = 'src.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'django_ts_gems_db',
+        'NAME': 'django_react_ts_gems_db',
         'USER': 'postgres',
         'PASSWORD': 'S@3ana3a',
         'HOST': '127.0.0.1',
@@ -121,6 +125,9 @@ DATABASES = {
     }
 }
 
+
+# Password validation
+# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -138,6 +145,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Internationalization
+# https://docs.djangoproject.com/en/5.2/topics/i18n/
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -146,6 +156,9 @@ USE_I18N = True
 
 USE_TZ = True
 
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
 
@@ -156,6 +169,8 @@ STATICFILES_DIRS = (
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'mediafiles/'
 
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -163,7 +178,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.UserCredential'
 
 # Inform Django to which url to redirect to after successful login
-# LOGIN_REDIRECT_URL = reverse_lazy('home')
+LOGIN_REDIRECT_URL = reverse_lazy('home')
 
 # Inform Django to which url to redirect to after logout
-# LOGOUT_REDIRECT_URL = reverse_lazy('login')
+LOGOUT_REDIRECT_URL = reverse_lazy('login')

@@ -1,0 +1,18 @@
+from django.db import models
+
+from src.products.choices import CollectionChoices
+
+
+class Collection(models.Model):
+
+    name = models.CharField(
+        max_length=CollectionChoices.max_length(),
+        choices=CollectionChoices.choices,
+        unique=True,
+        error_messages={
+            'unique': 'This collection already exists.'
+        }
+    )
+
+    def __str__(self):
+        return self.name
