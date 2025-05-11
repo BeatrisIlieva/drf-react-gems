@@ -54,6 +54,7 @@ class Command(BaseCommand):
             email='inventory_user@mail.com',
             defaults={'is_staff': True}
         )
+        
         if created:
             inventory_user.set_password('@dmin123')
             inventory_user.save()
@@ -65,6 +66,7 @@ class Command(BaseCommand):
             email='manager_user@mail.com',
             defaults={'is_staff': True}
         )
+        
         if created:
             manager_user.set_password('@dmin123')
             manager_user.save()
