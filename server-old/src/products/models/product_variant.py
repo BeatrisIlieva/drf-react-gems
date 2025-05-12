@@ -18,7 +18,7 @@ class ProductVariant(models.Model):
     )
 
     product_item = models.ForeignKey(
-        to='products.ProductItem',
+        to='products.Product',
         on_delete=models.CASCADE,
     )
 

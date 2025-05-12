@@ -1,27 +1,3 @@
-stones_colors = {
-    'Blue Aquamarine': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748232/aquamarine_b4dtyx.webp',
-    'White Diamond': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748236/diamond_dkg8rb.webp',
-    'Yellow Diamond': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745853383/brown-diamond-CD_xvzlf6.webp',
-    'Green Emerald': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748237/emerald_auiwk4.webp',
-    'Red Ruby': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748233/ruby_g7idgx.webp',
-    'Blue Sapphire': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748233/blue-sapphire_bjwmoo.webp',
-    'Pink Sapphire': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748232/pink-sapphire_se5pnk.webp',
-    'Yellow Sapphire': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745853383/yellow-sapphire_tukm7x.webp',
-}
-
-
-{
-    'category': '',
-    'collection': '',
-    'material': '',
-    'first_image': '',
-    'second_image': '',
-    'reference': '',
-    'stones_colors': [],
-    'price': 0,
-},
-
-
 products_data = [
     # BERRY
     {
@@ -31,7 +7,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115862/9_zuupv7.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115868/10_ccqces.webp',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond', 'Blue Sapphire'],
+        'stone_by_color': ['White Diamond', 'Blue Sapphire'],
         'price': 3600,
     },
     {
@@ -41,7 +17,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115870/7_oxmuys.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115867/8_k1zqeq.webp',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond', 'Red Ruby'],
+        'stone_by_color': ['White Diamond', 'Red Ruby'],
         'price': 3700,
     },
     {
@@ -51,7 +27,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115868/11_ntbstg.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115867/12_re58tf.webp',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond', 'Green Emerald'],
+        'stone_by_color': ['White Diamond', 'Green Emerald'],
         'price': 3400,
     },
     {
@@ -61,7 +37,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115862/5_rlufar.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115867/6_cb1tab.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond', 'Green Emerald'],
+        'stone_by_color': ['White Diamond', 'Green Emerald'],
         'price': 4400,
     },
     {
@@ -71,7 +47,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115867/3_bhkuqr.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115870/4_pbumhb.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond', 'Blue Sapphire'],
+        'stone_by_color': ['White Diamond', 'Blue Sapphire'],
         'price': 4600,
     },
     {
@@ -81,7 +57,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115868/1_rcfsir.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115870/2_vf7yxw.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond', 'Red Ruby'],
+        'stone_by_color': ['White Diamond', 'Red Ruby'],
         'price': 4800,
     },
     {
@@ -91,7 +67,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115867/16_rkceku.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115868/15.avif_fmwmjz.png',
         'reference': 'Band',
-        'stones_colors': ['White Diamond', 'Red Ruby'],
+        'stone_by_color': ['White Diamond', 'Red Ruby'],
         'price': 2800,
     },
     {
@@ -101,7 +77,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115867/14_jaiuit.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115870/13.avif_hc7tnh.png',
         'reference': 'Band',
-        'stones_colors': ['White Diamond', 'Blue Sapphire'],
+        'stone_by_color': ['White Diamond', 'Blue Sapphire'],
         'price': 2600,
     },
     # FORGET ME NOT
@@ -112,7 +88,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115880/37_yydycy.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115884/38_ebclnr.avif',
         'reference': 'Tennis',
-        'stones_colors': ['White Diamond', 'Blue Sapphire'],
+        'stone_by_color': ['White Diamond', 'Blue Sapphire'],
         'price': 5200,
     },
     {
@@ -122,7 +98,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115880/35_tl8ef4.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115874/36_vypeqm.avif',
         'reference': 'Tennis',
-        'stones_colors': ['White Diamond', 'Red Ruby'],
+        'stone_by_color': ['White Diamond', 'Red Ruby'],
         'price': 5400,
     },
     {
@@ -132,7 +108,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115880/39_ec0wun.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115871/40_jh7chy.avif',
         'reference': 'Tennis',
-        'stones_colors': ['White Diamond', 'Pink Sapphire'],
+        'stone_by_color': ['White Diamond', 'Pink Sapphire'],
         'price': 5100,
     },
     {
@@ -142,7 +118,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115871/19_cp3mbf.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115883/20_iumckw.webp',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond', 'Pink Sapphire'],
+        'stone_by_color': ['White Diamond', 'Pink Sapphire'],
         'price': 3800,
     },
     {
@@ -152,7 +128,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115870/15_wi6mrj.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115883/16_ujqqh5.webp',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 4100,
     },
     {
@@ -162,7 +138,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115880/17_ej3xxw.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115874/18_xdy6cx.webp',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond', 'Blue Sapphire'],
+        'stone_by_color': ['White Diamond', 'Blue Sapphire'],
         'price': 3800,
     },
     {
@@ -172,7 +148,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115876/25_ohyxwk.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115879/26_ncvot1.webp',
         'reference': 'Drop',
-        'stones_colors': ['White Diamond', 'Pink Sapphire'],
+        'stone_by_color': ['White Diamond', 'Pink Sapphire'],
         'price': 4800,
     },
     {
@@ -182,7 +158,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115873/23_xi7kdz.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115876/24_mlbxu2.webp',
         'reference': 'Drop',
-        'stones_colors': ['White Diamond', 'Blue Sapphire'],
+        'stone_by_color': ['White Diamond', 'Blue Sapphire'],
         'price': 4800,
     },
     {
@@ -192,7 +168,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115880/21_sspkef.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115873/22_u9duuz.webp',
         'reference': 'Drop',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 5100,
     },
     {
@@ -202,7 +178,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115871/7_bxav8b.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115882/8_udhrsq.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond', 'Pink Sapphire'],
+        'stone_by_color': ['White Diamond', 'Pink Sapphire'],
         'price': 6700,
     },
     {
@@ -212,7 +188,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115871/5_tstc0a.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115874/6_yegbsi.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond', 'Blue Sapphire'],
+        'stone_by_color': ['White Diamond', 'Blue Sapphire'],
         'price': 6700,
     },
     {
@@ -222,7 +198,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115876/3_ovmsps.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115874/4_gyndsx.webp',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 7000,
     },
     {
@@ -232,7 +208,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115877/1_20.58.26_rzrysl.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115877/2_20.58.26_zij1ov.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond', 'Red Ruby'],
+        'stone_by_color': ['White Diamond', 'Red Ruby'],
         'price': 6800,
     },
     {
@@ -242,7 +218,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115874/33_ctp104.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115874/34_chlsa5.webp',
         'reference': 'Lariat',
-        'stones_colors': ['White Diamond', 'Pink Sapphire'],
+        'stone_by_color': ['White Diamond', 'Pink Sapphire'],
         'price': 8400,
     },
     {
@@ -252,7 +228,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115876/31_qt3bmf.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115879/32_odt4pf.avif',
         'reference': 'Lariat',
-        'stones_colors': ['White Diamond', 'Blue Sapphire'],
+        'stone_by_color': ['White Diamond', 'Blue Sapphire'],
         'price': 8400,
     },
     {
@@ -262,7 +238,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115877/29_hxlfiw.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115879/30_wyt89z.webp',
         'reference': 'Lariat',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 8700,
     },
     {
@@ -272,7 +248,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115876/27_mz3g3o.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115879/28_ecki0c.avif',
         'reference': 'Lariat',
-        'stones_colors': ['White Diamond', 'Red Ruby'],
+        'stone_by_color': ['White Diamond', 'Red Ruby'],
         'price': 8500,
     },
     {
@@ -282,7 +258,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115876/13_jvc89m.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115883/14_ryucup.avif',
         'reference': 'Statement',
-        'stones_colors': ['White Diamond', 'Pink Sapphire'],
+        'stone_by_color': ['White Diamond', 'Pink Sapphire'],
         'price': 4400,
     },
     {
@@ -292,7 +268,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115876/11_kmd9oy.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115879/12_khumxz.avif',
         'reference': 'Statement',
-        'stones_colors': ['White Diamond', 'Blue Sapphire'],
+        'stone_by_color': ['White Diamond', 'Blue Sapphire'],
         'price': 4400,
     },
     {
@@ -302,7 +278,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115873/9_pfybkq.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115878/10_fcq7yp.webp',
         'reference': 'Statement',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 4600,
     },
     # GERBERA
@@ -313,7 +289,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115898/7_dyy0ui.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115903/8_nb7rfa.avif',
         'reference': 'Chain',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 3400,
     },
     {
@@ -323,7 +299,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115897/11_fnhj5z.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115897/12_c4gztu.avif',
         'reference': 'Chain',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 3200,
     },
     {
@@ -333,7 +309,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115890/9_hgiify.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115892/10_lbk6i1.avif',
         'reference': 'Chain',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 3200,
     },
     {
@@ -343,7 +319,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115890/23_riwfc0.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115892/24_sodzvz.webp',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 1600,
     },
     {
@@ -353,7 +329,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115898/21_o5ytzr.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115892/22_y8mhmh.webp',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 1600,
     },
     {
@@ -363,7 +339,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115890/19_yq40yi.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115903/20_lsunqd.webp',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 1900,
     },
     {
@@ -373,7 +349,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115898/5_ltcjn8.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115892/6_aj31h8.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 2600,
     },
     {
@@ -383,7 +359,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115893/3_nfudoh.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115904/4_jgqw79.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 2600,
     },
     {
@@ -393,7 +369,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115892/1_mxaw0n.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115897/2_jbpdul.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 2900,
     },
     {
@@ -403,7 +379,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115898/17_sve1ov.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115892/18_mk2aen.webp',
         'reference': 'Statement',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 1900,
     },
     {
@@ -413,7 +389,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115889/15_vhtm13.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115904/16_oungz5.webp',
         'reference': 'Statement',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 1900,
     },
     {
@@ -423,7 +399,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115892/13_c91ddg.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115892/14_khi7ft.webp',
         'reference': 'Statement',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 2100,
     },
     # LEAF
@@ -434,7 +410,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115848/3_eqrpuo.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115848/4_zdqfzb.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 3300,
     },
     {
@@ -444,7 +420,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115848/1_y1wtvj.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115847/2_csala1.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 3500,
     },
     {
@@ -454,7 +430,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115848/9_cglk2f.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115849/10_yaxfhs.webp',
         'reference': 'Lariat',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 4300,
     },
     {
@@ -464,7 +440,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115848/11_mvguf6.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115848/12_vv0hw2.avif',
         'reference': 'Lariat',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 4100,
     },
     {
@@ -474,7 +450,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115847/5_mbpwau.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115849/6_tma5f6.webp',
         'reference': 'Statement',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 2700,
     },
     {
@@ -484,7 +460,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115848/7_u3mjub.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115848/8_admfwl.avif',
         'reference': 'Statement',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 2400,
     },
     # LILY
@@ -495,7 +471,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115861/3_z0khec.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115862/4_yomnun.avif',
         'reference': 'Chain',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 2900,
     },
     {
@@ -505,7 +481,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115861/1_ra0at7.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115862/2_qtaybi.avif',
         'reference': 'Chain',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 3100,
     },
     {
@@ -515,7 +491,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115856/7_kkhuqt.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115862/8_fn8lmj.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 4000,
     },
     {
@@ -525,7 +501,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115862/5_jg8e9x.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115861/6_viukk8.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 4000,
     },
     {
@@ -535,7 +511,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115862/9_ug9qjk.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115861/10_kvifdt.avif',
         'reference': 'Statement',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 2400,
     },
     {
@@ -545,7 +521,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115861/11_qwmmry.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115861/12_wykwod.avif',
         'reference': 'Statement',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 2400,
     },
     # Lily of the Valley
@@ -556,7 +532,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115885/9_nrvzgx.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115886/10_gbgzq4.webp',
         'reference': 'Drop',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 5500,
     },
     {
@@ -566,7 +542,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115886/1_zaesmv.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115886/2_omxh92.webp',
         'reference': 'Drop',
-        'stones_colors': ['White Diamond', 'Blue Aquamarine', 'Blue Sapphire'],
+        'stone_by_color': ['White Diamond', 'Blue Aquamarine', 'Blue Sapphire'],
         'price': 5200,
     },
     {
@@ -576,7 +552,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115884/5_azojfd.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115889/6_xefvoj.webp',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond', 'Blue Aquamarine', 'Blue Sapphire'],
+        'stone_by_color': ['White Diamond', 'Blue Aquamarine', 'Blue Sapphire'],
         'price': 7100,
     },
     {
@@ -586,7 +562,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115889/14_rmtgtc.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115884/15_gbcgxu.webp',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 7900,
     },
     {
@@ -596,7 +572,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115889/16_ghdpy4.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115889/17_pzsxrr.webp',
         'reference': 'Lariat',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 9100,
     },
     {
@@ -606,7 +582,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115889/7_mflsat.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115889/8_z0yovn.avif',
         'reference': 'Lariat',
-        'stones_colors': ['White Diamond',  'Blue Aquamarine', 'Blue Sapphire'],
+        'stone_by_color': ['White Diamond',  'Blue Aquamarine', 'Blue Sapphire'],
         'price': 8800,
     },
     {
@@ -616,7 +592,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115886/3_onvsdq.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115885/4_k2z9sm.webp',
         'reference': 'Statement',
-        'stones_colors': ['White Diamond',  'Blue Aquamarine', 'Blue Sapphire'],
+        'stone_by_color': ['White Diamond',  'Blue Aquamarine', 'Blue Sapphire'],
         'price': 4900,
     },
     {
@@ -626,7 +602,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115885/11_gxtusc.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115886/12_cyplba.webp',
         'reference': 'Statement',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 5200,
     },
     # LOTUS
@@ -637,7 +613,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115849/5_akqszw.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115855/6_p1hv03.webp',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond', 'Green Emerald'],
+        'stone_by_color': ['White Diamond', 'Green Emerald'],
         'price': 6200,
     },
     {
@@ -647,7 +623,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115854/3_pwfqbd.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115855/4_zvx63m.avif',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond', 'Blue Sapphire'],
+        'stone_by_color': ['White Diamond', 'Blue Sapphire'],
         'price': 6400,
     },
     {
@@ -657,7 +633,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115854/1_dthftn.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115850/2_no2d0x.webp',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond', 'Red Ruby'],
+        'stone_by_color': ['White Diamond', 'Red Ruby'],
         'price': 6600,
     },
     {
@@ -667,7 +643,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115849/9_elxmpl.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115850/10_v5sj9r.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond', 'Red Ruby'],
+        'stone_by_color': ['White Diamond', 'Red Ruby'],
         'price': 7600,
     },
     {
@@ -677,7 +653,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115849/7_kfghke.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115855/8_w3dnks.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond', 'Pink Sapphire'],
+        'stone_by_color': ['White Diamond', 'Pink Sapphire'],
         'price': 7400,
     },
     {
@@ -687,7 +663,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115854/13_shljw5.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115855/14_yj8tc1.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond', 'Green Emerald'],
+        'stone_by_color': ['White Diamond', 'Green Emerald'],
         'price': 7200,
     },
     {
@@ -697,7 +673,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115854/11_grxxeo.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115854/12_qty9ix.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond', 'Blue Sapphire'],
+        'stone_by_color': ['White Diamond', 'Blue Sapphire'],
         'price': 7400,
     },
     {
@@ -707,7 +683,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115855/17_txm6ur.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115849/18_othoqv.webp',
         'reference': 'Statement',
-        'stones_colors': ['White Diamond', 'Blue Sapphire'],
+        'stone_by_color': ['White Diamond', 'Blue Sapphire'],
         'price': 5200,
     },
     {
@@ -717,7 +693,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115855/15_jxzwza.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115850/16_fmv4dv.avif',
         'reference': 'Statement',
-        'stones_colors': ['White Diamond', 'Red Ruby'],
+        'stone_by_color': ['White Diamond', 'Red Ruby'],
         'price': 5400,
     },
     # SUNFLOWER
@@ -728,7 +704,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115904/9_sqhg38.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115904/10_iv9a0s.avif',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond', 'Red Ruby'],
+        'stone_by_color': ['White Diamond', 'Red Ruby'],
         'price': 2100,
     },
     {
@@ -738,7 +714,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115907/7_biz36z.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115904/8_bnvuri.webp',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond', 'Blue Sapphire'],
+        'stone_by_color': ['White Diamond', 'Blue Sapphire'],
         'price': 1900,
     },
     {
@@ -748,7 +724,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115904/5_tdbnmb.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115907/6_hqhraj.webp',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 2200,
     },
     {
@@ -758,7 +734,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115907/13_b96r6b.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115907/14_upeut9.avif',
         'reference': 'Statement',
-        'stones_colors': ['White Diamond', 'Red Ruby'],
+        'stone_by_color': ['White Diamond', 'Red Ruby'],
         'price': 3300,
     },
     {
@@ -768,7 +744,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115904/11_gzogqa.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115907/12_lxtshr.avif',
         'reference': 'Statement',
-        'stones_colors': ['White Diamond'],
+        'stone_by_color': ['White Diamond'],
         'price': 3100,
     },
     # Daisy
@@ -779,7 +755,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121005/9_sciejy.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121016/10_darmna.webp',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond', 'Pink Sapphire'],
+        'stone_by_color': ['White Diamond', 'Pink Sapphire'],
         'price': 1500,
     },
     {
@@ -789,7 +765,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121145/7_nvuh9g.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121006/8_bhttl1.webp',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond', 'Red Ruby'],
+        'stone_by_color': ['White Diamond', 'Red Ruby'],
         'price': 1700,
     },
     {
@@ -799,7 +775,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121009/13_mjvoux.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121008/14_rvbedu.webp',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond', 'Yellow Sapphire'],
+        'stone_by_color': ['White Diamond', 'Yellow Sapphire'],
         'price': 1500,
     },
     {
@@ -809,7 +785,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121010/11_momftr.avif',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121013/12_ou80ul.webp',
         'reference': 'Stud',
-        'stones_colors': ['White Diamond', 'Blue Aquamarine'],
+        'stone_by_color': ['White Diamond', 'Blue Aquamarine'],
         'price': 1500,
     },
     {
@@ -819,7 +795,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121005/5_mvon0h.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121006/6_hr6odl.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond', 'Yellow Sapphire'],
+        'stone_by_color': ['White Diamond', 'Yellow Sapphire'],
         'price': 4400,
     },
     {
@@ -829,7 +805,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121011/3_uskksz.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121262/4_cetexv.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond', 'Blue Aquamarine'],
+        'stone_by_color': ['White Diamond', 'Blue Aquamarine'],
         'price': 4400,
     },
     {
@@ -839,7 +815,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121014/1_hgm4vf.webp',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121261/2_t5lujx.avif',
         'reference': 'Pendant',
-        'stones_colors': ['White Diamond', 'Pink Sapphire'],
+        'stone_by_color': ['White Diamond', 'Pink Sapphire'],
         'price': 4400,
     },
     # Elegant
@@ -850,7 +826,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196508/1_cviir7.png',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196508/2_kb2pnx.png',
         'reference': 'Elegant',
-        'stones_colors': ['Green Emerald', 'White Diamond'],
+        'stone_by_color': ['Green Emerald', 'White Diamond'],
         'price': 14100,
     },
     {
@@ -860,7 +836,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196509/1_cveecw.png',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196509/2_jnlzu9.png',
         'reference': 'Elegant',
-        'stones_colors': ['Red Ruby', 'White Diamond'],
+        'stone_by_color': ['Red Ruby', 'White Diamond'],
         'price': 14500,
     },
     {
@@ -870,7 +846,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196508/1_zaou5v.png',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196508/2_xadphd.png',
         'reference': 'Elegant',
-        'stones_colors': ['Pink Sapphire', 'White Diamond'],
+        'stone_by_color': ['Pink Sapphire', 'White Diamond'],
         'price': 14900,
     },
     {
@@ -880,7 +856,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196508/1_sgyfdp.png',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196508/2_zpbdin.png',
         'reference': 'Elegant',
-        'stones_colors': ['Blue Sapphire', 'White Diamond'],
+        'stone_by_color': ['Blue Sapphire', 'White Diamond'],
         'price': 14900,
     },
     # Classics
@@ -891,7 +867,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196509/1_ohgirz.png',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196509/2_v3q4n1.png',
         'reference': 'Classics',
-        'stones_colors': ['Green Emerald', 'White Diamond'],
+        'stone_by_color': ['Green Emerald', 'White Diamond'],
         'price': 16200,
     },
     {
@@ -901,7 +877,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196512/1_uesg5z.png',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196511/2_agllhx.png',
         'reference': 'Classics',
-        'stones_colors': ['Red Ruby', 'White Diamond'],
+        'stone_by_color': ['Red Ruby', 'White Diamond'],
         'price': 17300,
     },
     {
@@ -911,7 +887,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196510/1_vh9sj4.png',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196510/2_nmhjr2.png',
         'reference': 'Classics',
-        'stones_colors': ['Blue Sapphire', 'White Diamond'],
+        'stone_by_color': ['Blue Sapphire', 'White Diamond'],
         'price': 16100,
     },
     {
@@ -921,7 +897,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196509/1_yicqjg.png',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196509/2_mdolsb.png',
         'reference': 'Classics',
-        'stones_colors': ['Pink Sapphire', 'White Diamond'],
+        'stone_by_color': ['Pink Sapphire', 'White Diamond'],
         'price': 16100,
     },
 ]

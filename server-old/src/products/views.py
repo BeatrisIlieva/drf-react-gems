@@ -6,8 +6,8 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from src.products.models.characteristics.category import Category
-from .models import ProductItem
-from .serializers import CategorySerializer, ProductItemSerializer
+from .models import Product
+from .serializers import CategorySerializer, ProductSerializer
 from rest_framework.permissions import AllowAny
 
 
@@ -22,24 +22,24 @@ class ProductPagination(PageNumberPagination):
     page_size = 10
 
 
-# class ProductItemListView(APIView):
+# class ProductListView(APIView):
 #     permission_classes = [AllowAny]
 
 #     def get(self, request):
-#         products = ProductItem.objects.all()
+#         products = Product.objects.all()
 #         paginator = ProductPagination()
 #         result_page = paginator.paginate_queryset(products, request)
-#         serializer = ProductItemSerializer(result_page, many=True)
+#         serializer = ProductSerializer(result_page, many=True)
 #         return paginator.get_paginated_response(serializer.data)
 
 
-class ProductItemByCategoryView(APIView):
+class ProductByCategoryView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request, category_id):
-        products = ProductItem.objects.filter(category_id=category_id)
+        products = Product.objects.filter(category_id=category_id)
         paginator = ProductPagination()
         result_page = paginator.paginate_queryset(products, request)
-        serializer = ProductItemSerializer(result_page, many=True)
+        serializer = ProductSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
 

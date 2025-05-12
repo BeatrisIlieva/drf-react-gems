@@ -64,7 +64,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='ProductItem',
+            name='Product',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('first_image', models.URLField()),
@@ -85,10 +85,10 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='ProductItemStonesColors',
+            name='ProductStonesColors',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('product_item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.productitem')),
+                ('product_item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.Product')),
                 ('stones_colors', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.stonescolors')),
             ],
             options={
@@ -96,9 +96,9 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.AddField(
-            model_name='productitem',
+            model_name='Product',
             name='stones_colors',
-            field=models.ManyToManyField(through='products.ProductItemStonesColors', to='products.stonescolors'),
+            field=models.ManyToManyField(through='products.ProductStonesColors', to='products.stonescolors'),
         ),
         migrations.CreateModel(
             name='ProductVariant',
@@ -106,7 +106,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('price', models.DecimalField(decimal_places=2, default=0, help_text='Select price', max_digits=7)),
                 ('quantity', models.PositiveIntegerField(default=0, help_text='Select quantity')),
-                ('product_item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.productitem')),
+                ('product_item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.Product')),
                 ('size', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.size')),
             ],
             options={

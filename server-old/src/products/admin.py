@@ -3,9 +3,9 @@ from django.contrib import admin
 from unfold.admin import ModelAdmin
 from django.utils.html import format_html
 
-from src.products.models.product_item import ProductItemStonesColors
+from src.products.models.product_item import ProductStonesColors
 from src.products.models.product_variant import ProductVariant
-from src.products.models import ProductItem
+from src.products.models import Product
 from src.products.models.characteristics.color import Color
 from src.products.models.characteristics.stone import Stone
 
@@ -44,14 +44,14 @@ class ProductVariantInline(admin.TabularInline):
     extra = 1
 
 
-class ProductItemStonesColorsInline(admin.TabularInline):
-    model = ProductItemStonesColors
+class ProductStonesColorsInline(admin.TabularInline):
+    model = ProductStonesColors
     extra = 1
 
 
-@admin.register(ProductItem)
+@admin.register(Product)
 class ProductAdmin(ModelAdmin):
-    inlines = [ProductVariantInline, ProductItemStonesColorsInline]
+    inlines = [ProductVariantInline, ProductStonesColorsInline]
 
     list_display = (
         'first_picture',

@@ -1,4 +1,4 @@
-from src.products.models.product_item import ProductItem
+from src.products.models.product_item import Product
 from src.products.models.characteristics.category import Category
 from src.products.models.characteristics.collection import Collection
 from src.products.models.characteristics.color import Color
@@ -26,7 +26,7 @@ def create_product_item(product_data):
         name=product_data['material']
     )
 
-    product = ProductItem.objects.create(
+    product = Product.objects.create(
         first_image=product_data['first_image'],
         second_image=product_data['second_image'],
         category=category,

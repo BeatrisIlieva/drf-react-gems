@@ -1,13 +1,69 @@
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from django.contrib import admin
 from unfold.admin import ModelAdmin
-from django.utils.html import format_html
 
-from src.products.models.product_item import ProductItemStoneByColor
-from src.products.models.product_variant import ProductVariant
-from src.products.models import ProductItem
-from src.products.models.characteristics.color import Color
-from src.products.models.characteristics.stone import Stone
+from src.products.models.relationships.collection import Collection
+from src.products.models.relationships.material import Material
+from src.products.models.relationships.reference import Reference
+from src.products.models.relationships.size import Size
+from src.products.models.relationships.category import Category
+from src.products.models.relationships.second_image import SecondImage
+from src.products.models.relationships.stone_by_color import StoneByColor
+from src.products.models.relationships.first_image import FirstImage
+from src.products.models import Product
+from src.products.models.relationships.color import Color
+from src.products.models.relationships.stone import Stone
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Collection)
+class CollectionAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Color)
+class ColorAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(FirstImage)
+class FirstImageAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Material)
+class MaterialAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Reference)
+class ReferenceAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(SecondImage)
+class SecondImageAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Size)
+class SizeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(StoneByColor)
+class StoneByColorAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Stone)
+class StoneAdmin(admin.ModelAdmin):
+    pass
 
 
 class StoneListFilter(admin.SimpleListFilter):
@@ -21,7 +77,7 @@ class StoneListFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value():
-            return queryset.filter(stones_colors__stone__id=self.value()).distinct()
+            return queryset.filter(stone_by_color__stone__id=self.value()).distinct()
         return queryset
 
 
@@ -35,30 +91,21 @@ class ColorListFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value():
-            return queryset.filter(stones_colors__color__id=self.value()).distinct()
+            return queryset.filter(stone_by_color__color__id=self.value()).distinct()
         return queryset
 
 
-class ProductVariantInline(admin.TabularInline):
-    model = ProductVariant
-    extra = 1
-
-
-class ProductItemStoneByColorInline(admin.TabularInline):
-    model = ProductItemStoneByColor
-    extra = 1
-
-
-@admin.register(ProductItem)
+@admin.register(Product)
 class ProductAdmin(ModelAdmin):
-    inlines = [ProductVariantInline, ProductItemStoneByColorInline]
 
     list_display = (
         'first_picture',
         'second_picture',
+        'size',
         'category',
         'collection',
         'reference',
+        'created_at',
     )
 
     list_filter = (
@@ -70,58 +117,58 @@ class ProductAdmin(ModelAdmin):
         'material',
     )
 
-    ordering = ('material', 'category', 'collection', 'reference',)
+    ordering = (
+        'material',
+        'category',
+        'collection',
+        'reference',
+        'created_at'
+    )
 
-    search_fields = ('category__name', 'color__name', 'stone__name',)
-
-    readonly_fields = ('description', 'stones', 'colors',)
-    
+    search_fields = (
+        'category__name',
+        'collection__name',
+        'reference__name',
+        'stone_by_color__color__name',
+        'stone_by_color__stone__name',
+    )
 
     fieldsets = (
-        (None, {
+        ('Stock & Size', {
             'fields': (
-                'description',
+                'price',
+                'quantity',
+                'size',
             )
         }),
         ('Images', {
-            'classes': ('collapse',),
             'fields': (
                 'first_image',
                 'second_image',
             )
         }),
-        ('Characteristics', {
+        ('Material and Design', {
             'fields': (
                 'category',
                 'collection',
                 'reference',
                 'material',
+                'stone_by_color',
             )
-        }
-        ),
+        }),
     )
 
     def first_picture(self, obj):
         return format_html(
             '<img src="{}" width="100" height="100" style="object-fit: cover;" />',
-            obj.first_image
+            obj.first_image.image_url
         )
 
     def second_picture(self, obj):
         return format_html(
             '<img src="{}" width="100" height="100" style="object-fit: cover;" />',
-            obj.second_image
+            obj.second_image.image_url
         )
-
-    def stones(self, obj):
-        stones = obj.stones_colors.select_related('stone')
-
-        return stones
-
-    def colors(self, obj):
-        colors = obj.stones_colors.select_related('color')
-
-        return colors
 
     def description(self, obj):
         stones_colors = []

@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class ProductItem(models.Model):
+class Product(models.Model):
     first_image = models.URLField()
 
     second_image = models.URLField()
@@ -28,20 +28,20 @@ class ProductItem(models.Model):
 
     stones_colors = models.ManyToManyField(
         to='products.StonesColors',
-        through='products.ProductItemStonesColors',
+        through='products.ProductStonesColors',
     )
 
     def __str__(self):
         return f'{self.collection} {self.reference} {self.category}'
 
 
-class ProductItemStonesColors(models.Model):
+class ProductStonesColors(models.Model):
 
     class Meta:
         unique_together = ('product_item', 'stones_colors')
 
     product_item = models.ForeignKey(
-        to='products.ProductItem',
+        to='products.Product',
         on_delete=models.CASCADE
     )
 

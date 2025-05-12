@@ -1,6 +1,6 @@
-from src.products.models.characteristics.color import Color
-from src.products.models.characteristics.stone import Stone
-from src.products.models.characteristics.stone_by_color import StoneByColor
+from src.products.models.relationships.color import Color
+from src.products.models.relationships.stone import Stone
+from src.products.models.relationships.stone_by_color import StoneByColor
 
 
 stone_by_color = {

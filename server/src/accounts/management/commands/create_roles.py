@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
-from src.products.models import ProductItem, ProductVariant, ProductItemStoneByColor
+from src.products.models import Product
 
 
 class Command(BaseCommand):
@@ -11,11 +11,13 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         User = get_user_model()
 
+        self.stdout.write(self.style.SUCCESS(
+            'Starting creating roles and users...'
+        ))
+
         # === Define model content types ===
         models_permissions = {
-            ProductItem: ['add', 'change', 'delete', 'view'],
-            ProductVariant: ['add', 'change', 'delete', 'view'],
-            ProductItemStoneByColor: ['add', 'change', 'delete', 'view'],
+            Product: ['add', 'change', 'delete', 'view'],
         }
 
         # === Create Inventory group with full CRUD ===
@@ -54,7 +56,7 @@ class Command(BaseCommand):
             email='inventory_user@mail.com',
             defaults={'is_staff': True}
         )
-        
+
         if created:
             inventory_user.set_password('@dmin123')
             inventory_user.save()
@@ -66,7 +68,7 @@ class Command(BaseCommand):
             email='manager_user@mail.com',
             defaults={'is_staff': True}
         )
-        
+
         if created:
             manager_user.set_password('@dmin123')
             manager_user.save()
