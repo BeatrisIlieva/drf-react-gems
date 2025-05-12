@@ -118,11 +118,12 @@ class ProductAdmin(ModelAdmin):
     )
 
     ordering = (
-        'material',
-        'category',
         'collection',
         'reference',
-        'created_at'
+        'created_at',
+        'category',
+        'material',
+        'size'
     )
 
     search_fields = (

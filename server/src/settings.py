@@ -1,6 +1,8 @@
 from pathlib import Path
 from datetime import timedelta
 from django.urls import reverse_lazy
+from django.templatetags.static import static
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -182,3 +184,104 @@ AUTH_USER_MODEL = 'accounts.UserCredential'
 
 # Inform Django to which url to redirect to after logout
 # LOGOUT_REDIRECT_URL = reverse_lazy('login')
+
+
+UNFOLD = {
+    "SITE_DROPDOWN": [
+        {
+            "icon": "diamond",
+            "title": _("DRF-React-TS Gems"),
+            "link": "/",
+        },
+    ],
+    "THEME": "light",
+    "STYLES": [
+        lambda request: static("css/style.css"),
+    ],
+    "SIDEBAR": {
+        "navigation": [
+            {
+                "title": _("Products"),
+                "separator": True,
+                # "collapsible": True,
+                "items": [
+                    {
+                        "title": _("All Products"),
+                        "icon": "inventory",
+                        "link": reverse_lazy("admin:products_product_changelist"),
+                    }
+                ],
+            },
+            {
+                "title": _("Product Properties"),
+                "separator": True,
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": _("Categories"),
+                        "icon": "category",
+                        "link": reverse_lazy("admin:products_category_changelist"),
+                    },
+                    {
+                        "title": _("Collections"),
+                        "icon": "Bookmarks",
+                        "link": reverse_lazy("admin:products_collection_changelist"),
+                    },
+                    {
+                        "title": _("Colors"),
+                        "icon": "Palette",
+                        "link": reverse_lazy("admin:products_color_changelist"),
+                    },
+                    {
+                        "title": _("First Image"),
+                        "icon": "collections",
+                        "link": reverse_lazy("admin:products_firstimage_changelist"),
+                    },
+                    {
+                        "title": _("Second Image"),
+                        "icon": "collections",
+                        "link": reverse_lazy("admin:products_secondimage_changelist"),
+                    },
+                    {
+                        "title": _("Materials"),
+                        "icon": "Texture",
+                        "link": reverse_lazy("admin:products_material_changelist"),
+                    },
+                    {
+                        "title": _("Reference"),
+                        "icon": "Topic",
+                        "link": reverse_lazy("admin:products_reference_changelist"),
+                    },
+                    {
+                        "title": _("Size"),
+                        "icon": "text_fields",
+                        "link": reverse_lazy("admin:products_size_changelist"),
+                    },
+                    {
+                        "title": _("Stone"),
+                        "icon": "Diamond",
+                        "link": reverse_lazy("admin:products_stone_changelist"),
+                    },
+                    {
+                        "title": _("Stone by Color"),
+                        "icon": "Diamond",
+                        "link": reverse_lazy("admin:products_stonebycolor_changelist"),
+                    },
+                ],
+            },
+            {
+                "title": _("Users"),
+                "icon": "people",
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": _("User Credentials"),
+                        "icon": "person",
+                        "link": reverse_lazy("admin:accounts_usercredential_changelist"),
+                        "permission": lambda request: request.user.is_superuser,
+                    },
+                ],
+            },
+        ],
+    },
+}
