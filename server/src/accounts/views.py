@@ -18,17 +18,14 @@ from src.accounts.serializers import (
 
 UserModel = get_user_model()
 
-class UserDeleteView(APIView):
+
+class UserDeleteView(DestroyAPIView):
     permission_classes = [IsAuthenticated]
 
-    def delete(self, request, *args, **kwargs):
-        user = request.user
-        user.delete()
-        return Response(
-            {'message': 'User deleted successfully.'},
-            status=status.HTTP_204_NO_CONTENT
-        )
-    
+    def get_object(self):
+        return self.request.user
+
+
 class UserRegisterView(CreateAPIView):
     queryset = UserModel.objects.all()
     serializer_class = UserRegisterSerializer
