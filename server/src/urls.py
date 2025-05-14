@@ -18,4 +18,5 @@ urlpatterns = [
     path('accounts/', include('src.accounts.urls')),
     path('admin/', lambda request: redirect(reverse_lazy('admin:products_product_changelist'))),
     path('admin/', admin.site.urls),
+    path('products/', include('src.products.urls'))
 ]

@@ -27,6 +27,26 @@ class UserRegisterView(CreateAPIView):
     # we need to add `AllowAny` permission for the `UserRegisterView`
     permission_classes = [AllowAny]
 
+    def create(self, request, *args, **kwargs):
+        # Use the original serializer to validate and save the user
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+
+        # Generate tokens for the newly created user
+        refresh = RefreshToken.for_user(user)
+
+        return Response(
+            {
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'email': user.email,
+                'id': user.pk,
+
+            },
+            status=status.HTTP_201_CREATED
+        )
+
 
 @extend_schema(
     tags=['Authentication'],
@@ -86,6 +106,7 @@ class UserLoginView(APIView):
 class UserLogoutView(APIView):
     # upon logout we need to blacklist the token so it can be no longer used
     def post(self, request, *args, **kwargs):
+        print(request.data)
         try:
             # we get the token from the request as a string
             refresh_token = request.data.get('refresh')

@@ -1,37 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react';
+import './App.css';
+import ProductItem from './ProductItem';
+import useUserContext from './contexts/UserContext';
+import { useRegister, useLogout } from './api/authApi';
+import { useContext } from 'react';
+import { UserContext } from './contexts/UserContext';
+import { Register } from './components/accounts/register/Register';
 
-import { Header } from './components/Header'
+
 
 function App() {
-  const [count, setCount] = useState(0)
+    const { refresh, access } = useContext(UserContext);
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const [products, setProducts] = useState([]);
+
+    const { logout } = useLogout();
+
+    useEffect(() => {
+        fetch(`http://localhost:8000/products?category=${1}`)
+            .then((response) => response.json())
+            .then((result) => setProducts(result));
+    }, []);
+
+
+
+    // const logoutHandler = async () => {
+    //     const data = { refresh, access };
+
+    //     try {
+    //         await logout(data);
+
+    //         userLogoutHandler();
+    //     } catch (err) {
+    //         console.log(err.message);
+    //     }
+    // };
+
+    return (
+        <>
+        <Register/>
+            {/* <button onClick={logoutHandler}>Sign out</button> */}
+
+        </>
+    );
 }
 
-export default App
+export default App;
