@@ -1,0 +1,18 @@
+:root {
+    --white: #ffffff;
+    --light-gray: #f9f9f9;
+    --black: #000000;
+    --pink: #e48cb0;
+    --medium-pink: #ecafc8;
+    --light-pink: #fae8ef;
+    --very-light-pink: #fcf4f7;
+    --violet: #cb9bf7;
+    --dark-violet: #a27cc6;
+    --very-light-violet: #cb9bf717;
+    --blue: #2334a3;
+    --red: #fa2a55;
+    --medium-red: #fb3f66;
+    --green: #00b200;
+
+    --layout-inline-padding: 3em;
+  }

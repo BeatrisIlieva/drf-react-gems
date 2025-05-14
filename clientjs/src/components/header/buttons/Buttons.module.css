@@ -1,0 +1,68 @@
+.buttons {
+    display: flex;
+    gap: 1.6em;
+}
+
+.buttons li {
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
+}
+
+.buttons > li:nth-child(1) span {
+    opacity: 0.6;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    margin-right: 1em;
+}
+
+.buttons li:nth-child(1) svg {
+    width: 1.1em;
+    height: 1.1em;
+}
+
+.buttons li svg {
+    width: 1.6em;
+    height: 1.6em;
+}
+
+.buttons li:nth-child(2),
+.buttons li:nth-child(3),
+.buttons li:nth-child(4) {
+    position: relative;
+}
+
+.buttons li:nth-child(2) > span {
+    width: 0.3em;
+    height: 0.3em;
+    top: -0.2em;
+    left: 1.1em;
+}
+
+.buttons li:nth-child(2) > span,
+.buttons li:nth-child(3) > span,
+.buttons li:nth-child(4) > span {
+    position: absolute;
+    background-color: var(--black);
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
+}
+
+.buttons li:nth-child(3) > span,
+.buttons li:nth-child(4) > span {
+    top: 0.75em;
+    left: 0.95em;
+    color: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 0.9em;
+    height: 0.9em;
+}
+
+.buttons li:nth-child(3) > span > span,
+.buttons li:nth-child(4) > span > span {
+    font-size: 0.6em;
+    font-weight: 500;
+    display: block;
+}

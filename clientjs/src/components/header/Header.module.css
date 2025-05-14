@@ -1,0 +1,13 @@
+.logo-nav-wrapper {
+    display: flex;
+    align-items: center;
+    padding-block: 1.5em;
+    padding-inline: var(--layout-inline-padding);
+    justify-content: space-between;
+}
+
+.logo-nav-wrapper > div {
+    display: flex;
+    align-items: center;
+    gap: 5em;
+}

@@ -1,0 +1,63 @@
+@import url('https://fonts.cdnfonts.com/css/tisa-sans-pro');
+
+html {
+    font: 14px / 1.5 'Tisa Sans Pro', sans-serif;
+    letter-spacing: 0.033em;
+}
+
+@media (min-width: 1500px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 1900px) {
+    html {
+        font-size: 18px;
+    }
+}
+
+h1 {
+    font-size: 2.2em;
+}
+
+h2 {
+    font-size: 1.8em;
+    margin-bottom: 1em;
+}
+
+h3 {
+    font-size: 1.5em;
+    margin-bottom: 0.8em;
+}
+
+h4 {
+    font-size: 1.3em;
+    margin-bottom: 0.6em;
+}
+
+h5 {
+    font-size: 1.1em;
+    margin-bottom: 0.4em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: normal;
+}
+
+strong {
+    font-weight: bold;
+}
+
+em {
+    font-style: italic;
+}
+
+blockquote {
+    padding-left: 2ch;
+}

@@ -1,0 +1,9 @@
+.logo {
+    color: var(--black);
+    text-decoration: none;
+}
+
+.logo > span {
+    font-size: 1.6em;
+    opacity: 0.9;
+}
