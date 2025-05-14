@@ -3,7 +3,6 @@
     text-decoration: none;
 }
 
-.logo > span {
-    font-size: 1.6em;
-    opacity: 0.9;
+.logo > h1 {
+    opacity: 0.8;
 }

@@ -1,0 +1,14 @@
+.footer {
+    background: var(--black);
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    padding-block: 2em;
+    align-items: center;
+}
+
+.footer a {
+    text-decoration: none;
+    color: var(--white);
+    
+}
