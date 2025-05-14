@@ -24,9 +24,32 @@ export const useRegister = () => {
     };
 };
 
+export const useLogin = () => {
+    const login = async (userData) => {
+        try {
+            const response = await fetch(`${baseUrl}/login/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userData)
+            });
+
+            const result = await response.json();
+
+            return result;
+        } catch (err) {
+            console.log(err.message);
+        }
+    };
+
+    return {
+        login
+    };
+};
+
 export const useLogout = () => {
     const logout = async (data) => {
-        console.log(data);
         try {
             const response = await fetch(`${baseUrl}/logout/`, {
                 method: 'POST',
