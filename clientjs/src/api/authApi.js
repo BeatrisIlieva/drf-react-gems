@@ -1,5 +1,29 @@
 const baseUrl = 'http://localhost:8000/accounts';
 
+export const useDelete = () => {
+    const deleteUser = async (data) => {
+        try {
+            const response = await fetch(`${baseUrl}/delete/`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${data.access}`
+                },
+            });
+
+            const result = await response.json();
+
+            return result;
+        } catch (err) {
+            console.log(err.message);
+        }
+    };
+
+    return {
+        deleteUser
+    };
+};
+
 export const useRegister = () => {
     const register = async (userData) => {
         try {

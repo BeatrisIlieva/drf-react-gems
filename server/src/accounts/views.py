@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model, authenticate
-from rest_framework.generics import CreateAPIView
-from rest_framework.permissions import AllowAny
+from rest_framework.generics import CreateAPIView, DestroyAPIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from drf_spectacular.utils import extend_schema
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -18,7 +18,17 @@ from src.accounts.serializers import (
 
 UserModel = get_user_model()
 
+class UserDeleteView(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def delete(self, request, *args, **kwargs):
+        user = request.user
+        user.delete()
+        return Response(
+            {'message': 'User deleted successfully.'},
+            status=status.HTTP_204_NO_CONTENT
+        )
+    
 class UserRegisterView(CreateAPIView):
     queryset = UserModel.objects.all()
     serializer_class = UserRegisterSerializer

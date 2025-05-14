@@ -8,6 +8,7 @@ import { UserContext } from './contexts/UserContext';
 import { Register } from './components/accounts/register/Register';
 import { Logout } from './components/accounts/logout/Logout';
 import { Login } from './components/accounts/login/Login';
+import { Delete } from './components/accounts/delete/Delete';
 
 function App() {
     const [products, setProducts] = useState([]);
@@ -20,6 +21,7 @@ function App() {
 
     return (
         <>
+            <Delete />
             <Login />
             <Register />
             <Logout />
