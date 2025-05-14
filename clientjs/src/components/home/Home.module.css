@@ -53,6 +53,7 @@
 .user-action .links {
     display: flex;
     gap: 0.5em;
+    margin-bottom: 4em;
 }
 
 .user-action .thumbnail::before,
