@@ -15,7 +15,7 @@ export const Register = () => {
     const { register } = useRegister();
     const navigate = useNavigate();
     useFocusOnInvalidInput();
-    const [password, setPassword] = useState('')
+    const [password, setPassword] = useState('');
 
     const registerHandler = async (_, formData) => {
         const email = formData.get('email');
@@ -39,9 +39,9 @@ export const Register = () => {
     });
 
     const passwordChangeHandler = (e) => {
-        setPassword(e.target.value)
-        console.log(password)
-    }
+        setPassword(e.target.value);
+        console.log(password);
+    };
     return (
         <AuthLayout>
             <section className={styles['register']}>
@@ -62,7 +62,9 @@ export const Register = () => {
 
                     <span>Back to Sign In</span>
                 </p>
+
                 <h2>Create Account</h2>
+                
                 <form action={registerAction}>
                     <div className='field'>
                         <input
@@ -88,6 +90,9 @@ export const Register = () => {
                         />
                         <label htmlFor='password'>Password</label>
                     </div>
+
+                    <PasswordValidator password={password} />
+
                     <Button
                         title={'Register'}
                         color='black'
@@ -98,33 +103,7 @@ export const Register = () => {
                     {state.error && (
                         <p style={{ color: 'red' }}>{state.error}</p>
                     )}
-
-<PasswordValidator password={password}/>
                 </form>
-                
-
-                {/* <ul class="password-validation-scale">
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                    </ul>
-                    
-                    <ul class="password-criteria">
-                        <li>Must be at least 6 characters in length</li>
-                        <li>Must contain at least one upper case letter</li>
-                        <li>Must contain at least one lower case letter</li>
-                        <li>Must contain at least one number</li>
-                        <li>Must not contain spaces</li>
-                        <li>Must contain at least one special character (!#$%)</li>
-                    </ul>
-                    
-                    <div class="terms-wrapper">
-                        <input type="checkbox" name="agree" id="agree" required checked/>
-                        <label htmlFor="agree">By creating an account, you agree to receive email updates</label>
-                    </div> */}
             </section>
         </AuthLayout>
     );

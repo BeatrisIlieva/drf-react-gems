@@ -14,6 +14,7 @@
     transition: opacity 0.3s ease-in-out, background 0.3s ease-in-out,
     text-shadow 0.6s ease-in-out;
     text-transform: uppercase;
+    font-size: 0.9em;
 }
 
 .btn:hover {

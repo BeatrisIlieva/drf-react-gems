@@ -4,6 +4,11 @@
     flex-grow: 1;
 }
 
+.register h2 {
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
 .register form p {
     opacity: 0.6;
     font-style: italic;

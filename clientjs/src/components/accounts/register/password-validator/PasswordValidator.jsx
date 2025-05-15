@@ -64,7 +64,7 @@ export const PasswordValidator = ({ password }) => {
                     checked={agree}
                     onChange={() => setAgree(!agree)}
                 />
-                <label htmlFor='agree'>
+                <label className={styles['agree']}>
                     By creating an account, you agree to receive email updates
                 </label>
             </div>
