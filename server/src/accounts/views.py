@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model, authenticate
-from rest_framework.generics import CreateAPIView, DestroyAPIView
+from rest_framework.generics import CreateAPIView, DestroyAPIView, RetrieveAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from drf_spectacular.utils import extend_schema
 from rest_framework.views import APIView
@@ -9,6 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 
 from src.accounts.serializers import (
+    UserDetailSerializer,
     UserLoginRequestSerializer,
     UserLoginResponseSerializer,
     UserLogoutRequestSerializer,
@@ -137,3 +138,11 @@ class UserLogoutView(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+
+class UserDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        serializer = UserDetailSerializer(request.user)
+        return Response(serializer.data)

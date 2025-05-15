@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react';
 import ProductItem from './ProductItem';
-import useUserContext from './contexts/UserContext';
-import { useRegister, useLogout } from './api/authApi';
-import { useContext } from 'react';
 import { UserContext } from './contexts/UserContext';
 import { Register } from './components/accounts/register/Register';
 import { Logout } from './components/accounts/logout/Logout';
@@ -12,7 +9,9 @@ import { Route, Routes } from 'react-router';
 import { Home } from './components/home/Home';
 import { Header } from './components/header/Header';
 import { Footer } from './components/footer/Footer';
-
+import { Details } from './components/accounts/details/Details';
+import styles from './App.module.css';
+import { AuthGuard } from './guards/AuthGuard';
 
 function App() {
     const [products, setProducts] = useState([]);
@@ -24,21 +23,23 @@ function App() {
     }, []);
 
     return (
-        <>
-            {/* <Delete />
-            <Login />
-            <Register />
-            <Logout /> */}
-            {/* <section className={styles['layout-item']}> */}
-                <Header />
-            {/* </section> */}
-            <main>
+        <div className={styles['body']}>
+            <Header />
+            <main className={styles['main']}>
                 <Routes>
                     <Route index element={<Home />} />
+                    <Route path='/my-account/register' element={<Register />} />
+                    <Route path='/my-account/login' element={<Login />} />
+                    <Route element={<AuthGuard />}>
+                        <Route
+                            path='/my-account/details'
+                            element={<Details />}
+                        />
+                    </Route>
                 </Routes>
             </main>
-            <Footer/>
-        </>
+            <Footer />
+        </div>
     );
 }
 

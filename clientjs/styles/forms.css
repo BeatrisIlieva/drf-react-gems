@@ -1,0 +1,46 @@
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+input,
+select,
+textarea {
+    outline: none;
+    border: 0.08em solid var(--dark-grey);
+    border-radius: 0.1em;
+    transition: border-color 0.3s ease-in-out;
+    overflow: hidden;
+    padding: 0.85em;
+}
+
+input::placeholder {
+    color: transparent;
+}
+
+input:required ~ label::after {
+    content: '*';
+    color: var(--black);
+    padding-left: 0.05em;
+}
+
+input:focus ~ label,
+&:not(:placeholder-shown) ~ label {
+    top: 0.3em;
+    font-size: 0.7em;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    flex-grow: 1;
+}
+
+.field label {
+    position: absolute;
+    top: 1.05em;
+    left: 1rem;
+    transition: color 0.3s ease-in-out, top 0.3s ease-in-out;
+}

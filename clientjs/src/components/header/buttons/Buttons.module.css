@@ -9,6 +9,11 @@
     gap: 0.7em;
 }
 
+.buttons li a {
+    text-decoration: none;
+    color: var(--black);
+}
+
 .buttons > li:nth-child(1) span {
     opacity: 0.6;
     text-transform: uppercase;
@@ -32,24 +37,24 @@
     position: relative;
 }
 
-.buttons li:nth-child(2) > span {
+.buttons li:nth-child(2) a > span {
     width: 0.3em;
     height: 0.3em;
     top: -0.2em;
     left: 1.1em;
 }
 
-.buttons li:nth-child(2) > span,
-.buttons li:nth-child(3) > span,
-.buttons li:nth-child(4) > span {
+.buttons li:nth-child(2) a > span,
+.buttons li:nth-child(3) a > span,
+.buttons li:nth-child(4) a > span {
     position: absolute;
     background-color: var(--black);
     border-radius: 50%;
     aspect-ratio: 1 / 1;
 }
 
-.buttons li:nth-child(3) > span,
-.buttons li:nth-child(4) > span {
+.buttons li:nth-child(3) a > span,
+.buttons li:nth-child(4) a > span {
     top: 0.75em;
     left: 0.95em;
     color: var(--white);
@@ -60,8 +65,8 @@
     height: 0.9em;
 }
 
-.buttons li:nth-child(3) > span > span,
-.buttons li:nth-child(4) > span > span {
+.buttons li:nth-child(3) a > span > span,
+.buttons li:nth-child(4) a > span > span {
     font-size: 0.6em;
     font-weight: 500;
     display: block;

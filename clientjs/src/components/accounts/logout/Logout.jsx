@@ -1,18 +1,14 @@
-import { useContext } from 'react';
-import useUserContext, { UserContext } from '../../../contexts/UserContext';
+import useUserContext from '../../../contexts/UserContext';
 import { useLogout } from '../../../api/authApi';
 
 export const Logout = () => {
-    const { refresh, access } = useContext(UserContext);
     const { logout } = useLogout();
 
     const { userLogoutHandler } = useUserContext();
 
     const logoutHandler = async () => {
-        const data = { refresh, access };
-
         try {
-            await logout(data);
+            await logout();
 
             userLogoutHandler();
         } catch (err) {

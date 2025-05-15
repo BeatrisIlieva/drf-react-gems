@@ -6,7 +6,7 @@ export const Login = () => {
     const { userLoginHandler } = useUserContext();
     const { login } = useLogin();
 
-    const registerHandler = async (_, formData) => {
+    const loginHandler = async (_, formData) => {
         const email = formData.get('email');
         const password = formData.get('password');
 
@@ -20,7 +20,7 @@ export const Login = () => {
         return { success: false, error: 'Login failed' };
     };
 
-    const [state, loginAction, isPending] = useActionState(registerHandler, {
+    const [state, loginAction, isPending] = useActionState(loginHandler, {
         email: '',
         password: ''
     });

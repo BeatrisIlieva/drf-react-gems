@@ -1,23 +1,23 @@
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router';
+import { useApi } from '../hooks/useApi';
+
 const baseUrl = 'http://localhost:8000/accounts';
 
 export const useDelete = () => {
-    const deleteUser = async (data) => {
-        try {
-            const response = await fetch(`${baseUrl}/delete/`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${data.access}`
-                },
-            });
+    const { del } = useApi();
 
-            const result = await response.json();
+    const deleteUser = useCallback(async () => {
+        try {
+            const result = await del(`${baseUrl}/delete/`, {
+                accessRequired: true
+            });
 
             return result;
         } catch (err) {
             console.log(err.message);
         }
-    };
+    }, [del]);
 
     return {
         deleteUser
@@ -25,23 +25,22 @@ export const useDelete = () => {
 };
 
 export const useRegister = () => {
-    const register = async (userData) => {
-        try {
-            const response = await fetch(`${baseUrl}/register/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userData)
-            });
+    const { post } = useApi();
 
-            const result = await response.json();
+    const register = useCallback(
+        async (userData) => {
+            try {
+                const response = await post(`${baseUrl}/register/`, {
+                    data: userData
+                });
 
-            return result;
-        } catch (err) {
-            console.log(err.message);
-        }
-    };
+                return response;
+            } catch (err) {
+                console.log(err.message);
+            }
+        },
+        [post]
+    );
 
     return {
         register
@@ -49,23 +48,20 @@ export const useRegister = () => {
 };
 
 export const useLogin = () => {
-    const login = async (userData) => {
-        try {
-            const response = await fetch(`${baseUrl}/login/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userData)
-            });
+    const { post } = useApi();
 
-            const result = await response.json();
+    const login = useCallback(
+        async (userData) => {
+            try {
+                const result = post(`${baseUrl}/login/`, { data: userData });
 
-            return result;
-        } catch (err) {
-            console.log(err.message);
-        }
-    };
+                return result;
+            } catch (err) {
+                console.log(err.message);
+            }
+        },
+        [post]
+    );
 
     return {
         login
@@ -73,31 +69,44 @@ export const useLogin = () => {
 };
 
 export const useLogout = () => {
-    const logout = async (data) => {
+    const { post } = useApi();
+
+    const navigate = useNavigate();
+
+    const logout = useCallback(async () => {
         try {
-            const response = await fetch(`${baseUrl}/logout/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${data.access}`
-                },
-                body: JSON.stringify({ refresh: data.refresh })
+            await post(`${baseUrl}/logout/`, {
+                accessRequired: true,
+                refreshRequired: true
             });
 
-            const result = await response.json();
+            navigate('/my-account/register');
+        } catch (err) {
+            console.log(err.message);
+        }
+    }, [post, navigate]);
 
-            if (!response.ok) {
-                throw new Error(result.detail || 'Logout failed');
-            }
+    return {
+        logout
+    };
+};
+
+export const useDetail = () => {
+    const { get } = useApi();
+
+    const detail = useCallback(async () => {
+        try {
+            const result = await get(`${baseUrl}/detail/`, {
+                accessRequired: true
+            });
 
             return result;
         } catch (err) {
             console.log(err.message);
-            throw err;
         }
-    };
+    }, [get]);
 
     return {
-        logout
+        detail
     };
 };

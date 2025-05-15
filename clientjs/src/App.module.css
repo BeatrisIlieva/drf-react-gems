@@ -1,11 +1,9 @@
-body {
+.body {
     min-height: 100dvh;
     display: flex;
     flex-direction: column;
 }
 
-main {
+.main {
     flex-grow: 1;
 }
-
-

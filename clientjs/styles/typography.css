@@ -3,6 +3,7 @@
 html {
     font: 14px / 1.5 'Tisa Sans Pro', sans-serif;
     letter-spacing: 0.033em;
+    color: var(--black);
 }
 
 @media (min-width: 1500px) {

@@ -44,3 +44,9 @@ class UserLogoutRequestSerializer(serializers.Serializer):
 
 class UserLogoutResponseSerializer(serializers.Serializer):
     message = serializers.CharField()
+
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserModel
+        fields = ['id',  'email']
