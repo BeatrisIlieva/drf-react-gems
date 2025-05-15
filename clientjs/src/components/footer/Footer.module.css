@@ -5,12 +5,13 @@
     flex-direction: column;
     padding-block: 2em;
     align-items: center;
-    gap: 0.75em;
+    justify-content: center;
 }
 
 .footer h5 {
     text-transform: uppercase;
     font-weight: 600;
+    margin-bottom: 1.25em;
 }
 
 .footer a {
@@ -23,4 +24,27 @@
     display: flex;
     align-items: center;
     gap: 0.5em;
+}
+
+.footer .wrapper {
+    display: flex;
+    gap: 2em;
+    margin-bottom: 2em;
+}
+
+.wrapper .thumbnail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: 1/1;
+    background-color: var(--dark-grey);
+    width: 2.5em;
+    border-radius: 0.1em;
+    
+}
+
+.wrapper .icon {
+    font-size: 1.8em;
+    justify-self: center;
+    align-self: center;
 }

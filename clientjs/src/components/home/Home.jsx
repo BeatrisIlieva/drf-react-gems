@@ -5,7 +5,7 @@ const imagesByCategories = {
     Wristwear:
         'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748166/1_ak7nga.jpg',
     Earwear:
-        'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748234/lily24_pdp_b_3_v7b4mz.png',
+        'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748166/2_kg1ckf.jpg',
     Neckwear:
         'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748165/3_ukmmmx.avif',
     Fingerwear:
