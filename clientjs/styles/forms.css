@@ -12,7 +12,12 @@ textarea {
     border-radius: 0.1em;
     transition: border-color 0.3s ease-in-out;
     overflow: hidden;
-    padding: 0.85em;
+    padding: 0.75em;
+    font-size: 1.1em;
+}
+
+input {
+    padding-top: 1em;
 }
 
 input::placeholder {
@@ -26,7 +31,7 @@ input:required ~ label::after {
 }
 
 input:focus ~ label,
-&:not(:placeholder-shown) ~ label {
+input:not(:placeholder-shown) ~ label {
     top: 0.3em;
     font-size: 0.7em;
 }
@@ -40,7 +45,7 @@ input:focus ~ label,
 
 .field label {
     position: absolute;
-    top: 1.05em;
+    top: 1em;
     left: 1rem;
     transition: color 0.3s ease-in-out, top 0.3s ease-in-out;
 }

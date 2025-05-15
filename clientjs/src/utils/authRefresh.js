@@ -1,9 +1,10 @@
 import useUserContext from '../contexts/UserContext';
+import { useCallback } from 'react';
 
 export const useAuthRefresh = () => {
     const { userLogoutHandler } = useUserContext();
 
-    const authRefresh = async () => {
+    const authRefresh = useCallback(async () => {
         const authDataString = localStorage.getItem('auth');
 
         if (!authDataString) {
@@ -64,7 +65,7 @@ export const useAuthRefresh = () => {
             console.error('Refresh error:', err.message);
             userLogoutHandler();
         }
-    };
+    }, [userLogoutHandler]);
 
     return {
         authRefresh

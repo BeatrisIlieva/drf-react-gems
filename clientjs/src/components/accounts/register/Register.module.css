@@ -9,3 +9,21 @@
     font-style: italic;
 }
 
+.register > p {
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    opacity: 0.8;
+    letter-spacing: 0.12em;
+    margin-bottom: 3em;
+    padding-bottom: 3em;
+    border-bottom: 0.1em solid var(--medium-grey);
+}
+
+.register > p svg {
+    height: 1.2em;
+    width: 1.3em;
+}
+

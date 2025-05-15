@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useCallback, useMemo} from 'react';
 import { UserContext } from '../contexts/UserContext';
 import { useAuthRefresh } from '../utils/authRefresh';
 
@@ -6,48 +6,56 @@ export const useApi = () => {
     const { access, refresh } = useContext(UserContext);
     const { authRefresh } = useAuthRefresh();
 
-    const request = async (
-        method,
-        url,
-        { data = null, accessRequired = false, refreshRequired = false } = {}
-    ) => {
-        const options = {
+    const request = useCallback(
+        async (
             method,
-            headers: {
-                'Content-Type': 'application/json'
+            url,
+            {
+                data = null,
+                accessRequired = false,
+                refreshRequired = false
+            } = {}
+        ) => {
+            const options = {
+                method,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            if (accessRequired) {
+                options.headers.Authorization = `Bearer ${access}`;
             }
-        };
 
-        if (accessRequired) {
-            options.headers.Authorization = `Bearer ${access}`;
-        }
+            if (method !== 'GET') {
+                let bodyData = data ? { ...data } : {};
 
-        if (method !== 'GET') {
-            let bodyData = data ? { ...data } : {};
+                if (refreshRequired) {
+                    bodyData.refresh = refresh;
+                }
 
-            if (refreshRequired) {
-                bodyData.refresh = refresh;
+                options.body = JSON.stringify(bodyData);
             }
 
-            options.body = JSON.stringify(bodyData);
-        }
+            const response = await fetch(url, options);
 
-        const response = await fetch(url, options);
-
-        if (!response.ok) {
-            if (response.status === 401) {
-                return authRefresh();
+            if (!response.ok) {
+                if (response.status === 401) {
+                    return authRefresh();
+                }
             }
-        }
 
-        return await response.json();
-    };
+            return await response.json();
+        },
+        [access, refresh, authRefresh]
+    );
 
-    return {
+    return useMemo(() => ({
         get: request.bind(null, 'GET'),
         post: request.bind(null, 'POST'),
         put: request.bind(null, 'PUT'),
         patch: request.bind(null, 'PATCH'),
         del: request.bind(null, 'DELETE')
-    };
+    }), [request]);
+
 };

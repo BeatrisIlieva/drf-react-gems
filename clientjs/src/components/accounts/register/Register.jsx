@@ -2,10 +2,11 @@ import { useActionState } from 'react';
 import useUserContext from '../../../contexts/UserContext';
 import { useRegister } from '../../../api/authApi';
 import { AuthLayout } from '../auth-layout/ AuthLayout';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '../../reusable/button/Button';
 import { useNavigate } from 'react-router';
-import {useFocusOnInvalidInput} from '../../../hooks/useFocusOnInvalidInput'
+import { useFocusOnInvalidInput } from '../../../hooks/useFocusOnInvalidInput';
+import { PasswordValidator } from './password-validator/PasswordValidator';
 
 import styles from './Register.module.css';
 
@@ -13,7 +14,8 @@ export const Register = () => {
     const { userLoginHandler } = useUserContext();
     const { register } = useRegister();
     const navigate = useNavigate();
-    useFocusOnInvalidInput()
+    useFocusOnInvalidInput();
+    const [password, setPassword] = useState('')
 
     const registerHandler = async (_, formData) => {
         const email = formData.get('email');
@@ -36,35 +38,30 @@ export const Register = () => {
         password: ''
     });
 
-    // useEffect(() => {
-    //     const handleInvalid = (e) => {
-    //         e.preventDefault();
-
-    //         // Use :invalid to find first invalid input
-    //         const invalidElements = document.querySelectorAll('input:invalid');
-
-    //         if (invalidElements.length > 0) {
-    //             const firstInvalid = invalidElements[0];
-    //             firstInvalid.focus();
-    //         }
-    //     };
-
-    //     // Use capture phase to catch invalid events before browser handles them
-    //     document.addEventListener('invalid', handleInvalid, true);
-
-    //     return () => {
-    //         document.removeEventListener('invalid', handleInvalid, true);
-    //     };
-    // }, []);
-
-    // const navigateHandler = () => {
-    //     navigate('/my-account/details');
-    // };
-
+    const passwordChangeHandler = (e) => {
+        setPassword(e.target.value)
+        console.log(password)
+    }
     return (
         <AuthLayout>
             <section className={styles['register']}>
-                <p>Back to Sign In</p>
+                <p>
+                    <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        strokeWidth={1.5}
+                        stroke='currentColor'
+                    >
+                        <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18'
+                        />
+                    </svg>
+
+                    <span>Back to Sign In</span>
+                </p>
                 <h2>Create Account</h2>
                 <form action={registerAction}>
                     <div className='field'>
@@ -87,6 +84,7 @@ export const Register = () => {
                             id='password'
                             placeholder='password'
                             required
+                            onChange={passwordChangeHandler}
                         />
                         <label htmlFor='password'>Password</label>
                     </div>
@@ -100,7 +98,33 @@ export const Register = () => {
                     {state.error && (
                         <p style={{ color: 'red' }}>{state.error}</p>
                     )}
+
+<PasswordValidator password={password}/>
                 </form>
+                
+
+                {/* <ul class="password-validation-scale">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                    
+                    <ul class="password-criteria">
+                        <li>Must be at least 6 characters in length</li>
+                        <li>Must contain at least one upper case letter</li>
+                        <li>Must contain at least one lower case letter</li>
+                        <li>Must contain at least one number</li>
+                        <li>Must not contain spaces</li>
+                        <li>Must contain at least one special character (!#$%)</li>
+                    </ul>
+                    
+                    <div class="terms-wrapper">
+                        <input type="checkbox" name="agree" id="agree" required checked/>
+                        <label htmlFor="agree">By creating an account, you agree to receive email updates</label>
+                    </div> */}
             </section>
         </AuthLayout>
     );

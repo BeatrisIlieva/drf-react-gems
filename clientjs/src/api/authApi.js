@@ -30,11 +30,11 @@ export const useRegister = () => {
     const register = useCallback(
         async (userData) => {
             try {
-                const response = await post(`${baseUrl}/register/`, {
+                const result = await post(`${baseUrl}/register/`, {
                     data: userData
                 });
 
-                return response;
+                return result;
             } catch (err) {
                 console.log(err.message);
             }
