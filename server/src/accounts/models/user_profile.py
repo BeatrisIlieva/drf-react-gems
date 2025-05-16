@@ -2,7 +2,7 @@ from django.core.validators import MinLengthValidator
 from django.contrib.auth import get_user_model
 from django.db import models
 
-from src.accounts.validators import (
+from src.accounts.validators.models import (
     OnlyDigitsValidator,
     NameValidator
 )

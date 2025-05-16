@@ -34,9 +34,11 @@ export const useRegister = () => {
                     data: userData
                 });
 
+                console.log(result)
+
                 return result;
             } catch (err) {
-                console.log(err.message);
+                return err.data
             }
         },
         [post]

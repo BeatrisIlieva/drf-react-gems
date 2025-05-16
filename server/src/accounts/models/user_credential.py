@@ -8,6 +8,9 @@ from src.accounts.managers import UserCredentialManager
 class UserCredential(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         unique=True,
+        error_messages={
+            'unique': 'A user with this email already exists.'
+        }
     )
 
     is_active = models.BooleanField(

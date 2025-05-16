@@ -11,17 +11,24 @@ import { PasswordValidator } from './password-validator/PasswordValidator';
 import styles from './Register.module.css';
 
 export const Register = () => {
+    const initialFormValues = {
+        email: { value: '', error: 'Please enter a valid email' },
+        password: { value: '', error: 'Please enter a valid password' }
+    };
+
+    const [userData, setUserData] = useState(initialFormValues);
+
     const { userLoginHandler } = useUserContext();
     const { register } = useRegister();
     const navigate = useNavigate();
     useFocusOnInvalidInput();
-    const [password, setPassword] = useState('');
 
-    const registerHandler = async (_, formData) => {
-        const email = formData.get('email');
-        const password = formData.get('password');
-
-        const authData = await register({ email, password });
+    const registerHandler = async () => {
+        console.log(userData)
+        const authData = await register({
+            email: userData.email.value,
+            password: userData.password.value
+        });
 
         if (authData?.access) {
             userLoginHandler(authData);
@@ -30,18 +37,46 @@ export const Register = () => {
             return { success: true };
         }
 
+        if (authData.email) {
+            setUserData((state) => ({
+                ...state,
+                email: {
+                    error: authData.email.join(' '),
+                    value: state.email.value
+                }
+            }))
+        }
+
+        if (authData.password) {
+            setUserData((state) => ({
+                ...state,
+                password: {
+                    error: authData.password.join(' '),
+                    value: state.password.value
+                }
+            }))
+        }
+
         return { success: false, error: 'Registration failed' };
     };
 
     const [state, registerAction, isPending] = useActionState(registerHandler, {
-        email: '',
-        password: ''
+        email: userData.email.value,
+        password: userData.password.value
     });
 
-    const passwordChangeHandler = (e) => {
-        setPassword(e.target.value);
-        console.log(password);
+    const changeHandler = (e) => {
+        const { name, value } = e.target;
+
+        setUserData((state) => ({
+            ...state,
+            [name]: {
+                ...state[name],
+                value
+            }
+        }));
     };
+
     return (
         <AuthLayout>
             <section className={styles['register']}>
@@ -64,7 +99,7 @@ export const Register = () => {
                 </p>
 
                 <h2>Create Account</h2>
-                
+
                 <form action={registerAction}>
                     <div className='field'>
                         <input
@@ -73,8 +108,15 @@ export const Register = () => {
                             id='email'
                             placeholder='email'
                             required
+                            value={userData.email.value}
+                            onChange={changeHandler}
                         />
                         <label htmlFor='email'>Email</label>
+                        {userData.email.error && (
+                            <span className={styles['error']}>
+                                {userData.email.error}
+                            </span>
+                        )}
                     </div>
 
                     <p>Enter your email for important order updates.</p>
@@ -86,12 +128,18 @@ export const Register = () => {
                             id='password'
                             placeholder='password'
                             required
-                            onChange={passwordChangeHandler}
+                            value={userData.password.value}
+                            onChange={changeHandler}
                         />
                         <label htmlFor='password'>Password</label>
+                        {userData.password.error && (
+                            <span className={styles['error']}>
+                                {userData.password.error}
+                            </span>
+                        )}
                     </div>
 
-                    <PasswordValidator password={password} />
+                    <PasswordValidator password={userData?.password?.value || ''} />
 
                     <Button
                         title={'Register'}

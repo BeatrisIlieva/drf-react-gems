@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
+
 
 UserModel = get_user_model()
 
@@ -8,12 +10,17 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     # when we create a user, in the response the hash password is sent
     # to resolve the problem we set the password to be write-only
     # write-only ensures that the password will not be returned in the response
-    password = serializers.CharField(write_only=True)
+    password = serializers.CharField(write_only=True, trim_whitespace=False)
 
     class Meta:
         model = UserModel
         # the serializer expects to receive json file containing `email` and `password`
         fields = ['email', 'password']
+
+    def validate_password(self, value):
+        # This will raise a ValidationError if the password is too short, common, numeric, etc.
+        validate_password(value)
+        return value
 
     # the default `create` method does not hash the password
     # that's why we override the `create` method to call `create_user`
