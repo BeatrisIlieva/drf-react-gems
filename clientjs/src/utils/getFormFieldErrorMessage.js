@@ -3,7 +3,7 @@ const passwordErrorMessage =
 
 const emailErrorMessage = 'Please enter a valid email address';
 
-const validators = {
+export const validators = {
     email: {
         isValid: (value) =>
             /^[A-Za-z0-9]+@+[a-z]+\.[a-z]{2,4}$/.test(value)

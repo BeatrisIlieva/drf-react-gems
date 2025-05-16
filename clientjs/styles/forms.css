@@ -30,10 +30,22 @@ input:required ~ label::after {
     padding-left: 0.05em;
 }
 
+input.invalid:required ~ label {
+    color: var(--red);
+}
+
+input.invalid:required ~ label::after {
+    color: var(--red);
+}
+
 input:focus ~ label,
 input:not(:placeholder-shown) ~ label {
     top: 0.3em;
     font-size: 0.7em;
+}
+
+input.invalid {
+    border-color: var(--red);
 }
 
 .field {
@@ -48,4 +60,10 @@ input:not(:placeholder-shown) ~ label {
     top: 1em;
     left: 1rem;
     transition: color 0.3s ease-in-out, top 0.3s ease-in-out;
+}
+
+form span.error {
+    color: var(--red);
+    font-size: 0.95em;
+    padding-top: 0.5em;
 }

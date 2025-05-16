@@ -11,7 +11,7 @@
     flex: 1 1 50%;
     display: flex;
     justify-content: center;
-    margin-top: 2.5em;
+    margin-top: 1em;
     padding-inline: clamp(1em, 10vw, 11em);
 }
 

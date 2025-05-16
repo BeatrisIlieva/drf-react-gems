@@ -7,37 +7,33 @@ import { Button } from '../../reusable/button/Button';
 import { useNavigate } from 'react-router';
 import { useFocusOnInvalidInput } from '../../../hooks/useFocusOnInvalidInput';
 import { PasswordValidator } from './password-validator/PasswordValidator';
-
+import { useForm } from '../../../hooks/useForm';
 import styles from './Register.module.css';
-import { validateFormFields } from '../../../utils/validateFormFields';
 
 export const Register = () => {
     const initialFormValues = {
         email: { value: '', error: '' },
         password: { value: '', error: '' }
     };
-    const [isValid, setIsValid] = useState(true);
-    const [userData, setUserData] = useState(initialFormValues);
+
+    const {
+        userData,
+        validateFields,
+        validateField,
+        changeHandler,
+        setServerSideError
+    } = useForm(initialFormValues);
+
+    const [agree, setAgree] = useState(true);
 
     const { userLoginHandler } = useUserContext();
     const { register } = useRegister();
     const navigate = useNavigate();
+
     useFocusOnInvalidInput();
 
-    const validateForm = () => {
-        let updatedUserData = { ...userData };
-
-        const { validatedUserData, isValid } = validateFormFields(
-            userData,
-            updatedUserData
-        );
-
-        setIsValid(isValid);
-        setUserData(validatedUserData);
-    };
-
     const registerHandler = async () => {
-        validateForm();
+        const isValid = validateFields();
 
         if (!isValid) {
             return { success: false, error: 'Registration failed' };
@@ -55,45 +51,15 @@ export const Register = () => {
             return { success: true };
         }
 
-        if (authData.email) {
-            setUserData((state) => ({
-                ...state,
-                email: {
-                    error: authData.email.join(' '),
-                    value: state.email.value
-                }
-            }));
-        }
-
-        if (authData.password) {
-            setUserData((state) => ({
-                ...state,
-                password: {
-                    error: authData.password.join(' '),
-                    value: state.password.value
-                }
-            }));
-        }
-
-        return { success: false, error: 'Registration failed' };
+        Object.keys(initialFormValues).forEach((key) => {
+            setServerSideError(authData, key);
+        });
     };
 
     const [_, registerAction, isPending] = useActionState(registerHandler, {
         email: userData.email.value,
         password: userData.password.value
     });
-
-    const changeHandler = (e) => {
-        const { name, value } = e.target;
-
-        setUserData((state) => ({
-            ...state,
-            [name]: {
-                value,
-                error: ''
-            }
-        }));
-    };
 
     return (
         <AuthLayout>
@@ -121,17 +87,28 @@ export const Register = () => {
                 <form action={registerAction}>
                     <div className='field'>
                         <input
+                            className={`${
+                                userData.email.error ? 'invalid' : ''
+                            }`.trim()}
                             type='text'
                             name='email'
                             id='email'
+                            required
                             placeholder='email'
                             value={userData.email.value}
                             onChange={changeHandler}
-                            onBlur={validateForm}
+                            onBlur={validateField}
                         />
-                        <label htmlFor='email'>Email</label>
+                        <label
+                            htmlFor='email'
+                            className={`${
+                                userData.email.error ? 'invalid' : ''
+                            }`.trim()}
+                        >
+                            Email
+                        </label>
                         {userData.email.error && (
-                            <span className={styles['error']}>
+                            <span className='error'>
                                 {userData.email.error}
                             </span>
                         )}
@@ -144,14 +121,25 @@ export const Register = () => {
                             type='password'
                             name='password'
                             id='password'
+                            required
                             placeholder='password'
                             value={userData.password.value}
                             onChange={changeHandler}
-                            onBlur={validateForm}
+                            onBlur={validateField}
+                            className={`${
+                                userData.password.error ? 'invalid' : ''
+                            }`.trim()}
                         />
-                        <label htmlFor='password'>Password</label>
+                        <label
+                            htmlFor='password'
+                            className={`${
+                                userData.password.error ? 'invalid' : ''
+                            }`.trim()}
+                        >
+                            Password
+                        </label>
                         {userData.password.error && (
-                            <span className={styles['error']}>
+                            <span className='error'>
                                 {userData.password.error}
                             </span>
                         )}
@@ -160,6 +148,21 @@ export const Register = () => {
                     <PasswordValidator
                         password={userData?.password?.value || ''}
                     />
+
+                    <div className={styles['terms-wrapper']}>
+                        <input
+                            type='checkbox'
+                            name='agree'
+                            id='agree'
+                            required
+                            checked={agree}
+                            onChange={() => setAgree(!agree)}
+                        />
+                        <label className={styles['agree']}>
+                            By creating an account, you agree to receive email
+                            updates
+                        </label>
+                    </div>
 
                     <Button
                         title={'Register'}

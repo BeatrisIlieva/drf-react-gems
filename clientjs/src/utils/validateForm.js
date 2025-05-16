@@ -1,6 +1,6 @@
 import { getFormFieldErrorMessage } from './getFormFieldErrorMessage';
 
-export const validateFormFields = (userData, updatedUserData) => {
+export const validateForm = (userData, updatedUserData) => {
     let isValid = true;
 
     Object.entries(userData).forEach(([field, fieldData]) => {

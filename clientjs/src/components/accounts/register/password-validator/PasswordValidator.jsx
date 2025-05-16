@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
 import styles from './PasswordValidator.module.css';
 
 export const PasswordValidator = ({ password }) => {
-    const [agree, setAgree] = useState(true);
-
     const validations = {
         length: password.length >= 6,
         upper: /[A-Z]/.test(password),
@@ -54,20 +51,6 @@ export const PasswordValidator = ({ password }) => {
                     </li>
                 ))}
             </ul>
-
-            <div className={styles['terms-wrapper']}>
-                <input
-                    type='checkbox'
-                    name='agree'
-                    id='agree'
-                    required
-                    checked={agree}
-                    onChange={() => setAgree(!agree)}
-                />
-                <label className={styles['agree']}>
-                    By creating an account, you agree to receive email updates
-                </label>
-            </div>
         </div>
     );
 };
