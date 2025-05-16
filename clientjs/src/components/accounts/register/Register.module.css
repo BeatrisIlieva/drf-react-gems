@@ -32,3 +32,9 @@
     width: 1.3em;
 }
 
+.register .error {
+    color: var(--red);
+    font-size: 0.95em;
+    padding-top: 0.5em;
+}
+

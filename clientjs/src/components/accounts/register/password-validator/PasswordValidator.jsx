@@ -5,7 +5,7 @@ export const PasswordValidator = ({ password }) => {
     const [agree, setAgree] = useState(true);
 
     const validations = {
-        length: password.length >= 8,
+        length: password.length >= 6,
         upper: /[A-Z]/.test(password),
         lower: /[a-z]/.test(password),
         number: /\d/.test(password),

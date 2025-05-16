@@ -2,9 +2,7 @@ import { useEffect } from 'react';
 
 export function useFocusOnInvalidInput() {
     useEffect(() => {
-        const handleInvalid = (e) => {
-            e.preventDefault();
-
+        const handleInvalid = () => {
             const invalidElements = document.querySelectorAll('input:invalid');
 
             if (invalidElements.length > 0) {

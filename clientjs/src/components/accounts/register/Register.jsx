@@ -2,20 +2,21 @@ import { useActionState } from 'react';
 import useUserContext from '../../../contexts/UserContext';
 import { useRegister } from '../../../api/authApi';
 import { AuthLayout } from '../auth-layout/ AuthLayout';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '../../reusable/button/Button';
 import { useNavigate } from 'react-router';
 import { useFocusOnInvalidInput } from '../../../hooks/useFocusOnInvalidInput';
 import { PasswordValidator } from './password-validator/PasswordValidator';
 
 import styles from './Register.module.css';
+import { validateFormFields } from '../../../utils/validateFormFields';
 
 export const Register = () => {
     const initialFormValues = {
-        email: { value: '', error: 'Please enter a valid email' },
-        password: { value: '', error: 'Please enter a valid password' }
+        email: { value: '', error: '' },
+        password: { value: '', error: '' }
     };
-
+    const [isValid, setIsValid] = useState(true);
     const [userData, setUserData] = useState(initialFormValues);
 
     const { userLoginHandler } = useUserContext();
@@ -23,8 +24,25 @@ export const Register = () => {
     const navigate = useNavigate();
     useFocusOnInvalidInput();
 
+    const validateForm = () => {
+        let updatedUserData = { ...userData };
+
+        const { validatedUserData, isValid } = validateFormFields(
+            userData,
+            updatedUserData
+        );
+
+        setIsValid(isValid);
+        setUserData(validatedUserData);
+    };
+
     const registerHandler = async () => {
-        console.log(userData)
+        validateForm();
+
+        if (!isValid) {
+            return { success: false, error: 'Registration failed' };
+        }
+
         const authData = await register({
             email: userData.email.value,
             password: userData.password.value
@@ -44,7 +62,7 @@ export const Register = () => {
                     error: authData.email.join(' '),
                     value: state.email.value
                 }
-            }))
+            }));
         }
 
         if (authData.password) {
@@ -54,13 +72,13 @@ export const Register = () => {
                     error: authData.password.join(' '),
                     value: state.password.value
                 }
-            }))
+            }));
         }
 
         return { success: false, error: 'Registration failed' };
     };
 
-    const [state, registerAction, isPending] = useActionState(registerHandler, {
+    const [_, registerAction, isPending] = useActionState(registerHandler, {
         email: userData.email.value,
         password: userData.password.value
     });
@@ -71,8 +89,8 @@ export const Register = () => {
         setUserData((state) => ({
             ...state,
             [name]: {
-                ...state[name],
-                value
+                value,
+                error: ''
             }
         }));
     };
@@ -103,13 +121,13 @@ export const Register = () => {
                 <form action={registerAction}>
                     <div className='field'>
                         <input
-                            type='email'
+                            type='text'
                             name='email'
                             id='email'
                             placeholder='email'
-                            required
                             value={userData.email.value}
                             onChange={changeHandler}
+                            onBlur={validateForm}
                         />
                         <label htmlFor='email'>Email</label>
                         {userData.email.error && (
@@ -127,9 +145,9 @@ export const Register = () => {
                             name='password'
                             id='password'
                             placeholder='password'
-                            required
                             value={userData.password.value}
                             onChange={changeHandler}
+                            onBlur={validateForm}
                         />
                         <label htmlFor='password'>Password</label>
                         {userData.password.error && (
@@ -139,7 +157,9 @@ export const Register = () => {
                         )}
                     </div>
 
-                    <PasswordValidator password={userData?.password?.value || ''} />
+                    <PasswordValidator
+                        password={userData?.password?.value || ''}
+                    />
 
                     <Button
                         title={'Register'}
@@ -147,10 +167,6 @@ export const Register = () => {
                         actionType='submit'
                         pending={isPending}
                     />
-
-                    {state.error && (
-                        <p style={{ color: 'red' }}>{state.error}</p>
-                    )}
                 </form>
             </section>
         </AuthLayout>
