@@ -1,0 +1,17 @@
+.login {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.login h2 {
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 0.75em;
+}
+
+.login p {
+    opacity: 0.6;
+    font-style: italic;
+    margin-bottom: 1em;
+}

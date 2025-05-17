@@ -25,7 +25,7 @@ export const Buttons = () => {
                 <span>Search</span>
             </li>
             <li>
-                <Link to={isAuthenticated ? '/my-account/details' : '/my-account/register'}>
+                <Link to={isAuthenticated ? '/my-account/details' : '/my-account/login'}>
                     <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
