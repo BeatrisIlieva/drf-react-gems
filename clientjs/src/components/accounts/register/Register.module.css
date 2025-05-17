@@ -53,7 +53,7 @@
     z-index: 0;
     border-radius: 0.1em;
     align-self: flex-start;
-    font-size: 0.7em;
+    font-size: 0.6em;
 }
 
 .terms-wrapper input[type='checkbox']:not(:placeholder-shown):invalid {

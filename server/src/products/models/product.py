@@ -2,6 +2,9 @@ from django.db import models
 
 
 class Product(models.Model):
+    class Meta:
+        unique_together = ('category', 'collection', 'reference', 'first_image', 'size')
+
     PRICE_MAX_DIGITS = 7
     PRICE_DECIMAL_PLACES = 2
 

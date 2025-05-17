@@ -6,4 +6,9 @@
     font-size: 0.9em;
     letter-spacing: 0.1em;
     font-weight: 500;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.nav-item:hover {
+    opacity: 1;
 }

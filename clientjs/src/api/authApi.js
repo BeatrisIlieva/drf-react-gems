@@ -55,7 +55,7 @@ export const useLogin = () => {
     const login = useCallback(
         async (userData) => {
             try {
-                const result = post(`${baseUrl}/login/`, { data: userData });
+                const result = await post(`${baseUrl}/login/`, { data: userData });
 
                 return result;
             } catch (err) {

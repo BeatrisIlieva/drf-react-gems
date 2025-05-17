@@ -13,6 +13,7 @@ import { Details } from './components/accounts/details/Details';
 import styles from './App.module.css';
 import { AuthGuard } from './guards/AuthGuard';
 import { ScrollToTop } from './components/scroll-to-top/ScrollToTop';
+import { ProductList } from './components/products/product-list/ProductList';
 
 function App() {
     // const [products, setProducts] = useState([]);
@@ -36,6 +37,7 @@ function App() {
                     <Route index element={<Home />} />
                     <Route path='/my-account/register' element={<Register />} />
                     <Route path='/my-account/login' element={<Login />} />
+                    <Route path='/products/:categoryName/:categoryId' element={<ProductList />} />
                     <Route element={<AuthGuard />}>
                         <Route
                             path='/my-account/details'

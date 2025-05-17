@@ -1,15 +1,16 @@
 import useUserContext from '../../../contexts/UserContext';
 import { useLogin } from '../../../api/authApi';
-import { useActionState } from 'react';
+import React, { useActionState } from 'react';
 import { useNavigate } from 'react-router';
 import { useFocusOnInvalidInput } from '../../../hooks/useFocusOnInvalidInput';
 import { InputField } from '../../reusable/input-field/InputField';
 import { Button } from '../../reusable/button/Button';
 import { AuthLayout } from '../auth-layout/ AuthLayout';
+import { Fragment } from 'react';
 
 import { useForm } from '../../../hooks/useForm';
 
-import styles from './Login.module.css'
+import styles from './Login.module.css';
 import { Footer } from './footer/Footer';
 
 export const Login = () => {
@@ -64,12 +65,12 @@ export const Login = () => {
     return (
         <AuthLayout>
             <section className={styles['login']}>
-            <h2>Welcome Back</h2>
-            <p>Please sign in to access your account.</p>
+                <h2>Welcome Back</h2>
+                <p>Please sign in to access your account.</p>
                 <form action={loginAction}>
                     {Object.entries(userData).map(([fieldName, fieldData]) => (
+                        <Fragment key={fieldName}>
                         <InputField
-                            key={fieldName}
                             getInputClassName={getInputClassName}
                             fieldData={fieldData}
                             validateField={validateField}
@@ -78,6 +79,7 @@ export const Login = () => {
                                 fieldName === 'password' ? 'password' : 'text'
                             }
                         />
+                        </Fragment>
                     ))}
 
                     <Button
@@ -87,7 +89,7 @@ export const Login = () => {
                         pending={isPending}
                     />
                 </form>
-                <Footer/>
+                <Footer />
             </section>
         </AuthLayout>
     );

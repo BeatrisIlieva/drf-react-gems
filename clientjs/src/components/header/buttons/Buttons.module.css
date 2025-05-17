@@ -19,6 +19,12 @@
     text-transform: uppercase;
     font-size: 0.9em;
     margin-right: 1em;
+    transition: opacity 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.buttons > li:nth-child(1) span:hover {
+    opacity: 1;
 }
 
 .buttons li:nth-child(1) svg {

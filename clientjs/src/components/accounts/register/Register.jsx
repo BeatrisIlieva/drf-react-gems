@@ -10,6 +10,7 @@ import { PasswordValidator } from './password-validator/PasswordValidator';
 import { useForm } from '../../../hooks/useForm';
 import styles from './Register.module.css';
 import { InputField } from '../../reusable/input-field/InputField';
+import { Fragment } from 'react';
 
 export const Register = () => {
     const initialFormValues = {
@@ -91,9 +92,8 @@ export const Register = () => {
 
                 <form action={registerAction}>
                     {Object.entries(userData).map(([fieldName, fieldData]) => (
-                        <>
+                        <Fragment key={fieldName}>
                             <InputField
-                                key={fieldName}
                                 getInputClassName={getInputClassName}
                                 fieldData={fieldData}
                                 validateField={validateField}
@@ -110,7 +110,7 @@ export const Register = () => {
                                     updates.
                                 </p>
                             )}
-                        </>
+                        </Fragment>
                     ))}
 
                     <PasswordValidator

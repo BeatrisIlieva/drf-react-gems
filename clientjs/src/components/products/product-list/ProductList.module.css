@@ -1,0 +1,49 @@
+.product-list {
+    padding: var(--layout-inline-padding);
+    display: flex;
+    flex-direction: column;
+}
+
+.product-list h2 {
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 2.2em;
+    letter-spacing: 0.1em;
+}
+
+.product-list > nav {
+    margin-bottom: 1.5em;
+}
+
+.product-list > nav > ul {
+    display: flex;
+    justify-content: space-between;
+}
+
+.product-list > div {
+    display: flex;
+    gap: 2.5em;
+}
+
+.product-list > div aside {
+    flex: 0 0 16%;
+    background: pink;
+}
+
+.product-list > div section ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    flex-grow: 1;
+}
+
+.product-list > div section ul li {
+    flex: 0 1 calc(25% - 0.4em);
+    display: flex;
+    background-color: var(--light-grey);
+}
+
+.product-list > div section ul li .thumbnail {
+    display: flex;
+}
+
