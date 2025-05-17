@@ -14,13 +14,18 @@ import styles from './App.module.css';
 import { AuthGuard } from './guards/AuthGuard';
 
 function App() {
-    const [products, setProducts] = useState([]);
+    // const [products, setProducts] = useState([]);
 
-    useEffect(() => {
-        fetch(`http://localhost:8000/products?category=${1}`)
-            .then((response) => response.json())
-            .then((result) => setProducts(result));
-    }, []);
+    // useEffect(() => {
+    //     try {
+    //         fetch(`http://localhost:8000/products?category=${1}`)
+    //         .then((response) => response.json())
+    //         .then((result) => setProducts(result));
+    //     } catch(err) {
+    //         console.log(err.message)
+    //     }
+
+    // }, []);
 
     return (
         <div className={styles['body']}>

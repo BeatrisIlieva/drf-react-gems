@@ -4,6 +4,7 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.db.utils import OperationalError
 
 from src.products.models.characteristics.category import Category
 from .models import Product
@@ -16,6 +17,15 @@ class CategoryListView(generics.ListAPIView):
 
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+    # def get_queryset(self):
+    #     try:
+    #         return Category.objects.all()
+    #     except OperationalError:
+    #         return Response(
+    #             {"detail": "Database unavailable."},
+    #             status=status.HTTP_503_SERVICE_UNAVAILABLE
+    #         )
 
 
 class ProductPagination(PageNumberPagination):
@@ -42,4 +52,3 @@ class ProductByCategoryView(APIView):
         result_page = paginator.paginate_queryset(products, request)
         serializer = ProductSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
-

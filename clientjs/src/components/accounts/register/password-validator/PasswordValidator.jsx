@@ -7,7 +7,7 @@ export const PasswordValidator = ({ password }) => {
         lower: /[a-z]/.test(password),
         number: /\d/.test(password),
         noSpaces: !/\s/.test(password),
-        special: /[!#$%]/.test(password)
+        special: /[!#$%]/.test(password),
     };
 
     const criteria = [

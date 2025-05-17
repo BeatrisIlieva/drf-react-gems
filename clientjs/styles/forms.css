@@ -24,18 +24,21 @@ input::placeholder {
     color: transparent;
 }
 
-input:required ~ label::after {
-    content: '*';
-    color: var(--black);
-    padding-left: 0.05em;
-}
-
-input.invalid:required ~ label {
+input.invalid ~ label {
     color: var(--red);
 }
 
-input.invalid:required ~ label::after {
-    color: var(--red);
+form .field:has(input:focus) input.valid ~ label {
+    color: var(--green);
+}
+
+.field input:focus {
+    border-color: var(--blue);
+}
+
+.field:has(input:focus) input:focus ~ label,
+.field:has(input:focus) input:not(:placeholder-shown) ~ label {
+    color: var(--blue);
 }
 
 input:focus ~ label,
@@ -46,6 +49,10 @@ input:not(:placeholder-shown) ~ label {
 
 input.invalid {
     border-color: var(--red);
+}
+
+.field input.valid {
+    border-color: var(--green);
 }
 
 .field {
@@ -66,4 +73,8 @@ form span.error {
     color: var(--red);
     font-size: 0.95em;
     padding-top: 0.5em;
+}
+
+.field:has(input:focus) span.error {
+    color: var(--blue);
 }

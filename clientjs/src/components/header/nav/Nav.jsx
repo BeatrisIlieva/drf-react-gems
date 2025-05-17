@@ -11,7 +11,11 @@ export const Nav = () => {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        getCategories().then((result) => setCategories(result));
+        getCategories()
+            .then((result) => setCategories(result))
+            .catch((err) => {
+                console.log(err.message);
+            });
     }, [getCategories]);
 
     return (

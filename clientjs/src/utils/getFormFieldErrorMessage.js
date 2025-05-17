@@ -26,7 +26,7 @@ export const validators = {
             !/\s/.test(password) ? '' : passwordErrorMessage,
 
         special: (password) =>
-            /[!#$%]/.test(password) ? '' : passwordErrorMessage
+            /[!#$%]/.test(password) ? '' : passwordErrorMessage,
     }
 };
 

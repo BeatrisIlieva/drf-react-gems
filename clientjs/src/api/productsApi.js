@@ -6,15 +6,17 @@ export const useCategories = () => {
     const getCategories = useCallback(async () => {
         try {
             const response = await fetch(`${baseUrl}/categories/`);
-            const result = await response.json();
-            console.log(result);
-            return result;
+
+            if (!response.ok) {
+                throw new Error(`Server error: ${response.status}`);
+            }
+
+            return await response.json();
         } catch (err) {
-            console.log(err.message);
+            console.error('Error in getCategories:', err.message);
+            throw err; 
         }
     }, []);
 
-    return {
-        getCategories
-    };
+    return { getCategories };
 };

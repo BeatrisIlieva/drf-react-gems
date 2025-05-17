@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { validateForm } from '../utils/validateForm';
-import { validators } from '../utils/getFormFieldErrorMessage';
+import { getFormFieldErrorMessage } from '../utils/getFormFieldErrorMessage';
 
 export const useForm = (initialFormValues) => {
     const [userData, setUserData] = useState(initialFormValues);
@@ -21,32 +21,19 @@ export const useForm = (initialFormValues) => {
 
     const validateField = (e) => {
         const { name, value } = e.target;
-
-        let error;
-        for (const validationFn of Object.values(validators[name])) {
-            error = validationFn(value);
-        }
+        const error = getFormFieldErrorMessage(name, value);
+        const valid = error === '';
 
         setUserData((state) => ({
             ...state,
             [name]: {
                 value,
-                error
+                error,
+                valid
             }
         }));
     };
 
-    const changeHandler = (e) => {
-        const { name, value } = e.target;
-
-        setUserData((state) => ({
-            ...state,
-            [name]: {
-                value,
-                error: ''
-            }
-        }));
-    };
 
     const setServerSideError = (serverData, field) => {
         if (serverData[field]) {
@@ -54,34 +41,21 @@ export const useForm = (initialFormValues) => {
                 ...state,
                 [field]: {
                     error: serverData[field].join(' '),
-                    value: state[field].value
+                    value: state[field].value,
+                    valid: false
                 }
             }));
         }
     };
 
-    // const setServerSideError = (serverData) => {
-    //     setUserData((state) => {
-    //         const newState = { ...state };
-    
-    //         Object.keys(serverData).forEach((key) => {
-    //             if (newState[key]) {
-    //                 newState[key] = {
-    //                     ...newState[key],
-    //                     error: serverData[key].join(' ')
-    //                 };
-    //             }
-    //         });
-    
-    //         return newState;
-    //     });
-    // };
+    const getInputClassName = ({ error, valid }) =>
+        `${error ? 'invalid' : valid ? 'valid' : ''}`.trim();
 
     return {
         userData,
         validateFields,
         validateField,
-        changeHandler,
-        setServerSideError
+        setServerSideError,
+        getInputClassName
     };
 };

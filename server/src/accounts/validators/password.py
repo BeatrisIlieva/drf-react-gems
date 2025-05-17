@@ -1,3 +1,4 @@
+import re
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
 
@@ -61,3 +62,5 @@ class SpecialCharRequiredValidator:
 
     def get_help_text(self):
         return _("Your password must contain at least one special character (!#$%)")
+
+

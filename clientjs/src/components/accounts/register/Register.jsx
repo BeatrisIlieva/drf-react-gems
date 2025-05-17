@@ -9,19 +9,20 @@ import { useFocusOnInvalidInput } from '../../../hooks/useFocusOnInvalidInput';
 import { PasswordValidator } from './password-validator/PasswordValidator';
 import { useForm } from '../../../hooks/useForm';
 import styles from './Register.module.css';
+import { InputField } from '../../reusable/input-field/InputField';
 
 export const Register = () => {
     const initialFormValues = {
-        email: { value: '', error: '' },
-        password: { value: '', error: '' }
+        email: { value: '', error: '', valid: false },
+        password: { value: '', error: '', valid: false }
     };
 
     const {
         userData,
         validateFields,
         validateField,
-        changeHandler,
-        setServerSideError
+        setServerSideError,
+        getInputClassName
     } = useForm(initialFormValues);
 
     const [agree, setAgree] = useState(true);
@@ -85,65 +86,24 @@ export const Register = () => {
                 <h2>Create Account</h2>
 
                 <form action={registerAction}>
-                    <div className='field'>
-                        <input
-                            className={`${
-                                userData.email.error ? 'invalid' : ''
-                            }`.trim()}
-                            type='text'
-                            name='email'
-                            id='email'
-                            required
-                            placeholder='email'
-                            value={userData.email.value}
-                            onChange={changeHandler}
-                            onBlur={validateField}
+                    {Object.entries(userData).map(([fieldName, fieldData]) => (
+                        <>
+                        
+                        <InputField
+                            key={fieldName}
+                            getInputClassName={getInputClassName}
+                            fieldData={fieldData}
+                            validateField={validateField}
+                            fieldName={fieldName}
+                            type={
+                                fieldName === 'password' ? 'password' : 'text'
+                            }
                         />
-                        <label
-                            htmlFor='email'
-                            className={`${
-                                userData.email.error ? 'invalid' : ''
-                            }`.trim()}
-                        >
-                            Email
-                        </label>
-                        {userData.email.error && (
-                            <span className='error'>
-                                {userData.email.error}
-                            </span>
-                        )}
-                    </div>
+                        {fieldName === 'email' && (<p>Enter your email for important order updates.</p>)}
+                        </>
+                    ))}
 
-                    <p>Enter your email for important order updates.</p>
-
-                    <div className='field'>
-                        <input
-                            type='password'
-                            name='password'
-                            id='password'
-                            required
-                            placeholder='password'
-                            value={userData.password.value}
-                            onChange={changeHandler}
-                            onBlur={validateField}
-                            className={`${
-                                userData.password.error ? 'invalid' : ''
-                            }`.trim()}
-                        />
-                        <label
-                            htmlFor='password'
-                            className={`${
-                                userData.password.error ? 'invalid' : ''
-                            }`.trim()}
-                        >
-                            Password
-                        </label>
-                        {userData.password.error && (
-                            <span className='error'>
-                                {userData.password.error}
-                            </span>
-                        )}
-                    </div>
+                    
 
                     <PasswordValidator
                         password={userData?.password?.value || ''}
@@ -154,13 +114,12 @@ export const Register = () => {
                             type='checkbox'
                             name='agree'
                             id='agree'
-                            required
                             checked={agree}
                             onChange={() => setAgree(!agree)}
                         />
                         <label className={styles['agree']}>
                             By creating an account, you agree to receive email
-                            updates
+                            updates*
                         </label>
                     </div>
 
