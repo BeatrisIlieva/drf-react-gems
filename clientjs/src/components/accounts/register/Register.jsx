@@ -62,10 +62,14 @@ export const Register = () => {
         password: userData.password.value
     });
 
+    const navigateToLoginHandler = () => {
+        navigate('/my-account/login');
+    };
+
     return (
         <AuthLayout>
             <section className={styles['register']}>
-                <p>
+                <p onClick={navigateToLoginHandler}>
                     <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
@@ -88,22 +92,26 @@ export const Register = () => {
                 <form action={registerAction}>
                     {Object.entries(userData).map(([fieldName, fieldData]) => (
                         <>
-                        
-                        <InputField
-                            key={fieldName}
-                            getInputClassName={getInputClassName}
-                            fieldData={fieldData}
-                            validateField={validateField}
-                            fieldName={fieldName}
-                            type={
-                                fieldName === 'password' ? 'password' : 'text'
-                            }
-                        />
-                        {fieldName === 'email' && (<p>Enter your email for important order updates.</p>)}
+                            <InputField
+                                key={fieldName}
+                                getInputClassName={getInputClassName}
+                                fieldData={fieldData}
+                                validateField={validateField}
+                                fieldName={fieldName}
+                                type={
+                                    fieldName === 'password'
+                                        ? 'password'
+                                        : 'text'
+                                }
+                            />
+                            {fieldName === 'email' && (
+                                <p>
+                                    Enter your email for important order
+                                    updates.
+                                </p>
+                            )}
                         </>
                     ))}
-
-                    
 
                     <PasswordValidator
                         password={userData?.password?.value || ''}

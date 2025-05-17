@@ -12,6 +12,7 @@ import { Footer } from './components/footer/Footer';
 import { Details } from './components/accounts/details/Details';
 import styles from './App.module.css';
 import { AuthGuard } from './guards/AuthGuard';
+import { ScrollToTop } from './components/scroll-to-top/ScrollToTop';
 
 function App() {
     // const [products, setProducts] = useState([]);
@@ -44,6 +45,7 @@ function App() {
                 </Routes>
             </main>
             <Footer />
+            <ScrollToTop/>
         </div>
     );
 }

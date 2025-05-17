@@ -25,6 +25,7 @@
     margin-bottom: 3em;
     padding-bottom: 3em;
     border-bottom: 0.1em solid var(--medium-grey);
+    cursor: pointer;
 }
 
 .register > p svg {
