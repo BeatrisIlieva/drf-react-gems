@@ -3,6 +3,14 @@
     flex-direction: column;
 }
 
+.user-action {
+    background-color: var(--light-grey);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75em;
+}
+
 .product-card,
 .product-card .wrapper-top {
     display: flex;
@@ -26,4 +34,11 @@
 
 .wrapper-bottom span:nth-child(2) {
     opacity: 0.7;
+}
+
+.switch-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.25em;
 }

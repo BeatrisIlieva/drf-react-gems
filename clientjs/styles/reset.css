@@ -42,3 +42,7 @@ svg {
     height: 1.6em;
 }
 
+button:disabled {
+    cursor: auto !important;
+    background: transparent !important;
+}
