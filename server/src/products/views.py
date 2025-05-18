@@ -4,10 +4,11 @@ from rest_framework.permissions import AllowAny
 
 from src.products.models.relationships.category import Category
 from src.products.serializers import CategorySerializer, ProductListSerializer
-from src.products.models.product import Product
+from src.products.models.product_item import ProductItem
+
 
 class ProductPagination(PageNumberPagination):
-    page_size = 8
+    page_size = 6
 
 
 class ProductListView(ListAPIView):
@@ -17,17 +18,14 @@ class ProductListView(ListAPIView):
 
     def get_queryset(self):
         category_id = self.request.query_params.get('category')
-        qs = Product.objects.all()
 
         if category_id:
-            qs = qs.filter(category_id=category_id)
+            products_data = ProductItem.objects.get_products(
+                category_id=category_id)
+        else:
+            products_data = []
 
-        return (
-            qs
-            .order_by('first_image', 'created_at')
-            .distinct('first_image')
-            .select_related('first_image', 'size', 'reference')
-        )
+        return products_data
 
 
 class CategoryListView(ListAPIView):

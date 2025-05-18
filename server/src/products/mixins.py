@@ -17,21 +17,6 @@ class NameFieldMixin(models.Model):
         return self.name
 
 
-class ImageFieldMixin(models.Model):
-    class Meta:
-        abstract = True
-
-    image_url = models.URLField(
-        unique=True,
-        error_messages={
-            'unique': 'This image already exists.'
-        }
-    )
-
-    def __str__(self):
-        return self.image_url
-
-
 class CaseInsensitiveUniqueNameFieldMixin:
     def clean(self):
         model = self.__class__

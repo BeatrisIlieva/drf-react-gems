@@ -6,5 +6,3 @@ from .reference import *
 from .size import *
 from .stone import *
 from .stone_by_color import *
-from .first_image import *
-from .second_image import *

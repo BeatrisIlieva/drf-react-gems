@@ -1,14 +1,23 @@
 from rest_framework import serializers
 
 from src.products.models.relationships.category import Category
-from src.products.models.product import Product
 
 
-class ProductListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = '__all__'
-        depth = 1
+class ProductListSerializer(serializers.Serializer):
+
+    id = serializers.IntegerField()
+    collection__name = serializers.CharField()
+    category__name = serializers.CharField()
+    reference__name = serializers.CharField()
+    first_image = serializers.CharField()
+    second_image = serializers.CharField()
+    stones = serializers.ListField(
+        child=serializers.DictField(
+            child=serializers.CharField(allow_null=True, allow_blank=True)
+        )
+    )
+    min_price = serializers.DecimalField(max_digits=7, decimal_places=2)
+    max_price = serializers.DecimalField(max_digits=7, decimal_places=2)
 
 
 class CategorySerializer(serializers.ModelSerializer):

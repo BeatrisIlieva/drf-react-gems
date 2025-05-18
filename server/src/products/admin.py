@@ -3,15 +3,14 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib import admin
 from unfold.admin import ModelAdmin
 
+from src.products.models.product_variant import ProductVariant
 from src.products.models.relationships.collection import Collection
 from src.products.models.relationships.material import Material
 from src.products.models.relationships.reference import Reference
 from src.products.models.relationships.size import Size
 from src.products.models.relationships.category import Category
-from src.products.models.relationships.second_image import SecondImage
 from src.products.models.relationships.stone_by_color import StoneByColor
-from src.products.models.relationships.first_image import FirstImage
-from src.products.models import Product
+from src.products.models import ProductItem
 from src.products.models.relationships.color import Color
 from src.products.models.relationships.stone import Stone
 
@@ -31,11 +30,6 @@ class ColorAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(FirstImage)
-class FirstImageAdmin(admin.ModelAdmin):
-    pass
-
-
 @admin.register(Material)
 class MaterialAdmin(admin.ModelAdmin):
     pass
@@ -43,11 +37,6 @@ class MaterialAdmin(admin.ModelAdmin):
 
 @admin.register(Reference)
 class ReferenceAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(SecondImage)
-class SecondImageAdmin(admin.ModelAdmin):
     pass
 
 
@@ -95,17 +84,23 @@ class ColorListFilter(admin.SimpleListFilter):
         return queryset
 
 
-@admin.register(Product)
-class ProductAdmin(ModelAdmin):
+@admin.register(ProductVariant)
+class ProductVariantAdmin(admin.ModelAdmin):
+    list_display = (
+        'size',
+        'price',
+    )
+
+
+@admin.register(ProductItem)
+class ProductItemAdmin(admin.ModelAdmin):
 
     list_display = (
         'first_picture',
         'second_picture',
-        'size',
         'category',
         'collection',
         'reference',
-        'created_at',
     )
 
     list_filter = (
@@ -120,10 +115,8 @@ class ProductAdmin(ModelAdmin):
     ordering = (
         'collection',
         'reference',
-        'created_at',
         'category',
         'material',
-        'size'
     )
 
     search_fields = (
@@ -135,13 +128,12 @@ class ProductAdmin(ModelAdmin):
     )
 
     fieldsets = (
-        ('Stock & Size', {
-            'fields': (
-                'price',
-                'quantity',
-                'size',
-            )
-        }),
+        # ('Stock & Size', {
+        #     'fields': (
+        #         'product_item_product_variant_set__price',
+        #         # 'quantity',
+        #     )
+        # }),
         ('Images', {
             'fields': (
                 'first_image',
@@ -162,13 +154,13 @@ class ProductAdmin(ModelAdmin):
     def first_picture(self, obj):
         return format_html(
             '<img src="{}" width="100" height="100" style="object-fit: cover;" />',
-            obj.first_image.image_url
+            obj.first_image
         )
 
     def second_picture(self, obj):
         return format_html(
             '<img src="{}" width="100" height="100" style="object-fit: cover;" />',
-            obj.second_image.image_url
+            obj.second_image
         )
 
     def description(self, obj):

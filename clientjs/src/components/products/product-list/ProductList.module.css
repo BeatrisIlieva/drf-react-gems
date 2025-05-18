@@ -38,12 +38,17 @@
 }
 
 .product-list > div section ul li {
-    flex: 0 1 calc(25% - 0.4em);
+    flex: 0 1 calc(32.8%);
     display: flex;
     background-color: var(--light-grey);
 }
 
 .product-list > div section ul li .thumbnail {
     display: flex;
+}
+
+.product-list > div section button:disabled {
+    background: gray;
+    cursor: not-allowed;
 }
 

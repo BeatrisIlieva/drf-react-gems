@@ -222,10 +222,16 @@ UNFOLD = {
                 # "collapsible": True,
                 "items": [
                     {
-                        "title": _("All Products"),
+                        "title": _("Product Items"),
                         "icon": "inventory",
-                        "link": reverse_lazy("admin:products_product_changelist"),
+                        "link": reverse_lazy("admin:products_productitem_changelist"),
+                    },
+                    {
+                        "title": _("Product Variants"),
+                        "icon": "inventory",
+                        "link": reverse_lazy("admin:products_productvariant_changelist"),
                     }
+
                 ],
             },
             {
@@ -247,16 +253,6 @@ UNFOLD = {
                         "title": _("Colors"),
                         "icon": "Palette",
                         "link": reverse_lazy("admin:products_color_changelist"),
-                    },
-                    {
-                        "title": _("First Image"),
-                        "icon": "collections",
-                        "link": reverse_lazy("admin:products_firstimage_changelist"),
-                    },
-                    {
-                        "title": _("Second Image"),
-                        "icon": "collections",
-                        "link": reverse_lazy("admin:products_secondimage_changelist"),
                     },
                     {
                         "title": _("Materials"),
