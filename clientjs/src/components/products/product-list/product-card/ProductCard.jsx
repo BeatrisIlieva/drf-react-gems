@@ -1,5 +1,6 @@
+import { MaterialsInfo } from './materials-info/MaterialsInfo';
 import styles from './ProductCard.module.css';
-import { StoneImage } from './stone-image/StoneImage';
+
 
 export const ProductCard = ({
     id,
@@ -21,29 +22,11 @@ export const ProductCard = ({
                         alt={`${collection__name} ${reference__name} ${category__name}`}
                     />
                 </span>
-                <span className={styles['materials-info']}>
-                    <span className={styles['stones']}>
-                        {stones.map((item) =>
-                            id === Number(item.product_id) ? (
-                                <span className={styles['selected-stone']}>
-                                    <StoneImage
-                                        key={`${id}-${item.color}-${item.name}`}
-                                        {...item}
-                                    />
-                                </span>
-                            ) : (
-                                <StoneImage
-                                    key={`${id}-${item.color}-${item.name}`}
-                                    {...item}
-                                />
-                            )
-                        )}
-                    </span>
-                    <span className={styles['materials']}>
-                        <span>{materials_count}</span>
-                        <span>{materials_count > 1 ? 'metals' : 'metal'}</span>
-                    </span>
-                </span>
+                <MaterialsInfo
+                    id={id}
+                    stones={stones}
+                    materials_count={materials_count}
+                />
             </span>
             <span className={styles['wrapper-bottom']}>
                 <span>{`${collection__name} ${reference__name} ${category__name}`}</span>

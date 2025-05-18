@@ -1,0 +1,40 @@
+.relative-container {
+    position: relative;
+}
+
+.stone-info {
+    position: absolute;
+    top: -2.35em;
+    left: 0;
+    background-color: var(--light-grey);
+    padding: 0.4em;
+    line-height: 1;
+    text-wrap: nowrap;
+    border-radius: 0.1em;
+    box-shadow: 0 0 0.2em 0 rgb(0, 0, 0, 0.5);
+}
+
+.stones {
+    display: flex;
+    border: 0;
+    border-radius: 50%;
+    -webkit-clip-path: view-box;
+    clip-path: view-box;
+    display: block;
+    margin: 0;
+    width: 1.5em;
+    aspect-ratio: 1/1;
+    cursor: pointer;
+}
+
+.selected-stone {
+    border-radius: 50%;
+    border: 0.09em solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.8em;
+    aspect-ratio: 1/1;
+    background-color: var(--white);
+    gap: 0.7em;
+}

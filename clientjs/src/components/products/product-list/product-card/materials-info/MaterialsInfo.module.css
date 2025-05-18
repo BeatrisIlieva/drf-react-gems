@@ -1,0 +1,19 @@
+.materials-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75em;
+}
+
+.stones {
+    display: flex;
+    background: var(--light-grey);
+    align-items: center;
+    gap: 0.5em;
+}
+
+.materials {
+    opacity: 0.6;
+    display: flex;
+    gap: 0.25em;
+}
