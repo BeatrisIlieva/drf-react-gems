@@ -22,7 +22,6 @@
     display: flex;
     flex-direction: column;
     gap: 0.25em;
-    font-size: 0.9em;
 }
 
 .wrapper-bottom span:nth-child(2) {

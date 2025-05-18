@@ -856,7 +856,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196508/1_sgyfdp.png',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196508/2_zpbdin.png',
         'reference': 'Elegant',
-        'stone_by_color': ['Blue Sapphire', 'White Diamond'],
+        'stone_by_color': ['Blue Aquamarine', 'White Diamond'],
         'price': 14900,
     },
     # Classics
@@ -887,7 +887,7 @@ products_data = [
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196510/1_vh9sj4.png',
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746196510/2_nmhjr2.png',
         'reference': 'Classics',
-        'stone_by_color': ['Blue Sapphire', 'White Diamond'],
+        'stone_by_color': ['Blue Aquamarine', 'White Diamond'],
         'price': 16100,
     },
     {
