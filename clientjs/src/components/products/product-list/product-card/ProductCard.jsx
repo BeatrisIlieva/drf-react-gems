@@ -1,4 +1,5 @@
 import styles from './ProductCard.module.css';
+import { StoneImage } from './stone-image/StoneImage';
 
 export const ProductCard = ({
     id,
@@ -22,14 +23,21 @@ export const ProductCard = ({
                 </span>
                 <span className={styles['materials-info']}>
                     <span className={styles['stones']}>
-                        {stones.map((item) => (
-                            <span key={`${id}-${item.color}-${item.name}`}>
-                                <img
-                                    src={item.image}
-                                    alt={`${item.color}-${item.name}`}
+                        {stones.map((item) =>
+                            id === Number(item.product_id) ? (
+                                <span className={styles['selected-stone']}>
+                                    <StoneImage
+                                        key={`${id}-${item.color}-${item.name}`}
+                                        {...item}
+                                    />
+                                </span>
+                            ) : (
+                                <StoneImage
+                                    key={`${id}-${item.color}-${item.name}`}
+                                    {...item}
                                 />
-                            </span>
-                        ))}
+                            )
+                        )}
                     </span>
                     <span className={styles['materials']}>
                         <span>{materials_count}</span>

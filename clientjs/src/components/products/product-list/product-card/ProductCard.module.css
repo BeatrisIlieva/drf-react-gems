@@ -29,6 +29,7 @@
 .product-card .stones {
     display: flex;
     background: var(--light-grey);
+    align-items: center;
     gap: 0.7em;
 }
 
@@ -48,6 +49,17 @@
     margin: 0;
     width: 1.5em;
     aspect-ratio: 1/1;
+}
+
+.product-card .stones .selected-stone {
+    border-radius: 50%;
+    border: 0.09em solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.8em;
+    aspect-ratio: 1/1;
+    background-color: var(--white);
 }
 
 .product-card .wrapper-bottom {
