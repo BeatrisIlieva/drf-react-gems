@@ -1,6 +1,6 @@
 from django.db import models
 
-from django.db.models import Min, Max
+from django.db.models import Min, Max, Sum, Case, Value, BooleanField, When, Count
 from itertools import groupby
 from operator import itemgetter
 
@@ -12,25 +12,31 @@ class ProductManager(models.Manager):
         products = (
             qs
             .select_related('material', 'collection', 'category', 'reference')
-            .prefetch_related('stone_by_color__color', 'stone_by_color__stone')
+            .prefetch_related('stone_by_color__color', 'stone_by_color__stone',)
             .values(
                 'id',
                 'collection__name',
                 'category__name',
                 'reference__name',
+                'material__name',
                 'first_image',
                 'second_image',
                 'stone_by_color__color__name',
                 'stone_by_color__stone__name',
                 'stone_by_color__image',
                 'stone_by_color__color__hex_code',
-                'material__name'
             )
             .annotate(
                 min_price=Min('productvariant__price'),
                 max_price=Max('productvariant__price'),
+                total_quantity=Sum('productvariant__quantity'),
+                is_sold_out=Case(
+                    When(total_quantity=0, then=Value(True)),
+                    default=Value(False),
+                    output_field=BooleanField(),
+                ),
             )
-            .order_by('collection__name', 'category__name', 'reference__name', 'material__name')
+            .order_by('material__name', 'collection__name', 'category__name', 'reference__name')
         )
 
         grouped = []
@@ -52,14 +58,27 @@ class ProductManager(models.Manager):
 
                 if (color or name or image) and product_id not in seen_products:
 
-                    stone_set.add((product_id, color, name, image, hex_code))
+                    materials_count = self.filter(
+                        collection__name=item['collection__name'],
+                        category__name=item['category__name'],
+                        reference__name=item['reference__name'],
+                    ).values('id').distinct('material__name').count()
+
+                    stone_set.add((product_id, color, name,
+                                  image, hex_code, materials_count))
 
                 seen_products.append(product_id)
 
             stones = [
-                {'product_id': product_id, 'color': color,
-                    'name': name, 'image': image, 'hex': hex_code}
-                for (product_id, color, name, image, hex_code) in stone_set
+                {
+                    'product_id': product_id,
+                    'color': color,
+                    'name': name,
+                    'image': image,
+                    'hex': hex_code,
+                    'materials_count': materials_count,
+                }
+                for (product_id, color, name, image, hex_code, materials_count) in stone_set
             ]
 
             grouped.append({
@@ -72,6 +91,9 @@ class ProductManager(models.Manager):
                 'stones': stones,
                 'min_price': first['min_price'],
                 'max_price': first['max_price'],
+                'materials_count': materials_count,
+                'total_quantity': first['total_quantity'],
+                'is_sold_out': first['is_sold_out'],
             })
 
         return grouped

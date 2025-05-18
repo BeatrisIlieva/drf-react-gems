@@ -3,6 +3,7 @@ import { useLocation } from 'react-router';
 import { useProducts } from '../../../api/productsApi';
 
 import styles from './ProductList.module.css';
+import { ProductCard } from './product-card/ProductCard';
 
 export const ProductList = () => {
     const [categoryName, setCategoryName] = useState([]);
@@ -77,23 +78,7 @@ export const ProductList = () => {
                 <section>
                     <ul>
                         {products.length > 0 &&
-                            products.map((product) => (
-                                <li key={product.id}>
-                                    <span className={styles['thumbnail']}>
-                                        <img
-                                            src={product.first_image}
-                                            // alt={`${product.collection} ${product.reference} ${product.category}`}
-                                        />
-                                    </span>
-                                    <span className={styles['stones']}>
-                                        {product.stones.map(item => (
-                                            <span key={`${product.id}-${item.color}-${item.name}`}>
-                                                <img src={item.image} alt="" />
-                                            </span>
-                                        ))}
-                                    </span>
-                                </li>
-                            ))}
+                            products.map((product) => <ProductCard key={product.id} {...product}/>)}
                     </ul>
                     <button
                         onClick={loadMoreHandler}
