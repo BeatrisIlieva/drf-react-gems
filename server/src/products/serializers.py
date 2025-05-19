@@ -4,7 +4,6 @@ from src.products.models.relationships.category import Category
 
 
 class ProductListSerializer(serializers.Serializer):
-
     id = serializers.IntegerField()
     collection__name = serializers.CharField()
     category__name = serializers.CharField()

@@ -6,19 +6,21 @@ from operator import itemgetter
 
 
 class ProductManager(models.Manager):
-    def get_products(self, category_id):
-        qs = self.filter(category_id=category_id)
+    def get_products(self, filters):
+        qs = self.filter(filters)
         raw_products = self._get_raw_products(qs)
-        grouped_products = self._group_and_structure_products(raw_products)
+        grouped_products, colors_by_count, stones_by_count = self._group_and_structure_products(
+            raw_products)
 
-        return grouped_products
+        return {'products': grouped_products, 'colors_by_count': colors_by_count, 'stones_by_count': stones_by_count}
 
     def _get_raw_products(self, qs):
         return (
             qs.select_related(
                 'material',
                 'collection',
-                'category', 'reference'
+                'category',
+                'reference'
             )
 
             .prefetch_related(
@@ -34,7 +36,9 @@ class ProductManager(models.Manager):
                 'first_image',
                 'second_image',
                 'stone_by_color__color__name',
+                'stone_by_color__color__id',
                 'stone_by_color__stone__name',
+                'stone_by_color__stone__id',
                 'stone_by_color__image',
                 'stone_by_color__color__hex_code',
             )
@@ -48,19 +52,58 @@ class ProductManager(models.Manager):
                     output_field=BooleanField(),
                 ),
             )
-            .order_by('material__name', 'collection__name', 'category__name', 'reference__name')
+            .order_by(
+                'material__name',
+                'collection__name',
+                'category__name',
+                'reference__name'
+            )
         )
 
     def _group_and_structure_products(self, products):
         grouped = []
+        colors_by_count = {}
+        stones_by_count = {}
+        # materials_by_count = {}
 
         for key, group in groupby(products, key=itemgetter(
-                'collection__name', 'category__name', 'reference__name', 'material__name')):
+                'collection__name',
+                'category__name',
+                'reference__name',
+                'material__name'
+        )):
             items = list(group)
             first = items[0]
 
             stones = self._extract_stones(items)
             stones = self._filter_white_diamonds_per_product(stones)
+            materials = self._extract_materials(items)
+
+            for stone in stones:
+                if stone['color'] not in colors_by_count.keys():
+                    colors_by_count[stone['color']] = {
+                        'id': stone['color_id'],
+                        'title': stone['color'],
+                        'hex_code': stone['hex'],
+                        'count': 0
+                    }
+
+                colors_by_count[stone['color']]['count'] += 1
+
+                stone.pop('color_id')
+                stone.pop('hex')
+
+                if stone['stone'] not in stones_by_count.keys():
+                    stones_by_count[stone['stone']] = {
+                        'id': stone['stone_id'],
+                        'title': stone['stone'],
+                        'image': stone['image'],
+                        'count': 0
+                    }
+
+                stones_by_count[stone['stone']]['count'] += 1
+
+                stone.pop('stone_id')
 
             grouped.append({
                 'id': first['id'],
@@ -72,60 +115,66 @@ class ProductManager(models.Manager):
                 'stones': stones,
                 'min_price': first['min_price'],
                 'max_price': first['max_price'],
-                'materials_count': stones[0]['materials_count'] if stones else 0,
+                'materials_count': materials,
                 'total_quantity': first['total_quantity'],
                 'is_sold_out': first['is_sold_out'],
             })
 
-        return grouped
+        return grouped, colors_by_count, stones_by_count
+
+    def _extract_materials(self, items):
+        for item in items:
+            materials_count = self.filter(
+                collection__name=item['collection__name'],
+                category__name=item['category__name'],
+                reference__name=item['reference__name'],
+            ).values('id').distinct('material__name').count()
+
+        return materials_count
 
     def _extract_stones(self, items):
         stone_set = set()
-        seen_products = set()
 
         for item in items:
             product_id = item['id']
             color = item['stone_by_color__color__name']
-            name = item['stone_by_color__stone__name']
+            color_id = item['stone_by_color__color__id']
+            stone = item['stone_by_color__stone__name']
+            stone_id = item['stone_by_color__stone__id']
             image = item['stone_by_color__image']
             hex_code = item['stone_by_color__color__hex_code']
 
-            if (color or name or image) and product_id and product_id:
-                materials_count = self.filter(
-                    collection__name=item['collection__name'],
-                    category__name=item['category__name'],
-                    reference__name=item['reference__name'],
-                ).values('id').distinct('material__name').count()
-
+            if (color or stone or image) and product_id:
                 stone_set.add(
                     (
                         product_id,
                         color,
-                        name,
+                        color_id,
+                        stone,
+                        stone_id,
                         image,
                         hex_code,
-                        materials_count
                     )
                 )
-
-            seen_products.add(product_id)
 
         return [
             {
                 'product_id': product_id,
                 'color': color,
-                'name': name,
+                'color_id': color_id,
+                'stone': stone,
+                'stone_id': stone_id,
                 'image': image,
                 'hex': hex_code,
-                'materials_count': materials_count,
             }
             for (
                 product_id,
                 color,
-                name,
+                color_id,
+                stone,
+                stone_id,
                 image,
                 hex_code,
-                materials_count
             ) in stone_set
         ]
 
@@ -139,13 +188,13 @@ class ProductManager(models.Manager):
         filtered_stones = []
         for product_id, product_stones in stones_by_product.items():
             only_white_diamond = all(
-                s['name'] == 'Diamond' and s['color'] == 'White'
+                s['stone'] == 'Diamond' and s['color'] == 'White'
                 for s in product_stones
             )
             if not only_white_diamond:
                 product_stones = [
                     s for s in product_stones
-                    if not (s['name'] == 'Diamond' and s['color'] == 'White')
+                    if not (s['stone'] == 'Diamond' and s['color'] == 'White')
                 ]
             filtered_stones.extend(product_stones)
 

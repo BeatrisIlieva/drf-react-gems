@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from './StoneImage.module.css';
 
-export const StoneImage = ({ color, name, image, product_id, id }) => {
+export const StoneImage = ({ color, stone, image, product_id, id }) => {
     const [displayStoneInfo, setDisplayStoneInfo] = useState(false);
 
     const toggleDisplayStoneInfoHandler = () => {
@@ -16,7 +16,7 @@ export const StoneImage = ({ color, name, image, product_id, id }) => {
         >
             {displayStoneInfo && (
                 <span className={styles['stone-info']}>
-                    {`${color} ${name}`}
+                    {`${color} ${stone}`}
                 </span>
             )}
 

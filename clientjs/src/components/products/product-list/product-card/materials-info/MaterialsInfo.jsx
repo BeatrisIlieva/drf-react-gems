@@ -8,7 +8,7 @@ export const MaterialsInfo = ({ id, stones, materials_count }) => {
             <span className={styles['stones']}>
                 {stones.map((item) => (
                     <StoneImage
-                        key={`${id}-${item.color}-${item.name}`}
+                        key={`${id}-${item.color}-${item.stone}`}
                         {...item}
                         id={id}
                     />

@@ -26,6 +26,13 @@ export const ProductList = () => {
     const { getProducts } = useProducts();
     const [loadMoreDisabled, setLoadMoreDisabled] = useState(false);
     const [filtersData, setFiltersData] = useState(initialFiltersData);
+    const [colorIds, setColorIds] = useState([]);
+    const [stonesData, setStonesData] = useState({});
+    const [colorsData, setColorsData] = useState({});
+
+    useEffect(() => {
+        setColorsData({})
+    }, [location])
 
     const updateColorsData = useCallback((allProducts) => {
         const colorsData = {};
@@ -34,9 +41,10 @@ export const ProductList = () => {
             product.stones.forEach((stone) => {
                 const color = stone.color;
                 const hex = stone.hex;
+                const colorId = stone.color_id;
 
                 if (!colorsData[color]) {
-                    colorsData[color] = { count: 0, hex };
+                    colorsData[color] = { count: 0, hex, colorId };
                 }
 
                 colorsData[color].count += 1;
@@ -51,6 +59,10 @@ export const ProductList = () => {
             }
         }));
     }, []);
+
+    const updateColors = (colorId) => {
+        setColorIds((state) => [...state, colorId]);
+    };
 
     useEffect(() => {
         setLoadMoreDisabled(() => totalProductsCount <= products.length);
@@ -67,18 +79,53 @@ export const ProductList = () => {
         setCategoryName(nameCapitalized);
         setCategoryId(itemId);
 
-        getProducts(itemId)
+        getProducts({ categoryId: itemId })
             .then((response) => {
                 setProducts(response.results);
+                setStonesData(response.stones_by_count);
+                setColorsData(response.colors_by_count);
                 setTotalProductsCount(response.count);
-                updateColorsData(response.results);
+
             })
             .catch((err) => console.log(err.message));
     }, [location, getProducts, updateColorsData]);
 
     useEffect(() => {
-        setPage(1);
-    }, [location]);
+        getProducts({categoryId, page, colorIds})
+        .then((response) => {
+            setProducts(response.results);
+
+            console.log(response.results)
+        })
+        .catch((err) => console.log(err.message));
+    }, [categoryId, colorIds, page, getProducts])
+
+    // const filterProducts = useCallback(({page = null, colorId = null}) => {
+    //     getProducts(categoryId, page, colorId)
+    //         .then((response) => {
+    //             setProducts(response.results);
+
+    //             console.log(response.results)
+    //         })
+    //         .catch((err) => console.log(err.message));
+    // }, [categoryId, getProducts]);
+
+    // const updateProducts = useCallback(({page = null, colorId = null}) => {
+    //     getProducts(categoryId, page, colorId)
+    //         .then((response) => {
+    //             setProducts((prev) => {
+    //                 const updatedProducts = [...prev, ...response.results];
+    //                 updateColorsData(updatedProducts);
+
+    //                 return updatedProducts;
+    //             });
+    //         })
+    //         .catch((err) => console.log(err.message));
+    // }, [categoryId, getProducts, updateColorsData]);
+
+    // useEffect(() => {
+    //     setPage(1);
+    // }, [location]);
 
     const loadMoreHandler = () => {
         if (totalProductsCount <= products.length) return;
@@ -89,7 +136,9 @@ export const ProductList = () => {
     useEffect(() => {
         if (page === 1) return;
 
-        getProducts(categoryId, page)
+        // updateProducts({page});
+
+        getProducts({ categoryId, pageNumber: page })
             .then((response) => {
                 setProducts((prev) => {
                     const updatedProducts = [...prev, ...response.results];
@@ -112,7 +161,12 @@ export const ProductList = () => {
                 </ul>
             </nav>
             <div>
-                <Filters data={filtersData} />
+                <Filters
+                    stonesData={stonesData}
+                    colorsData={colorsData}
+                    data={filtersData}
+                    updateColors={updateColors}
+                />
                 <section>
                     <ul>
                         {products.length > 0 &&

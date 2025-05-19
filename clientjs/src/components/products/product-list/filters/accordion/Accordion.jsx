@@ -6,7 +6,13 @@ import { ArrowDownIcon } from '../../../../reusable/arrow-down-icon/ArrowDownIco
 import { SelectionBox } from './selection-box/SelectionBox';
 import { ColorSelector } from './color-selector/ColorSelector';
 
-export const Accordion = ({ data, isLast }) => {
+export const Accordion = ({
+    stonesData,
+    colorsData,
+    data,
+    isLast,
+    updateColors
+}) => {
     const [displayFilterItem, setDisplayFilterItem] = useState(false);
 
     const toggleDisplayFilterItem = () => {
@@ -33,13 +39,15 @@ export const Accordion = ({ data, isLast }) => {
                     }`.trim()}
                 >
                     {data.title === 'Color' ? (
-                        Object.entries(data.elements).map(([color, value]) => (
-                            <SelectionBox>
+                        Object.entries(colorsData).map(([color, value]) => (
+                            <SelectionBox key={color}>
                                 <ColorSelector
                                     key={color}
                                     color={color}
                                     count={value.count}
-                                    hex={value.hex}
+                                    hex={value.hex_code}
+                                    colorId={value.id}
+                                    updateColors={updateColors}
                                 />
                             </SelectionBox>
                         ))

@@ -1,7 +1,8 @@
 import { Accordion } from './accordion/Accordion';
 import styles from './Filters.module.css';
 
-export const Filters = ({ data }) => {
+export const Filters = ({ stonesData,
+    colorsData, data, updateColors }) => {
     return (
         <aside className={styles['filters']}>
             {Object.values(data).map((value, index, array) => (
@@ -9,6 +10,9 @@ export const Filters = ({ data }) => {
                     key={value.title}
                     data={value}
                     isLast={index === array.length - 1}
+                    updateColors={updateColors}
+                    stonesData={stonesData}
+colorsData={colorsData}
                 />
             ))}
         </aside>
