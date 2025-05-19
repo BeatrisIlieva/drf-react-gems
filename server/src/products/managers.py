@@ -90,7 +90,7 @@ class ProductManager(models.Manager):
             image = item['stone_by_color__image']
             hex_code = item['stone_by_color__color__hex_code']
 
-            if (color or name or image) and product_id:
+            if (color or name or image) and product_id and product_id:
                 materials_count = self.filter(
                     collection__name=item['collection__name'],
                     category__name=item['category__name'],

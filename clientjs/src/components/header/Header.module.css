@@ -11,3 +11,10 @@
     align-items: center;
     gap: 5em;
 }
+
+@media (max-width: 800px) {
+    .logo-nav-wrapper > div {
+        display: none;
+    }
+
+}

@@ -1,9 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router';
 import { useProducts } from '../../../api/productsApi';
 
 import styles from './ProductList.module.css';
 import { ProductCard } from './product-card/ProductCard';
+import { Filters } from './filters/Filters';
+
+const initialFiltersData = {
+    materials: { title: 'Material', elements: {} },
+    prices: { title: 'Price', elements: {} },
+    colors: { title: 'Color', elements: {} },
+    stones: { title: 'Stone', elements: {} },
+    categories: { title: 'Category', elements: {} },
+    sizes: { title: 'Size', elements: {} },
+    collections: { title: 'Collection', elements: {} }
+};
 
 export const ProductList = () => {
     const [categoryName, setCategoryName] = useState([]);
@@ -14,6 +25,32 @@ export const ProductList = () => {
     const location = useLocation();
     const { getProducts } = useProducts();
     const [loadMoreDisabled, setLoadMoreDisabled] = useState(false);
+    const [filtersData, setFiltersData] = useState(initialFiltersData);
+
+    const updateColorsData = useCallback((allProducts) => {
+        const colorsData = {};
+
+        allProducts.forEach((product) => {
+            product.stones.forEach((stone) => {
+                const color = stone.color;
+                const hex = stone.hex;
+
+                if (!colorsData[color]) {
+                    colorsData[color] = { count: 0, hex };
+                }
+
+                colorsData[color].count += 1;
+            });
+        });
+
+        setFiltersData((state) => ({
+            ...state,
+            colors: {
+                ...state.colors,
+                elements: colorsData
+            }
+        }));
+    }, []);
 
     useEffect(() => {
         setLoadMoreDisabled(() => totalProductsCount <= products.length);
@@ -34,9 +71,10 @@ export const ProductList = () => {
             .then((response) => {
                 setProducts(response.results);
                 setTotalProductsCount(response.count);
+                updateColorsData(response.results);
             })
             .catch((err) => console.log(err.message));
-    }, [location, getProducts]);
+    }, [location, getProducts, updateColorsData]);
 
     useEffect(() => {
         setPage(1);
@@ -53,12 +91,14 @@ export const ProductList = () => {
 
         getProducts(categoryId, page)
             .then((response) => {
-                setProducts((state) => [...state, ...response.results]);
+                setProducts((prev) => {
+                    const updatedProducts = [...prev, ...response.results];
+                    updateColorsData(updatedProducts); // pass full list here
+                    return updatedProducts;
+                });
             })
             .catch((err) => console.log(err.message));
-    }, [page, categoryId, getProducts]);
-
-    console.log(products);
+    }, [page, categoryId, getProducts, updateColorsData]);
 
     return (
         <section className={styles['product-list']}>
@@ -72,13 +112,13 @@ export const ProductList = () => {
                 </ul>
             </nav>
             <div>
-                <aside>
-                    <h4>Filtrations</h4>
-                </aside>
+                <Filters data={filtersData} />
                 <section>
                     <ul>
                         {products.length > 0 &&
-                            products.map((product) => <ProductCard key={product.id} {...product}/>)}
+                            products.map((product) => (
+                                <ProductCard key={product.id} {...product} />
+                            ))}
                     </ul>
                     <button
                         onClick={loadMoreHandler}

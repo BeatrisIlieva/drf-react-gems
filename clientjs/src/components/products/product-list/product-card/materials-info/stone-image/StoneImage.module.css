@@ -12,6 +12,7 @@
     text-wrap: nowrap;
     border-radius: 0.1em;
     box-shadow: 0 0 0.2em 0 rgb(0, 0, 0, 0.5);
+    z-index: 10;
 }
 
 .stones {

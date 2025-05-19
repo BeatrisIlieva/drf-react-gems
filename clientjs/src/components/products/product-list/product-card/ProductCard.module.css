@@ -4,7 +4,7 @@
 }
 
 .user-action {
-    background-color: var(--light-grey);
+    background-color: var(--lightest-grey);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -19,7 +19,7 @@
 }
 
 .product-card .wrapper-top {
-    background-color: var(--light-grey);
+    background-color: var(--lightest-grey);
 }
 
 .product-card .thumbnail {

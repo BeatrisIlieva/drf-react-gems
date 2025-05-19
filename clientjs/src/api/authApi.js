@@ -34,11 +34,9 @@ export const useRegister = () => {
                     data: userData
                 });
 
-                console.log(result)
-
                 return result;
             } catch (err) {
-                return err.data
+                return err.data;
             }
         },
         [post]
@@ -55,7 +53,9 @@ export const useLogin = () => {
     const login = useCallback(
         async (userData) => {
             try {
-                const result = await post(`${baseUrl}/login/`, { data: userData });
+                const result = await post(`${baseUrl}/login/`, {
+                    data: userData
+                });
 
                 return result;
             } catch (err) {

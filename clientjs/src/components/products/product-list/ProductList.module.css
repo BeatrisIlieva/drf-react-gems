@@ -25,9 +25,8 @@
     gap: 2.5em;
 }
 
-.product-list > div aside {
-    flex: 0 0 16%;
-    background: pink;
+.product-list > div section {
+    flex: 0 1 auto;
 }
 
 .product-list > div section ul {
@@ -38,10 +37,10 @@
     width: 100%;
 }
 
-.product-list > div section button:disabled {
+/* .product-list > div section button:disabled {
     background: gray;
     cursor: not-allowed;
-}
+} */
 
 @media (max-width: 1020px) {
     .product-list > div section ul {

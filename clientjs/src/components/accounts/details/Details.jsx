@@ -12,8 +12,6 @@ export const Details = () => {
         detail().then((response) => setUser(response));
     }, [detail]);
 
-    console.log(user);
-
     return (
         <>
             <Logout />

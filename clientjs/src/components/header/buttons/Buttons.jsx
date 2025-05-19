@@ -4,7 +4,6 @@ import { useAuth } from '../../../hooks/useAuth';
 
 export const Buttons = () => {
     const { isAuthenticated } = useAuth();
-    console.log(isAuthenticated, 'here')
     
     return (
         <ul className={styles['buttons']}>
