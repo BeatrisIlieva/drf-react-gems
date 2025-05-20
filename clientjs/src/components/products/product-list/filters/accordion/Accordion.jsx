@@ -5,7 +5,7 @@ import { ArrowUpIcon } from '../../../../reusable/arrow-up-icon/ArrowUpIcon';
 import { ArrowDownIcon } from '../../../../reusable/arrow-down-icon/ArrowDownIcon';
 import { SelectionBox } from './selection-box/SelectionBox';
 import { ColorSelector } from './color-selector/ColorSelector';
-
+import { MaterialSelector } from './material-selector/MaterialSelector';
 import { useProductContext } from '../../../../../contexts/ProductContext';
 
 export const Accordion = ({ data, isLast }) => {
@@ -39,41 +39,43 @@ export const Accordion = ({ data, isLast }) => {
                         displayFilterItem ? styles['visible'] : ''
                     }`.trim()}
                 >
-                    {data.title === 'Color'
-                        ? Object.entries(colorsData).map(([color, value]) => (
-                              <SelectionBox
-                                  key={color}
-                                  removeHandler={removeColorFromFiltration}
-                                  itemId={value.id}
-                              >
-                                  <ColorSelector
-                                      key={color}
-                                      title={color}
-                                      count={value.count}
-                                      hex={value.hex_code}
-                                      itemId={value.id}
-                                      addFiltration={addColorToFiltration}
-                                  />
-                              </SelectionBox>
-                          ))
-                        : data.title === 'Stone'
-                        ? Object.entries(stonesData).map(([stone, value]) => (
-                              <SelectionBox
-                                  key={stone}
-                                  removeHandler={removeStoneFromFiltration}
-                                  itemId={value.id}
-                              >
-                                  <ColorSelector
-                                      key={stone}
-                                      title={stone}
-                                      count={value.count}
-                                      image={value.image}
-                                      itemId={value.id}
-                                      addFiltration={addStoneToFiltration}
-                                  />
-                              </SelectionBox>
-                          ))
-                        : null}
+                    {data.title === 'Color' ? (
+                        Object.entries(colorsData).map(([color, value]) => (
+                            <SelectionBox
+                                key={color}
+                                removeHandler={removeColorFromFiltration}
+                                itemId={value.id}
+                            >
+                                <ColorSelector
+                                    key={color}
+                                    title={color}
+                                    count={value.count}
+                                    hex={value.hex_code}
+                                    itemId={value.id}
+                                    addFiltration={addColorToFiltration}
+                                />
+                            </SelectionBox>
+                        ))
+                    ) : data.title === 'Stone' ? (
+                        Object.entries(stonesData).map(([stone, value]) => (
+                            <SelectionBox
+                                key={stone}
+                                removeHandler={removeStoneFromFiltration}
+                                itemId={value.id}
+                            >
+                                <ColorSelector
+                                    key={stone}
+                                    title={stone}
+                                    count={value.count}
+                                    image={value.image}
+                                    itemId={value.id}
+                                    addFiltration={addStoneToFiltration}
+                                />
+                            </SelectionBox>
+                        ))
+                    ) : data.title === 'Material' ? (
+                        <MaterialSelector />
+                    ) : null}
                 </li>
             </ul>
         </div>

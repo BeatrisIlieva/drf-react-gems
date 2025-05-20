@@ -1,0 +1,8 @@
+.selection-content {
+    display: flex;
+    gap: 0.25em;
+}
+
+.selection-content > span:nth-child(2) {
+    opacity: 0.5;
+}

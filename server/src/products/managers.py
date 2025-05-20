@@ -190,7 +190,7 @@ class ProductManager(models.Manager):
 
     def _get_material_usage_count(self, qs):
         return (
-            qs.values('material__name')
+            qs.values('material__name', 'material__id')
             .annotate(material_count=Count('id'))
             .order_by('-material_count')
         )

@@ -21,6 +21,7 @@ class ProductListView(ListAPIView):
         category_id = self.request.query_params.get('category')
         color_ids = self.request.query_params.getlist('color_ids')
         stone_ids = self.request.query_params.getlist('stone_ids')
+        material_ids = self.request.query_params.getlist('material_ids')
 
         filters = Q()
         if category_id:
@@ -30,6 +31,8 @@ class ProductListView(ListAPIView):
             filters &= Q(stone_by_color__color_id__in=color_ids)
         if stone_ids:
             filters &= Q(stone_by_color__stone_id__in=stone_ids)
+        if material_ids:
+            filters &= Q(material__id__in=material_ids)
 
         if filters:
             return ProductItem.objects.get_products(filters)

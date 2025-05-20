@@ -20,36 +20,6 @@ export const useCategories = () => {
     return { getCategories };
 };
 
-// export const useProducts = () => {
-//     const { get } = useApi();
-
-//     const getProducts = useCallback(
-//         async (
-//             categoryId,
-//             pageNumber = null,
-//             colorId = null,
-//             stoneId = null,
-//             materialId = null
-//         ) => {
-//             const fullUrl = pageNumber
-//                 ? `${baseUrl}/?category=${categoryId}&page=${pageNumber}`
-//                 : `${baseUrl}/?category=${categoryId}`;
-
-//             try {
-//                 const response = await get(fullUrl);
-
-//                 return response;
-//             } catch (err) {
-//                 console.error('Error in getProducts:', err.message);
-//                 throw err;
-//             }
-//         },
-//         [get]
-//     );
-
-//     return { getProducts };
-// };
-
 export const useProducts = () => {
     const { get } = useApi();
 
@@ -59,8 +29,7 @@ export const useProducts = () => {
             pageNumber = null,
             colorIds = [],
             stoneIds = [],
-            stoneId = null,
-            materialId = null
+            materialIds = []
         }) => {
             const params = new URLSearchParams();
 
@@ -72,8 +41,9 @@ export const useProducts = () => {
             if (stoneIds) {
                 stoneIds.forEach((id) => params.append('stone_ids', id));
             }
-            if (stoneId) params.append('stone', stoneId);
-            if (materialId) params.append('material', materialId);
+            if (materialIds) {
+                materialIds.forEach((id) => params.append('material_ids', id));
+            }
 
             const fullUrl = `${baseUrl}/?${params.toString()}`;
 

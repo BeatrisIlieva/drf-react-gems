@@ -23,9 +23,11 @@ export const ProductProvider = ({ children }) => {
     });
     const [colorIds, setColorIds] = useState([]);
     const [stoneIds, setStoneIds] = useState([]);
-    const [materialsData, setMaterialsData] = useState({});
     const [stonesData, setStonesData] = useState({});
     const [colorsData, setColorsData] = useState({});
+    const [materialsData, setMaterialsData] = useState({});
+    const [materialIds, setMaterialIds] = useState([]);
+
     const [loadMoreDisabled, setLoadMoreDisabled] = useState(false);
 
     const { getProducts } = useProducts();
@@ -34,15 +36,24 @@ export const ProductProvider = ({ children }) => {
     useEffect(() => {
         setColorIds([]);
         setStoneIds([]);
-        setMaterialsData({});
         setStonesData({});
         setColorsData({});
+        setMaterialsData({});
+        setMaterialIds([]);
         setPage(1);
     }, [location]);
 
     useEffect(() => {
         setLoadMoreDisabled(totalProductsCount <= products.length);
     }, [products, totalProductsCount]);
+
+    const updateFiltersData = useCallback((response) => {
+        setProducts(response.results);
+        setStonesData(response.stones_by_count);
+        setColorsData(response.colors_by_count);
+        setMaterialsData(response.materials_by_count);
+        setTotalProductsCount(response.count);
+    }, []);
 
     useEffect(() => {
         const pathItems = location.pathname.split('/').splice(1);
@@ -55,68 +66,107 @@ export const ProductProvider = ({ children }) => {
         setCategoryId(itemId);
 
         getProducts({ categoryId: itemId }).then((response) => {
-            setProducts(response.results);
-            setStonesData(response.stones_by_count);
-            setColorsData(response.colors_by_count);
-            setMaterialsData(response.materials_by_count);
-            setTotalProductsCount(response.count);
+            updateFiltersData(response);
 
             setFiltersData((prev) => ({
                 ...prev,
                 colors: { ...prev.colors, elements: response.colors_by_count }
             }));
         });
-    }, [location, getProducts]);
+    }, [location, getProducts, updateFiltersData]);
 
-    const updateColors = useCallback((updatedColors) => {
-        setColorIds(updatedColors);
-        const nextPage = 1;
-        setPage(nextPage);
-        getProducts({ categoryId, pageNumber: nextPage, colorIds: updatedColors, stoneIds }).then((res) => {
-            setProducts(res.results);
-            setTotalProductsCount(res.count);
-            setStonesData(res.stones_by_count);
-            setColorsData(res.colors_by_count);
-        });
-    }, [categoryId, getProducts, stoneIds]);
+    const updateColors = useCallback(
+        (updatedColors) => {
+            setColorIds(updatedColors);
 
-    const updateStones = useCallback((updatedStones) => {
-        setStoneIds(updatedStones);
-        const nextPage = 1;
-        setPage(nextPage);
-        getProducts({ categoryId, pageNumber: nextPage, stoneIds: updatedStones, colorIds }).then((res) => {
-            setProducts(res.results);
-            setTotalProductsCount(res.count);
-            setStonesData(res.stones_by_count);
-            setColorsData(res.colors_by_count);
-        });
-    }, [categoryId, getProducts, colorIds]);
+            const nextPage = 1;
+            setPage(nextPage);
+
+            getProducts({
+                categoryId,
+                pageNumber: nextPage,
+                colorIds: updatedColors,
+                stoneIds,
+                materialIds,
+            }).then((response) => {
+                updateFiltersData(response);
+            });
+        },
+        [categoryId, getProducts, stoneIds, materialIds, updateFiltersData]
+    );
+
+    const updateStones = useCallback(
+        (updatedStones) => {
+            setStoneIds(updatedStones);
+
+            const nextPage = 1;
+            setPage(nextPage);
+
+            getProducts({
+                categoryId,
+                pageNumber: nextPage,
+                stoneIds: updatedStones,
+                colorIds,
+                materialIds
+            }).then((response) => {
+                updateFiltersData(response);
+            });
+        },
+        [categoryId, getProducts, colorIds, materialIds, updateFiltersData]
+    );
+
+    const updateMaterials = useCallback(
+        (updatedMaterials) => {
+            setMaterialIds(updatedMaterials);
+
+            const nextPage = 1;
+            setPage(nextPage);
+
+            getProducts({
+                categoryId,
+                pageNumber: nextPage,
+                stoneIds,
+                colorIds,
+                materialIds: updatedMaterials,
+            }).then((response) => {
+                updateFiltersData(response);
+            });
+        },
+        [categoryId, getProducts, colorIds, stoneIds, updateFiltersData]
+    );
 
     const loadMore = () => {
         if (totalProductsCount <= products.length) return;
+
         const nextPage = page + 1;
         setPage(nextPage);
+
         getProducts({ categoryId, pageNumber: nextPage, colorIds }).then((res) => {
             setProducts((prev) => [...prev, ...res.results]);
         });
     };
 
     return (
-        <ProductContext.Provider value={{
-            categoryName,
-            products,
-            loadMore,
-            loadMoreDisabled,
-            filtersData,
-            colorIds,
-            stoneIds,
-            addColorToFiltration: (id) => updateColors([...colorIds, id]),
-            removeColorFromFiltration: (id) => updateColors(colorIds.filter((c) => c !== id)),
-            addStoneToFiltration: (id) => updateStones([...stoneIds, id]),
-            removeStoneFromFiltration: (id) => updateStones(stoneIds.filter((s) => s !== id)),
-            colorsData,
-            stonesData
-        }}>
+        <ProductContext.Provider
+            value={{
+                categoryName,
+                products,
+                loadMore,
+                loadMoreDisabled,
+                filtersData,
+                colorIds,
+                stoneIds,
+                addColorToFiltration: (id) => updateColors([...colorIds, id]),
+                removeColorFromFiltration: (id) => updateColors(colorIds.filter((c) => c !== id)),
+                addStoneToFiltration: (id) => updateStones([...stoneIds, id]),
+                removeStoneFromFiltration: (id) => updateStones(stoneIds.filter((s) => s !== id)),
+                addMaterialToFiltration: (id) => updateMaterials([...materialIds, id]),
+                removeMaterialFromFiltration: (id) => updateMaterials(materialIds.filter((s) => s !== id)),
+                colorsData,
+                stonesData,
+                materialsData
+            }}
+        >
             {children}
         </ProductContext.Provider>
     );
