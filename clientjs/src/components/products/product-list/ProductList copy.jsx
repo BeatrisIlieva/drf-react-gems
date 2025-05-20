@@ -31,46 +31,40 @@ export const ProductList = () => {
     const [colorsData, setColorsData] = useState({});
 
     useEffect(() => {
-        setColorsData({});
-        setColorIds([]);
-        setPage(1);
-    }, [location]);
+        setColorsData({})
+        setColorIds([])
+        setPage(1)
+    }, [location])
 
-    const updateColors = useCallback(
-        (updatedColors) => {
-            setColorIds(updatedColors);
+    const updateColorsData = useCallback((allProducts) => {
+        const colorsData = {};
 
-            const nextPage = 1;
-            setPage(nextPage);
+        allProducts.forEach((product) => {
+            product.stones.forEach((stone) => {
+                const color = stone.color;
+                const hex = stone.hex;
+                const colorId = stone.color_id;
 
-            getProducts({ categoryId, pageNumber: nextPage, colorIds: updatedColors })
-                .then((response) => {
-                    setProducts(response.results);
-                    setTotalProductsCount(response.count);
-                })
-                .catch((err) => console.log(err.message));
-        },
-        [getProducts, categoryId]
-    );
+                if (!colorsData[color]) {
+                    colorsData[color] = { count: 0, hex, colorId };
+                }
 
-    const addColorToFiltration = useCallback(
-        (colorId) => {
-            const updatedColors = [...colorIds, colorId];
+                colorsData[color].count += 1;
+            });
+        });
 
-            updateColors(updatedColors);
-        },
-        [colorIds, updateColors]
-    );
+        setFiltersData((state) => ({
+            ...state,
+            colors: {
+                ...state.colors,
+                elements: colorsData
+            }
+        }));
+    }, []);
 
-    const removeColorFromFiltration = useCallback(
-        (colorId) => {
-            const updatedColors = [...colorIds];
-            const result = updatedColors.filter((id) => id !== colorId);
-
-            updateColors(result);
-        },
-        [colorIds, updateColors]
-    );
+    const updateColors = (colorId) => {
+        setColorIds((state) => [...state, colorId]);
+    };
 
     useEffect(() => {
         setLoadMoreDisabled(() => totalProductsCount <= products.length);
@@ -81,7 +75,8 @@ export const ProductList = () => {
         const itemName = pathItems[1];
         const itemId = pathItems[2];
 
-        const nameCapitalized = itemName.charAt(0).toUpperCase() + itemName.slice(1) + 's';
+        const nameCapitalized =
+            itemName.charAt(0).toUpperCase() + itemName.slice(1) + 's';
 
         setCategoryName(nameCapitalized);
         setCategoryId(itemId);
@@ -93,32 +88,66 @@ export const ProductList = () => {
                 setColorsData(response.colors_by_count);
                 setTotalProductsCount(response.count);
 
-                setFiltersData((state) => ({
-                    ...state,
-                    colors: {
-                        ...state.colors,
-                        elements: response.colors_by_count
-                    }
-                }));
             })
             .catch((err) => console.log(err.message));
-    }, [location, getProducts]);
+    }, [location, getProducts, updateColorsData]);
+
+    useEffect(() => {
+        getProducts({categoryId, page, colorIds})
+        .then((response) => {
+            setProducts(response.results);
+        })
+        .catch((err) => console.log(err.message));
+    }, [categoryId, colorIds, page, getProducts])
+
+    // const filterProducts = useCallback(({page = null, colorId = null}) => {
+    //     getProducts(categoryId, page, colorId)
+    //         .then((response) => {
+    //             setProducts(response.results);
+
+    //             console.log(response.results)
+    //         })
+    //         .catch((err) => console.log(err.message));
+    // }, [categoryId, getProducts]);
+
+    // const updateProducts = useCallback(({page = null, colorId = null}) => {
+    //     getProducts(categoryId, page, colorId)
+    //         .then((response) => {
+    //             setProducts((prev) => {
+    //                 const updatedProducts = [...prev, ...response.results];
+    //                 updateColorsData(updatedProducts);
+
+    //                 return updatedProducts;
+    //             });
+    //         })
+    //         .catch((err) => console.log(err.message));
+    // }, [categoryId, getProducts, updateColorsData]);
+
+    // useEffect(() => {
+    //     setPage(1);
+    // }, [location]);
 
     const loadMoreHandler = () => {
         if (totalProductsCount <= products.length) return;
-        const nextPage = page + 1;
-        setPage(nextPage);
 
-        getProducts({ categoryId, pageNumber: nextPage, colorIds })
+        setPage((prev) => prev + 1);
+    };
+
+    useEffect(() => {
+        if (page === 1) return;
+
+        // updateProducts({page});
+
+        getProducts({ categoryId, pageNumber: page })
             .then((response) => {
                 setProducts((prev) => {
                     const updatedProducts = [...prev, ...response.results];
-
+                    updateColorsData(updatedProducts); // pass full list here
                     return updatedProducts;
                 });
             })
             .catch((err) => console.log(err.message));
-    };
+    }, [page, categoryId, getProducts, updateColorsData]);
 
     return (
         <section className={styles['product-list']}>
@@ -136,8 +165,7 @@ export const ProductList = () => {
                     stonesData={stonesData}
                     colorsData={colorsData}
                     data={filtersData}
-                    addColorToFiltration={addColorToFiltration}
-                    removeColorFromFiltration={removeColorFromFiltration}
+                    updateColors={updateColors}
                 />
                 <section>
                     <ul>
@@ -146,7 +174,10 @@ export const ProductList = () => {
                                 <ProductCard key={product.id} {...product} />
                             ))}
                     </ul>
-                    <button onClick={loadMoreHandler} disabled={loadMoreDisabled}>
+                    <button
+                        onClick={loadMoreHandler}
+                        disabled={loadMoreDisabled}
+                    >
                         Load More
                     </button>
                 </section>

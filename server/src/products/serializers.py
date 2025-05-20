@@ -17,7 +17,7 @@ class ProductListSerializer(serializers.Serializer):
     )
     min_price = serializers.DecimalField(max_digits=7, decimal_places=2)
     max_price = serializers.DecimalField(max_digits=7, decimal_places=2)
-    materials_count = serializers.IntegerField()
+    # materials_count = serializers.IntegerField()
     total_quantity = serializers.IntegerField()
     is_sold_out = serializers.BooleanField()
 

@@ -1,24 +1,27 @@
 from django.db import models
 
-from django.db.models import Min, Max, Sum, Case, Value, BooleanField, When, Count
+from django.db.models import Min, Max, Sum, Case, Value, BooleanField, When, F, Window
+from django.db.models.functions import FirstValue
 from itertools import groupby
 from operator import itemgetter
+
+from django.forms import ImageField
 
 
 class ProductManager(models.Manager):
     def get_products(self, filters):
         qs = self.filter(filters)
         raw_products = self._get_raw_products(qs)
-        grouped_products, colors_by_count, stones_by_count = self._group_and_structure_products(
-            raw_products
-        )
-        
-        return {'products': grouped_products, 'colors_by_count': colors_by_count, 'stones_by_count': stones_by_count}
+        # grouped_products, colors_by_count, stones_by_count = self._group_and_structure_products(
+        #     raw_products)
+
+        return raw_products
+        # return {'products': grouped_products, 'colors_by_count': colors_by_count, 'stones_by_count': stones_by_count}
 
     def _get_raw_products(self, qs):
         return (
             qs.select_related(
-                'material',
+                # 'material',
                 'collection',
                 'category',
                 'reference'
@@ -28,19 +31,19 @@ class ProductManager(models.Manager):
                 'stone_by_color__stone'
             )
             .values(
-                'id',
+                # 'id',
                 'collection__name',
                 'category__name',
                 'reference__name',
-                'material__name',
-                'first_image',
-                'second_image',
-                'stone_by_color__color__name',
-                'stone_by_color__color__id',
-                'stone_by_color__stone__name',
-                'stone_by_color__stone__id',
-                'stone_by_color__image',
-                'stone_by_color__color__hex_code',
+                # 'material__name',
+                # 'first_image',
+                # 'second_image',
+                # 'stone_by_color__color__name',
+                # 'stone_by_color__color__id',
+                # 'stone_by_color__stone__name',
+                # 'stone_by_color__stone__id',
+                # 'stone_by_color__image',
+                # 'stone_by_color__color__hex_code',
             )
             .annotate(
                 min_price=Min('productvariant__price'),
@@ -53,12 +56,12 @@ class ProductManager(models.Manager):
                 ),
             )
             .order_by(
-                'id',
-                'material__name',
+                # 'id',
+                # 'material__name',
                 'collection__name',
                 'category__name',
                 'reference__name'
-            )
+            )            
         )
 
     def _group_and_structure_products(self, products):
@@ -77,7 +80,7 @@ class ProductManager(models.Manager):
             first = items[0]
 
             stones = self._extract_stones(items)
-
+            stones = self._filter_white_diamonds_per_product(stones)
             materials = self._extract_materials(items)
 
             for stone in stones:
@@ -120,8 +123,6 @@ class ProductManager(models.Manager):
                 'total_quantity': first['total_quantity'],
                 'is_sold_out': first['is_sold_out'],
             })
-            
-        grouped.sort(key=lambda item: len(item['stones']), reverse=True)
 
         return grouped, colors_by_count, stones_by_count
 
@@ -136,7 +137,7 @@ class ProductManager(models.Manager):
         return materials_count
 
     def _extract_stones(self, items):
-        products = []
+        stone_set = set()
 
         for item in items:
             product_id = item['id']
@@ -147,7 +148,21 @@ class ProductManager(models.Manager):
             image = item['stone_by_color__image']
             hex_code = item['stone_by_color__color__hex_code']
 
-            products.append({
+            if (color or stone or image) and product_id:
+                stone_set.add(
+                    (
+                        product_id,
+                        color,
+                        color_id,
+                        stone,
+                        stone_id,
+                        image,
+                        hex_code,
+                    )
+                )
+
+        return [
+            {
                 'product_id': product_id,
                 'color': color,
                 'color_id': color_id,
@@ -155,9 +170,17 @@ class ProductManager(models.Manager):
                 'stone_id': stone_id,
                 'image': image,
                 'hex': hex_code,
-            })
-
-        return products
+            }
+            for (
+                product_id,
+                color,
+                color_id,
+                stone,
+                stone_id,
+                image,
+                hex_code,
+            ) in stone_set
+        ]
 
     def _filter_white_diamonds_per_product(self, stones):
         from collections import defaultdict
@@ -167,7 +190,7 @@ class ProductManager(models.Manager):
             stones_by_product[stone['product_id']].append(stone)
 
         filtered_stones = []
-        for product_stones in stones_by_product.values():
+        for product_id, product_stones in stones_by_product.items():
             only_white_diamond = all(
                 s['stone'] == 'Diamond' and s['color'] == 'White'
                 for s in product_stones

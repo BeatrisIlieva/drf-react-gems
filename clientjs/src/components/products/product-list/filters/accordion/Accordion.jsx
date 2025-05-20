@@ -11,7 +11,8 @@ export const Accordion = ({
     colorsData,
     data,
     isLast,
-    updateColors
+    addColorToFiltration,
+    removeColorFromFiltration
 }) => {
     const [displayFilterItem, setDisplayFilterItem] = useState(false);
 
@@ -21,11 +22,7 @@ export const Accordion = ({
 
     return (
         <div className={styles['accordion']}>
-            <div
-                className={`${styles['filter-title']} ${
-                    isLast ? styles['is-last'] : ''
-                }`.trim()}
-            >
+            <div className={`${styles['filter-title']} ${isLast ? styles['is-last'] : ''}`.trim()}>
                 <h5>{data.title}</h5>
                 <button onClick={toggleDisplayFilterItem}>
                     {displayFilterItem ? <ArrowUpIcon /> : <ArrowDownIcon />}
@@ -40,14 +37,18 @@ export const Accordion = ({
                 >
                     {data.title === 'Color' ? (
                         Object.entries(colorsData).map(([color, value]) => (
-                            <SelectionBox key={color}>
+                            <SelectionBox
+                                key={color}
+                                removeColorFromFiltration={removeColorFromFiltration}
+                                colorId={value.id}
+                            >
                                 <ColorSelector
                                     key={color}
                                     color={color}
                                     count={value.count}
                                     hex={value.hex_code}
                                     colorId={value.id}
-                                    updateColors={updateColors}
+                                    addColorToFiltration={addColorToFiltration}
                                 />
                             </SelectionBox>
                         ))
