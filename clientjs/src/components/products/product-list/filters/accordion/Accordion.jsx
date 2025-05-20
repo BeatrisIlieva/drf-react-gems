@@ -6,16 +6,18 @@ import { ArrowDownIcon } from '../../../../reusable/arrow-down-icon/ArrowDownIco
 import { SelectionBox } from './selection-box/SelectionBox';
 import { ColorSelector } from './color-selector/ColorSelector';
 
-export const Accordion = ({
-    stonesData,
-    colorsData,
-    data,
-    isLast,
-    addColorToFiltration,
-    removeColorFromFiltration,
-    addStoneToFiltration,
-    removeStoneFromFiltration
-}) => {
+import { useProductContext } from '../../../../../contexts/ProductContext';
+
+export const Accordion = ({ data, isLast }) => {
+    const {
+        stonesData,
+        colorsData,
+        addColorToFiltration,
+        removeColorFromFiltration,
+        addStoneToFiltration,
+        removeStoneFromFiltration
+    } = useProductContext();
+
     const [displayFilterItem, setDisplayFilterItem] = useState(false);
 
     const toggleDisplayFilterItem = () => {

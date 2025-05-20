@@ -13,6 +13,10 @@
     height: 1.3em;
     aspect-ratio: 1/1;
     border-radius: 50%;
+    -webkit-clip-path: view-box;
+    clip-path: view-box;
+    display: block;
+    margin: 0;
 }
 
 .color-selector > span:nth-child(2) {
@@ -22,4 +26,4 @@
 
 .color-selector > span:nth-child(2) span:nth-child(2) {
     opacity: 0.5;
-} 
+}

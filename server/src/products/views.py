@@ -33,7 +33,7 @@ class ProductListView(ListAPIView):
 
         if filters:
             return ProductItem.objects.get_products(filters)
-        return {'products': [], 'colors_by_count': {}, 'stones_by_count': {}}
+        return {'products': [], 'colors_by_count': {}, 'stones_by_count': {}, 'materials_by_count': {}}
 
     def list(self, request, *args, **kwargs):
         data = self.get_products_data()
@@ -44,13 +44,15 @@ class ProductListView(ListAPIView):
             paginated_response = self.get_paginated_response(serializer.data)
             paginated_response.data['colors_by_count'] = data['colors_by_count']
             paginated_response.data['stones_by_count'] = data['stones_by_count']
+            paginated_response.data['materials_by_count'] = data['materials_by_count']
             return paginated_response
 
         serializer = self.get_serializer(data['products'], many=True)
         return Response({
             'products': serializer.data,
             'colors_by_count': data['colors_by_count'],
-            'stones_by_count': data['stones_by_count']
+            'stones_by_count': data['stones_by_count'],
+            'materials_by_count': data['materials_by_count'],
         })
 
 
