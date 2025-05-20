@@ -12,29 +12,6 @@ class ProductPagination(PageNumberPagination):
     page_size = 6
 
 
-# class ProductListView(ListAPIView):
-#     serializer_class = ProductListSerializer
-#     permission_classes = [AllowAny]
-#     pagination_class = ProductPagination
-
-#     def get_queryset(self):
-#         category_id = self.request.query_params.get('category')
-#         color_id = self.request.query_params.getlist('color')
-
-#         filters = Q()
-#         if category_id:
-#             filters &= Q(category_id=category_id)
-#         if color_id:
-#             filters &= Q(stone_by_color__color_id__in=color_id)
-
-#         if filters:
-#             products_data = ProductItem.objects.get_products(filters)
-#         else:
-#             products_data = []
-
-#         return products_data
-
-
 class ProductListView(ListAPIView):
     serializer_class = ProductListSerializer
     permission_classes = [AllowAny]
@@ -48,6 +25,7 @@ class ProductListView(ListAPIView):
         filters = Q()
         if category_id:
             filters &= Q(category_id=category_id)
+
         if color_ids:
             filters &= Q(stone_by_color__color_id__in=color_ids)
         if stone_ids:
@@ -58,10 +36,8 @@ class ProductListView(ListAPIView):
         return {'products': [], 'colors_by_count': {}, 'stones_by_count': {}}
 
     def list(self, request, *args, **kwargs):
-        # Get the full data (products and color stats)
         data = self.get_products_data()
 
-        # Paginate only the product list
         page = self.paginate_queryset(data['products'])
         if page is not None:
             serializer = self.get_serializer(page, many=True)
@@ -70,14 +46,12 @@ class ProductListView(ListAPIView):
             paginated_response.data['stones_by_count'] = data['stones_by_count']
             return paginated_response
 
-        # If pagination is not applied
         serializer = self.get_serializer(data['products'], many=True)
         return Response({
             'products': serializer.data,
             'colors_by_count': data['colors_by_count'],
             'stones_by_count': data['stones_by_count']
         })
-
 
 
 class CategoryListView(ListAPIView):

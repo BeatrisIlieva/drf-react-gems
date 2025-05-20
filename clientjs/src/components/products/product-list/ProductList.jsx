@@ -46,14 +46,22 @@ export const ProductList = () => {
             const nextPage = 1;
             setPage(nextPage);
 
-            getProducts({ categoryId, pageNumber: nextPage, colorIds: updatedColors })
+            getProducts({
+                categoryId,
+                pageNumber: nextPage,
+                colorIds: updatedColors,
+                stoneIds: stoneIds
+            })
                 .then((response) => {
                     setProducts(response.results);
                     setTotalProductsCount(response.count);
+
+                    setStonesData(response.stones_by_count);
+                    setColorsData(response.colors_by_count);
                 })
                 .catch((err) => console.log(err.message));
         },
-        [getProducts, categoryId]
+        [getProducts, categoryId, stoneIds]
     );
 
     const addColorToFiltration = useCallback(
@@ -82,14 +90,22 @@ export const ProductList = () => {
             const nextPage = 1;
             setPage(nextPage);
 
-            getProducts({ categoryId, pageNumber: nextPage, stoneIds: updatedStones })
+            getProducts({
+                categoryId,
+                pageNumber: nextPage,
+                stoneIds: updatedStones,
+                colorIds: colorIds
+            })
                 .then((response) => {
                     setProducts(response.results);
                     setTotalProductsCount(response.count);
+
+                    setStonesData(response.stones_by_count);
+                    setColorsData(response.colors_by_count);
                 })
                 .catch((err) => console.log(err.message));
         },
-        [getProducts, categoryId]
+        [getProducts, categoryId, colorIds]
     );
 
     const addStoneToFiltration = useCallback(

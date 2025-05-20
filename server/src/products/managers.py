@@ -1,6 +1,6 @@
 from django.db import models
 
-from django.db.models import Min, Max, Sum, Case, Value, BooleanField, When, Count
+from django.db.models import Min, Max, Sum, Case, Value, BooleanField, When
 from itertools import groupby
 from operator import itemgetter
 
@@ -12,7 +12,7 @@ class ProductManager(models.Manager):
         grouped_products, colors_by_count, stones_by_count = self._group_and_structure_products(
             raw_products
         )
-        
+
         return {'products': grouped_products, 'colors_by_count': colors_by_count, 'stones_by_count': stones_by_count}
 
     def _get_raw_products(self, qs):
@@ -120,7 +120,7 @@ class ProductManager(models.Manager):
                 'total_quantity': first['total_quantity'],
                 'is_sold_out': first['is_sold_out'],
             })
-            
+
         grouped.sort(key=lambda item: len(item['stones']), reverse=True)
 
         return grouped, colors_by_count, stones_by_count
