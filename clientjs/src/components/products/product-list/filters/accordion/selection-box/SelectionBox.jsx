@@ -3,12 +3,12 @@ import styles from './SelectionBox.module.css';
 
 import { XMark } from '../../../../../reusable/x-mark/XMark';
 
-export const SelectionBox = ({ children, removeColorFromFiltration, colorId }) => {
+export const SelectionBox = ({ children, itemId, removeHandler }) => {
     const [isSelected, setIsSelected] = useState(false);
 
     const toggleIsSelectedHandler = () => {
         if (isSelected) {
-            removeColorFromFiltration(colorId);
+            removeHandler(itemId);
         }
 
         setIsSelected(() => !isSelected);

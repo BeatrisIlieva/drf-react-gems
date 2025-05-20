@@ -6,7 +6,9 @@ export const Filters = ({
     colorsData,
     data,
     addColorToFiltration,
-    removeColorFromFiltration
+    removeColorFromFiltration,
+    addStoneToFiltration,
+    removeStoneFromFiltration
 }) => {
     return (
         <aside className={styles['filters']}>
@@ -19,6 +21,8 @@ export const Filters = ({
                     stonesData={stonesData}
                     colorsData={colorsData}
                     removeColorFromFiltration={removeColorFromFiltration}
+                    addStoneToFiltration={addStoneToFiltration}
+                    removeStoneFromFiltration={removeStoneFromFiltration}
                 />
             ))}
         </aside>

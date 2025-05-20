@@ -12,7 +12,9 @@ export const Accordion = ({
     data,
     isLast,
     addColorToFiltration,
-    removeColorFromFiltration
+    removeColorFromFiltration,
+    addStoneToFiltration,
+    removeStoneFromFiltration
 }) => {
     const [displayFilterItem, setDisplayFilterItem] = useState(false);
 
@@ -35,26 +37,41 @@ export const Accordion = ({
                         displayFilterItem ? styles['visible'] : ''
                     }`.trim()}
                 >
-                    {data.title === 'Color' ? (
-                        Object.entries(colorsData).map(([color, value]) => (
-                            <SelectionBox
-                                key={color}
-                                removeColorFromFiltration={removeColorFromFiltration}
-                                colorId={value.id}
-                            >
-                                <ColorSelector
-                                    key={color}
-                                    color={color}
-                                    count={value.count}
-                                    hex={value.hex_code}
-                                    colorId={value.id}
-                                    addColorToFiltration={addColorToFiltration}
-                                />
-                            </SelectionBox>
-                        ))
-                    ) : (
-                        <div>Other filter content</div>
-                    )}
+                    {data.title === 'Color'
+                        ? Object.entries(colorsData).map(([color, value]) => (
+                              <SelectionBox
+                                  key={color}
+                                  removeHandler={removeColorFromFiltration}
+                                  itemId={value.id}
+                              >
+                                  <ColorSelector
+                                      key={color}
+                                      title={color}
+                                      count={value.count}
+                                      hex={value.hex_code}
+                                      itemId={value.id}
+                                      addFiltration={addColorToFiltration}
+                                  />
+                              </SelectionBox>
+                          ))
+                        : data.title === 'Stone'
+                        ? Object.entries(stonesData).map(([stone, value]) => (
+                              <SelectionBox
+                                  key={stone}
+                                  removeHandler={removeStoneFromFiltration}
+                                  itemId={value.id}
+                              >
+                                  <ColorSelector
+                                      key={stone}
+                                      title={stone}
+                                      count={value.count}
+                                      image={value.image}
+                                      itemId={value.id}
+                                      addFiltration={addStoneToFiltration}
+                                  />
+                              </SelectionBox>
+                          ))
+                        : null}
                 </li>
             </ul>
         </div>

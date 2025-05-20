@@ -58,6 +58,7 @@ export const useProducts = () => {
             categoryId,
             pageNumber = null,
             colorIds = [],
+            stoneIds = [],
             stoneId = null,
             materialId = null
         }) => {
@@ -66,7 +67,10 @@ export const useProducts = () => {
             if (categoryId) params.append('category', categoryId);
             if (pageNumber) params.append('page', pageNumber);
             if (colorIds) {
-                colorIds.forEach((id) => params.append('color', id));
+                colorIds.forEach((id) => params.append('color_ids', id));
+            }
+            if (stoneIds) {
+                stoneIds.forEach((id) => params.append('stone_ids', id));
             }
             if (stoneId) params.append('stone', stoneId);
             if (materialId) params.append('material', materialId);

@@ -27,12 +27,15 @@ export const ProductList = () => {
     const [loadMoreDisabled, setLoadMoreDisabled] = useState(false);
     const [filtersData, setFiltersData] = useState(initialFiltersData);
     const [colorIds, setColorIds] = useState([]);
+    const [stoneIds, setStoneIds] = useState([]);
     const [stonesData, setStonesData] = useState({});
     const [colorsData, setColorsData] = useState({});
 
     useEffect(() => {
         setColorsData({});
         setColorIds([]);
+        setStonesData({});
+        setStoneIds([]);
         setPage(1);
     }, [location]);
 
@@ -70,6 +73,42 @@ export const ProductList = () => {
             updateColors(result);
         },
         [colorIds, updateColors]
+    );
+
+    const updateStones = useCallback(
+        (updatedStones) => {
+            setStoneIds(updatedStones);
+
+            const nextPage = 1;
+            setPage(nextPage);
+
+            getProducts({ categoryId, pageNumber: nextPage, stoneIds: updatedStones })
+                .then((response) => {
+                    setProducts(response.results);
+                    setTotalProductsCount(response.count);
+                })
+                .catch((err) => console.log(err.message));
+        },
+        [getProducts, categoryId]
+    );
+
+    const addStoneToFiltration = useCallback(
+        (stoneId) => {
+            const updatedStones = [...stoneIds, stoneId];
+
+            updateStones(updatedStones);
+        },
+        [stoneIds, updateStones]
+    );
+
+    const removeStoneFromFiltration = useCallback(
+        (stoneId) => {
+            const updatedStones = [...stoneIds];
+            const result = updatedStones.filter((id) => id !== stoneId);
+
+            updateStones(result);
+        },
+        [stoneIds, updateStones]
     );
 
     useEffect(() => {
@@ -138,6 +177,8 @@ export const ProductList = () => {
                     data={filtersData}
                     addColorToFiltration={addColorToFiltration}
                     removeColorFromFiltration={removeColorFromFiltration}
+                    addStoneToFiltration={addStoneToFiltration}
+                    removeStoneFromFiltration={removeStoneFromFiltration}
                 />
                 <section>
                     <ul>
