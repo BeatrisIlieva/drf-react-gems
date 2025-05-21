@@ -1,8 +1,9 @@
 from django.db import models
 
-from django.db.models import Min, Max, Sum, Case, Value, BooleanField, When, Count
+from django.db.models import Min, Max, Sum, Case, Value, BooleanField, When, Count, CharField, IntegerField
 from itertools import groupby
 from operator import itemgetter
+from decimal import Decimal
 
 
 class ProductManager(models.Manager):
@@ -15,11 +16,14 @@ class ProductManager(models.Manager):
 
         materials_by_count = self._get_material_usage_count(qs)
 
+        price_ranges = self._get_price_ranges(qs)
+
         return {
             'products': grouped_products,
             'colors_by_count': colors_by_count,
             'stones_by_count': stones_by_count,
-            'materials_by_count': materials_by_count
+            'materials_by_count': materials_by_count,
+            'price_ranges': price_ranges,
         }
 
     def _get_raw_products(self, qs):
@@ -32,7 +36,7 @@ class ProductManager(models.Manager):
             )
             .prefetch_related(
                 'stone_by_color__color',
-                'stone_by_color__stone'
+                'stone_by_color__stone',
             )
             .values(
                 'id',
@@ -50,9 +54,9 @@ class ProductManager(models.Manager):
                 'stone_by_color__color__hex_code',
             )
             .annotate(
-                min_price=Min('productvariant__price'),
-                max_price=Max('productvariant__price'),
-                total_quantity=Sum('productvariant__quantity'),
+                min_price=Min('productsize__price'),
+                max_price=Max('productsize__price'),
+                total_quantity=Sum('productsize__quantity'),
                 is_sold_out=Case(
                     When(total_quantity=0, then=Value(True)),
                     default=Value(False),
@@ -72,7 +76,6 @@ class ProductManager(models.Manager):
         grouped = []
         colors_by_count = {}
         stones_by_count = {}
-        # materials_by_count = {}
 
         for key, group in groupby(products, key=itemgetter(
                 'collection__name',
@@ -193,4 +196,37 @@ class ProductManager(models.Manager):
             qs.values('material__name', 'material__id')
             .annotate(material_count=Count('id'))
             .order_by('-material_count')
+        )
+
+    def _get_price_ranges(self, qs):
+        return (
+            qs.annotate(
+                price_range=Case(
+                    When(productsize__price__lt=Decimal(
+                        '3000'), then=Value('Under $3000')),
+                    When(productsize__price__lt=Decimal(
+                        '5000'), then=Value('$3000 - $4999')),
+                    When(productsize__price__lt=Decimal(
+                        '7000'), then=Value('$5000 - $6999')),
+                    When(productsize__price__lt=Decimal(
+                        '9000'), then=Value('$7000 - $8999')),
+                    When(productsize__price__gte=Decimal(
+                        '9001'), then=Value('$9000+')),
+                    default=Value("Unknown Price Range"),
+                    output_field=CharField(),
+                )
+            ).annotate(
+                sort_order=Case(
+                    When(price_range='Under $3000', then=Value(0)),
+                    When(price_range='$3000 - $4999', then=Value(1)),
+                    When(price_range='$5000 - $6999', then=Value(2)),
+                    When(price_range='$7000 - $8999', then=Value(3)),
+                    When(price_range='$9000+', then=Value(4)),
+                    default=Value(99),
+                    output_field=IntegerField(),
+                )
+            )
+            .values('price_range')
+            .annotate(count=Count('price_range'))
+            .order_by('sort_order')
         )

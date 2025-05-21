@@ -1,8 +1,7 @@
 import random
 
-from src.products.models.relationships.size import Size
-from src.products.models.product_item import ProductItem
-from src.products.models.product_variant import ProductVariant
+from src.products.models.relationships.size import Size, ProductSize
+from src.products.models.product import Product
 from src.products.models.relationships.category import Category
 from src.products.models.relationships.collection import Collection
 from src.products.models.relationships.color import Color
@@ -13,7 +12,6 @@ from src.products.models.relationships.stone_by_color import StoneByColor
 
 
 def create_product(product_data):
-
     category = Category.objects.get(
         name=product_data['category']
     )
@@ -29,28 +27,27 @@ def create_product(product_data):
     first_image = product_data['first_image']
     second_image = product_data['second_image']
 
-    product_item = ProductItem.objects.create(
+    stone = product_data['stone_by_color']
+
+    color_name, stone_name = stone.split(' ')
+
+    color = Color.objects.get(name=color_name)
+    stone = Stone.objects.get(name=stone_name)
+
+    stone_by_color = StoneByColor.objects.get(
+        color=color,
+        stone=stone,
+    )
+
+    product = Product.objects.create(
         first_image=first_image,
         second_image=second_image,
         category=category,
         collection=collection,
         reference=reference,
-        material=material
+        material=material,
+        stone_by_color=stone_by_color
     )
-
-    stones = product_data['stone_by_color']
-    for element in stones:
-        color_name, stone_name = element.split(' ')
-
-        color = Color.objects.get(name=color_name)
-        stone = Stone.objects.get(name=stone_name)
-
-        stone_color = StoneByColor.objects.get(
-            color=color,
-            stone=stone,
-        )
-
-        product_item.stone_by_color.add(stone_color)
 
     price = product_data['price']
     one_size = Size.objects.filter(name='One Size')
@@ -63,13 +60,13 @@ def create_product(product_data):
 
     current_price = price
     for size in size_list:
-        quantity = random.randint(2, 5)
+        quantity = random.randint(0, 5)
 
-        ProductVariant.objects.create(
+        ProductSize.objects.create(
+            product=product,
             size=size,
             price=current_price,
             quantity=quantity,
-            product_item=product_item
         )
 
         current_price += 180

@@ -1,0 +1,12 @@
+button, input, select, optgroup, textarea {
+    font: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    opacity: 1;
+    background-color: #0000;
+    border-radius: 0.3rem;
+    border: 0.1rem solid lightgray !important;
+    padding: 0.3rem;
+}

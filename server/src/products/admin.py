@@ -1,16 +1,14 @@
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from django.contrib import admin
-from unfold.admin import ModelAdmin
 
-from src.products.models.product_variant import ProductVariant
 from src.products.models.relationships.collection import Collection
 from src.products.models.relationships.material import Material
 from src.products.models.relationships.reference import Reference
-from src.products.models.relationships.size import Size
+from src.products.models.relationships.size import ProductSize, Size
 from src.products.models.relationships.category import Category
 from src.products.models.relationships.stone_by_color import StoneByColor
-from src.products.models import ProductItem
+from src.products.models import Product
 from src.products.models.relationships.color import Color
 from src.products.models.relationships.stone import Stone
 
@@ -82,18 +80,19 @@ class ColorListFilter(admin.SimpleListFilter):
         if self.value():
             return queryset.filter(stone_by_color__color__id=self.value()).distinct()
         return queryset
+    
+
+    
+class ProductSizeInline(admin.TabularInline):
+    model = ProductSize
+    max_num = 1  
+    min_num = 1
+    validate_min = True
 
 
-@admin.register(ProductVariant)
-class ProductVariantAdmin(admin.ModelAdmin):
-    list_display = (
-        'size',
-        'price',
-    )
-
-
-@admin.register(ProductItem)
-class ProductItemAdmin(admin.ModelAdmin):
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    inlines = [ProductSizeInline]
 
     list_display = (
         'first_picture',
@@ -128,12 +127,6 @@ class ProductItemAdmin(admin.ModelAdmin):
     )
 
     fieldsets = (
-        # ('Stock & Size', {
-        #     'fields': (
-        #         'product_item_product_variant_set__price',
-        #         # 'quantity',
-        #     )
-        # }),
         ('Images', {
             'fields': (
                 'first_image',

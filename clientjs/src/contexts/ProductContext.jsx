@@ -164,7 +164,7 @@ export const ProductProvider = ({ children }) => {
                 removeMaterialFromFiltration: (id) => updateMaterials(materialIds.filter((s) => s !== id)),
                 colorsData,
                 stonesData,
-                materialsData
+                materialsData,
             }}
         >
             {children}

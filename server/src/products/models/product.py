@@ -3,7 +3,7 @@ from django.db import models
 from src.products.managers import ProductManager
 
 
-class ProductItem(models.Model):
+class Product(models.Model):
 
     first_image = models.URLField(
         unique=True,
@@ -17,6 +17,10 @@ class ProductItem(models.Model):
         error_messages={
             'unique': 'This image already exists.'
         }
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
     )
 
     category = models.ForeignKey(
@@ -39,11 +43,18 @@ class ProductItem(models.Model):
         on_delete=models.CASCADE,
     )
 
-    stone_by_color = models.ManyToManyField(
+    stone_by_color = models.ForeignKey(
         to='products.StoneByColor',
+        on_delete=models.CASCADE,
+    )
+
+    sizes = models.ManyToManyField(
+        to='products.Size',
+        through='products.ProductSize'
     )
 
     objects = ProductManager()
 
     def __str__(self):
         return f'{self.collection} {self.reference} {self.category}'
+

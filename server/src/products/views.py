@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny
 
 from src.products.models.relationships.category import Category
 from src.products.serializers import CategorySerializer, ProductListSerializer
-from src.products.models.product_item import ProductItem
+from src.products.models.product import Product
 
 
 class ProductPagination(PageNumberPagination):
@@ -35,8 +35,8 @@ class ProductListView(ListAPIView):
             filters &= Q(material__id__in=material_ids)
 
         if filters:
-            return ProductItem.objects.get_products(filters)
-        return {'products': [], 'colors_by_count': {}, 'stones_by_count': {}, 'materials_by_count': {}}
+            return Product.objects.get_products(filters)
+        return {'products': [], 'colors_by_count': {}, 'stones_by_count': {}, 'materials_by_count': {}, 'price_ranges': {}}
 
     def list(self, request, *args, **kwargs):
         data = self.get_products_data()
@@ -48,6 +48,7 @@ class ProductListView(ListAPIView):
             paginated_response.data['colors_by_count'] = data['colors_by_count']
             paginated_response.data['stones_by_count'] = data['stones_by_count']
             paginated_response.data['materials_by_count'] = data['materials_by_count']
+            paginated_response.data['price_ranges'] = data['price_ranges']
             return paginated_response
 
         serializer = self.get_serializer(data['products'], many=True)
@@ -56,6 +57,7 @@ class ProductListView(ListAPIView):
             'colors_by_count': data['colors_by_count'],
             'stones_by_count': data['stones_by_count'],
             'materials_by_count': data['materials_by_count'],
+            'price_ranges': data['price_ranges'],
         })
 
 

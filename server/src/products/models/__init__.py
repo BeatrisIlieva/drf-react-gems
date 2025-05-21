@@ -6,5 +6,5 @@ from .relationships.reference import *
 from .relationships.size import *
 from .relationships.stone import *
 from .relationships.stone_by_color import *
-from .product_item import *
-from .product_variant import *
+from .product import *
+

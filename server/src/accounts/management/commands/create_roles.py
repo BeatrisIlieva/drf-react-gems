@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
-from src.products.models import ProductItem
+from src.products.models import Product
 from src.products.models import ProductVariant
 from src.products.models.relationships.collection import Collection
 from src.products.models.relationships.material import Material
@@ -26,7 +26,7 @@ class Command(BaseCommand):
 
         # === Define model content types ===
         models_permissions = {
-            ProductItem: ['add', 'change', 'delete', 'view'],
+            Product: ['add', 'change', 'delete', 'view'],
             ProductVariant: ['add', 'change', 'delete', 'view'],
             Collection: ['add', 'change', 'delete', 'view'],
             Material: ['add', 'change', 'delete', 'view'],

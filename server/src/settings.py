@@ -219,19 +219,12 @@ UNFOLD = {
             {
                 "title": _("Products"),
                 "separator": True,
-                # "collapsible": True,
                 "items": [
                     {
-                        "title": _("Product Items"),
+                        "title": _("Products"),
                         "icon": "inventory",
-                        "link": reverse_lazy("admin:products_productitem_changelist"),
+                        "link": reverse_lazy("admin:products_product_changelist"),
                     },
-                    {
-                        "title": _("Product Variants"),
-                        "icon": "inventory",
-                        "link": reverse_lazy("admin:products_productvariant_changelist"),
-                    }
-
                 ],
             },
             {
