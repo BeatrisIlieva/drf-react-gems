@@ -1,0 +1,4 @@
+.white {
+    border: 0.1em solid var(--dark-grey);
+    opacity: 0.7;
+}

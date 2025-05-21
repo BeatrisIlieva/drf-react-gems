@@ -32,25 +32,31 @@ function App() {
 
     return (
         <div className={styles['body']}>
+                        
             <Header />
             <main className={styles['main']}>
-            <ProductProvider>
+
 
                 <Routes>
                     <Route index element={<Home />} />
                     <Route path='/my-account/register' element={<Register />} />
                     <Route path='/my-account/login' element={<Login />} />
+
                         <Route
                             path='/products/:categoryName/:categoryId'
-                            element={<ProductList />}
+                            element={
+                                <ProductProvider>
+                            <ProductList />
+                            </ProductProvider>}
                         />
                     <Route element={<AuthGuard />}>
                         <Route path='/my-account/details' element={<Details />} />
                     </Route>
                 </Routes>
-                </ProductProvider>
+                
 
             </main>
+            
             <Footer />
             <ScrollToTop />
         </div>
