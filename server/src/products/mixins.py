@@ -25,3 +25,8 @@ class CaseInsensitiveUniqueNameFieldMixin:
             raise ValidationError({
                 'name': f'A {model.__name__.lower()} with this name already exists (case-insensitive).'
             })
+
+
+class InventoryInfoMixin:
+    def __str__(self):
+        return f'Price: {self.inventory.price} - Quantity: {self.inventory.quantity} - Size: {self.inventory.size.name} cm.'

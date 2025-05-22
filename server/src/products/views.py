@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny
 
 from src.products.models.relationships.category import Category
 from src.products.serializers import CategorySerializer, ProductListSerializer
-from src.products.models.product import Product
+from src.products.models.base import Product
 
 
 class ProductPagination(PageNumberPagination):

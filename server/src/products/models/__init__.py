@@ -7,4 +7,7 @@ from .relationships.size import *
 from .relationships.stone import *
 from .relationships.stone_by_color import *
 from .product import *
-
+from .earwear import *
+from .fingerwear import *
+from .neckwear import *
+from .wristwear import *

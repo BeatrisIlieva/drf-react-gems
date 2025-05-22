@@ -5,17 +5,29 @@ from django.contrib import admin
 from src.products.models.relationships.collection import Collection
 from src.products.models.relationships.material import Material
 from src.products.models.relationships.reference import Reference
-from src.products.models.relationships.size import ProductSize, Size
-from src.products.models.relationships.category import Category
 from src.products.models.relationships.stone_by_color import StoneByColor
-from src.products.models import Product
 from src.products.models.relationships.color import Color
 from src.products.models.relationships.stone import Stone
 
-
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    pass
+from src.products.models.fingerwear import (
+    Fingerwear,
+    FingerwearInventory,
+    FingerwearInventoryLink,
+    FingerwearSize
+)
+from src.products.models.wristwear import (
+    Wristwear,
+    WristwearInventory,
+    WristwearInventoryLink,
+    WristwearSize
+)
+from src.products.models.earwear import Earwear
+from src.products.models.neckwear import (
+    Neckwear,
+    NeckwearInventoryLink,
+    NeckwearSize,
+    NeckwearInventory
+)
 
 
 @admin.register(Collection)
@@ -38,11 +50,6 @@ class ReferenceAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Size)
-class SizeAdmin(admin.ModelAdmin):
-    pass
-
-
 @admin.register(StoneByColor)
 class StoneByColorAdmin(admin.ModelAdmin):
     pass
@@ -54,18 +61,14 @@ class StoneAdmin(admin.ModelAdmin):
 
 
 class StoneListFilter(admin.SimpleListFilter):
-
     title = _('Stone')
     parameter_name = 'stone'
 
     def lookups(self, request, model_admin):
-        stones = Stone.objects.all()
-        return [(stone.id, stone.name) for stone in stones]
+        return [(s.id, s.name) for s in Stone.objects.all()]
 
     def queryset(self, request, queryset):
-        if self.value():
-            return queryset.filter(stone_by_color__stone__id=self.value()).distinct()
-        return queryset
+        return queryset.filter(stone_by_color__stone__id=self.value()) if self.value() else queryset
 
 
 class ColorListFilter(admin.SimpleListFilter):
@@ -73,53 +76,103 @@ class ColorListFilter(admin.SimpleListFilter):
     parameter_name = 'color'
 
     def lookups(self, request, model_admin):
-        colors = Color.objects.all()
-        return [(color.id, color.name) for color in colors]
+        return [(c.id, c.name) for c in Color.objects.all()]
 
     def queryset(self, request, queryset):
-        if self.value():
-            return queryset.filter(stone_by_color__color__id=self.value()).distinct()
-        return queryset
-    
+        return queryset.filter(stone_by_color__color__id=self.value()) if self.value() else queryset
 
-    
-class ProductSizeInline(admin.TabularInline):
-    model = ProductSize
-    max_num = 1  
+
+class NeckwearInventoryLinkInline(admin.TabularInline):
+    model = NeckwearInventoryLink
     min_num = 1
+    max_num = 1
     validate_min = True
 
 
-@admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
-    inlines = [ProductSizeInline]
+class FingerInventoryLinkInline(admin.TabularInline):
+    model = FingerwearInventoryLink
+    min_num = 1
+    max_num = 1
+    validate_min = True
 
+
+class WristInventoryLinkInline(admin.TabularInline):
+    model = WristwearInventoryLink
+    min_num = 1
+    max_num = 1
+    validate_min = True
+
+
+@admin.register(NeckwearSize)
+class NeckwearSizeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(NeckwearInventory)
+class NeckwearInventoryAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(NeckwearInventoryLink)
+class NeckwearInventoryLinkAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(FingerwearSize)
+class FingerwearSizeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(FingerwearInventory)
+class FingerwearInventoryAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(FingerwearInventoryLink)
+class FingerwearInventoryLinkAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(WristwearSize)
+class WristwearSizeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(WristwearInventory)
+class WristwearInventoryAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(WristwearInventoryLink)
+class WristwearInventoryLinkAdmin(admin.ModelAdmin):
+    pass
+
+
+class BaseProductAdmin(admin.ModelAdmin):
     list_display = (
         'first_picture',
         'second_picture',
-        'category',
         'collection',
         'reference',
+        'created_at'
     )
 
     list_filter = (
         StoneListFilter,
         ColorListFilter,
-        'category',
         'collection',
         'reference',
-        'material',
+        'material'
     )
 
     ordering = (
         'collection',
         'reference',
-        'category',
         'material',
+        'created_at'
     )
 
     search_fields = (
-        'category__name',
         'collection__name',
         'reference__name',
         'stone_by_color__color__name',
@@ -127,52 +180,57 @@ class ProductAdmin(admin.ModelAdmin):
     )
 
     fieldsets = (
-        ('Images', {
-            'fields': (
-                'first_image',
-                'second_image',
-            )
-        }),
-        ('Material and Design', {
-            'fields': (
-                'category',
-                'collection',
-                'reference',
-                'material',
-                'stone_by_color',
-            )
-        }),
+        ('Images',
+         {
+             'fields': (
+                 'first_image',
+                 'second_image'
+             )
+         }),
+        ('Material and Design',
+         {
+             'fields': (
+                 'collection',
+                 'reference',
+                 'material',
+                 'stone_by_color'
+             )
+         }),
     )
 
     def first_picture(self, obj):
         return format_html(
-            '<img src="{}" width="100" height="100" style="object-fit: cover;" />',
-            obj.first_image
+            '<img src="{}" width="100" height="100" style="object-fit: cover;" />', obj.first_image
         )
 
     def second_picture(self, obj):
         return format_html(
-            '<img src="{}" width="100" height="100" style="object-fit: cover;" />',
-            obj.second_image
+            '<img src="{}" width="100" height="100" style="object-fit: cover;" />', obj.second_image
         )
 
-    def description(self, obj):
-        stones_colors = []
 
-        for el in obj.stones_colors.select_related('stone', 'color').all():
-            stones_colors.append(f'{el.color.name} {el.stone.name}')
+@admin.register(Neckwear)
+class NeckwearAdmin(BaseProductAdmin):
+    inlines = [NeckwearInventoryLinkInline]
 
-        string = ''
 
-        if len(stones_colors) > 1:
-            for i, el in enumerate(stones_colors):
-                if i == len(stones_colors) - 2:
-                    string += f'{el}s and {stones_colors[i + 1]}s'
+@admin.register(Fingerwear)
+class FingerwearAdmin(BaseProductAdmin):
+    inlines = [FingerInventoryLinkInline]
 
-                    break
-                else:
-                    string += f'{el}s, '
-        else:
-            string += stones_colors[0] + 's'
 
-        return string + f' set in {obj.material}.'
+@admin.register(Wristwear)
+class WristwearAdmin(BaseProductAdmin):
+    inlines = [WristInventoryLinkInline]
+
+
+@admin.register(Earwear)
+class EarwearAdmin(BaseProductAdmin):
+    fieldsets = BaseProductAdmin.fieldsets + (
+        ('Inventory', {
+            'fields': (
+                'price',
+                'quantity'
+            ),
+        }),
+    )

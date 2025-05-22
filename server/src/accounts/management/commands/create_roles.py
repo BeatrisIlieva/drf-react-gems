@@ -2,13 +2,13 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
-from src.products.models import Product
-from src.products.models import ProductVariant
+from src.products.models.earwear import Earwear
+from src.products.models.fingerwear import Fingerwear, FingerwearInventoryLink
+from src.products.models.neckwear import Neckwear, NeckwearInventoryLink
+from src.products.models.wristwear import Wristwear, WristwearInventoryLink
 from src.products.models.relationships.collection import Collection
 from src.products.models.relationships.material import Material
 from src.products.models.relationships.reference import Reference
-from src.products.models.relationships.size import Size
-from src.products.models.relationships.category import Category
 from src.products.models.relationships.stone_by_color import StoneByColor
 from src.products.models.relationships.color import Color
 from src.products.models.relationships.stone import Stone
@@ -26,13 +26,16 @@ class Command(BaseCommand):
 
         # === Define model content types ===
         models_permissions = {
-            Product: ['add', 'change', 'delete', 'view'],
-            ProductVariant: ['add', 'change', 'delete', 'view'],
+            Earwear: ['add', 'change', 'delete', 'view'],
+            Fingerwear: ['add', 'change', 'delete', 'view'],
+            Neckwear: ['add', 'change', 'delete', 'view'],
+            Wristwear: ['add', 'change', 'delete', 'view'],
+            FingerwearInventoryLink: ['add', 'change', 'delete', 'view'],
+            NeckwearInventoryLink: ['add', 'change', 'delete', 'view'],
+            WristwearInventoryLink: ['add', 'change', 'delete', 'view'],
             Collection: ['add', 'change', 'delete', 'view'],
             Material: ['add', 'change', 'delete', 'view'],
             Reference: ['add', 'change', 'delete', 'view'],
-            Size: ['add', 'change', 'delete', 'view'],
-            Category: ['add', 'change', 'delete', 'view'],
             StoneByColor: ['add', 'change', 'delete', 'view'],
             Color: ['add', 'change', 'delete', 'view'],
             Stone: ['add', 'change', 'delete', 'view'],

@@ -200,7 +200,8 @@ class ProductManager(models.Manager):
 
     def _get_price_ranges(self, qs):
         return (
-            qs.annotate(
+            qs
+            .annotate(
                 price_range=Case(
                     When(productsize__price__lt=Decimal(
                         '3000'), then=Value('Under $3000')),

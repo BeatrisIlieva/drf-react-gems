@@ -1,5 +1,3 @@
-
-
 from django.db import models
 
 from src.products.mixins import CaseInsensitiveUniqueNameFieldMixin, NameFieldMixin
@@ -10,10 +8,18 @@ class Size(NameFieldMixin, CaseInsensitiveUniqueNameFieldMixin):
 
 
 class ProductSize(models.Model):
+    class Meta:
+        unique_together = ('product', 'size')
+
     PRICE_MAX_DIGITS = 7
     PRICE_DECIMAL_PLACES = 2
 
-    name = models.ForeignKey(
+    product = models.ForeignKey(
+        'products.Product',
+        on_delete=models.CASCADE
+    )
+
+    size = models.ForeignKey(
         'products.Size',
         on_delete=models.CASCADE
     )

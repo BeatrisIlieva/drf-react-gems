@@ -1,17 +1,12 @@
-from src.products.models.relationships.category import Category
 from src.products.models import Collection
 from src.products.models import Material
 from src.products.models import Reference
-from src.products.models import Size
+from src.products.models.fingerwear import FingerwearSize
+from src.products.models.neckwear import NeckwearSize
+from src.products.models.wristwear import WristwearSize
 
 
 entities_as_list_mapper = {
-    Category: [
-        'Wristwear',
-        'Earwear',
-        'Neckwear',
-        'Fingerwear'
-    ],
     Collection: [
         'Daisy',
         'Gerbera',
@@ -42,12 +37,27 @@ entities_as_list_mapper = {
         'Classics',
         'Elegant',
     ],
-    Size: [
-        'XS',
-        'S',
-        'M',
-        'L',
-        'XL',
-        'One Size',
+    FingerwearSize: [
+        4.90,
+        5.05,
+        5.30,
+        5.43,
+        5.56,
+        5.68,
+    ],
+    NeckwearSize: [
+        40.64,
+        45.72,
+        50.80,
+        71.28,
+        91.44,
+        142.88
+    ],
+    WristwearSize: [
+        12.70,
+        14.20,
+        15.40,
+        16.50,
+        17.80,
     ]
 }

@@ -1,4 +1,8 @@
-button, input, select, optgroup, textarea {
+button,
+input,
+select,
+optgroup,
+textarea {
     font: inherit;
     font-feature-settings: inherit;
     font-variation-settings: inherit;
@@ -9,4 +13,36 @@ button, input, select, optgroup, textarea {
     border-radius: 0.3rem;
     border: 0.1rem solid lightgray !important;
     padding: 0.3rem;
+}
+
+label {
+    font-weight: 700;
+    margin-bottom: 1em;
+    color: #000;
+    opacity: 0.8;
+}
+
+button {
+    cursor: pointer;
+}
+
+input,
+select {
+    padding: 0.6em !important;
+}
+
+#content-main .related-widget-wrapper {
+    display: flex;
+    flex-wrap: wrap !important;
+    gap: 0.5em;
+    justify-content: center;
+}
+
+#content-main .related-widget-wrapper select {
+    flex: 0 0 100%;
+}
+
+#content-main .related-widget-wrapper-link {
+    flex: 0 0 20%;
+    display: flex;
 }

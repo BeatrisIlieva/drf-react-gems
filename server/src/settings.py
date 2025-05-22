@@ -203,87 +203,97 @@ AUTH_USER_MODEL = 'accounts.UserCredential'
 
 
 UNFOLD = {
-    "SITE_DROPDOWN": [
+    'SITE_DROPDOWN': [
         {
-            "icon": "diamond",
-            "title": _("DRF-React-TS Gems"),
-            "link": "/",
+            'icon': 'diamond',
+            'title': _('DRF-React-TS Gems'),
+            'link': '/',
         },
     ],
-    "THEME": "light",
-    "STYLES": [
-        lambda request: static("css/style.css"),
+    'THEME': 'light',
+    'STYLES': [
+        lambda request: static('css/style.css'),
     ],
-    "SIDEBAR": {
-        "navigation": [
+    'SIDEBAR': {
+        'navigation': [
             {
-                "title": _("Products"),
-                "separator": True,
-                "items": [
+                'title': _('Products'),
+                'separator': True,
+                'items': [
                     {
-                        "title": _("Products"),
-                        "icon": "inventory",
-                        "link": reverse_lazy("admin:products_product_changelist"),
+                        'title': _('Earwear'),
+                        'icon': 'inventory',
+                        'link': reverse_lazy('admin:products_earwear_changelist'),
+                    },
+                    {
+                        'title': _('Fingerwear'),
+                        'icon': 'inventory',
+                        'link': reverse_lazy('admin:products_fingerwear_changelist'),
+                    },
+                    {
+                        'title': _('Neckwear'),
+                        'icon': 'inventory',
+                        'link': reverse_lazy('admin:products_neckwear_changelist'),
+                    },
+                    {
+                        'title': _('Wristwear'),
+                        'icon': 'inventory',
+                        'link': reverse_lazy('admin:products_wristwear_changelist'),
                     },
                 ],
             },
             {
-                "title": _("Product Properties"),
-                "separator": True,
-                "collapsible": True,
-                "items": [
+                'title': _('Product Properties'),
+                'separator': True,
+                'collapsible': True,
+                'items': [
                     {
-                        "title": _("Categories"),
-                        "icon": "category",
-                        "link": reverse_lazy("admin:products_category_changelist"),
+                        'title': _('Collections'),
+                        'icon': 'Bookmarks',
+                        'link': reverse_lazy('admin:products_collection_changelist'),
                     },
                     {
-                        "title": _("Collections"),
-                        "icon": "Bookmarks",
-                        "link": reverse_lazy("admin:products_collection_changelist"),
+                        'title': _('Colors'),
+                        'icon': 'Palette',
+                        'link': reverse_lazy('admin:products_color_changelist'),
                     },
                     {
-                        "title": _("Colors"),
-                        "icon": "Palette",
-                        "link": reverse_lazy("admin:products_color_changelist"),
+                        'title': _('Materials'),
+                        'icon': 'Texture',
+                        'link': reverse_lazy('admin:products_material_changelist'),
                     },
                     {
-                        "title": _("Materials"),
-                        "icon": "Texture",
-                        "link": reverse_lazy("admin:products_material_changelist"),
+                        'title': _('Reference'),
+                        'icon': 'Topic',
+                        'link': reverse_lazy('admin:products_reference_changelist'),
+                    },
+                    # {
+                    #     'title': _('Size'),
+                    #     'icon': 'text_fields',
+                    #     'link': reverse_lazy('admin:products_size_changelist'),
+                    # },
+                    {
+                        'title': _('Stone'),
+                        'icon': 'Diamond',
+                        'link': reverse_lazy('admin:products_stone_changelist'),
                     },
                     {
-                        "title": _("Reference"),
-                        "icon": "Topic",
-                        "link": reverse_lazy("admin:products_reference_changelist"),
-                    },
-                    {
-                        "title": _("Size"),
-                        "icon": "text_fields",
-                        "link": reverse_lazy("admin:products_size_changelist"),
-                    },
-                    {
-                        "title": _("Stone"),
-                        "icon": "Diamond",
-                        "link": reverse_lazy("admin:products_stone_changelist"),
-                    },
-                    {
-                        "title": _("Stone by Color"),
-                        "icon": "Diamond",
-                        "link": reverse_lazy("admin:products_stonebycolor_changelist"),
+                        'title': _('Stone by Color'),
+                        'icon': 'Diamond',
+                        'link': reverse_lazy('admin:products_stonebycolor_changelist'),
                     },
                 ],
             },
             {
-                "title": _("Users"),
-                "icon": "people",
-                "collapsible": True,
-                "items": [
+                'title': _('Users'),
+                'icon': 'people',
+                'collapsible': True,
+                'items': [
                     {
-                        "title": _("User Credentials"),
-                        "icon": "person",
-                        "link": reverse_lazy("admin:accounts_usercredential_changelist"),
-                        "permission": lambda request: request.user.is_superuser,
+                        'title': _('User Credentials'),
+                        'icon': 'person',
+                        'link': reverse_lazy('admin:accounts_usercredential_changelist'),
+                        'permission': lambda request: request.user.is_superuser,
                     },
                 ],
             },
