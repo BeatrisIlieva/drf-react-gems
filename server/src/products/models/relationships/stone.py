@@ -1,8 +1,8 @@
 from django.db import models
 
-from src.products.mixins import CaseInsensitiveUniqueNameFieldMixin, NameFieldMixin
+from src.products.mixins import NameFieldMixin
 
 
-class Stone(NameFieldMixin, CaseInsensitiveUniqueNameFieldMixin, models.Model):
+class Stone(NameFieldMixin, models.Model):
 
     image = models.URLField()

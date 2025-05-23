@@ -2,10 +2,10 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
-from src.products.models.earwear import Earwear
-from src.products.models.fingerwear import Fingerwear, FingerwearInventoryLink
-from src.products.models.neckwear import Neckwear, NeckwearInventoryLink
-from src.products.models.wristwear import Wristwear, WristwearInventoryLink
+from src.products.models.earwear import Earwear, EarwearInventory
+from src.products.models.fingerwear import Fingerwear, FingerwearInventory, FingerwearSize
+from src.products.models.neckwear import Neckwear, NeckwearInventory, NeckwearSize
+from src.products.models.wristwear import Wristwear, WristwearInventory, WristwearSize
 from src.products.models.relationships.collection import Collection
 from src.products.models.relationships.material import Material
 from src.products.models.relationships.reference import Reference
@@ -30,9 +30,13 @@ class Command(BaseCommand):
             Fingerwear: ['add', 'change', 'delete', 'view'],
             Neckwear: ['add', 'change', 'delete', 'view'],
             Wristwear: ['add', 'change', 'delete', 'view'],
-            FingerwearInventoryLink: ['add', 'change', 'delete', 'view'],
-            NeckwearInventoryLink: ['add', 'change', 'delete', 'view'],
-            WristwearInventoryLink: ['add', 'change', 'delete', 'view'],
+            EarwearInventory: ['add', 'change', 'delete', 'view'],
+            FingerwearInventory: ['add', 'change', 'delete', 'view'],
+            NeckwearInventory: ['add', 'change', 'delete', 'view'],
+            WristwearInventory: ['add', 'change', 'delete', 'view'],
+            FingerwearSize: ['add', 'change', 'delete', 'view'],
+            NeckwearSize: ['add', 'change', 'delete', 'view'],
+            WristwearSize: ['add', 'change', 'delete', 'view'],
             Collection: ['add', 'change', 'delete', 'view'],
             Material: ['add', 'change', 'delete', 'view'],
             Reference: ['add', 'change', 'delete', 'view'],

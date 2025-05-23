@@ -9,22 +9,19 @@ from src.products.models.relationships.stone_by_color import StoneByColor
 from src.products.models.relationships.color import Color
 from src.products.models.relationships.stone import Stone
 
+from src.products.models.earwear import Earwear, EarwearInventory
 from src.products.models.fingerwear import (
     Fingerwear,
     FingerwearInventory,
-    FingerwearInventoryLink,
     FingerwearSize
 )
 from src.products.models.wristwear import (
     Wristwear,
     WristwearInventory,
-    WristwearInventoryLink,
     WristwearSize
 )
-from src.products.models.earwear import Earwear
 from src.products.models.neckwear import (
     Neckwear,
-    NeckwearInventoryLink,
     NeckwearSize,
     NeckwearInventory
 )
@@ -60,6 +57,21 @@ class StoneAdmin(admin.ModelAdmin):
     pass
 
 
+@admin.register(FingerwearSize)
+class FingerwearSizeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(WristwearSize)
+class WristwearSizeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(NeckwearSize)
+class NeckwearSizeSizeAdmin(admin.ModelAdmin):
+    pass
+
+
 class StoneListFilter(admin.SimpleListFilter):
     title = _('Stone')
     parameter_name = 'stone'
@@ -82,70 +94,32 @@ class ColorListFilter(admin.SimpleListFilter):
         return queryset.filter(stone_by_color__color__id=self.value()) if self.value() else queryset
 
 
-class NeckwearInventoryLinkInline(admin.TabularInline):
-    model = NeckwearInventoryLink
+class EarwearInventoryInline(admin.TabularInline):
+    model = EarwearInventory
     min_num = 1
     max_num = 1
     validate_min = True
 
 
-class FingerInventoryLinkInline(admin.TabularInline):
-    model = FingerwearInventoryLink
+class NeckwearInventoryInline(admin.TabularInline):
+    model = NeckwearInventory
     min_num = 1
     max_num = 1
     validate_min = True
 
 
-class WristInventoryLinkInline(admin.TabularInline):
-    model = WristwearInventoryLink
+class FingerInventoryInline(admin.TabularInline):
+    model = FingerwearInventory
     min_num = 1
     max_num = 1
     validate_min = True
 
 
-@admin.register(NeckwearSize)
-class NeckwearSizeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(NeckwearInventory)
-class NeckwearInventoryAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(NeckwearInventoryLink)
-class NeckwearInventoryLinkAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(FingerwearSize)
-class FingerwearSizeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(FingerwearInventory)
-class FingerwearInventoryAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(FingerwearInventoryLink)
-class FingerwearInventoryLinkAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(WristwearSize)
-class WristwearSizeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(WristwearInventory)
-class WristwearInventoryAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(WristwearInventoryLink)
-class WristwearInventoryLinkAdmin(admin.ModelAdmin):
-    pass
+class WristInventoryInline(admin.TabularInline):
+    model = WristwearInventory
+    min_num = 1
+    max_num = 1
+    validate_min = True
 
 
 class BaseProductAdmin(admin.ModelAdmin):
@@ -211,26 +185,19 @@ class BaseProductAdmin(admin.ModelAdmin):
 
 @admin.register(Neckwear)
 class NeckwearAdmin(BaseProductAdmin):
-    inlines = [NeckwearInventoryLinkInline]
+    inlines = [NeckwearInventoryInline]
 
 
 @admin.register(Fingerwear)
 class FingerwearAdmin(BaseProductAdmin):
-    inlines = [FingerInventoryLinkInline]
+    inlines = [FingerInventoryInline]
 
 
 @admin.register(Wristwear)
 class WristwearAdmin(BaseProductAdmin):
-    inlines = [WristInventoryLinkInline]
+    inlines = [WristInventoryInline]
 
 
 @admin.register(Earwear)
 class EarwearAdmin(BaseProductAdmin):
-    fieldsets = BaseProductAdmin.fieldsets + (
-        ('Inventory', {
-            'fields': (
-                'price',
-                'quantity'
-            ),
-        }),
-    )
+    inlines = [EarwearInventoryInline]

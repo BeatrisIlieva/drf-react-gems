@@ -243,15 +243,10 @@ UNFOLD = {
                 ],
             },
             {
-                'title': _('Product Properties'),
+                'title': _('Materials'),
                 'separator': True,
                 'collapsible': True,
                 'items': [
-                    {
-                        'title': _('Collections'),
-                        'icon': 'Bookmarks',
-                        'link': reverse_lazy('admin:products_collection_changelist'),
-                    },
                     {
                         'title': _('Colors'),
                         'icon': 'Palette',
@@ -262,16 +257,6 @@ UNFOLD = {
                         'icon': 'Texture',
                         'link': reverse_lazy('admin:products_material_changelist'),
                     },
-                    {
-                        'title': _('Reference'),
-                        'icon': 'Topic',
-                        'link': reverse_lazy('admin:products_reference_changelist'),
-                    },
-                    # {
-                    #     'title': _('Size'),
-                    #     'icon': 'text_fields',
-                    #     'link': reverse_lazy('admin:products_size_changelist'),
-                    # },
                     {
                         'title': _('Stone'),
                         'icon': 'Diamond',
@@ -285,14 +270,61 @@ UNFOLD = {
                 ],
             },
             {
-                'title': _('Users'),
-                'icon': 'people',
+                'title': _('Design'),
+                'separator': True,
                 'collapsible': True,
                 'items': [
                     {
-                        'title': _('User Credentials'),
+                        'title': _('Collections'),
+                        'icon': 'Bookmarks',
+                        'link': reverse_lazy('admin:products_collection_changelist'),
+                    },
+                    {
+                        'title': _('Reference'),
+                        'icon': 'Topic',
+                        'link': reverse_lazy('admin:products_reference_changelist'),
+                    },
+                ],
+            },
+            {
+                'title': _('Sizes'),
+                'icon': 'people',
+                'separator': True,
+                'collapsible': True,
+                'items': [
+                    {
+                        'title': _('Fingerwear'),
+                        'icon': 'crop',
+                        'link': reverse_lazy('admin:products_fingerwearsize_changelist'),
+                    },
+                    {
+                        'title': _('Neckwear'),
+                        'icon': 'crop',
+                        'link': reverse_lazy('admin:products_neckwearsize_changelist'),
+                    },
+                    {
+                        'title': _('Wristwear'),
+                        'icon': 'crop',
+                        'link': reverse_lazy('admin:products_wristwearsize_changelist'),
+                    },
+                ],
+            },
+            {
+                'title': _('Users & Groups'),
+                'icon': 'people',
+                'collapsible': True,
+                'separator': True,
+                'items': [
+                    {
+                        'title': _('Users'),
                         'icon': 'person',
                         'link': reverse_lazy('admin:accounts_usercredential_changelist'),
+                        'permission': lambda request: request.user.is_superuser,
+                    },
+                    {
+                        'title': _('Groups'),
+                        'icon': 'group',
+                        'link': reverse_lazy('admin:auth_group_changelist'),
                         'permission': lambda request: request.user.is_superuser,
                     },
                 ],

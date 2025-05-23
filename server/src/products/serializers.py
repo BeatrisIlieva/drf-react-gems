@@ -1,7 +1,5 @@
 from rest_framework import serializers
 
-from src.products.models.relationships.category import Category
-
 
 class ProductListSerializer(serializers.Serializer):
     id = serializers.IntegerField()
@@ -22,7 +20,7 @@ class ProductListSerializer(serializers.Serializer):
     materials_count = serializers.IntegerField()
 
 
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = '__all__'
+# class CategorySerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Category
+#         fields = '__all__'

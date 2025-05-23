@@ -1,5 +1,5 @@
-from src.products.mixins import CaseInsensitiveUniqueNameFieldMixin, NameFieldMixin
+from src.products.mixins import NameFieldMixin
 
 
-class Collection(NameFieldMixin, CaseInsensitiveUniqueNameFieldMixin):
+class Collection(NameFieldMixin):
     pass

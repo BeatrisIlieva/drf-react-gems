@@ -1,4 +1,3 @@
-from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -10,6 +9,7 @@ class NameFieldMixin(models.Model):
 
     name = models.CharField(
         max_length=NAME_MAX_LENGTH,
+        unique=True,
 
     )
 
@@ -17,16 +17,6 @@ class NameFieldMixin(models.Model):
         return self.name
 
 
-class CaseInsensitiveUniqueNameFieldMixin:
-    def clean(self):
-        model = self.__class__
-
-        if model.objects.exclude(pk=self.pk).filter(name__iexact=self.name).exists():
-            raise ValidationError({
-                'name': f'A {model.__name__.lower()} with this name already exists (case-insensitive).'
-            })
-
-
 class InventoryInfoMixin:
     def __str__(self):
-        return f'Price: {self.inventory.price} - Quantity: {self.inventory.quantity} - Size: {self.inventory.size.name} cm.'
+        return f'Price: {self.price} - Quantity: {self.quantity} - Size: {self.size.name} cm.'
