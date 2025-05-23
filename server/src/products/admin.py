@@ -128,7 +128,7 @@ class BaseProductAdmin(admin.ModelAdmin):
         'second_picture',
         'collection',
         'reference',
-        'created_at'
+        'created_at',
     )
 
     list_filter = (
@@ -149,6 +149,7 @@ class BaseProductAdmin(admin.ModelAdmin):
     search_fields = (
         'collection__name',
         'reference__name',
+        'material__name',
         'stone_by_color__color__name',
         'stone_by_color__stone__name',
     )

@@ -214,6 +214,9 @@ UNFOLD = {
     'STYLES': [
         lambda request: static('css/style.css'),
     ],
+    'SCRIPTS': [
+        lambda request: static('js/script.js'),
+    ],
     'SIDEBAR': {
         'navigation': [
             {

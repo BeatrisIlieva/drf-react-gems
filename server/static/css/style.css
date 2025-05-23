@@ -30,3 +30,9 @@ input,
 select {
     padding: 0.6em !important;
 }
+
+@media (min-width: 600px) {
+    #toolbar > form > div {
+        min-width: 50ch !important;
+    }
+}
