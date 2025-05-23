@@ -1,11 +1,12 @@
 from django.db import models
 
+from src.products.managers import NeckwearManager
 from src.products.mixins import InventoryInfoMixin
 from src.products.models.base import Inventory, Product, Size
 
 
 class Neckwear(Product):
-    pass
+    objects = NeckwearManager()
 
 
 class NeckwearSize(Size):

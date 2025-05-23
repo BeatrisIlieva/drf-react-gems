@@ -1,11 +1,12 @@
 from django.db import models
 
+from src.products.managers import WristwearManager
 from src.products.mixins import InventoryInfoMixin
 from src.products.models.base import Inventory, Product, Size
 
 
 class Wristwear(Product):
-    pass
+    objects = WristwearManager()
 
 
 class WristwearSize(Size):

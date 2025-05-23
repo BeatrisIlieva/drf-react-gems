@@ -1,7 +1,14 @@
 from django.urls import path
-from src.products.views import ProductListView
+from src.products.views import (
+    EarwearListView,
+    FingerwearListView,
+    NeckwearListView,
+    WristwearListView
+)
 
 urlpatterns = [
-    path('', ProductListView.as_view(), name='products-list'),
-    # path('categories/', CategoryListView.as_view(), name='categories-list')
+    path('earwear/', EarwearListView.as_view(), name='earwear-list'),
+    path('fingerwear/', FingerwearListView.as_view(), name='fingerwear-list'),
+    path('neckwear/', NeckwearListView.as_view(), name='neckwear-list'),
+    path('wristwear/', WristwearListView.as_view(), name='wristwear-list'),
 ]

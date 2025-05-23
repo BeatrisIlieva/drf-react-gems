@@ -1,10 +1,11 @@
 from django.db import models
 
+from src.products.managers import EarwearManager
 from src.products.models.base import Inventory, Product
 
 
 class Earwear(Product):
-    pass
+    objects = EarwearManager()
 
 
 class EarwearInventory(Inventory):

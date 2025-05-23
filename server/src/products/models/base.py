@@ -1,7 +1,5 @@
 from django.db import models
 
-from src.products.managers import ProductManager
-
 
 class Product(models.Model):
     class Meta:
@@ -44,8 +42,6 @@ class Product(models.Model):
         to='products.StoneByColor',
         on_delete=models.CASCADE,
     )
-
-    objects = ProductManager()
 
     def __str__(self):
         return f'{self.collection} {self.reference}'
