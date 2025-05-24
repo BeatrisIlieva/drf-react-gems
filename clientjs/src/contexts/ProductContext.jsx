@@ -8,7 +8,6 @@ export const useProductContext = () => useContext(ProductContext);
 
 export const ProductProvider = ({ children }) => {
     const [categoryName, setCategoryName] = useState('');
-    const [categoryId, setCategoryId] = useState(null);
     const [products, setProducts] = useState([]);
     const [totalProductsCount, setTotalProductsCount] = useState(0);
     const [page, setPage] = useState(1);
@@ -58,14 +57,14 @@ export const ProductProvider = ({ children }) => {
     useEffect(() => {
         const pathItems = location.pathname.split('/').splice(1);
         const itemName = pathItems[1];
-        const itemId = pathItems[2];
+        console.log(pathItems)
 
         const nameCapitalized = itemName.charAt(0).toUpperCase() + itemName.slice(1) + 's';
 
         setCategoryName(nameCapitalized);
-        setCategoryId(itemId);
+        setCategoryName(itemName);
 
-        getProducts({ categoryId: itemId }).then((response) => {
+        getProducts({ categoryName: itemName }).then((response) => {
             updateFiltersData(response);
 
             setFiltersData((prev) => ({
@@ -83,7 +82,7 @@ export const ProductProvider = ({ children }) => {
             setPage(nextPage);
 
             getProducts({
-                categoryId,
+                categoryName,
                 pageNumber: nextPage,
                 colorIds: updatedColors,
                 stoneIds,
@@ -92,7 +91,7 @@ export const ProductProvider = ({ children }) => {
                 updateFiltersData(response);
             });
         },
-        [categoryId, getProducts, stoneIds, materialIds, updateFiltersData]
+        [categoryName, getProducts, stoneIds, materialIds, updateFiltersData]
     );
 
     const updateStones = useCallback(
@@ -103,7 +102,7 @@ export const ProductProvider = ({ children }) => {
             setPage(nextPage);
 
             getProducts({
-                categoryId,
+                categoryName,
                 pageNumber: nextPage,
                 stoneIds: updatedStones,
                 colorIds,
@@ -112,7 +111,7 @@ export const ProductProvider = ({ children }) => {
                 updateFiltersData(response);
             });
         },
-        [categoryId, getProducts, colorIds, materialIds, updateFiltersData]
+        [categoryName, getProducts, colorIds, materialIds, updateFiltersData]
     );
 
     const updateMaterials = useCallback(
@@ -123,7 +122,7 @@ export const ProductProvider = ({ children }) => {
             setPage(nextPage);
 
             getProducts({
-                categoryId,
+                categoryName,
                 pageNumber: nextPage,
                 stoneIds,
                 colorIds,
@@ -132,7 +131,7 @@ export const ProductProvider = ({ children }) => {
                 updateFiltersData(response);
             });
         },
-        [categoryId, getProducts, colorIds, stoneIds, updateFiltersData]
+        [categoryName, getProducts, colorIds, stoneIds, updateFiltersData]
     );
 
     const loadMore = () => {
@@ -141,7 +140,7 @@ export const ProductProvider = ({ children }) => {
         const nextPage = page + 1;
         setPage(nextPage);
 
-        getProducts({ categoryId, pageNumber: nextPage, colorIds }).then((res) => {
+        getProducts({ categoryName, pageNumber: nextPage, colorIds }).then((res) => {
             setProducts((prev) => [...prev, ...res.results]);
         });
     };

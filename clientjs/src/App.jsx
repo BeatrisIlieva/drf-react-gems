@@ -43,7 +43,7 @@ function App() {
                     <Route path='/my-account/login' element={<Login />} />
 
                         <Route
-                            path='/products/:categoryName/:categoryId'
+                            path='/products/:categoryName'
                             element={
                                 <ProductProvider>
                             <ProductList />

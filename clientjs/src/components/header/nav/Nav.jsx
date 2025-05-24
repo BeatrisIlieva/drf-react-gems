@@ -1,29 +1,16 @@
-import { useState, useEffect } from 'react';
-
-import { useCategories } from '../../../api/productsApi';
 import { NavItem } from './nav-item/NavItem';
 
 import styles from './Nav.module.css';
 
 export const Nav = () => {
-    const { getCategories } = useCategories();
-
-    const [categories, setCategories] = useState([]);
-
-    useEffect(() => {
-        getCategories()
-            .then((result) => setCategories(result))
-            .catch((err) => {
-                console.log(err.message);
-            });
-    }, [getCategories]);
+    const categories = ['Wristwear', 'Earwear', 'Neckwear', 'Fingerwear'];
 
     return (
         <nav className={styles['main-nav']}>
             <ul>
                 {categories.map((category) => (
-                    <li key={category.id}>
-                        <NavItem {...category} />
+                    <li key={category}>
+                        <NavItem name={category} />
                     </li>
                 ))}
             </ul>

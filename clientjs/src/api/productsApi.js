@@ -3,29 +3,12 @@ import { useApi } from '../hooks/useApi';
 
 const baseUrl = 'http://localhost:8000/products';
 
-export const useCategories = () => {
-    const { get } = useApi();
-
-    const getCategories = useCallback(async () => {
-        try {
-            const response = await get(`${baseUrl}/categories/`);
-
-            return response;
-        } catch (err) {
-            console.error('Error in getCategories:', err.message);
-            throw err;
-        }
-    }, [get]);
-
-    return { getCategories };
-};
-
 export const useProducts = () => {
     const { get } = useApi();
 
     const getProducts = useCallback(
         async ({
-            categoryId,
+            categoryName,
             pageNumber = null,
             colorIds = [],
             stoneIds = [],
@@ -33,7 +16,7 @@ export const useProducts = () => {
         }) => {
             const params = new URLSearchParams();
 
-            if (categoryId) params.append('category', categoryId);
+            // if (categoryName) params.append('category', categoryName);
             if (pageNumber) params.append('page', pageNumber);
             if (colorIds) {
                 colorIds.forEach((id) => params.append('color_ids', id));
@@ -45,7 +28,7 @@ export const useProducts = () => {
                 materialIds.forEach((id) => params.append('material_ids', id));
             }
 
-            const fullUrl = `${baseUrl}/?${params.toString()}`;
+            const fullUrl = `${baseUrl}/${categoryName}/?${params.toString()}`;
 
             try {
                 const response = await get(fullUrl);

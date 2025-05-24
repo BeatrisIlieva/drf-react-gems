@@ -9,14 +9,13 @@ from decimal import Decimal
 class BaseProductManager(models.Manager):
     def get_products(self, filters):
         qs = self.filter(filters)
-        raw_products = self._get_raw_products(qs)
+        model_name = self.model.__name__.lower()
+        
+        raw_products = self._get_raw_products(qs, model_name)
         grouped_products, colors_by_count, stones_by_count = self._group_and_structure_products(
             raw_products
         )
-
         materials_by_count = self._get_material_usage_count(qs)
-        print(self.model.__name__)
-
         # price_ranges = self._get_price_ranges(qs)
 
         return {
@@ -27,7 +26,7 @@ class BaseProductManager(models.Manager):
             # 'price_ranges': price_ranges,
         }
 
-    def _get_raw_products(self, qs):
+    def _get_raw_products(self, qs, model_name):
         return (
             qs.select_related(
                 'material',
@@ -37,7 +36,7 @@ class BaseProductManager(models.Manager):
             .prefetch_related(
                 'stone_by_color__color',
                 'stone_by_color__stone',
-                'earwearinventory'
+                f'{model_name}inventory'
             )
             .values(
                 'id',
@@ -53,13 +52,13 @@ class BaseProductManager(models.Manager):
                 'stone_by_color__image',
                 'stone_by_color__color__hex_code',
                 # 'earwearinventory__size',
-                'earwearinventory__quantity',
-                'earwearinventory__price',
+                f'{model_name}inventory__quantity',
+                f'{model_name}inventory__price',
             )
             .annotate(
-                min_price=Min('earwearinventory__price'),
-                max_price=Max('earwearinventory__price'),
-                total_quantity=Sum('earwearinventory__quantity'),
+                min_price=Min(f'{model_name}inventory__price'),
+                max_price=Max(f'{model_name}inventory__price'),
+                total_quantity=Sum(f'{model_name}inventory__quantity'),
                 is_sold_out=Case(
                     When(total_quantity=0, then=Value(True)),
                     default=Value(False),
