@@ -1,4 +1,5 @@
 .filters {
     flex: 0 0 17dvw;
     height: fit-content;
+    border-bottom: 0.1em solid var(--medium-grey);
 }

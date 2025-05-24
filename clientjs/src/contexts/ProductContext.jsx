@@ -26,6 +26,8 @@ export const ProductProvider = ({ children }) => {
     const [colorsData, setColorsData] = useState({});
     const [materialsData, setMaterialsData] = useState({});
     const [materialIds, setMaterialIds] = useState([]);
+    const [pricesData, setPricesData] = useState([]);
+    const [prices, setPrices] = useState([]);
 
     const [loadMoreDisabled, setLoadMoreDisabled] = useState(false);
 
@@ -52,12 +54,12 @@ export const ProductProvider = ({ children }) => {
         setColorsData(response.colors_by_count);
         setMaterialsData(response.materials_by_count);
         setTotalProductsCount(response.count);
+        setPricesData(response.price_ranges)
     }, []);
 
     useEffect(() => {
         const pathItems = location.pathname.split('/').splice(1);
         const itemName = pathItems[1];
-        console.log(pathItems)
 
         const nameCapitalized = itemName.charAt(0).toUpperCase() + itemName.slice(1) + 's';
 
@@ -86,12 +88,33 @@ export const ProductProvider = ({ children }) => {
                 pageNumber: nextPage,
                 colorIds: updatedColors,
                 stoneIds,
-                materialIds,
+                materialIds
             }).then((response) => {
                 updateFiltersData(response);
             });
         },
         [categoryName, getProducts, stoneIds, materialIds, updateFiltersData]
+    );
+
+    const updatePrices = useCallback(
+        (updatedPrices) => {
+            setPrices(updatedPrices);
+
+            const nextPage = 1;
+            setPage(nextPage);
+
+            getProducts({
+                categoryName,
+                pageNumber: nextPage,
+                colorIds,
+                stoneIds,
+                materialIds,
+                prices: updatedPrices
+            }).then((response) => {
+                updateFiltersData(response);
+            });
+        },
+        [categoryName, getProducts, stoneIds, materialIds, updateFiltersData, colorIds]
     );
 
     const updateStones = useCallback(
@@ -126,7 +149,7 @@ export const ProductProvider = ({ children }) => {
                 pageNumber: nextPage,
                 stoneIds,
                 colorIds,
-                materialIds: updatedMaterials,
+                materialIds: updatedMaterials
             }).then((response) => {
                 updateFiltersData(response);
             });
@@ -145,6 +168,8 @@ export const ProductProvider = ({ children }) => {
         });
     };
 
+    console.log(pricesData)
+
     return (
         <ProductContext.Provider
             value={{
@@ -160,10 +185,14 @@ export const ProductProvider = ({ children }) => {
                 addStoneToFiltration: (id) => updateStones([...stoneIds, id]),
                 removeStoneFromFiltration: (id) => updateStones(stoneIds.filter((s) => s !== id)),
                 addMaterialToFiltration: (id) => updateMaterials([...materialIds, id]),
-                removeMaterialFromFiltration: (id) => updateMaterials(materialIds.filter((s) => s !== id)),
+                removeMaterialFromFiltration: (id) =>
+                    updateMaterials(materialIds.filter((s) => s !== id)),
+                addPricesToFiltration: (price) => updatePrices([...prices, price]),
+                removePricesFromFiltration: (price) => updatePrices(prices.filter((s) => s !== price)),
                 colorsData,
                 stonesData,
                 materialsData,
+                pricesData
             }}
         >
             {children}

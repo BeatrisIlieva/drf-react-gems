@@ -7,8 +7,8 @@ export const Filters = () => {
     const { filtersData: data } = useProductContext();
     return (
         <aside className={styles['filters']}>
-            {Object.values(data).map((value, index, array) => (
-                <Accordion key={value.title} data={value} isLast={index === array.length - 1} />
+            {Object.values(data).map((value) => (
+                <Accordion key={value.title} data={value} />
             ))}
         </aside>
     );

@@ -13,7 +13,7 @@ from src.products.models.wristwear import Wristwear
 
 
 class ProductPagination(PageNumberPagination):
-    page_size = 100
+    page_size = 6
 
 
 class BaseProductListView(ListAPIView):
@@ -26,6 +26,7 @@ class BaseProductListView(ListAPIView):
         color_ids = self.request.query_params.getlist('color_ids')
         stone_ids = self.request.query_params.getlist('stone_ids')
         material_ids = self.request.query_params.getlist('material_ids')
+        prices = self.request.query_params.getlist('prices')
 
         filters = Q()
         if color_ids:
@@ -34,6 +35,8 @@ class BaseProductListView(ListAPIView):
             filters &= Q(stone_by_color__stone_id__in=stone_ids)
         if material_ids:
             filters &= Q(material__id__in=material_ids)
+        if prices:
+            filters &= Q(fingerwear__inventory__price_id__in=prices)
 
         return filters
 
@@ -61,7 +64,7 @@ class BaseProductListView(ListAPIView):
                 'colors_by_count': data['colors_by_count'],
                 'stones_by_count': data['stones_by_count'],
                 'materials_by_count': data['materials_by_count'],
-                # 'price_ranges': data['price_ranges'],
+                'price_ranges': data['price_ranges'],
             })
             return response
 

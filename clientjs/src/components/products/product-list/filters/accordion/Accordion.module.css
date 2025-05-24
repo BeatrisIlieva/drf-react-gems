@@ -6,10 +6,6 @@
     align-items: center;
 }
 
-.filter-title.is-last {
-    border-bottom: 0.1em solid var(--medium-grey);
-}
-
 .filter-title h5 {
     font-size: 1em;
     text-transform: uppercase;

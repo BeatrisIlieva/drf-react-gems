@@ -1,29 +1,31 @@
 from django.db import models
 
-from django.db.models import Min, Max, Sum, Case, Value, BooleanField, When, Count, CharField, IntegerField
+from django.db.models import Min, Max, Sum, Case, Value, BooleanField, When, Count, CharField, IntegerField, Q
 from itertools import groupby
 from operator import itemgetter
 from decimal import Decimal
+
+from src.products.models.relationships.stone_by_color import StoneByColor
 
 
 class BaseProductManager(models.Manager):
     def get_products(self, filters):
         qs = self.filter(filters)
         model_name = self.model.__name__.lower()
-        
+
         raw_products = self._get_raw_products(qs, model_name)
         grouped_products, colors_by_count, stones_by_count = self._group_and_structure_products(
             raw_products
         )
-        materials_by_count = self._get_material_usage_count(qs)
-        # price_ranges = self._get_price_ranges(qs)
+        materials_by_count = self._get_material_usage_count(raw_products)
+        price_ranges = self._get_price_ranges(raw_products)
 
         return {
             'products': grouped_products,
             'colors_by_count': colors_by_count,
             'stones_by_count': stones_by_count,
             'materials_by_count': materials_by_count,
-            # 'price_ranges': price_ranges,
+            'price_ranges': price_ranges,
         }
 
     def _get_raw_products(self, qs, model_name):
@@ -43,6 +45,7 @@ class BaseProductManager(models.Manager):
                 'collection__name',
                 'reference__name',
                 'material__name',
+                'material__id',
                 'first_image',
                 'second_image',
                 'stone_by_color__color__name',
@@ -51,9 +54,6 @@ class BaseProductManager(models.Manager):
                 'stone_by_color__stone__id',
                 'stone_by_color__image',
                 'stone_by_color__color__hex_code',
-                # 'earwearinventory__size',
-                f'{model_name}inventory__quantity',
-                f'{model_name}inventory__price',
             )
             .annotate(
                 min_price=Min(f'{model_name}inventory__price'),
@@ -145,9 +145,14 @@ class BaseProductManager(models.Manager):
 
     def _extract_stones(self, items):
         products = []
+        seen_products = set()
 
         for item in items:
             product_id = item['id']
+
+            if (product_id in seen_products):
+                continue
+
             color = item['stone_by_color__color__name']
             color_id = item['stone_by_color__color__id']
             stone = item['stone_by_color__stone__name']
@@ -165,71 +170,67 @@ class BaseProductManager(models.Manager):
                 'hex': hex_code,
             })
 
+            seen_products.add(product_id)
+
         return products
-
-    def _filter_white_diamonds_per_product(self, stones):
-        from collections import defaultdict
-
-        stones_by_product = defaultdict(list)
-        for stone in stones:
-            stones_by_product[stone['product_id']].append(stone)
-
-        filtered_stones = []
-        for product_stones in stones_by_product.values():
-            only_white_diamond = all(
-                s['stone'] == 'Diamond' and s['color'] == 'White'
-                for s in product_stones
-            )
-            if not only_white_diamond:
-                product_stones = [
-                    s for s in product_stones
-                    if not (s['stone'] == 'Diamond' and s['color'] == 'White')
-                ]
-            filtered_stones.extend(product_stones)
-
-        return filtered_stones
 
     def _get_material_usage_count(self, qs):
         return (
             qs.values('material__name', 'material__id')
-            .annotate(material_count=Count('id'))
+            .annotate(material_count=Count('id', distinct=True))
             .order_by('-material_count')
         )
 
-    # def _get_price_ranges(self, qs):
-    #     return (
-    #         qs
-    #         .annotate(
-    #             price_range=Case(
-    #                 When(fingerwearinventory__price__lt=Decimal(
-    #                     '3000'), then=Value('Under $3000')),
-    #                 When(fingerwearinventory__price__lt=Decimal(
-    #                     '5000'), then=Value('$3000 - $4999')),
-    #                 When(fingerwearinventory__price__lt=Decimal(
-    #                     '7000'), then=Value('$5000 - $6999')),
-    #                 When(fingerwearinventory__price__lt=Decimal(
-    #                     '9000'), then=Value('$7000 - $8999')),
-    #                 When(fingerwearinventory__price__gte=Decimal(
-    #                     '9001'), then=Value('$9000+')),
-    #                 default=Value("Unknown Price Range"),
-    #                 output_field=CharField(),
-    #             )
-    #         )
-    #         .annotate(
-    #             sort_order=Case(
-    #                 When(price_range='Under $3000', then=Value(0)),
-    #                 When(price_range='$3000 - $4999', then=Value(1)),
-    #                 When(price_range='$5000 - $6999', then=Value(2)),
-    #                 When(price_range='$7000 - $8999', then=Value(3)),
-    #                 When(price_range='$9000+', then=Value(4)),
-    #                 default=Value(99),
-    #                 output_field=IntegerField(),
-    #             )
-    #         )
-    #         .values('price_range')
-    #         .annotate(count=Count('id', distinct=True)) 
-    #         .order_by('sort_order')
-    #     )
+    def _get_price_ranges(self, qs):
+        model_name = 'fingerwear'
+        inventory_prefix = f"{model_name.lower()}inventory__price"
+
+        return (
+            qs
+            .annotate(
+                price_range=Case(
+                    When(
+                        Q(**{f"{inventory_prefix}__lt": Decimal(3000)}),
+                        then=Value("Under $3000")
+                    ),
+                    When(
+                        Q(**{f"{inventory_prefix}__gte": Decimal(3000),
+                             f"{inventory_prefix}__lt": Decimal(5000)}),
+                        then=Value("$3000 - $4999")
+                    ),
+                    When(
+                        Q(**{f"{inventory_prefix}__gte": Decimal(5000),
+                             f"{inventory_prefix}__lt": Decimal(7000)}),
+                        then=Value("$5000 - $6999")
+                    ),
+                    When(
+                        Q(**{f"{inventory_prefix}__gte": Decimal(7000),
+                             f"{inventory_prefix}__lt": Decimal(9000)}),
+                        then=Value("$7000 - $8999")
+                    ),
+                    When(
+                        Q(**{f"{inventory_prefix}__gte": Decimal(9000)}),
+                        then=Value("$9000+")
+                    ),
+                    default=Value("Unknown Price Range"),
+                    output_field=CharField()
+                )
+            )
+            .annotate(
+                sort_order=Case(
+                    When(price_range='Under $3000', then=Value(0)),
+                    When(price_range='$3000 - $4999', then=Value(1)),
+                    When(price_range='$5000 - $6999', then=Value(2)),
+                    When(price_range='$7000 - $8999', then=Value(3)),
+                    When(price_range='$9000+', then=Value(4)),
+                    default=Value(99),
+                    output_field=IntegerField(),
+                )
+            )
+            .values('price_range')
+            .annotate(count=Count('id', distinct=True))
+            .order_by('sort_order')
+        )
 
 
 class EarwearManager(BaseProductManager):

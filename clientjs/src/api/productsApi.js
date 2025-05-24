@@ -12,11 +12,11 @@ export const useProducts = () => {
             pageNumber = null,
             colorIds = [],
             stoneIds = [],
-            materialIds = []
+            materialIds = [],
+            prices = []
         }) => {
             const params = new URLSearchParams();
 
-            // if (categoryName) params.append('category', categoryName);
             if (pageNumber) params.append('page', pageNumber);
             if (colorIds) {
                 colorIds.forEach((id) => params.append('color_ids', id));
@@ -26,6 +26,9 @@ export const useProducts = () => {
             }
             if (materialIds) {
                 materialIds.forEach((id) => params.append('material_ids', id));
+            }
+            if (prices) {
+                prices.forEach((price) => params.append('prices', price));
             }
 
             const fullUrl = `${baseUrl}/${categoryName}/?${params.toString()}`;

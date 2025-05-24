@@ -6,8 +6,9 @@ import { ArrowDownIcon } from '../../../../reusable/arrow-down-icon/ArrowDownIco
 import { MaterialSelector } from './material-selector/MaterialSelector';
 import { ColorSelector } from './color-selector/ColorSelector';
 import { StoneSelector } from './stone-selector/StoneSelector';
+import { PriceSelector } from './price-selector/PriceSelector';
 
-export const Accordion = ({ data, isLast }) => {
+export const Accordion = ({ data }) => {
     const [displayFilterItem, setDisplayFilterItem] = useState(false);
 
     const toggleDisplayFilterItem = () => {
@@ -16,7 +17,7 @@ export const Accordion = ({ data, isLast }) => {
 
     return (
         <div>
-            <div className={`${styles['filter-title']} ${isLast ? styles['is-last'] : ''}`.trim()}>
+            <div className={styles['filter-title']}>
                 <h5>{data.title}</h5>
                 <button onClick={toggleDisplayFilterItem}>
                     {displayFilterItem ? <ArrowUpIcon /> : <ArrowDownIcon />}
@@ -35,6 +36,8 @@ export const Accordion = ({ data, isLast }) => {
                         <StoneSelector />
                     ) : data.title === 'Material' ? (
                         <MaterialSelector />
+                    ) : data.title === 'Price' ? (
+                        <PriceSelector />
                     ) : null}
                 </li>
             </ul>
