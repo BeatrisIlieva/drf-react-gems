@@ -25,5 +25,4 @@ class FingerwearInventory(InventoryInfoMixin, Inventory):
     product = models.ForeignKey(
         to=Fingerwear,
         on_delete=models.CASCADE,
-        related_name='fingerwearinventory'
     )

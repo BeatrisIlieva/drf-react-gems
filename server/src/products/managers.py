@@ -1,6 +1,17 @@
 from django.db import models
 
-from django.db.models import Min, Max, Sum, Case, Value, BooleanField, When, Count, CharField, IntegerField, Q
+from django.db.models import (
+    Sum,
+    Case,
+    Value,
+    BooleanField,
+    When,
+    Count,
+    CharField,
+    IntegerField,
+    Q,
+    F
+)
 from itertools import groupby
 from operator import itemgetter
 from decimal import Decimal
@@ -58,8 +69,7 @@ class BaseProductManager(models.Manager):
                 'stone_by_color__color__hex_code',
             )
             .annotate(
-                min_price=Min(f'{model_name}inventory__price'),
-                max_price=Max(f'{model_name}inventory__price'),
+                price=F('price'),
                 total_quantity=Sum(f'{model_name}inventory__quantity'),
                 is_sold_out=Case(
                     When(total_quantity=0, then=Value(True)),
@@ -125,8 +135,7 @@ class BaseProductManager(models.Manager):
                 'first_image': first['first_image'],
                 'second_image': first['second_image'],
                 'stones': stones,
-                'min_price': first['min_price'],
-                'max_price': first['max_price'],
+                'price': first['price'],
                 'materials_count': materials,
                 'total_quantity': first['total_quantity'],
                 'is_sold_out': first['is_sold_out'],
@@ -198,40 +207,35 @@ class BaseProductManager(models.Manager):
         )
 
     def _get_price_ranges(self, qs, model_name):
-        inventory_prefix = f'{model_name}inventory__price'
+        inventory_prefix = f'{model_name}__price'
 
         return (
             qs
             .annotate(
                 price_range=Case(
                     When(
-                        Q(**{f'{inventory_prefix}__gte': Decimal(1000),
-                             f'{inventory_prefix}__lt': Decimal(1999)}),
-                        then=Value('$1000 - $1999')
+                        Q(price__gte=Decimal(1000),
+                          price__lt=Decimal(2999)),
+                        then=Value('$1000 - $2999')
                     ),
                     When(
-                        Q(**{f'{inventory_prefix}__gte': Decimal(2000),
-                             f'{inventory_prefix}__lt': Decimal(3000)}),
-                        then=Value('$2000 - $2999')
-                    ),
-                    When(
-                        Q(**{f'{inventory_prefix}__gte': Decimal(3000),
-                             f'{inventory_prefix}__lt': Decimal(5000)}),
+                        Q(price__gte=Decimal(3000),
+                          price__lt=Decimal(5000)),
                         then=Value('$3000 - $4999')
                     ),
                     When(
-                        Q(**{f'{inventory_prefix}__gte': Decimal(5000),
-                             f'{inventory_prefix}__lt': Decimal(7000)}),
+                        Q(price__gte=Decimal(5000),
+                          price__lt=Decimal(7000)),
                         then=Value('$5000 - $6999')
                     ),
                     When(
-                        Q(**{f'{inventory_prefix}__gte': Decimal(7000),
-                             f'{inventory_prefix}__lt': Decimal(9000)}),
+                        Q(price__gte=Decimal(7000),
+                          price__lt=Decimal(9000)),
                         then=Value('$7000 - $8999')
                     ),
                     When(
-                        Q(**{f'{inventory_prefix}__gte': Decimal(9000),
-                             f'{inventory_prefix}__lt': Decimal(19999)}),
+                        Q(price__gte=Decimal(9000),
+                          price__lt=Decimal(19999)),
                         then=Value('$9000 - $19999')
                     ),
                     default=Value('Unknown Price Range'),
@@ -240,8 +244,7 @@ class BaseProductManager(models.Manager):
             )
             .annotate(
                 sort_order=Case(
-                    When(price_range='$1000 - $1999', then=Value(0)),
-                    When(price_range='$2000 - $2999', then=Value(1)),
+                    When(price_range='$1000 - $2999', then=Value(1)),
                     When(price_range='$3000 - $4999', then=Value(2)),
                     When(price_range='$5000 - $6999', then=Value(3)),
                     When(price_range='$7000 - $8999', then=Value(4)),

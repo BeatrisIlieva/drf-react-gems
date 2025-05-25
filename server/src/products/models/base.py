@@ -2,6 +2,9 @@ from django.db import models
 
 
 class Product(models.Model):
+    PRICE_MAX_DIGITS = 7
+    PRICE_DECIMAL_PLACES = 2
+
     class Meta:
         abstract = True
 
@@ -17,6 +20,11 @@ class Product(models.Model):
         error_messages={
             'unique': 'This image already exists.'
         }
+    )
+
+    price = models.DecimalField(
+        max_digits=PRICE_MAX_DIGITS,
+        decimal_places=PRICE_DECIMAL_PLACES,
     )
 
     created_at = models.DateTimeField(
@@ -48,16 +56,8 @@ class Product(models.Model):
 
 
 class Inventory(models.Model):
-    PRICE_MAX_DIGITS = 7
-    PRICE_DECIMAL_PLACES = 2
-
     class Meta:
         abstract = True
-
-    price = models.DecimalField(
-        max_digits=PRICE_MAX_DIGITS,
-        decimal_places=PRICE_DECIMAL_PLACES,
-    )
 
     quantity = models.PositiveIntegerField()
 

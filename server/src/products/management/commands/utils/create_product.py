@@ -70,13 +70,13 @@ def create_product(product_data):
         reference=reference,
         material=material,
         stone_by_color=stone_by_color,
+        price=current_price
     )
 
     if category == 'Earwear':
-        quantity = random.randint(0, 6)
+        quantity = random.randint(0, 4)
 
         inventory.objects.create(
-            price=current_price,
             quantity=quantity,
             product=product,
         )
@@ -85,12 +85,9 @@ def create_product(product_data):
         sizes = sizes_mapper[category].objects.all()
 
         for size in sizes:
-            quantity = random.randint(0, 6)
+            quantity = random.randint(0, 4)
             inventory.objects.create(
                 size=size,
-                price=current_price,
                 quantity=quantity,
                 product=product
             )
-
-            # current_price += (180 + random.randint(11, 56))

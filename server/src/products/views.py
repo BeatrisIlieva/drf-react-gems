@@ -23,9 +23,6 @@ class BaseProductListView(ListAPIView):
     model = None
 
     def _get_filters(self):
-        model_name = self.model.__name__.lower()
-        inventory_prefix = f'{model_name}inventory__price'
-
         color_ids = self.request.query_params.getlist('color_ids')
         stone_ids = self.request.query_params.getlist('stone_ids')
         material_ids = self.request.query_params.getlist('material_ids')
@@ -46,9 +43,9 @@ class BaseProductListView(ListAPIView):
         if category_ids:
             filters &= Q(reference__id__in=category_ids)
         if min_price:
-            filters &= Q(**{f'{inventory_prefix}__gt': Decimal(min_price[0])})
+            filters &= Q(price__gt=Decimal(min_price[0]))
         if max_price:
-            filters &= Q(**{f'{inventory_prefix}__lt': Decimal(max_price[0])})
+            filters &= Q(price__lt=Decimal(max_price[0]))
 
         return filters
 

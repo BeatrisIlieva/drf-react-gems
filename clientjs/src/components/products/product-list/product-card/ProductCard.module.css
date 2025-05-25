@@ -9,6 +9,18 @@
     justify-content: space-between;
     align-items: center;
     padding: 0.75em 0.75em 0 0.75em;
+
+}
+
+.user-action .sold-out {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+}
+
+.sold-out > svg{
+    width: 0.35em;
+    aspect-ratio: 1/1;
 }
 
 .product-card,
@@ -40,5 +52,5 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-bottom: 0.5em;
+    padding-block: 0.5em;
 }

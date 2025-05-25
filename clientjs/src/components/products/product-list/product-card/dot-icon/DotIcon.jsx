@@ -3,7 +3,7 @@ import { faCircle } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './DotIcon.module.css';
 
-export const DotIcon = ({ toggleHandler, disabled}) => {
+export const DotIcon = ({ toggleHandler, disabled }) => {
     const className = [
         styles['dot-icon'],          
         disabled ? styles['disabled'] : ''
