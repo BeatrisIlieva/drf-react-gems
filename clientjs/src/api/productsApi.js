@@ -13,6 +13,7 @@ export const useProducts = () => {
             colorIds = [],
             stoneIds = [],
             materialIds = [],
+            collectionIds = [],
             prices = []
         }) => {
             const params = new URLSearchParams();
@@ -27,9 +28,19 @@ export const useProducts = () => {
             if (materialIds) {
                 materialIds.forEach((id) => params.append('material_ids', id));
             }
-            if (prices) {
-                prices.forEach((price) => params.append('prices', price));
+            if (collectionIds) {
+                collectionIds.forEach((id) => params.append('collection_ids', id));
             }
+            if (prices) {
+                prices.forEach((price) => {
+                    const prices = price.split(' - ')
+                    const [min_price, max_price] = prices.map(x => x.slice(1));
+
+                    params.append('min_price', min_price)
+                    params.append('max_price', max_price)
+                });
+            }
+
 
             const fullUrl = `${baseUrl}/${categoryName}/?${params.toString()}`;
 

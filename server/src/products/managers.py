@@ -5,8 +5,6 @@ from itertools import groupby
 from operator import itemgetter
 from decimal import Decimal
 
-from src.products.models.relationships.stone_by_color import StoneByColor
-
 
 class BaseProductManager(models.Manager):
     def get_products(self, filters):
@@ -18,13 +16,15 @@ class BaseProductManager(models.Manager):
             raw_products
         )
         materials_by_count = self._get_material_usage_count(raw_products)
-        price_ranges = self._get_price_ranges(raw_products)
+        collections_by_count = self._get_collection_usage_count(raw_products)
+        price_ranges = self._get_price_ranges(raw_products, model_name)
 
         return {
             'products': grouped_products,
             'colors_by_count': colors_by_count,
             'stones_by_count': stones_by_count,
             'materials_by_count': materials_by_count,
+            'collections_by_count': collections_by_count,
             'price_ranges': price_ranges,
         }
 
@@ -181,48 +181,62 @@ class BaseProductManager(models.Manager):
             .order_by('-material_count')
         )
 
-    def _get_price_ranges(self, qs):
-        model_name = 'fingerwear'
-        inventory_prefix = f"{model_name.lower()}inventory__price"
+    def _get_collection_usage_count(self, qs):
+        return (
+            qs.values('collection__name', 'collection__id')
+            .annotate(collection_count=Count('id', distinct=True))
+            .order_by('-collection_count')
+        )
+
+    def _get_price_ranges(self, qs, model_name):
+        inventory_prefix = f'{model_name}inventory__price'
 
         return (
             qs
             .annotate(
                 price_range=Case(
                     When(
-                        Q(**{f"{inventory_prefix}__lt": Decimal(3000)}),
-                        then=Value("Under $3000")
+                        Q(**{f'{inventory_prefix}__gte': Decimal(1000),
+                             f'{inventory_prefix}__lt': Decimal(1999)}),
+                        then=Value('$1000 - $1999')
                     ),
                     When(
-                        Q(**{f"{inventory_prefix}__gte": Decimal(3000),
-                             f"{inventory_prefix}__lt": Decimal(5000)}),
-                        then=Value("$3000 - $4999")
+                        Q(**{f'{inventory_prefix}__gte': Decimal(2000),
+                             f'{inventory_prefix}__lt': Decimal(3000)}),
+                        then=Value('$2000 - $2999')
                     ),
                     When(
-                        Q(**{f"{inventory_prefix}__gte": Decimal(5000),
-                             f"{inventory_prefix}__lt": Decimal(7000)}),
-                        then=Value("$5000 - $6999")
+                        Q(**{f'{inventory_prefix}__gte': Decimal(3000),
+                             f'{inventory_prefix}__lt': Decimal(5000)}),
+                        then=Value('$3000 - $4999')
                     ),
                     When(
-                        Q(**{f"{inventory_prefix}__gte": Decimal(7000),
-                             f"{inventory_prefix}__lt": Decimal(9000)}),
-                        then=Value("$7000 - $8999")
+                        Q(**{f'{inventory_prefix}__gte': Decimal(5000),
+                             f'{inventory_prefix}__lt': Decimal(7000)}),
+                        then=Value('$5000 - $6999')
                     ),
                     When(
-                        Q(**{f"{inventory_prefix}__gte": Decimal(9000)}),
-                        then=Value("$9000+")
+                        Q(**{f'{inventory_prefix}__gte': Decimal(7000),
+                             f'{inventory_prefix}__lt': Decimal(9000)}),
+                        then=Value('$7000 - $8999')
                     ),
-                    default=Value("Unknown Price Range"),
+                    When(
+                        Q(**{f'{inventory_prefix}__gte': Decimal(9000),
+                             f'{inventory_prefix}__lt': Decimal(19999)}),
+                        then=Value('$9000 - $19999')
+                    ),
+                    default=Value('Unknown Price Range'),
                     output_field=CharField()
                 )
             )
             .annotate(
                 sort_order=Case(
-                    When(price_range='Under $3000', then=Value(0)),
-                    When(price_range='$3000 - $4999', then=Value(1)),
-                    When(price_range='$5000 - $6999', then=Value(2)),
-                    When(price_range='$7000 - $8999', then=Value(3)),
-                    When(price_range='$9000+', then=Value(4)),
+                    When(price_range='$1000 - $1999', then=Value(0)),
+                    When(price_range='$2000 - $2999', then=Value(1)),
+                    When(price_range='$3000 - $4999', then=Value(2)),
+                    When(price_range='$5000 - $6999', then=Value(3)),
+                    When(price_range='$7000 - $8999', then=Value(4)),
+                    When(price_range='$9000 - $19999', then=Value(5)),
                     default=Value(99),
                     output_field=IntegerField(),
                 )

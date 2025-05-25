@@ -93,4 +93,4 @@ def create_product(product_data):
                 product=product
             )
 
-            current_price += (180 + random.randint(11, 56))
+            # current_price += (180 + random.randint(11, 56))

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 import styles from './Accordion.module.css';
 import { ArrowUpIcon } from '../../../../reusable/arrow-up-icon/ArrowUpIcon';
 import { ArrowDownIcon } from '../../../../reusable/arrow-down-icon/ArrowDownIcon';
@@ -7,9 +7,15 @@ import { MaterialSelector } from './material-selector/MaterialSelector';
 import { ColorSelector } from './color-selector/ColorSelector';
 import { StoneSelector } from './stone-selector/StoneSelector';
 import { PriceSelector } from './price-selector/PriceSelector';
+import { CollectionSelector } from './collection-selector/CollectionSelector';
 
 export const Accordion = ({ data }) => {
     const [displayFilterItem, setDisplayFilterItem] = useState(false);
+    const location = useLocation();
+
+    useEffect(() => {
+        setDisplayFilterItem(false);
+    }, [location]);
 
     const toggleDisplayFilterItem = () => {
         setDisplayFilterItem(() => !displayFilterItem);
@@ -38,7 +44,10 @@ export const Accordion = ({ data }) => {
                         <MaterialSelector />
                     ) : data.title === 'Price' ? (
                         <PriceSelector />
-                    ) : null}
+                    ) : data.title === 'Collection' ? (
+                        <CollectionSelector />
+                    )
+                    : null}
                 </li>
             </ul>
         </div>

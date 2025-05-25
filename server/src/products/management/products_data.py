@@ -119,7 +119,7 @@ products_data = [
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115883/20_iumckw.webp',
         'reference': 'Stud',
         'stone_by_color': 'Pink Sapphire',
-        'price': 3800,
+        'price': 2800,
     },
     {
         'category': 'Earwear',
@@ -533,7 +533,7 @@ products_data = [
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115886/10_gbgzq4.webp',
         'reference': 'Drop',
         'stone_by_color': 'White Diamond',
-        'price': 5500,
+        'price': 7500,
     },
     {
         'category': 'Earwear',
@@ -543,7 +543,7 @@ products_data = [
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115886/2_omxh92.webp',
         'reference': 'Drop',
         'stone_by_color': 'Blue Aquamarine',
-        'price': 5200,
+        'price': 7000,
     },
     {
         'category': 'Neckwear',
@@ -593,7 +593,7 @@ products_data = [
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115885/4_k2z9sm.webp',
         'reference': 'Statement',
         'stone_by_color': 'Blue Aquamarine',
-        'price': 4900,
+        'price': 6900,
     },
     {
         'category': 'Fingerwear',
@@ -603,7 +603,7 @@ products_data = [
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115886/12_cyplba.webp',
         'reference': 'Statement',
         'stone_by_color': 'White Diamond',
-        'price': 5200,
+        'price': 7300,
     },
     # LOTUS
     {
@@ -614,7 +614,7 @@ products_data = [
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115855/6_p1hv03.webp',
         'reference': 'Stud',
         'stone_by_color': 'Green Emerald',
-        'price': 6200,
+        'price': 4200,
     },
     {
         'category': 'Earwear',
@@ -624,7 +624,7 @@ products_data = [
         'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115855/4_zvx63m.avif',
         'reference': 'Stud',
         'stone_by_color': 'Blue Sapphire',
-        'price': 6400,
+        'price': 4400,
     },
     {
         'category': 'Earwear',

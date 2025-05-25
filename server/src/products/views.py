@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import AllowAny
-
+from decimal import Decimal
 from src.products.serializers import ProductListSerializer
 
 from src.products.models.earwear import Earwear
@@ -23,10 +23,15 @@ class BaseProductListView(ListAPIView):
     model = None
 
     def _get_filters(self):
+        model_name = self.model.__name__.lower()
+        inventory_prefix = f'{model_name}inventory__price'
+
         color_ids = self.request.query_params.getlist('color_ids')
         stone_ids = self.request.query_params.getlist('stone_ids')
         material_ids = self.request.query_params.getlist('material_ids')
-        prices = self.request.query_params.getlist('prices')
+        collection_ids = self.request.query_params.getlist('collection_ids')
+        min_price = self.request.query_params.getlist('min_price')
+        max_price = self.request.query_params.getlist('max_price')
 
         filters = Q()
         if color_ids:
@@ -35,8 +40,12 @@ class BaseProductListView(ListAPIView):
             filters &= Q(stone_by_color__stone_id__in=stone_ids)
         if material_ids:
             filters &= Q(material__id__in=material_ids)
-        if prices:
-            filters &= Q(fingerwear__inventory__price_id__in=prices)
+        if collection_ids:
+            filters &= Q(collection__id__in=collection_ids)
+        if min_price:
+            filters &= Q(**{f'{inventory_prefix}__gt': Decimal(min_price[0])})
+        if max_price:
+            filters &= Q(**{f'{inventory_prefix}__lt': Decimal(max_price[0])})
 
         return filters
 
@@ -64,6 +73,7 @@ class BaseProductListView(ListAPIView):
                 'colors_by_count': data['colors_by_count'],
                 'stones_by_count': data['stones_by_count'],
                 'materials_by_count': data['materials_by_count'],
+                'collections_by_count': data['collections_by_count'],
                 'price_ranges': data['price_ranges'],
             })
             return response
@@ -74,6 +84,7 @@ class BaseProductListView(ListAPIView):
             'colors_by_count': data['colors_by_count'],
             'stones_by_count': data['stones_by_count'],
             'materials_by_count': data['materials_by_count'],
+            'collections_by_count': data['collections_by_count'],
             'price_ranges': data['price_ranges'],
         })
 

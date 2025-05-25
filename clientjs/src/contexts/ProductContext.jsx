@@ -16,8 +16,6 @@ export const ProductProvider = ({ children }) => {
         prices: { title: 'Price', elements: {} },
         colors: { title: 'Color', elements: {} },
         stones: { title: 'Stone', elements: {} },
-        categories: { title: 'Category', elements: {} },
-        sizes: { title: 'Size', elements: {} },
         collections: { title: 'Collection', elements: {} }
     });
     const [colorIds, setColorIds] = useState([]);
@@ -28,20 +26,30 @@ export const ProductProvider = ({ children }) => {
     const [materialIds, setMaterialIds] = useState([]);
     const [pricesData, setPricesData] = useState([]);
     const [prices, setPrices] = useState([]);
+    const [collectionsData, setCollectionsData] = useState({});
+    const [collectionIds, setCollectionIds] = useState([]);
 
     const [loadMoreDisabled, setLoadMoreDisabled] = useState(false);
 
     const { getProducts } = useProducts();
     const location = useLocation();
 
-    useEffect(() => {
+    const resetFilters = () => {
         setColorIds([]);
         setStoneIds([]);
         setStonesData({});
         setColorsData({});
         setMaterialsData({});
         setMaterialIds([]);
+        setPricesData([]);
+        setPrices([]);
+        setCollectionsData({});
+        setCollectionIds([]);
         setPage(1);
+    };
+
+    useEffect(() => {
+        resetFilters();
     }, [location]);
 
     useEffect(() => {
@@ -52,9 +60,10 @@ export const ProductProvider = ({ children }) => {
         setProducts(response.results);
         setStonesData(response.stones_by_count);
         setColorsData(response.colors_by_count);
+        setCollectionsData(response.collections_by_count);
         setMaterialsData(response.materials_by_count);
         setTotalProductsCount(response.count);
-        setPricesData(response.price_ranges)
+        setPricesData(response.price_ranges);
     }, []);
 
     useEffect(() => {
@@ -76,99 +85,59 @@ export const ProductProvider = ({ children }) => {
         });
     }, [location, getProducts, updateFiltersData]);
 
-    const updateColors = useCallback(
-        (updatedColors) => {
-            setColorIds(updatedColors);
-
-            const nextPage = 1;
-            setPage(nextPage);
-
-            getProducts({
-                categoryName,
-                pageNumber: nextPage,
-                colorIds: updatedColors,
-                stoneIds,
-                materialIds
-            }).then((response) => {
-                updateFiltersData(response);
-            });
-        },
-        [categoryName, getProducts, stoneIds, materialIds, updateFiltersData]
-    );
-
-    const updatePrices = useCallback(
-        (updatedPrices) => {
-            setPrices(updatedPrices);
-
-            const nextPage = 1;
-            setPage(nextPage);
-
-            getProducts({
-                categoryName,
-                pageNumber: nextPage,
-                colorIds,
-                stoneIds,
-                materialIds,
-                prices: updatedPrices
-            }).then((response) => {
-                updateFiltersData(response);
-            });
-        },
-        [categoryName, getProducts, stoneIds, materialIds, updateFiltersData, colorIds]
-    );
-
-    const updateStones = useCallback(
-        (updatedStones) => {
-            setStoneIds(updatedStones);
-
-            const nextPage = 1;
-            setPage(nextPage);
-
-            getProducts({
-                categoryName,
-                pageNumber: nextPage,
-                stoneIds: updatedStones,
-                colorIds,
-                materialIds
-            }).then((response) => {
-                updateFiltersData(response);
-            });
-        },
-        [categoryName, getProducts, colorIds, materialIds, updateFiltersData]
-    );
-
-    const updateMaterials = useCallback(
-        (updatedMaterials) => {
-            setMaterialIds(updatedMaterials);
-
-            const nextPage = 1;
-            setPage(nextPage);
-
-            getProducts({
-                categoryName,
-                pageNumber: nextPage,
-                stoneIds,
-                colorIds,
-                materialIds: updatedMaterials
-            }).then((response) => {
-                updateFiltersData(response);
-            });
-        },
-        [categoryName, getProducts, colorIds, stoneIds, updateFiltersData]
-    );
-
     const loadMore = () => {
         if (totalProductsCount <= products.length) return;
 
         const nextPage = page + 1;
         setPage(nextPage);
 
-        getProducts({ categoryName, pageNumber: nextPage, colorIds }).then((res) => {
+        getProducts({
+            categoryName,
+            pageNumber: nextPage,
+            colorIds,
+            stoneIds,
+            materialIds,
+            collectionIds
+        }).then((res) => {
             setProducts((prev) => [...prev, ...res.results]);
         });
     };
 
-    console.log(pricesData)
+    const updateFilter = useCallback(
+        ({ key, value }) => {
+            const setters = {
+                colorIds: setColorIds,
+                stoneIds: setStoneIds,
+                materialIds: setMaterialIds,
+                prices: setPrices,
+                collectionIds: setCollectionIds
+            };
+
+            setters[key](value);
+            const nextPage = 1;
+            setPage(nextPage);
+
+            getProducts({
+                categoryName,
+                pageNumber: nextPage,
+                colorIds: key === 'colorIds' ? value : colorIds,
+                stoneIds: key === 'stoneIds' ? value : stoneIds,
+                materialIds: key === 'materialIds' ? value : materialIds,
+                collectionIds: key === 'collectionIds' ? value : collectionIds,
+                prices: key === 'prices' ? value : prices
+            }).then(updateFiltersData);
+        },
+        [
+            categoryName,
+            getProducts,
+            colorIds,
+            stoneIds,
+            materialIds,
+            prices,
+            updateFiltersData,
+            collectionIds
+        ]
+    );
 
     return (
         <ProductContext.Provider
@@ -178,21 +147,37 @@ export const ProductProvider = ({ children }) => {
                 loadMore,
                 loadMoreDisabled,
                 filtersData,
-                colorIds,
-                stoneIds,
-                addColorToFiltration: (id) => updateColors([...colorIds, id]),
-                removeColorFromFiltration: (id) => updateColors(colorIds.filter((c) => c !== id)),
-                addStoneToFiltration: (id) => updateStones([...stoneIds, id]),
-                removeStoneFromFiltration: (id) => updateStones(stoneIds.filter((s) => s !== id)),
-                addMaterialToFiltration: (id) => updateMaterials([...materialIds, id]),
+                addColorToFiltration: (id) =>
+                    updateFilter({ key: 'colorIds', value: [...colorIds, id] }),
+                removeColorFromFiltration: (id) =>
+                    updateFilter({ key: 'colorIds', value: colorIds.filter((c) => c !== id) }),
+                addStoneToFiltration: (id) =>
+                    updateFilter({ key: 'stoneIds', value: [...stoneIds, id] }),
+                removeStoneFromFiltration: (id) =>
+                    updateFilter({ key: 'stoneIds', value: stoneIds.filter((s) => s !== id) }),
+                addMaterialToFiltration: (id) =>
+                    updateFilter({ key: 'materialIds', value: [...materialIds, id] }),
                 removeMaterialFromFiltration: (id) =>
-                    updateMaterials(materialIds.filter((s) => s !== id)),
-                addPricesToFiltration: (price) => updatePrices([...prices, price]),
-                removePricesFromFiltration: (price) => updatePrices(prices.filter((s) => s !== price)),
+                    updateFilter({
+                        key: 'materialIds',
+                        value: materialIds.filter((m) => m !== id)
+                    }),
+                addCollectionToFiltration: (id) =>
+                    updateFilter({ key: 'collectionIds', value: [...collectionIds, id] }),
+                removeCollectionFromFiltration: (id) =>
+                    updateFilter({
+                        key: 'collectionIds',
+                        value: collectionIds.filter((c) => c !== id)
+                    }),
+                addPriceToFiltration: (price) =>
+                    updateFilter({ key: 'prices', value: [...prices, price] }),
+                removePriceFromFiltration: (price) =>
+                    updateFilter({ key: 'prices', value: prices.filter((p) => p !== price) }),
                 colorsData,
                 stonesData,
                 materialsData,
-                pricesData
+                pricesData,
+                collectionsData
             }}
         >
             {children}

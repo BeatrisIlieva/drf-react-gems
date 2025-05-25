@@ -22,7 +22,7 @@ export const ProductList = () => {
                 <section>
                     <ul>
                         {products.map((product) => (
-                            <ProductCard key={product.id} {...product} />
+                            <ProductCard key={product.id} {...product} category__name={categoryName}/>
                         ))}
                     </ul>
                     <button onClick={loadMore} disabled={loadMoreDisabled}>

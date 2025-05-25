@@ -23,7 +23,7 @@ export const SelectionContent = ({ children, addHandler, removeHandler, itemId, 
         >
             <button disabled={isSelected} onClick={toggleIsSelectedHandler}>
                 {children ? children : <div></div>}
-                
+
                 <span>
                     <span>{title}</span>
                     <span>({count})</span>

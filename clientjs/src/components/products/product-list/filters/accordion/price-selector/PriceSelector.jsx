@@ -3,7 +3,6 @@ import { PriceItem } from './price-item/PriceItem';
 
 export const PriceSelector = () => {
     const { pricesData } = useProductContext();
-    console.log(pricesData)
 
     return (
         <>

@@ -5,7 +5,6 @@ export const PriceItem = ({
     price_range: title,
     count: count
 }) => {
-    console.log(title)
     const { addPriceToFiltration, removePriceFromFiltration } = useProductContext();
 
     return (
