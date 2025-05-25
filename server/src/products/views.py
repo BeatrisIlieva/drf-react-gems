@@ -13,7 +13,7 @@ from src.products.models.wristwear import Wristwear
 
 
 class ProductPagination(PageNumberPagination):
-    page_size = 6
+    page_size = 8
 
 
 class BaseProductListView(ListAPIView):
@@ -30,6 +30,7 @@ class BaseProductListView(ListAPIView):
         stone_ids = self.request.query_params.getlist('stone_ids')
         material_ids = self.request.query_params.getlist('material_ids')
         collection_ids = self.request.query_params.getlist('collection_ids')
+        category_ids = self.request.query_params.getlist('category_ids')
         min_price = self.request.query_params.getlist('min_price')
         max_price = self.request.query_params.getlist('max_price')
 
@@ -42,6 +43,8 @@ class BaseProductListView(ListAPIView):
             filters &= Q(material__id__in=material_ids)
         if collection_ids:
             filters &= Q(collection__id__in=collection_ids)
+        if category_ids:
+            filters &= Q(reference__id__in=category_ids)
         if min_price:
             filters &= Q(**{f'{inventory_prefix}__gt': Decimal(min_price[0])})
         if max_price:
@@ -56,6 +59,8 @@ class BaseProductListView(ListAPIView):
                 'products': [],
                 'colors_by_count': {},
                 'stones_by_count': {},
+                'collections_by_count': {},
+                'categories_by_count': {},
                 'materials_by_count': {},
                 'price_ranges': {},
             }
@@ -74,6 +79,7 @@ class BaseProductListView(ListAPIView):
                 'stones_by_count': data['stones_by_count'],
                 'materials_by_count': data['materials_by_count'],
                 'collections_by_count': data['collections_by_count'],
+                'categories_by_count': data['categories_by_count'],
                 'price_ranges': data['price_ranges'],
             })
             return response
@@ -85,6 +91,7 @@ class BaseProductListView(ListAPIView):
             'stones_by_count': data['stones_by_count'],
             'materials_by_count': data['materials_by_count'],
             'collections_by_count': data['collections_by_count'],
+            'categories_by_count': data['categories_by_count'],
             'price_ranges': data['price_ranges'],
         })
 

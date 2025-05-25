@@ -17,6 +17,7 @@ class BaseProductManager(models.Manager):
         )
         materials_by_count = self._get_material_usage_count(raw_products)
         collections_by_count = self._get_collection_usage_count(raw_products)
+        categories_by_count = self._get_categories_usage_count(raw_products)
         price_ranges = self._get_price_ranges(raw_products, model_name)
 
         return {
@@ -25,6 +26,7 @@ class BaseProductManager(models.Manager):
             'stones_by_count': stones_by_count,
             'materials_by_count': materials_by_count,
             'collections_by_count': collections_by_count,
+            'categories_by_count': categories_by_count,
             'price_ranges': price_ranges,
         }
 
@@ -186,6 +188,13 @@ class BaseProductManager(models.Manager):
             qs.values('collection__name', 'collection__id')
             .annotate(collection_count=Count('id', distinct=True))
             .order_by('-collection_count')
+        )
+
+    def _get_categories_usage_count(self, qs):
+        return (
+            qs.values('reference__name', 'reference__id')
+            .annotate(category_count=Count('id', distinct=True))
+            .order_by('-category_count')
         )
 
     def _get_price_ranges(self, qs, model_name):

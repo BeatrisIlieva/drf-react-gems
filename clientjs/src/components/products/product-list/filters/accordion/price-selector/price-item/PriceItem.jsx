@@ -1,10 +1,7 @@
 import { useProductContext } from '../../../../../../../contexts/ProductContext';
 import { SelectionContent } from '../../selection-content/SelectionContent';
 
-export const PriceItem = ({
-    price_range: title,
-    count: count
-}) => {
+export const PriceItem = ({ price_range: title, count: count }) => {
     const { addPriceToFiltration, removePriceFromFiltration } = useProductContext();
 
     return (

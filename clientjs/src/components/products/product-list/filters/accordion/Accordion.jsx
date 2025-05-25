@@ -8,6 +8,7 @@ import { ColorSelector } from './color-selector/ColorSelector';
 import { StoneSelector } from './stone-selector/StoneSelector';
 import { PriceSelector } from './price-selector/PriceSelector';
 import { CollectionSelector } from './collection-selector/CollectionSelector';
+import { CategorySelector } from './category-selector/CategorySelector';
 
 export const Accordion = ({ data }) => {
     const [displayFilterItem, setDisplayFilterItem] = useState(false);
@@ -46,8 +47,9 @@ export const Accordion = ({ data }) => {
                         <PriceSelector />
                     ) : data.title === 'Collection' ? (
                         <CollectionSelector />
-                    )
-                    : null}
+                    ) : data.title === 'Category' ? (
+                        <CategorySelector />
+                    ) : null}
                 </li>
             </ul>
         </div>

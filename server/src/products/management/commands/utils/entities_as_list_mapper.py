@@ -17,7 +17,8 @@ entities_as_list_mapper = {
         'Berry',
         'Sunflower',
         'Lily of the Valley',
-        'Watch',
+        'Classics',
+        'Elegant',
     ],
     Material: [
         'Yellow Gold',
@@ -34,8 +35,6 @@ entities_as_list_mapper = {
         'Watch',
         'Statement',
         'Band',
-        'Classics',
-        'Elegant',
     ],
     FingerwearSize: [
         4.90,

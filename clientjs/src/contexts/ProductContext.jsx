@@ -16,6 +16,7 @@ export const ProductProvider = ({ children }) => {
         prices: { title: 'Price', elements: {} },
         colors: { title: 'Color', elements: {} },
         stones: { title: 'Stone', elements: {} },
+        categories: { title: 'Category', elements: {} },
         collections: { title: 'Collection', elements: {} }
     });
     const [colorIds, setColorIds] = useState([]);
@@ -28,6 +29,8 @@ export const ProductProvider = ({ children }) => {
     const [prices, setPrices] = useState([]);
     const [collectionsData, setCollectionsData] = useState({});
     const [collectionIds, setCollectionIds] = useState([]);
+    const [categoriesData, setCategoriesData] = useState({});
+    const [categoryIds, setCategoryIds] = useState([]);
 
     const [loadMoreDisabled, setLoadMoreDisabled] = useState(false);
 
@@ -45,6 +48,8 @@ export const ProductProvider = ({ children }) => {
         setPrices([]);
         setCollectionsData({});
         setCollectionIds([]);
+        setCategoriesData({});
+        setCategoryIds([]);
         setPage(1);
     };
 
@@ -61,6 +66,7 @@ export const ProductProvider = ({ children }) => {
         setStonesData(response.stones_by_count);
         setColorsData(response.colors_by_count);
         setCollectionsData(response.collections_by_count);
+        setCategoriesData(response.categories_by_count);
         setMaterialsData(response.materials_by_count);
         setTotalProductsCount(response.count);
         setPricesData(response.price_ranges);
@@ -97,7 +103,8 @@ export const ProductProvider = ({ children }) => {
             colorIds,
             stoneIds,
             materialIds,
-            collectionIds
+            collectionIds,
+            categoryIds
         }).then((res) => {
             setProducts((prev) => [...prev, ...res.results]);
         });
@@ -110,7 +117,8 @@ export const ProductProvider = ({ children }) => {
                 stoneIds: setStoneIds,
                 materialIds: setMaterialIds,
                 prices: setPrices,
-                collectionIds: setCollectionIds
+                collectionIds: setCollectionIds,
+                categoryIds: setCategoryIds
             };
 
             setters[key](value);
@@ -124,6 +132,7 @@ export const ProductProvider = ({ children }) => {
                 stoneIds: key === 'stoneIds' ? value : stoneIds,
                 materialIds: key === 'materialIds' ? value : materialIds,
                 collectionIds: key === 'collectionIds' ? value : collectionIds,
+                categoryIds: key === 'categoryIds' ? value : categoryIds,
                 prices: key === 'prices' ? value : prices
             }).then(updateFiltersData);
         },
@@ -135,7 +144,8 @@ export const ProductProvider = ({ children }) => {
             materialIds,
             prices,
             updateFiltersData,
-            collectionIds
+            collectionIds,
+            categoryIds
         ]
     );
 
@@ -169,6 +179,13 @@ export const ProductProvider = ({ children }) => {
                         key: 'collectionIds',
                         value: collectionIds.filter((c) => c !== id)
                     }),
+                addCategoryToFiltration: (id) =>
+                    updateFilter({ key: 'categoryIds', value: [...categoryIds, id] }),
+                removeCategoryFromFiltration: (id) =>
+                    updateFilter({
+                        key: 'categoryIds',
+                        value: categoryIds.filter((c) => c !== id)
+                    }),
                 addPriceToFiltration: (price) =>
                     updateFilter({ key: 'prices', value: [...prices, price] }),
                 removePriceFromFiltration: (price) =>
@@ -177,7 +194,8 @@ export const ProductProvider = ({ children }) => {
                 stonesData,
                 materialsData,
                 pricesData,
-                collectionsData
+                collectionsData,
+                categoriesData
             }}
         >
             {children}

@@ -7,7 +7,9 @@ export const CollectionSelector = () => {
     return (
         <>
             {collectionsData.length > 0 &&
-                collectionsData.map((item) => <CollectionItem key={item.collection__id} {...item} />)}
+                collectionsData.map((item) => (
+                    <CollectionItem key={item.collection__id} {...item} />
+                ))}
         </>
     );
 };
