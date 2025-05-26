@@ -11,24 +11,32 @@ UserModel = get_user_model()
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_user_profile(sender, instance, created, **kwargs):
+def create_related_user_models(sender, instance, created, **kwargs):
     if created:
-        UserProfile.objects.create(
-            user=instance,
-        )
+        UserProfile.objects.get_or_create(user=instance)
+        UserAddress.objects.get_or_create(user=instance)
+        UserPhoto.objects.get_or_create(user=instance)
 
 
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_user_address(sender, instance, created, **kwargs):
-    if created:
-        UserAddress.objects.create(
-            user=instance,
-        )
+# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
+# def create_user_profile(sender, instance, created, **kwargs):
+#     if created:
+#         UserProfile.objects.create(
+#             user=instance,
+#         )
 
 
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_user_photo(sender, instance, created, **kwargs):
-    if created:
-        UserPhoto.objects.create(
-            user=instance,
-        )
+# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
+# def create_user_address(sender, instance, created, **kwargs):
+#     if created:
+#         UserAddress.objects.create(
+#             user=instance,
+#         )
+
+
+# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
+# def create_user_photo(sender, instance, created, **kwargs):
+#     if created:
+#         UserPhoto.objects.create(
+#             user=instance,
+#         )
