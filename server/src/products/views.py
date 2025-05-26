@@ -1,3 +1,4 @@
+from rest_framework import viewsets, permissions
 from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
@@ -5,7 +6,8 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.permissions import AllowAny
 from decimal import Decimal
 from src.products.models.base import Product
-from src.products.serializers import FingerwearSerializer, ProductListSerializer
+from src.products.models.review import Review
+from src.products.serializers import FingerwearSerializer, ProductListSerializer, ReviewSerializer
 
 from src.products.models.earwear import Earwear
 from src.products.models.fingerwear import Fingerwear
@@ -97,22 +99,7 @@ class BaseProductListView(ListAPIView):
 class BaseProductItemView(RetrieveAPIView):
     queryset = None
     serializer_class = FingerwearSerializer
-    # serializer_class = ProductItemSerializer
     permission_classes = [AllowAny]
-    # model = None
-
-    # def retrieve(self, request, *args, **kwargs):
-    #     item_id = request.query_params.get('item_id')
-        
-    #     if not self.model and not item_id:
-    #         return {
-    #             'product': {}
-    #         }
-
-    #     product = self.model.objects.get_product(item_id)
-    
-
-
 
 class EarwearListView(BaseProductListView):
     model = Earwear
@@ -146,3 +133,12 @@ class NeckwearItemView(BaseProductListView):
 
 class WristwearItemView(BaseProductListView):
     queryset = Wristwear.objects.all()
+
+
+class ReviewViewSet(viewsets.ModelViewSet):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

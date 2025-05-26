@@ -3,6 +3,7 @@ from rest_framework import serializers
 
 from src.products.models.earwear import Earwear
 from src.products.models.fingerwear import Fingerwear, FingerwearInventory
+from src.products.models.review import Review
 
 
 class ProductListSerializer(serializers.Serializer):
@@ -70,3 +71,11 @@ class FingerwearSerializer(serializers.ModelSerializer):
         )
 
         return RelatedFingerwearSerializer(related, many=True).data
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['id', 'user', 'rating', 'comment',
+                  'created_at', 'content_type', 'object_id']
+        read_only_fields = ['user', 'created_at']

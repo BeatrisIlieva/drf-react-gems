@@ -88,7 +88,7 @@ export const useApi = () => {
                 error.data = json;
                 // throw error;
             }
-console.log(json, 'json')
+
             return json;
         },
         [access, refresh, authRefresh]

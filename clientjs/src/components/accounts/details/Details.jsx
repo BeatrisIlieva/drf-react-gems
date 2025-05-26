@@ -13,10 +13,7 @@ export const Details = () => {
 
     useEffect(() => {
         detail().then((response) => setUser(response));
-        getPhoto().then((response) => {
-            setPhoto(response.photo_url)
-            console.log(response, 'here')
-        });
+        getPhoto().then((response) => {setPhoto(response.photo_url)});
     }, [detail, getPhoto]);
 
     const [image, setImage] = useState(null);
