@@ -20,7 +20,7 @@ from decimal import Decimal
 class BaseProductManager(models.Manager):
     def get_product(self, item_id):
         return self.get(pk=item_id)
-    
+
     def get_products(self, filters):
         qs = self.filter(filters)
         model_name = self.model.__name__.lower()
@@ -210,7 +210,6 @@ class BaseProductManager(models.Manager):
         )
 
     def _get_price_ranges(self, qs, model_name):
-        inventory_prefix = f'{model_name}__price'
 
         return (
             qs

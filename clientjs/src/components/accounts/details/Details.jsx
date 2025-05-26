@@ -13,7 +13,9 @@ export const Details = () => {
 
     useEffect(() => {
         detail().then((response) => setUser(response));
-        getPhoto().then((response) => {setPhoto(response.photo_url)});
+        getPhoto().then((response) => {
+            setPhoto(response.photo_url);
+        });
     }, [detail, getPhoto]);
 
     const [image, setImage] = useState(null);
@@ -33,7 +35,6 @@ export const Details = () => {
         const response = await upload(formData);
         setUploadedImageUrl(response.data.photo);
     };
-
 
     return (
         <>

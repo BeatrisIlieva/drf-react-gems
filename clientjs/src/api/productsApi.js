@@ -58,13 +58,19 @@ export const useProducts = () => {
         [get]
     );
 
+    return { getProducts };
+};
+
+export const useProduct = () => {
+    const { get } = useApi();
+
     const getProduct = useCallback(
         async ({ categoryName, productId }) => {
             const fullUrl = `${baseUrl}/${categoryName}s/${productId}`;
 
             try {
                 const response = await get(fullUrl);
-                
+
                 return response;
             } catch (err) {
                 console.error('Error in getProduct:', err.message);
@@ -74,5 +80,5 @@ export const useProducts = () => {
         [get]
     );
 
-    return { getProducts, getProduct };
+    return { getProduct };
 };

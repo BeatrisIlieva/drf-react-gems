@@ -5,9 +5,8 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.permissions import AllowAny
 from decimal import Decimal
-from src.products.models.base import Product
 from src.products.models.review import Review
-from src.products.serializers import FingerwearSerializer, ProductListSerializer, ReviewSerializer
+from src.products.serializers import EarwearSerializer, FingerwearSerializer, NeckwearSerializer, ProductListSerializer, ReviewSerializer, WristwearSerializer
 
 from src.products.models.earwear import Earwear
 from src.products.models.fingerwear import Fingerwear
@@ -96,11 +95,6 @@ class BaseProductListView(ListAPIView):
         })
 
 
-class BaseProductItemView(RetrieveAPIView):
-    queryset = None
-    serializer_class = FingerwearSerializer
-    permission_classes = [AllowAny]
-
 class EarwearListView(BaseProductListView):
     model = Earwear
 
@@ -117,8 +111,10 @@ class WristwearListView(BaseProductListView):
     model = Wristwear
 
 
-class EarwearItemView(BaseProductListView):
+class EarwearItemView(RetrieveAPIView):
     queryset = Earwear.objects.all()
+    serializer_class = EarwearSerializer
+    permission_classes = [AllowAny]
 
 
 class FingerwearItemView(RetrieveAPIView):
@@ -127,12 +123,16 @@ class FingerwearItemView(RetrieveAPIView):
     permission_classes = [AllowAny]
 
 
-class NeckwearItemView(BaseProductListView):
+class NeckwearItemView(RetrieveAPIView):
     queryset = Neckwear.objects.all()
+    serializer_class = NeckwearSerializer
+    permission_classes = [AllowAny]
 
 
-class WristwearItemView(BaseProductListView):
+class WristwearItemView(RetrieveAPIView):
     queryset = Wristwear.objects.all()
+    serializer_class = WristwearSerializer
+    permission_classes = [AllowAny]
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
@@ -143,12 +143,13 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-        
+
     def get_queryset(self):
         queryset = Review.objects.all()
         content_type_id = self.request.query_params.get('content_type_id')
         object_id = self.request.query_params.get('object_id')
 
         if content_type_id and object_id:
-            queryset = queryset.filter(content_type_id=content_type_id, object_id=object_id)
+            queryset = queryset.filter(
+                content_type_id=content_type_id, object_id=object_id)
         return queryset

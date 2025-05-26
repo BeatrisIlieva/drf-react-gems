@@ -16,9 +16,9 @@
 }
 
 .filled {
-    color: gold;
+    color: var(--gold);
 }
 
 .empty {
-    color: lightgray;
+    color: var(--medium-grey);
 }

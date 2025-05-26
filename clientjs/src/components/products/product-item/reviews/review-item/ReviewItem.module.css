@@ -1,4 +1,4 @@
-.review-item {
+.review-item:not(:last-of-type) {
     display: flex;
     flex-direction: column;
     position: relative;
@@ -36,7 +36,7 @@
 .review-item > span:nth-child(1) span:nth-child(2) {
     display: flex;
     flex-direction: column;
-} 
+}
 
 .review-item > span:nth-child(1) span:nth-child(2) h5 {
     font-size: 1.2em;

@@ -8,8 +8,11 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
 from faker import Faker
 
+from src.products.models.earwear import Earwear
 from src.products.models.fingerwear import Fingerwear
+from src.products.models.neckwear import Neckwear
 from src.products.models.review import Review
+from src.products.models.wristwear import Wristwear
 
 
 UserModel = get_user_model()
@@ -170,20 +173,38 @@ class Command(BaseCommand):
 
     def create_fake_reviews(self, users):
         fingerwears = Fingerwear.objects.all()
+        wristwears = Wristwear.objects.all()
+        neckwears = Neckwear.objects.all()
+        earwears = Earwear.objects.all()
+
         fingerwear_content_type = ContentType.objects.get_for_model(Fingerwear)
+        wristwears_content_type = ContentType.objects.get_for_model(Wristwear)
+        neckwears_content_type = ContentType.objects.get_for_model(Neckwear)
+        earwears_content_type = ContentType.objects.get_for_model(Earwear)
 
-        for product in fingerwears:
-            shuffled_users = users.copy()
-            random.shuffle(shuffled_users)
+        all_products_with_their_content_types = [
+            [fingerwears, fingerwear_content_type],
+            [wristwears, wristwears_content_type],
+            [neckwears, neckwears_content_type],
+            [earwears, earwears_content_type],
+        ]
 
-            for user in shuffled_users:
-                rating = randint(2, 5)
-                comment = random.choice(sample_reviews)
+        for element in all_products_with_their_content_types:
+            products, content_type = element
+            
+            for product in products:
 
-                Review.objects.create(
-                    user=user,
-                    rating=rating,
-                    comment=comment,
-                    content_type=fingerwear_content_type,
-                    object_id=product.pk,
-                )
+                shuffled_users = users.copy()
+                random.shuffle(shuffled_users)
+
+                for user in shuffled_users:
+                    rating = randint(2, 5)
+                    comment = random.choice(sample_reviews)
+
+                    Review.objects.create(
+                        user=user,
+                        rating=rating,
+                        comment=comment,
+                        content_type=content_type,
+                        object_id=product.pk,
+                    )

@@ -59,7 +59,7 @@
 .user-action .thumbnail::before,
 .user-action .thumbnail > h5 {
     position: absolute;
-    bottom: 0;
+    top: 2em;
     left: 50%;
     transform: translate(-50%, 0);
     width: 100%;

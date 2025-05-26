@@ -7,7 +7,7 @@ export const Reviews = ({ reviews, average_rating }) => {
         <section className={styles['reviews']}>
             <div className={styles['wrapper-top']}>
                 <div>
-                    <h3>Customer Reviews</h3>
+                    <h3>Latest Customer Reviews</h3>
                     <div>
                         <span>{average_rating}</span>
                         <Stars rating={average_rating} />

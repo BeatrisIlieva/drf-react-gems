@@ -46,26 +46,26 @@ export const useApi = () => {
 
             if (method !== 'GET') {
                 let bodyData = data;
-            
+
                 if (contentType === 'multipart/form-data') {
                     // Make sure it's a FormData instance
                     if (!(bodyData instanceof FormData)) {
                         throw new Error('Data must be a FormData instance for multipart/form-data');
                     }
-            
+
                     if (refreshRequired) {
                         bodyData.append('refresh', refresh);
                     }
-            
+
                     options.body = bodyData;
-            
+
                     // Remove Content-Type so the browser sets it (with boundary)
                     delete options.headers['Content-Type'];
                 } else {
                     if (refreshRequired) {
                         bodyData = { ...bodyData, refresh };
                     }
-            
+
                     options.body = JSON.stringify(bodyData);
                 }
             }

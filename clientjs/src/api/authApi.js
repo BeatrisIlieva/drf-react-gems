@@ -150,7 +150,6 @@ export const useGetPhoto = () => {
             });
 
             return result;
-            
         } catch (err) {
             console.log(err.message);
         }

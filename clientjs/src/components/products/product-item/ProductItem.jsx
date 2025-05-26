@@ -1,7 +1,7 @@
 import styles from './ProductItem.module.css';
 
 import { useEffect, useState } from 'react';
-import { useProducts } from '../../../api/productsApi';
+import { useProduct } from '../../../api/productsApi';
 import { useParams } from 'react-router';
 import { Button } from '../../reusable/button/Button';
 import { HeartIcon } from '../../reusable/heart-icon/HeartIcon';
@@ -11,7 +11,7 @@ import { TruckIcon } from '../../reusable/truck-icon/TruckIncon';
 export const ProductItem = () => {
     const [product, setProduct] = useState(null);
     const { categoryName, productId } = useParams();
-    const { getProduct } = useProducts();
+    const { getProduct } = useProduct();
 
     useEffect(() => {
         getProduct({ categoryName, productId }).then((result) => setProduct(result));
@@ -55,15 +55,19 @@ export const ProductItem = () => {
                                     </li>
                                 ))}
                             </ul>
-                            <span>Size:</span>
-                            <ul>
-                                {product.inventory.map((item) => (
-                                    <li key={item.size.id}>
-                                        <span>{item.size.name}</span>
-                                        <span>cm</span>
-                                    </li>
-                                ))}
-                            </ul>
+                            {categoryName !== 'earwear' && (
+                                <>
+                                    <span>Size:</span>
+                                    <ul>
+                                        {product.inventory.map((item) => (
+                                            <li key={item.size.id}>
+                                                <span>{item.size.name}</span>
+                                                <span>cm</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </>
+                            )}
                             <div>
                                 <Button title={'Add to Bag'} color={'black'} />
                                 <Button title={<HeartIcon />} color={'black'} />
@@ -71,7 +75,7 @@ export const ProductItem = () => {
                         </div>
 
                         <p>
-                            <TruckIcon/>
+                            <TruckIcon />
                             <span>Complimentary 2-day shipping</span>
                         </p>
 
