@@ -171,6 +171,11 @@ class BaseProductAdmin(admin.ModelAdmin):
                  'stone_by_color'
              )
          }),
+        ('Price', {
+            'fields': (
+                'price',
+            )
+        })
     )
 
     def first_picture(self, obj):

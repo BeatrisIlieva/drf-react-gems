@@ -1,6 +1,6 @@
 import os
 import random
-from random import choice, randint
+from random import randint
 import django
 from django.core.management.base import BaseCommand
 from django.contrib.contenttypes.models import ContentType
@@ -61,24 +61,84 @@ class Command(BaseCommand):
     def create_fake_users(self):
 
         users_data = [
-            {'email': 'simon.smith@mail.com', 'password': '!1Aabb', 'first_name': 'Simon',
-                'last_name': 'Smith', 'photo': 'image/upload/v1748258755/boy2_aijwxt_rqfolu.jpg'},
+            {
+                'email': 'simon.smith@mail.com',
+                'password': '!1Aabb',
+                'first_name': 'Simon',
+                'last_name': 'Smith',
+                'photo': 'image/upload/v1748258755/boy2_aijwxt_rqfolu.jpg'
+            },
+            {
+                'email': 'ava.johnson@mail.com',
+                'password': '!1Aabb',
+                'first_name': 'Ava',
+                'last_name': 'Johnson',
+                'photo': 'image/upload/v1748258753/3d-illustration-cute-little-girl-with-backpack-her-hands_fxkmfo_nflhb4.jpg'
+            },
+            {
+                'email': 'sophia.brown@mail.com',
+                'password': '!1Aabb',
+                'first_name': 'Sophia',
+                'last_name': 'Brown',
+                'photo': 'image/upload/v1748258753/3d-illustration-cute-little-girl-hat-jacket_bdlvpk_qo4b95.jpg'
+            },
+            {
+                'email': 'michael.clark@mail.com',
+                'password': '!1Aabb',
+                'first_name': 'Michael',
+                'last_name': 'Clark',
+                'photo': 'image/upload/v1748258754/little-boy-cap-with-backpack-street-3d-rendering_i2mw52_frkquw.jpg'
+            },
+            {
+                'email': 'emma.watson@mail.com',
+                'password': '!1Aabb',
+                'first_name': 'Emma',
+                'last_name': 'Watson',
+                'photo': 'image/upload/v1748258754/girl2_rjcjz2_y54zla.jpg'
+            },
+            {
+                'email': 'olivia.smith@mail.com',
+                'password': '!1Aabb',
+                'first_name': 'Olivia',
+                'last_name': 'Smith',
+                'photo': 'image/upload/v1748258753/3d-illustration-cute-little-girl-bokeh-background_wyylpf_seqqgg.jpg'
+            },
+            {
+                'email': 'william.lewis@mail.com',
+                'password': '!1Aabb',
+                'first_name': 'William',
+                'last_name': 'Lewis',
+                'photo': 'image/upload/v1748258753/boy1_cli59g_czbmce.jpg'
+            },
+            {
+                'email': 'isabella.jones@mail.com',
+                'password': '!1Aabb',
+                'first_name': 'Isabella',
+                'last_name': 'Jones',
+                'photo': 'image/upload/v1748258753/girl1_lclcth_lqhndu.jpg'
+            },
 
-            {'email': 'emma.watson@mail.com', 'password': '!1Aabb', 'first_name': 'Emma',
-                'last_name': 'Watson', 'photo': 'image/upload/v1748258754/girl2_rjcjz2_y54zla.jpg'},
-            {'email': 'olivia.smith@mail.com', 'password': '!1Aabb', 'first_name': 'Olivia', 'last_name': 'Smith',
-             'photo': 'image/upload/v1748258753/3d-illustration-cute-little-girl-bokeh-background_wyylpf_seqqgg.jpg'},
-            {'email': 'ava.johnson@mail.com', 'password': '!1Aabb', 'first_name': 'Ava', 'last_name': 'Johnson',
-             'photo': 'image/upload/v1748258753/3d-illustration-cute-little-girl-with-backpack-her-hands_fxkmfo_nflhb4.jpg'},
-            {'email': 'sophia.brown@mail.com', 'password': '!1Aabb', 'first_name': 'Sophia', 'last_name': 'Brown',
-             'photo': 'image/upload/v1748258753/3d-illustration-cute-little-girl-hat-jacket_bdlvpk_qo4b95.jpg'},
-            {'email': 'isabella.jones@mail.com', 'password': '!1Aabb', 'first_name': 'Isabella',
-             'last_name': 'Jones', 'photo': 'image/upload/v1748258753/girl1_lclcth_lqhndu.jpg'},
-
-            {'email': 'michael.clark@mail.com', 'password': '!1Aabb', 'first_name': 'Michael', 'last_name': 'Clark',
-             'photo': 'image/upload/v1748258754/little-boy-cap-with-backpack-street-3d-rendering_i2mw52_frkquw.jpg'},
-            {'email': 'william.lewis@mail.com', 'password': '!1Aabb', 'first_name': 'William',
-             'last_name': 'Lewis', 'photo': 'image/upload/v1748258753/boy1_cli59g_czbmce.jpg'}
+            {
+                'email': 'mia.davis@mail.com',
+                'password': '!1Aabb',
+                'first_name': 'Mia',
+                'last_name': 'Davis',
+                'photo': 'image/upload/v1748267948/bambino-cartoon-carino-che-posa-per-il-ritratto_z6edpw.jpg',
+            },
+            {
+                'email': 'liam.martin@mail.com',
+                'password': '!1Aabb',
+                'first_name': 'Liam',
+                'last_name': 'Martin',
+                'photo': 'image/upload/v1748267949/l-uomo-del-fitness-dei-cartoni-animati-3d_egayjv.jpg',
+            },
+            {
+                'email': 'amelia.wilson@mail.com',
+                'password': '!1Aabb',
+                'first_name': 'Amelia',
+                'last_name': 'Wilson',
+                'photo': 'image/upload/v1748267948/cute-cartoon-kid-posing-portrait_kknsfr.jpg',
+            },
         ]
 
         created_users = []
@@ -107,7 +167,7 @@ class Command(BaseCommand):
             shuffled_users = users.copy()
             random.shuffle(shuffled_users)
 
-            for user in shuffled_users[:3]:
+            for user in shuffled_users:
                 rating = randint(2, 5)
                 comment = random.choice(sample_reviews)
 

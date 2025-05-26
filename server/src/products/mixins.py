@@ -19,4 +19,4 @@ class NameFieldMixin(models.Model):
 
 class InventoryInfoMixin:
     def __str__(self):
-        return f'Price: {self.price} - Quantity: {self.quantity} - Size: {self.size.name} cm.'
+        return f'Quantity: {self.quantity} - Size: {self.size.name} cm.'

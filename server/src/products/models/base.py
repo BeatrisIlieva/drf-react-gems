@@ -62,7 +62,7 @@ class Inventory(models.Model):
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
-        return f'Price: {self.price} - Quantity: {self.quantity}'
+        return f'Quantity: {self.quantity}'
 
 
 class Size(models.Model):

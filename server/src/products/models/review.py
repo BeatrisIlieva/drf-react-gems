@@ -13,14 +13,34 @@ class Review(models.Model):
         ordering = ['-created_at']
         unique_together = ('user', 'content_type', 'object_id')
 
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    rating = models.IntegerField(choices=RATING_CHOICES)
-    comment = models.TextField(blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+    )
 
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    rating = models.IntegerField(
+        choices=RATING_CHOICES,
+    )
+
+    comment = models.TextField(
+        blank=True,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.CASCADE,
+    )
+
     object_id = models.PositiveIntegerField()
-    product = GenericForeignKey('content_type', 'object_id')
+
+    product = GenericForeignKey(
+        'content_type',
+        'object_id',
+    )
 
     def __str__(self):
         return f'{self.product} - {self.user.username} ({self.rating})'
