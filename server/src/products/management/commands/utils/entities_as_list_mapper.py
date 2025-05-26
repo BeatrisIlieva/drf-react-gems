@@ -42,7 +42,6 @@ entities_as_list_mapper = {
         5.30,
         5.43,
         5.56,
-        5.68,
     ],
     NeckwearSize: [
         40.64,
@@ -50,13 +49,11 @@ entities_as_list_mapper = {
         50.80,
         71.28,
         91.44,
-        142.88
     ],
     WristwearSize: [
         12.70,
         14.20,
         15.40,
         16.50,
-        17.80,
     ]
 }

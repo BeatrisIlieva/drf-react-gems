@@ -5,6 +5,8 @@ import { useProducts } from '../../../api/productsApi';
 import { useParams } from 'react-router';
 import { Button } from '../../reusable/button/Button';
 import { HeartIcon } from '../../reusable/heart-icon/HeartIcon';
+import { Reviews } from './reviews/Reviews';
+import { TruckIcon } from '../../reusable/truck-icon/TruckIncon';
 
 export const ProductItem = () => {
     const [product, setProduct] = useState(null);
@@ -68,8 +70,16 @@ export const ProductItem = () => {
                             </div>
                         </div>
 
+                        <p>
+                            <TruckIcon/>
+                            <span>Complimentary 2-day shipping</span>
+                        </p>
+
                         <div className={styles['wrapper-bottom']}>
-                            <h2>Customer reviws</h2>
+                            <Reviews
+                                reviews={product.reviews}
+                                average_rating={product.average_rating}
+                            />
                         </div>
                     </div>
                 </section>

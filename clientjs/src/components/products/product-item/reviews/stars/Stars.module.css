@@ -1,0 +1,24 @@
+.stars {
+    display: flex;
+    gap: 0.15rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.stars li {
+    display: flex;
+}
+
+.filled,
+.empty {
+    font-size: 1.2em;
+}
+
+.filled {
+    color: gold;
+}
+
+.empty {
+    color: lightgray;
+}

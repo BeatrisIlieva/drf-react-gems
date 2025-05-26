@@ -53,7 +53,6 @@ class FingerwearSerializer(serializers.ModelSerializer):
     average_rating = serializers.SerializerMethodField()
     rating_counts = serializers.SerializerMethodField()
 
-
     class Meta:
         model = Fingerwear
         fields = [
@@ -70,8 +69,7 @@ class FingerwearSerializer(serializers.ModelSerializer):
             'related_products',
             'content_type',
             'reviews',
-            'average_rating',     
-            'rating_counts',
+            'average_rating',
         ]
         depth = 3
 
@@ -82,7 +80,7 @@ class FingerwearSerializer(serializers.ModelSerializer):
         )
 
         return RelatedFingerwearSerializer(related, many=True).data
-    
+
     def get_content_type(self, obj):
         content_type = ContentType.objects.get_for_model(obj)
         return {
@@ -90,17 +88,17 @@ class FingerwearSerializer(serializers.ModelSerializer):
             # 'app_label': content_type.app_label,
             # 'model': content_type.model,
         }
-        
+
     def get_reviews(self, obj):
         content_type = ContentType.objects.get_for_model(obj)
         reviews_qs = Review.objects.filter(
             content_type=content_type,
             object_id=obj.pk
-        ).order_by('-created_at')[:3]
+        ).order_by('-created_at')[:5]
 
         # Serialize the reviews with ReviewSerializer
         return ReviewSerializer(reviews_qs, many=True).data
-    
+
     def get_average_rating(self, obj):
         content_type = ContentType.objects.get_for_model(obj)
         avg = Review.objects.filter(
@@ -109,25 +107,12 @@ class FingerwearSerializer(serializers.ModelSerializer):
         ).aggregate(Avg('rating'))['rating__avg']
         return round(avg, 2) if avg else None
 
-    def get_rating_counts(self, obj):
-        content_type = ContentType.objects.get_for_model(obj)
-        counts = (
-            Review.objects
-            .filter(content_type=content_type, object_id=obj.id)
-            .values('rating')
-            .annotate(count=Count('id'))
-        )
-
-        result = {i: 0 for i in range(1, 6)}  # default counts
-        for item in counts:
-            result[item['rating']] = item['count']
-        return result
-
 
 
 class ReviewSerializer(serializers.ModelSerializer):
     photo_url = serializers.SerializerMethodField()
-        
+    user_full_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Review
         fields = [
@@ -138,11 +123,17 @@ class ReviewSerializer(serializers.ModelSerializer):
             'created_at',
             'content_type',
             'object_id',
-            'photo_url'
+            'photo_url',
+            'user_full_name'
         ]
         read_only_fields = ['user', 'created_at']
-        
+
     def get_photo_url(self, obj):
         if obj.user.userphoto.photo:
             return cloudinary_url(obj.user.userphoto.photo.public_id)[0]
+        return None
+
+    def get_user_full_name(self, obj):
+        if obj.user.userprofile.first_name and obj.user.userprofile.last_name:
+            return f'{obj.user.userprofile.first_name} {obj.user.userprofile.last_name}'
         return None
