@@ -15,3 +15,16 @@
     font-style: italic;
     margin-bottom: 1em;
 }
+
+.invalid-username-password {
+    background: #fdf4f4;
+    border: 0.1em solid var(--red);
+    padding: 1em;
+    margin-bottom: 1em;
+}
+
+.invalid-username-password p {
+    color: var(--red);
+    margin-bottom: 0;
+    opacity: 1;
+}

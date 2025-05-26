@@ -6,6 +6,7 @@ import { MaterialsInfo } from './materials-info/MaterialsInfo';
 import styles from './ProductCard.module.css';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useProductContext } from '../../../../contexts/ProductContext';
 
 export const ProductCard = ({
     id,
@@ -20,6 +21,8 @@ export const ProductCard = ({
     is_sold_out
 }) => {
     const [firstImageIsSelected, setFirstImageIsSelected] = useState(true);
+
+    const {navigateToProductPage} = useProductContext()
 
     const toggleFirstImageIsSelectedHandler = () => {
         setFirstImageIsSelected(() => !firstImageIsSelected);
@@ -47,6 +50,7 @@ export const ProductCard = ({
                     <img
                         src={firstImageIsSelected ? first_image : second_image}
                         alt={`${collection__name} ${reference__name} ${categoryName}`}
+                        onClick={() => navigateToProductPage(id)}
                     />
                 </span>
                 <span className={styles['switch-image']}>

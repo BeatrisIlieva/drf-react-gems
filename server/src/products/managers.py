@@ -18,6 +18,9 @@ from decimal import Decimal
 
 
 class BaseProductManager(models.Manager):
+    def get_product(self, item_id):
+        return self.get(pk=item_id)
+    
     def get_products(self, filters):
         qs = self.filter(filters)
         model_name = self.model.__name__.lower()
@@ -51,7 +54,7 @@ class BaseProductManager(models.Manager):
             .prefetch_related(
                 'stone_by_color__color',
                 'stone_by_color__stone',
-                f'{model_name}inventory'
+                'inventory'
             )
             .values(
                 'id',
@@ -70,7 +73,7 @@ class BaseProductManager(models.Manager):
             )
             .annotate(
                 price=F('price'),
-                total_quantity=Sum(f'{model_name}inventory__quantity'),
+                total_quantity=Sum('inventory__quantity'),
                 is_sold_out=Case(
                     When(total_quantity=0, then=Value(True)),
                     default=Value(False),

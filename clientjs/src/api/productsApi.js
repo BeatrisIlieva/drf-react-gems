@@ -45,7 +45,7 @@ export const useProducts = () => {
                 });
             }
 
-            const fullUrl = `${baseUrl}/${categoryName}/?${params.toString()}`;
+            const fullUrl = `${baseUrl}/${categoryName}s/?${params.toString()}`;
 
             try {
                 const response = await get(fullUrl);
@@ -58,5 +58,21 @@ export const useProducts = () => {
         [get]
     );
 
-    return { getProducts };
+    const getProduct = useCallback(
+        async ({ categoryName, productId }) => {
+            const fullUrl = `${baseUrl}/${categoryName}s/${productId}`;
+
+            try {
+                const response = await get(fullUrl);
+                
+                return response;
+            } catch (err) {
+                console.error('Error in getProduct:', err.message);
+                throw err;
+            }
+        },
+        [get]
+    );
+
+    return { getProducts, getProduct };
 };

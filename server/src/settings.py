@@ -4,6 +4,10 @@ from django.urls import reverse_lazy
 from django.templatetags.static import static
 from django.utils.translation import gettext_lazy as _
 
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -42,6 +46,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'cloudinary',
+    'cloudinary_storage',
+
     # pip install django-restframework
     'rest_framework',
     # pip install djangorestframework-simplejwt
@@ -70,8 +77,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=15),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(weeks=1),
 }
 
 SPECTACULAR_SETTINGS = {
@@ -200,6 +207,14 @@ AUTH_USER_MODEL = 'accounts.UserCredential'
 
 # Inform Django to which url to redirect to after logout
 # LOGOUT_REDIRECT_URL = reverse_lazy('login')
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+cloudinary.config(
+    cloud_name='dpgvbozrb',
+    api_key='356773277236827',
+    api_secret='Txaakp6bHutRt-Aw2ocf-dx7aMA'
+)
 
 
 UNFOLD = {

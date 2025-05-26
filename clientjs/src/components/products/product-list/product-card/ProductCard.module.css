@@ -38,6 +38,10 @@
     display: flex;
 }
 
+.product-card .thumbnail img {
+    cursor: pointer;
+}
+
 .wrapper-bottom {
     display: flex;
     flex-direction: column;

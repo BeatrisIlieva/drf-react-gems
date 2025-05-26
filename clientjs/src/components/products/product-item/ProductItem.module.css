@@ -1,0 +1,120 @@
+.product-item {
+    display: flex;
+}
+
+.wrapper-left {
+    flex: 0 0 55%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.thumbnail {
+    display: flex;
+    background: var(--lightest-grey);
+}
+
+.wrapper-right {
+    flex: 0 0 28%;
+    display: flex;
+    flex-direction: column;
+    margin-inline: auto;
+    margin-top: 4em;
+}
+
+.wrapper-right h2 {
+    font-size: 1.8em;
+    font-style: italic;
+    display: flex;
+    column-gap: 0.25em;
+    flex-wrap: wrap;
+    line-height: 1.2;
+    margin-bottom: 0.5em;
+    font-weight: 500;
+}
+
+.wrapper-right h2 sup {
+    margin-left: -0.2em;
+    margin-top: -0.2em;
+    font-weight: 200;
+    opacity: 0.8;
+    font-size: 1.3em;
+}
+
+.wrapper-right h2 span {
+    white-space: nowrap;
+}
+
+.wrapper-right p {
+    opacity: 0.9;
+    margin-bottom: 0.75em;
+}
+
+.wrapper-right .wrapper-top > span:nth-of-type(1),
+.wrapper-right .wrapper-top > span:nth-of-type(2) {
+    display: block;
+}
+
+.wrapper-right .wrapper-top > span:nth-of-type(1) {
+    margin-bottom: 1.5em;
+}
+
+.wrapper-right .wrapper-top > span:nth-of-type(2) {
+    margin-bottom: 0.5em;
+}
+
+.wrapper-top ul:first-of-type,
+.wrapper-top ul:nth-of-type(2) {
+    display: flex;
+    gap: 0.3em;
+}
+
+.wrapper-top ul:first-of-type {
+    margin-bottom: 2.25em;
+}
+
+.wrapper-top ul:first-of-type .thumbnail {
+    flex: 0 1 calc(20% - 0.3em);
+    object-fit: cover;
+    object-position: center;
+}
+
+.wrapper-top ul:first-of-type .thumbnail img {
+    transform: scale(1.4);
+    transform-origin: center;
+}
+
+.wrapper-top ul:first-of-type .thumbnail.selected {
+    border: 0.1em solid var(--black);
+}
+
+.wrapper-top ul:nth-of-type(2) {
+    flex-wrap: wrap;
+    margin-bottom: 1.5em;
+    width: 100%;
+}
+
+.wrapper-top ul:nth-of-type(2) li {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0.7em 0;
+    border: 0.09em solid var(--medium-grey);
+    white-space: nowrap;
+    flex: 0 1 calc(20% - 0.3em);
+    font-size: 1.1em;
+    opacity: 0.8;
+}
+
+.wrapper-top ul:nth-of-type(2) li span:nth-of-type(2) {
+    font-size: 0.75em;
+}
+
+.wrapper-top > div {
+    display: flex;
+    gap: 0.35em;
+}
+
+.wrapper-top > div button:nth-child(1) {
+    flex: 1 1 90%;
+}

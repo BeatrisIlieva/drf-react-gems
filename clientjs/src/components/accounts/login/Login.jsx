@@ -1,6 +1,6 @@
 import useUserContext from '../../../contexts/UserContext';
 import { useLogin } from '../../../api/authApi';
-import React, { useActionState } from 'react';
+import React, { useActionState, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useFocusOnInvalidInput } from '../../../hooks/useFocusOnInvalidInput';
 import { InputField } from '../../reusable/input-field/InputField';
@@ -19,19 +19,16 @@ export const Login = () => {
         password: { value: '', error: '', valid: false }
     };
 
-    const {
-        userData,
-        validateFields,
-        validateField,
-        setServerSideError,
-        getInputClassName
-    } = useForm(initialFormValues);
+    const { userData, validateFields, validateField, setServerSideError, getInputClassName } =
+        useForm(initialFormValues);
 
     const { userLoginHandler } = useUserContext();
     const { login } = useLogin();
     const navigate = useNavigate();
 
     useFocusOnInvalidInput();
+
+    const [invalidUsernameOrPassword, setInvalidUsernameOrPassword] = useState(false);
 
     const loginHandler = async () => {
         const isValid = validateFields();
@@ -52,6 +49,10 @@ export const Login = () => {
             return { success: true };
         }
 
+        if (authData === 'Invalid username or password') {
+            setInvalidUsernameOrPassword(true);
+        }
+
         Object.keys(initialFormValues).forEach((key) => {
             setServerSideError(authData, key);
         });
@@ -67,18 +68,24 @@ export const Login = () => {
             <section className={styles['login']}>
                 <h2>Welcome Back</h2>
                 <p>Please sign in to access your account.</p>
+                {invalidUsernameOrPassword && (
+                    <div className={styles['invalid-username-password']}>
+                        <p>
+                            Your email or password is incorrect. Try again or reset your password.
+                        </p>
+                    </div>
+                )}
+
                 <form action={loginAction}>
                     {Object.entries(userData).map(([fieldName, fieldData]) => (
                         <Fragment key={fieldName}>
-                        <InputField
-                            getInputClassName={getInputClassName}
-                            fieldData={fieldData}
-                            validateField={validateField}
-                            fieldName={fieldName}
-                            type={
-                                fieldName === 'password' ? 'password' : 'text'
-                            }
-                        />
+                            <InputField
+                                getInputClassName={getInputClassName}
+                                fieldData={fieldData}
+                                validateField={validateField}
+                                fieldName={fieldName}
+                                type={fieldName === 'password' ? 'password' : 'text'}
+                            />
                         </Fragment>
                     ))}
 

@@ -7,8 +7,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework.parsers import MultiPartParser, FormParser
 
+from src.accounts.models.user_photo import UserPhoto
 from src.accounts.serializers import (
+    PhotoSerializer,
     UserDetailSerializer,
     UserLoginRequestSerializer,
     UserLoginResponseSerializer,
@@ -71,7 +74,7 @@ class UserLoginView(APIView):
 
     def post(self, request, *args, **kwargs):
         # in DRF `request.data` is like `request.POST` and `request.GET` in Django
-        username = request.data.get('username')
+        username = request.data.get('email')
         password = request.data.get('password')
 
         user = authenticate(
@@ -114,7 +117,6 @@ class UserLoginView(APIView):
 class UserLogoutView(APIView):
     # upon logout we need to blacklist the token so it can be no longer used
     def post(self, request, *args, **kwargs):
-        print(request.data)
         try:
             # we get the token from the request as a string
             refresh_token = request.data.get('refresh')
@@ -146,3 +148,32 @@ class UserDetailView(APIView):
     def get(self, request):
         serializer = UserDetailSerializer(request.user)
         return Response(serializer.data)
+
+
+class PhotoUploadView(APIView):
+    parser_classes = (MultiPartParser, FormParser)
+
+    def patch(self, request, *args, **kwargs):
+        try:
+            instance = UserPhoto.objects.get(user=request.user)
+        except UserPhoto.DoesNotExist:
+            return Response({"detail": "Photo not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        data = request.data.copy()
+        data['user'] = request.user.pk
+
+        serializer = PhotoSerializer(instance, data=data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, *args, **kwargs):
+        try:
+            photo = UserPhoto.objects.get(user=request.user)
+            serializer = PhotoSerializer(photo)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except UserPhoto.DoesNotExist:
+            return Response({"detail": "Photo not found."}, status=status.HTTP_404_NOT_FOUND)

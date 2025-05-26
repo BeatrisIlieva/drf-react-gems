@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { useProducts } from '../api/productsApi';
 
 const ProductContext = createContext();
@@ -36,6 +36,7 @@ export const ProductProvider = ({ children }) => {
 
     const { getProducts } = useProducts();
     const location = useLocation();
+    const navigate = useNavigate();
 
     const resetFilters = () => {
         setColorIds([]);
@@ -149,6 +150,10 @@ export const ProductProvider = ({ children }) => {
         ]
     );
 
+    const navigateToProductPage = (productId) => {
+        navigate(`/products/${categoryName}/${productId}`);
+    };
+
     return (
         <ProductContext.Provider
             value={{
@@ -195,7 +200,8 @@ export const ProductProvider = ({ children }) => {
                 materialsData,
                 pricesData,
                 collectionsData,
-                categoriesData
+                categoriesData,
+                navigateToProductPage
             }}
         >
             {children}

@@ -3,12 +3,12 @@
 }
 
 .thumbnail {
-    display: flex;
-    flex: 1 0 50%;
+    /* display: flex; */
+    flex: 0 0 50%;
 }
 
 .form {
-    flex: 1 0 50%;
+    flex: 0 0 50%;
     display: flex;
     justify-content: center;
     margin-top: 1em;

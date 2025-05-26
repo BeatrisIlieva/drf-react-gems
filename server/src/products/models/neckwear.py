@@ -24,5 +24,6 @@ class NeckwearInventory(InventoryInfoMixin, Inventory):
 
     product = models.ForeignKey(
         to=Neckwear,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='inventory', 
     )

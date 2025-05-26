@@ -13,13 +13,14 @@ export const useApi = () => {
             {
                 data = null,
                 accessRequired = false,
-                refreshRequired = false
+                refreshRequired = false,
+                contentType = 'application/json'
             } = {}
         ) => {
             const options = {
                 method,
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': contentType
                 }
             };
 
@@ -27,14 +28,46 @@ export const useApi = () => {
                 options.headers.Authorization = `Bearer ${access}`;
             }
 
+            // if (method !== 'GET') {
+            //     let bodyData = data ? { ...data } : {};
+
+            //     if (refreshRequired) {
+            //         bodyData.refresh = refresh;
+            //     }
+
+            //     if (contentType === 'multipart/form-data') {
+            //         options.body = bodyData;
+            //         delete options.headers['Content-Type'];
+            //     } else {
+            //         options.body = JSON.stringify(bodyData);
+            //     }
+
+            // }
+
             if (method !== 'GET') {
-                let bodyData = data ? { ...data } : {};
-
-                if (refreshRequired) {
-                    bodyData.refresh = refresh;
+                let bodyData = data;
+            
+                if (contentType === 'multipart/form-data') {
+                    // Make sure it's a FormData instance
+                    if (!(bodyData instanceof FormData)) {
+                        throw new Error('Data must be a FormData instance for multipart/form-data');
+                    }
+            
+                    if (refreshRequired) {
+                        bodyData.append('refresh', refresh);
+                    }
+            
+                    options.body = bodyData;
+            
+                    // Remove Content-Type so the browser sets it (with boundary)
+                    delete options.headers['Content-Type'];
+                } else {
+                    if (refreshRequired) {
+                        bodyData = { ...bodyData, refresh };
+                    }
+            
+                    options.body = JSON.stringify(bodyData);
                 }
-
-                options.body = JSON.stringify(bodyData);
             }
 
             const response = await fetch(url, options);
@@ -43,15 +76,19 @@ export const useApi = () => {
 
             if (!response.ok) {
                 if (response.status === 401) {
+                    if (json.error === 'Invalid username or password') {
+                        return 'Invalid username or password';
+                    }
+
                     return authRefresh();
                 }
 
                 const error = new Error('Request failed');
                 error.status = response.status;
                 error.data = json;
-                throw error;
+                // throw error;
             }
-
+console.log(json, 'json')
             return json;
         },
         [access, refresh, authRefresh]

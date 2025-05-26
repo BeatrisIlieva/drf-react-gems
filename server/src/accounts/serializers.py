@@ -1,6 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
+from cloudinary.utils import cloudinary_url
+
+from src.accounts.models.user_photo import UserPhoto
 
 
 UserModel = get_user_model()
@@ -57,3 +60,15 @@ class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         fields = ['id',  'email']
+
+
+class PhotoSerializer(serializers.ModelSerializer):
+    photo_url = serializers.SerializerMethodField()
+    class Meta:
+        model = UserPhoto
+        fields = ['user', 'photo', 'photo_url'] 
+        
+    def get_photo_url(self, obj):
+        if obj.photo:
+            return cloudinary_url(obj.photo.public_id)[0]
+        return None

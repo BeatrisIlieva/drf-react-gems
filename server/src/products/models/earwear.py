@@ -12,4 +12,5 @@ class EarwearInventory(Inventory):
     product = models.OneToOneField(
         to=Earwear,
         on_delete=models.CASCADE,
+        related_name='inventory', 
     )

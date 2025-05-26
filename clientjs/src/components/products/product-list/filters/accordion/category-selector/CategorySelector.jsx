@@ -7,7 +7,7 @@ export const CategorySelector = () => {
     return (
         <>
             {categoriesData.length > 0 &&
-                categoriesData.map((item) => <CategoryItem key={item.category__id} {...item} />)}
+                categoriesData.map((item) => <CategoryItem key={item.reference__id} {...item} />)}
         </>
     );
 };

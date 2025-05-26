@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import ProductItem from './ProductItem';
+
 import { UserContext } from './contexts/UserContext';
 import { Register } from './components/accounts/register/Register';
 import { Logout } from './components/accounts/logout/Logout';
@@ -15,6 +14,7 @@ import { AuthGuard } from './guards/AuthGuard';
 import { ScrollToTop } from './components/scroll-to-top/ScrollToTop';
 import { ProductList } from './components/products/product-list/ProductList';
 import { ProductProvider } from './contexts/ProductContext';
+import { ProductItem } from './components/products/product-item/ProductItem';
 
 function App() {
     // const [products, setProducts] = useState([]);
@@ -32,31 +32,37 @@ function App() {
 
     return (
         <div className={styles['body']}>
-                        
             <Header />
             <main className={styles['main']}>
-
-
                 <Routes>
                     <Route index element={<Home />} />
                     <Route path='/my-account/register' element={<Register />} />
                     <Route path='/my-account/login' element={<Login />} />
 
-                        <Route
-                            path='/products/:categoryName'
-                            element={
-                                <ProductProvider>
-                            <ProductList />
-                            </ProductProvider>}
-                        />
+                    <Route
+                        path='/products/:categoryName'
+                        element={
+                            <ProductProvider>
+                                <ProductList />
+                            </ProductProvider>
+                        }
+                    />
+
+                    <Route
+                        path='/products/:categoryName/:productId'
+                        element={
+                            // <ProductProvider>
+                                <ProductItem />
+                            // </ProductProvider>
+                        }
+                    />
+
                     <Route element={<AuthGuard />}>
                         <Route path='/my-account/details' element={<Details />} />
                     </Route>
                 </Routes>
-                
-
             </main>
-            
+
             <Footer />
             <ScrollToTop />
         </div>

@@ -112,3 +112,51 @@ export const useDetail = () => {
         detail
     };
 };
+
+export const useUploadPhoto = () => {
+    const { patch } = useApi();
+
+    const upload = useCallback(
+        async (data) => {
+            try {
+                const result = await patch(`${baseUrl}/photo/`, {
+                    data,
+                    accessRequired: true,
+                    refreshRequired: true,
+                    contentType: 'multipart/form-data'
+                });
+
+                return result;
+            } catch (err) {
+                console.log(err.message);
+            }
+        },
+        [patch]
+    );
+
+    return {
+        upload
+    };
+};
+
+export const useGetPhoto = () => {
+    const { get } = useApi();
+
+    const getPhoto = useCallback(async () => {
+        try {
+            const result = await get(`${baseUrl}/photo/`, {
+                accessRequired: true,
+                refreshRequired: true
+            });
+
+            return result;
+            
+        } catch (err) {
+            console.log(err.message);
+        }
+    }, [get]);
+
+    return {
+        getPhoto
+    };
+};
