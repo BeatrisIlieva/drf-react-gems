@@ -27,28 +27,21 @@ export const useAuthRefresh = () => {
         }
 
         try {
-            const response = await fetch(
-                'http://localhost:8000/accounts/token/refresh/',
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ refresh })
-                }
-            );
+            const response = await fetch('http://localhost:8000/accounts/token/refresh/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ refresh })
+            });
 
             if (!response.ok) {
                 if (response.status === 401) {
                     userLogoutHandler();
-                    return;
                 }
                 const errorText = await response.text();
-                throw new Error(
-                    `Failed to refresh token: ${response.status} - ${errorText}`
-                );
+                throw new Error(`Failed to refresh token: ${response.status} - ${errorText}`);
             }
 
             const data = await response.json();
-            let a=5;
 
             if (data.access) {
                 localStorage.setItem(

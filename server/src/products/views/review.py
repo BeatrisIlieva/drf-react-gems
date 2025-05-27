@@ -13,12 +13,12 @@ class ReviewViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-    def get_queryset(self):
-        queryset = Review.objects.all()
-        content_type_id = self.request.query_params.get('content_type_id')
-        object_id = self.request.query_params.get('object_id')
+    # def get_queryset(self):
+    #     queryset = Review.objects.all()
+    #     content_type_id = self.request.query_params.get('content_type_id')
+    #     object_id = self.request.query_params.get('object_id')
 
-        if content_type_id and object_id:
-            queryset = queryset.filter(
-                content_type_id=content_type_id, object_id=object_id)
-        return queryset
+    #     if content_type_id and object_id:
+    #         queryset = queryset.filter(
+    #             content_type_id=content_type_id, object_id=object_id)
+    #     return queryset

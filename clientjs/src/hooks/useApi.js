@@ -80,13 +80,13 @@ export const useApi = () => {
                         return 'Invalid username or password';
                     }
 
-                    return authRefresh();
+                    await authRefresh();
                 }
 
                 const error = new Error('Request failed');
                 error.status = response.status;
                 error.data = json;
-                // throw error;
+                throw error;
             }
 
             return json;
