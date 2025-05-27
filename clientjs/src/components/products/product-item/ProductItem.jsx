@@ -8,21 +8,43 @@ import { HeartIcon } from '../../reusable/heart-icon/HeartIcon';
 import { Reviews } from './reviews/Reviews';
 import { TruckIcon } from '../../reusable/truck-icon/TruckIncon';
 import { SizeList } from './size-list/SizeList';
+import { useShoppingBag } from '../../../api/useShoppingBagApi';
 
 export const ProductItem = () => {
     const [product, setProduct] = useState(null);
     const { categoryName, productId } = useParams();
     const { getProduct } = useProduct();
+    const { addToBag } = useShoppingBag();
 
     const [selectedSize, setSelectedSize] = useState(null);
+    const [selectedInventory, setSelectedInventory] = useState({});
+    const [displayNotSelectedSizeErrorMessage, setDisplayNotSelectedSizeErrorMessage] =
+        useState(false);
 
     const selectSizeClickHandler = (size) => {
         if (selectedSize === null) {
             setSelectedSize(size);
         } else if (selectedSize === size) {
             setSelectedSize(null);
+            setSelectedInventory({});
         } else {
             setSelectedSize(size);
+        }
+    };
+
+    const updateSelectedInventoryHandler = (contentType, objectId) => {
+        setSelectedInventory({
+            quantity: 1,
+            contentType,
+            objectId
+        });
+    };
+
+    const addToBagHandler = () => {
+        if (selectedSize === null) {
+            setDisplayNotSelectedSizeErrorMessage(true);
+        } else {
+            addToBag(selectedInventory);
         }
     };
 
@@ -38,19 +60,16 @@ export const ProductItem = () => {
             {product && (
                 <section className={styles['product-item']}>
                     <div className={styles['wrapper-left']}>
-
                         <div className={styles['thumbnail']}>
                             <img src={product.second_image} alt={productCategory} />
                         </div>
                         <div className={styles['thumbnail']}>
                             <img src={product.first_image} alt={productCategory} />
                         </div>
-
                     </div>
 
                     <div className={styles['wrapper-right']}>
                         <div className={styles['wrapper-top']}>
-
                             <h2>
                                 <span>{product.collection.name}</span>
                                 <sup>®</sup>
@@ -80,15 +99,23 @@ export const ProductItem = () => {
                                     sizes={product.inventory}
                                     selectedSize={selectedSize}
                                     clickHandler={selectSizeClickHandler}
+                                    updateSelectedInventoryHandler={updateSelectedInventoryHandler}
+                                    errorOccurred={displayNotSelectedSizeErrorMessage}
                                 />
                             )}
-
                             <div>
-                                <Button title={'Add to Bag'} color={'black'} />
-                                <Button title={<HeartIcon />} color={'black'} />
+                                <Button
+                                    callbackHandler={addToBagHandler}
+                                    title={'Add to Bag'}
+                                    color={'black'}
+                                    actionType={'button'}
+                                />
+                                <Button
+                                    title={<HeartIcon />}
+                                    color={'black'}
+                                    actionType={'button'}
+                                />
                             </div>
-
-                            <p className={styles['not-selected-size-error']}></p>
                         </div>
 
                         <p>

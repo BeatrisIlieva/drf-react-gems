@@ -11,6 +11,7 @@ class UserPhoto(models.Model):
         'image',
         null=True,
         blank=False,
+        default='image/upload/v1748361714/silver-membership-icon-default-avatar-profile-icon-membership-icon-social-media-user-image-illustration-vector_mky68d.jpg'
     )
 
     user = models.OneToOneField(

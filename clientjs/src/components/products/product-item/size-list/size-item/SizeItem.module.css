@@ -1,6 +1,6 @@
 .size-item {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
     padding: 0.7em 0;
     border: 0.09em solid var(--medium-grey);
@@ -9,6 +9,17 @@
     position: relative;
     font-weight: 300;
     font-size: 1.05em;
+    width: 100%;
+}
+
+.size-item > button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.size-item.error {
+    border-color: var(--red);
 }
 
 .size-item.selected {

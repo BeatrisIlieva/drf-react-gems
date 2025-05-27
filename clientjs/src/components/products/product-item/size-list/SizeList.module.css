@@ -1,0 +1,18 @@
+.size-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.size-list > ul {
+    gap: 0.3em;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.error {
+    color: var(--red);
+}
+
+.size-list > p {
+    color: var(--red);
+}

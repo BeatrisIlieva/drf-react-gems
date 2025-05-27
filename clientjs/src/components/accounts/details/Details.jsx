@@ -14,8 +14,7 @@ export const Details = () => {
     useEffect(() => {
         detail().then((response) => setUser(response));
         getPhoto().then((response) => {
-            console.log(response)
-            // setPhoto(response.photo_url);
+            setPhoto(response.photo_url);
         });
     }, [detail, getPhoto]);
 
