@@ -12,7 +12,7 @@ class SizedInventorySerializer(serializers.ModelSerializer):
 
     def get_content_type(self, obj):
         content_type = ContentType.objects.get_for_model(obj)
-        return content_type.id
+        return content_type.model
 
     def get_object_id(self, obj):
         return obj.pk
@@ -28,7 +28,7 @@ class SimpleInventorySerializer(serializers.ModelSerializer):
 
     def get_content_type(self, obj):
         content_type = ContentType.objects.get_for_model(obj)
-        return content_type.id
+        return content_type.model
 
     def get_object_id(self, obj):
         return obj.pk
