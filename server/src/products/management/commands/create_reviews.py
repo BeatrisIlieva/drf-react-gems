@@ -21,28 +21,18 @@ fake = Faker()
 
 sample_reviews = [
     "Beautiful piece, exactly as described. The craftsmanship is impressive, and it really stands out on special occasions.",
-    "Sturdy and well-crafted, I get compliments all the time. It feels durable and looks elegant, definitely worth the price.",
     "The gemstone sparkles brilliantly in the light, catching everyone's attention. It adds just the right amount of sparkle to any outfit.",
-    "Very comfortable to wear all day long. It’s barely noticeable and doesn’t irritate the skin at all.",
     "A bit smaller than expected, but still lovely. It’s delicate and subtle, fitting perfectly with many styles.",
     "Shipping was fast and the packaging was excellent. The item arrived safely and looked brand new right out of the box.",
     "Perfect gift for a loved one, highly recommend! They wear it every day without fail.",
-    "Exceeded my expectations in every way! The design is unique and the quality feels premium. I’ve already gotten several compliments.",
-    "Lovely piece with a timeless style. It matches both casual and formal outfits effortlessly. Definitely a staple in my collection now.",
     "The attention to detail is remarkable. You can tell a lot of care went into making this piece. I’m very happy with my purchase.",
-    "The clasp is sturdy and secure, which is important. I wear it daily without worrying about it falling off or breaking.",
     "The stones are well set and the finish is flawless. It looks expensive but was surprisingly affordable.",
-    "I appreciate how lightweight this piece is. It doesn’t feel bulky or heavy, making it comfortable to wear all day long.",
-    "This piece really complements my style and feels just right for everyday wear or special events.",
-    "The design is sleek and modern. I get asked about it all the time by friends and colleagues.",
-    "Absolutely love this! The quality is excellent and it fits perfectly with my other accessories.",
     "I bought this as a gift, and it was very well received. The recipient hasn’t taken it off since!",
     "Comfortable, stylish, and well-made — everything I was looking for in a jewelry piece.",
     "This item exceeded my expectations for the price. It’s now a favorite in my collection.",
     "It looks great with both casual clothes and more formal attire, very versatile.",
     "I appreciate the durability — it’s been through daily wear and still looks new.",
     "The packaging was lovely, making it perfect for gifting right away.",
-    "It feels personalized and special, like it was made just for me."
 ]
 
 
@@ -191,7 +181,7 @@ class Command(BaseCommand):
 
         for element in all_products_with_their_content_types:
             products, content_type = element
-            
+
             for product in products:
 
                 shuffled_users = users.copy()
