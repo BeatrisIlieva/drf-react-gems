@@ -1,8 +1,8 @@
-import { useProductContext } from '../../../../../../contexts/ProductContext';
+import { useProductListContext } from '../../../../../../contexts/ProductListContext';
 import { CollectionItem } from './collection-item/CollectionItem';
 
 export const CollectionSelector = () => {
-    const { collectionsData } = useProductContext();
+    const { collectionsData } = useProductListContext();
 
     return (
         <>

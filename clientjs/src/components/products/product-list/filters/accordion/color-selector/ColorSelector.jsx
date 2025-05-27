@@ -1,8 +1,8 @@
-import { useProductContext } from '../../../../../../contexts/ProductContext';
+import { useProductListContext } from '../../../../../../contexts/ProductListContext';
 import { ColorItem } from './color-item/ColorItem';
 
 export const ColorSelector = () => {
-    const { colorsData } = useProductContext();
+    const { colorsData } = useProductListContext();
 
     return (
         <>

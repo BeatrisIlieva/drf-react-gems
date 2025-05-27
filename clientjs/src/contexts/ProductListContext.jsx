@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { useProducts } from '../api/productsApi';
+import { useProductList } from '../api/productsApi';
 
-const ProductContext = createContext();
+const ProductListContext = createContext();
 
-export const useProductContext = () => useContext(ProductContext);
+export const useProductListContext = () => useContext(ProductListContext);
 
-export const ProductProvider = ({ children }) => {
+export const ProductListProvider = ({ children }) => {
     const [categoryName, setCategoryName] = useState('');
     const [products, setProducts] = useState([]);
     const [totalProductsCount, setTotalProductsCount] = useState(0);
@@ -34,7 +34,7 @@ export const ProductProvider = ({ children }) => {
 
     const [loadMoreDisabled, setLoadMoreDisabled] = useState(false);
 
-    const { getProducts } = useProducts();
+    const { getProducts } = useProductList();
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -155,7 +155,7 @@ export const ProductProvider = ({ children }) => {
     };
 
     return (
-        <ProductContext.Provider
+        <ProductListContext.Provider
             value={{
                 categoryName,
                 products,
@@ -205,6 +205,6 @@ export const ProductProvider = ({ children }) => {
             }}
         >
             {children}
-        </ProductContext.Provider>
+        </ProductListContext.Provider>
     );
 };

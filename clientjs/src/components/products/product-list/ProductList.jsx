@@ -1,11 +1,11 @@
-import { useProductContext } from '../../../contexts/ProductContext';
+import { useProductListContext } from '../../../contexts/ProductListContext';
 import styles from './ProductList.module.css';
 import { ProductCard } from './product-card/ProductCard';
 import { Filters } from './filters/Filters';
 import { useState } from 'react';
 
 export const ProductList = () => {
-    const { categoryName, products, loadMore, loadMoreDisabled } = useProductContext();
+    const { categoryName, products, loadMore, loadMoreDisabled } = useProductListContext();
     const [displaySortBy, setDisplaySortBy] = useState(false);
 
     const toggleDisplaySortBy = () => {

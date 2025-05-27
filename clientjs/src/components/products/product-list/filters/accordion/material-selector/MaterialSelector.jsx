@@ -1,8 +1,8 @@
-import { useProductContext } from '../../../../../../contexts/ProductContext';
+import { useProductListContext } from '../../../../../../contexts/ProductListContext';
 import { MaterialItem } from './material-item/MaterialItem';
 
 export const MaterialSelector = () => {
-    const { materialsData } = useProductContext();
+    const { materialsData } = useProductListContext();
 
     return (
         <>

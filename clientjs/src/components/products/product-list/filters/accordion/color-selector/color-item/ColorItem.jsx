@@ -1,10 +1,10 @@
-import { useProductContext } from '../../../../../../../contexts/ProductContext';
+import { useProductListContext } from '../../../../../../../contexts/ProductListContext';
 import { SelectionContent } from '../../selection-content/SelectionContent';
 
 import styles from './ColorItem.module.css';
 
 export const ColorItem = ({ title, count, hex_code, id }) => {
-    const { addColorToFiltration, removeColorFromFiltration } = useProductContext();
+    const { addColorToFiltration, removeColorFromFiltration } = useProductListContext();
 
     return (
         <SelectionContent

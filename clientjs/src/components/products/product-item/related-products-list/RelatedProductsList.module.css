@@ -1,0 +1,13 @@
+.related-products {
+    gap: 0.3em;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.related-products {
+    margin-bottom: 2.25em;
+}
+
+.related-products .thumbnail img {
+    transform-origin: center;
+}

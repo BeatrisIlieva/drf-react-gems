@@ -3,7 +3,7 @@ import { useApi } from '../hooks/useApi';
 
 const baseUrl = 'http://localhost:8000/products';
 
-export const useProducts = () => {
+export const useProductList = () => {
     const { get } = useApi();
 
     const getProducts = useCallback(
@@ -61,7 +61,7 @@ export const useProducts = () => {
     return { getProducts };
 };
 
-export const useProduct = () => {
+export const useProductItem = () => {
     const { get } = useApi();
 
     const getProduct = useCallback(

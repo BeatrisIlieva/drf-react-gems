@@ -1,17 +1,16 @@
+import { useProductItemContext } from '../../../../../contexts/ProductItemContext';
 import styles from './SizeItem.module.css';
 
-export const SizeItem = ({
-    size,
-    quantity,
-    selectedSize,
-    clickHandler,
-    updateSelectedInventoryHandler,
-    contentType,
-    objectId,
-    errorOccurred
-}) => {
+export const SizeItem = ({ size, quantity, contentType, objectId }) => {
+    const {
+        selectedSize,
+        updateSelectedInventoryHandler,
+        displayNotSelectedSizeErrorMessage,
+        selectSizeClickHandler
+    } = useProductItemContext();
+
     const selectSizeHandler = () => {
-        clickHandler(size.name);
+        selectSizeClickHandler(size.name);
         updateSelectedInventoryHandler(contentType, objectId);
     };
 
@@ -20,7 +19,7 @@ export const SizeItem = ({
             key={size.id}
             className={`${styles['size-item']} ${
                 selectedSize === size.name ? styles['selected'] : ''
-            } ${errorOccurred ? styles['error'] : ''} ${
+            } ${displayNotSelectedSizeErrorMessage ? styles['error'] : ''} ${
                 quantity < 1 ? styles['sold-out'] : ''
             }`.trim()}
         >

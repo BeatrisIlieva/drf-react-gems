@@ -1,0 +1,10 @@
+.thumbnail {
+    object-fit: cover;
+    object-position: center;
+    display: flex;
+    background: var(--lightest-grey);
+}
+
+.thumbnail.selected {
+    border: 0.1em solid var(--black);
+}

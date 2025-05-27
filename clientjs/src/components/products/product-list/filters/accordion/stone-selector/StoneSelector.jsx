@@ -1,8 +1,8 @@
-import { useProductContext } from '../../../../../../contexts/ProductContext';
+import { useProductListContext } from '../../../../../../contexts/ProductListContext';
 import { StoneItem } from './stone-item/StoneItem';
 
 export const StoneSelector = () => {
-    const { stonesData } = useProductContext();
+    const { stonesData } = useProductListContext();
 
     return (
         <>

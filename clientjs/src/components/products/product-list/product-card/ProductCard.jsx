@@ -6,7 +6,7 @@ import { MaterialsInfo } from './materials-info/MaterialsInfo';
 import styles from './ProductCard.module.css';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useProductContext } from '../../../../contexts/ProductContext';
+import { useProductListContext } from '../../../../contexts/ProductListContext';
 
 export const ProductCard = ({
     id,
@@ -22,7 +22,7 @@ export const ProductCard = ({
 }) => {
     const [firstImageIsSelected, setFirstImageIsSelected] = useState(true);
 
-    const {navigateToProductPage} = useProductContext()
+    const {navigateToProductPage} = useProductListContext()
 
     const toggleFirstImageIsSelectedHandler = () => {
         setFirstImageIsSelected(() => !firstImageIsSelected);

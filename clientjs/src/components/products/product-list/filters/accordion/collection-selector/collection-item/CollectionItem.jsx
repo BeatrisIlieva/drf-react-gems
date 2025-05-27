@@ -1,4 +1,4 @@
-import { useProductContext } from '../../../../../../../contexts/ProductContext';
+import { useProductListContext } from '../../../../../../../contexts/ProductListContext';
 import { SelectionContent } from '../../selection-content/SelectionContent';
 
 export const CollectionItem = ({
@@ -6,7 +6,7 @@ export const CollectionItem = ({
     collection__id: itemId,
     collection_count: count
 }) => {
-    const { addCollectionToFiltration, removeCollectionFromFiltration } = useProductContext();
+    const { addCollectionToFiltration, removeCollectionFromFiltration } = useProductListContext();
 
     return (
         <SelectionContent

@@ -13,8 +13,9 @@ import styles from './App.module.css';
 import { AuthGuard } from './guards/AuthGuard';
 import { ScrollToTop } from './components/scroll-to-top/ScrollToTop';
 import { ProductList } from './components/products/product-list/ProductList';
-import { ProductProvider } from './contexts/ProductContext';
+import { ProductListProvider } from './contexts/ProductListContext';
 import { ProductItem } from './components/products/product-item/ProductItem';
+import { ProductItemProvider } from './contexts/ProductItemContext';
 
 function App() {
     // const [products, setProducts] = useState([]);
@@ -42,18 +43,18 @@ function App() {
                     <Route
                         path='/products/:categoryName'
                         element={
-                            <ProductProvider>
+                            <ProductListProvider>
                                 <ProductList />
-                            </ProductProvider>
+                            </ProductListProvider>
                         }
                     />
 
                     <Route
                         path='/products/:categoryName/:productId'
                         element={
-                            // <ProductProvider>
+                            <ProductItemProvider>
                                 <ProductItem />
-                            // </ProductProvider>
+                            </ProductItemProvider>
                         }
                     />
 

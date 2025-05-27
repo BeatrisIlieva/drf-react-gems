@@ -1,8 +1,8 @@
-import { useProductContext } from '../../../../../../contexts/ProductContext';
+import { useProductListContext } from '../../../../../../contexts/ProductListContext';
 import { CategoryItem } from './category-item/CategoryItem';
 
 export const CategorySelector = () => {
-    const { categoriesData } = useProductContext();
+    const { categoriesData } = useProductListContext();
 
     return (
         <>

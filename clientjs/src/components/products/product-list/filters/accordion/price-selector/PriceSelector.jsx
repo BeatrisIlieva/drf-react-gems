@@ -1,8 +1,8 @@
-import { useProductContext } from '../../../../../../contexts/ProductContext';
+import { useProductListContext } from '../../../../../../contexts/ProductListContext';
 import { PriceItem } from './price-item/PriceItem';
 
 export const PriceSelector = () => {
-    const { pricesData } = useProductContext();
+    const { pricesData } = useProductListContext();
 
     return (
         <>
