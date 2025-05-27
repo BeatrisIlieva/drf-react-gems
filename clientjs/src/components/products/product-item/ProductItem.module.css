@@ -94,7 +94,6 @@
 }
 
 .wrapper-top ul:first-of-type .thumbnail img {
-    /* transform: scale(1.1); */
     transform-origin: center;
 }
 
@@ -106,21 +105,6 @@
     flex-wrap: wrap;
     margin-bottom: 1.5em;
     width: 100%;
-}
-
-.wrapper-top ul:nth-of-type(2) li {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding: 0.7em 0;
-    border: 0.09em solid var(--medium-grey);
-    white-space: nowrap;
-    font-size: 1.1em;
-    opacity: 0.8;
-}
-
-.wrapper-top ul:nth-of-type(2) li span:nth-of-type(2) {
-    font-size: 0.75em;
 }
 
 .wrapper-top > div {

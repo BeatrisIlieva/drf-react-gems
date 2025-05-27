@@ -7,11 +7,24 @@ import { Button } from '../../reusable/button/Button';
 import { HeartIcon } from '../../reusable/heart-icon/HeartIcon';
 import { Reviews } from './reviews/Reviews';
 import { TruckIcon } from '../../reusable/truck-icon/TruckIncon';
+import { SizeList } from './size-list/SizeList';
 
 export const ProductItem = () => {
     const [product, setProduct] = useState(null);
     const { categoryName, productId } = useParams();
     const { getProduct } = useProduct();
+
+    const [selectedSize, setSelectedSize] = useState(null);
+
+    const selectSizeClickHandler = (size) => {
+        if (selectedSize === null) {
+            setSelectedSize(size);
+        } else if (selectedSize === size) {
+            setSelectedSize(null);
+        } else {
+            setSelectedSize(size);
+        }
+    };
 
     useEffect(() => {
         getProduct({ categoryName, productId }).then((result) => setProduct(result));
@@ -25,24 +38,30 @@ export const ProductItem = () => {
             {product && (
                 <section className={styles['product-item']}>
                     <div className={styles['wrapper-left']}>
+
                         <div className={styles['thumbnail']}>
-                            <img src={product.second_image} alt='' />
+                            <img src={product.second_image} alt={productCategory} />
                         </div>
                         <div className={styles['thumbnail']}>
-                            <img src={product.first_image} alt='' />
+                            <img src={product.first_image} alt={productCategory} />
                         </div>
+
                     </div>
 
                     <div className={styles['wrapper-right']}>
                         <div className={styles['wrapper-top']}>
+
                             <h2>
                                 <span>{product.collection.name}</span>
                                 <sup>®</sup>
                                 <span>{product.reference.name}</span>
                                 <span>{productCategory}</span>
                             </h2>
+
                             <p>{productDescription}</p>
+
                             <span>{`$${product.price}`}</span>
+
                             <ul>
                                 {product.related_products.map((item) => (
                                     <li
@@ -55,23 +74,21 @@ export const ProductItem = () => {
                                     </li>
                                 ))}
                             </ul>
+
                             {categoryName !== 'earwear' && (
-                                <>
-                                    <span>Size:</span>
-                                    <ul>
-                                        {product.inventory.map((item) => (
-                                            <li key={item.size.id}>
-                                                <span>{item.size.name}</span>
-                                                <span>cm</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </>
+                                <SizeList
+                                    sizes={product.inventory}
+                                    selectedSize={selectedSize}
+                                    clickHandler={selectSizeClickHandler}
+                                />
                             )}
+
                             <div>
                                 <Button title={'Add to Bag'} color={'black'} />
                                 <Button title={<HeartIcon />} color={'black'} />
                             </div>
+
+                            <p className={styles['not-selected-size-error']}></p>
                         </div>
 
                         <p>

@@ -32,6 +32,7 @@ PROJECT_APPS = [
     'src.accounts',
     'src.products',
     'src.addresses',
+    'src.shopping_bag',
 ]
 
 INSTALLED_APPS = [

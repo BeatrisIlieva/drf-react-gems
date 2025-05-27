@@ -33,6 +33,11 @@ sample_reviews = [
     "It looks great with both casual clothes and more formal attire, very versatile.",
     "I appreciate the durability — it’s been through daily wear and still looks new.",
     "The packaging was lovely, making it perfect for gifting right away.",
+    "Subtle yet elegant — just the right touch without being too flashy. Works with all kinds of looks.",
+    "Feels personal and thoughtfully made. It really shows that it’s crafted with intention.",
+    "This piece has a timeless design that fits any style, whether minimal or bold.",
+    "Matches beautifully with other accessories, and the quality is consistent across the board.",
+    "It arrived ready to gift, with care in every detail — from the item itself to the packaging."
 ]
 
 

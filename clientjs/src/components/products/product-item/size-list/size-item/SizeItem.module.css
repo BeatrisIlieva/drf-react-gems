@@ -1,0 +1,37 @@
+.size-item {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0.7em 0;
+    border: 0.09em solid var(--medium-grey);
+    white-space: nowrap;
+    opacity: 0.8;
+    position: relative;
+    font-weight: 300;
+    font-size: 1.05em;
+}
+
+.size-item.selected {
+    outline: 0.1em solid var(--black);
+}
+
+.size-item:not(.sold-out):hover {
+    border-color: var(--black);
+}
+
+.size-item.sold-out::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 0.08em;
+    background: var(--medium-grey);
+    transform: rotate(-27deg);
+    transform-origin: center;
+    pointer-events: none;
+}
+
+.size-item span:nth-of-type(2) {
+    font-size: 0.75em;
+}
