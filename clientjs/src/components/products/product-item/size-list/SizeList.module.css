@@ -3,16 +3,30 @@
     flex-direction: column;
 }
 
+.size-list > span {
+    margin-bottom: 0.5em;
+}
+
 .size-list > ul {
     gap: 0.3em;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
 }
 
-.error {
+.error,
+.error-message {
     color: var(--red);
 }
 
 .size-list > p {
     color: var(--red);
+}
+
+.error-message {
+    visibility: hidden;
+    margin-top: 0.75em;
+}
+
+.visible {
+    visibility: visible;
 }

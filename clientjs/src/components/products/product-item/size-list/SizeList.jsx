@@ -27,7 +27,13 @@ export const SizeList = () => {
                     />
                 ))}
             </ul>
-            {displayNotSelectedSizeErrorMessage && <p>Please select a size</p>}
+            <p
+                className={`${styles['error-message']} ${
+                    displayNotSelectedSizeErrorMessage ? styles['visible'] : ''
+                }`.trim()}
+            >
+                Please select a size
+            </p>
         </div>
     );
 };

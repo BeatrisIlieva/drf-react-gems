@@ -1,21 +1,14 @@
 import styles from './ProductItem.module.css';
-
-import { Button } from '../../reusable/button/Button';
-import { HeartIcon } from '../../reusable/heart-icon/HeartIcon';
 import { Reviews } from './reviews/Reviews';
 import { TruckIcon } from '../../reusable/truck-icon/TruckIncon';
 import { SizeList } from './size-list/SizeList';
 import { useProductItemContext } from '../../../contexts/ProductItemContext';
 import { RelatedProductsList } from './related-products-list/RelatedProductsList';
+import { UserAction } from './user-action/UserAction';
 
 export const ProductItem = () => {
-    const {
-        product,
-        productCategory,
-        productDescription,
-        categoryName,
-        addToBagHandler
-    } = useProductItemContext();
+    const { product, productCategory, productDescription, categoryName } =
+        useProductItemContext();
 
     return (
         <>
@@ -52,20 +45,9 @@ export const ProductItem = () => {
                             <RelatedProductsList />
 
                             {categoryName !== 'earwear' && <SizeList />}
-                            <div>
-                                <Button
-                                    callbackHandler={addToBagHandler}
-                                    title={'Add to Bag'}
-                                    color={'black'}
-                                    actionType={'button'}
-                                />
-                                <Button
-                                    title={<HeartIcon />}
-                                    color={'black'}
-                                    actionType={'button'}
-                                />
-                            </div>
                         </div>
+
+                        <UserAction />
 
                         <p>
                             <TruckIcon />

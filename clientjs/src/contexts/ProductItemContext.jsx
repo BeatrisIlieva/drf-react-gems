@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import {
+    createContext,
+    useContext,
+    useEffect,
+    useState,
+    useCallback
+} from 'react';
 import { useProductItem } from '../api/productsApi';
 import { useParams } from 'react-router';
 import { useShoppingBag } from '../api/useShoppingBagApi';
@@ -15,8 +21,10 @@ export const ProductItemProvider = ({ children }) => {
 
     const [selectedSize, setSelectedSize] = useState(null);
     const [selectedInventory, setSelectedInventory] = useState({});
-    const [displayNotSelectedSizeErrorMessage, setDisplayNotSelectedSizeErrorMessage] =
-        useState(false);
+    const [
+        displayNotSelectedSizeErrorMessage,
+        setDisplayNotSelectedSizeErrorMessage
+    ] = useState(false);
 
     const selectSizeClickHandler = (size) => {
         if (selectedSize === null) {
@@ -46,10 +54,13 @@ export const ProductItemProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        getProduct({ categoryName, productId }).then((result) => setProduct(result));
+        getProduct({ categoryName, productId }).then((result) =>
+            setProduct(result)
+        );
     }, [categoryName, productId, getProduct]);
 
-    const productCategory = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
+    const productCategory =
+        categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
     const productDescription = `${product?.stone_by_color.color.name} ${product?.stone_by_color.stone.name}s set in ${product?.material.name}`;
 
     return (

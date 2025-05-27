@@ -1,0 +1,9 @@
+.user-action {
+    display: flex;
+    gap: 0.35em;
+    margin-bottom: 2em;
+}
+
+.user-action button:nth-child(1) {
+    flex: 1 1 90%;
+}
