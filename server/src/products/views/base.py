@@ -1,17 +1,11 @@
-from rest_framework import viewsets, permissions
+from decimal import Decimal
 from django.db.models import Q
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.generics import ListAPIView, RetrieveAPIView
-from rest_framework.permissions import AllowAny
-from decimal import Decimal
-from src.products.models.review import Review
-from src.products.serializers import EarwearSerializer, FingerwearSerializer, NeckwearSerializer, ProductListSerializer, ReviewSerializer, WristwearSerializer
+from rest_framework.generics import ListAPIView
 
-from src.products.models.earwear import Earwear
-from src.products.models.fingerwear import Fingerwear
-from src.products.models.neckwear import Neckwear
-from src.products.models.wristwear import Wristwear
+from src.products.serializers.product_list import ProductListSerializer
 
 
 class ProductPagination(PageNumberPagination):
@@ -93,63 +87,3 @@ class BaseProductListView(ListAPIView):
             'categories_by_count': data['categories_by_count'],
             'price_ranges': data['price_ranges'],
         })
-
-
-class EarwearListView(BaseProductListView):
-    model = Earwear
-
-
-class FingerwearListView(BaseProductListView):
-    model = Fingerwear
-
-
-class NeckwearListView(BaseProductListView):
-    model = Neckwear
-
-
-class WristwearListView(BaseProductListView):
-    model = Wristwear
-
-
-class EarwearItemView(RetrieveAPIView):
-    queryset = Earwear.objects.all()
-    serializer_class = EarwearSerializer
-    permission_classes = [AllowAny]
-
-
-class FingerwearItemView(RetrieveAPIView):
-    queryset = Fingerwear.objects.all()
-    serializer_class = FingerwearSerializer
-    permission_classes = [AllowAny]
-
-
-class NeckwearItemView(RetrieveAPIView):
-    queryset = Neckwear.objects.all()
-    serializer_class = NeckwearSerializer
-    permission_classes = [AllowAny]
-
-
-class WristwearItemView(RetrieveAPIView):
-    queryset = Wristwear.objects.all()
-    serializer_class = WristwearSerializer
-    permission_classes = [AllowAny]
-
-
-class ReviewViewSet(viewsets.ModelViewSet):
-    # GET /api/reviews/?content_type=7&object_id=123
-    queryset = Review.objects.all()
-    serializer_class = ReviewSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-    def get_queryset(self):
-        queryset = Review.objects.all()
-        content_type_id = self.request.query_params.get('content_type_id')
-        object_id = self.request.query_params.get('object_id')
-
-        if content_type_id and object_id:
-            queryset = queryset.filter(
-                content_type_id=content_type_id, object_id=object_id)
-        return queryset
