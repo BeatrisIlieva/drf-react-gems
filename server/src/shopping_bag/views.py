@@ -111,6 +111,35 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
                 return Response({'error': 'Invalid or missing Guest-Id'}, status=status.HTTP_400_BAD_REQUEST)
 
         filters = {'user': user} if user else {'guest_id': guest_id}
-        count = ShoppingBag.objects.filter(**filters).aggregate(total=Sum('quantity'))['total'] or 0
+        count = ShoppingBag.objects.filter(
+            **filters).aggregate(total=Sum('quantity'))['total'] or 0
 
         return Response({'count': count}, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['get'], url_path='total-price')
+    def get_total_price_all(self, request):
+        user = request.user if request.user.is_authenticated else None
+        guest_id = request.headers.get('Guest-Id')
+
+        if not user:
+            try:
+                guest_id = uuid.UUID(guest_id)
+            except (ValueError, TypeError):
+                return Response({'error': 'Invalid or missing Guest-Id'}, status=status.HTTP_400_BAD_REQUEST)
+
+        filters = {'user': user} if user else {'guest_id': guest_id}
+
+        bag_items = ShoppingBag.objects.filter(
+            **filters).select_related('content_type')
+
+        total_price = 0.0
+        for item in bag_items:
+            inventory = item.inventory
+            if inventory and hasattr(inventory, 'product'):
+                try:
+                    total_price += float(inventory.product.price) * \
+                        item.quantity
+                except Exception:
+                    continue
+
+        return Response({'total_price': round(total_price, 2)}, status=status.HTTP_200_OK)

@@ -1,0 +1,26 @@
+.order-summary  {
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+}
+
+.order-summary  h3 {
+    text-transform: uppercase;
+}
+
+.order-summary button {
+    margin-bottom: 1.25em;
+}
+
+
+.order-summary > div:nth-of-type(1) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45em;
+}
+
+.order-summary > div:nth-of-type(1) p:nth-last-of-type(2) {
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+    border-bottom: 0.1em solid var(--medium-grey);
+}

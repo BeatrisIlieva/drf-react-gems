@@ -80,3 +80,25 @@ export const useGetShoppingBagCount = () => {
         getShoppingBagCount
     };
 };
+
+export const useGetShoppingBagTotalPrice = () => {
+    const { get } = useApi();
+    const { isAuthenticated } = useAuth();
+
+    const getShoppingBagTotalPrice = useCallback(async () => {
+        try {
+            const response = await get(`${baseUrl}total-price/`, {
+                accessRequired: isAuthenticated,
+                refreshRequired: isAuthenticated
+            });
+
+            return response;
+        } catch (err) {
+            console.log(err.message);
+        }
+    }, [get, isAuthenticated]);
+
+    return {
+        getShoppingBagTotalPrice
+    };
+};

@@ -1,10 +1,10 @@
 import styles from './ProductItem.module.css';
 import { Reviews } from './reviews/Reviews';
-import { TruckIcon } from '../../reusable/truck-icon/TruckIncon';
 import { SizeList } from './size-list/SizeList';
 import { useProductItemContext } from '../../../contexts/ProductItemContext';
 import { RelatedProductsList } from './related-products-list/RelatedProductsList';
 import { UserAction } from './user-action/UserAction';
+import { ComplimentaryShipping } from '../../reusable/complimentary-shipping/ComplimentaryShipping';
 
 export const ProductItem = () => {
     const { product, productCategory, productDescription, categoryName } =
@@ -45,14 +45,11 @@ export const ProductItem = () => {
                             <RelatedProductsList />
 
                             {categoryName !== 'earwear' && <SizeList />}
+
+                            <UserAction />
+
+                            <ComplimentaryShipping />
                         </div>
-
-                        <UserAction />
-
-                        <p>
-                            <TruckIcon />
-                            <span>Complimentary 2-day shipping</span>
-                        </p>
 
                         <div className={styles['wrapper-bottom']}>
                             <Reviews

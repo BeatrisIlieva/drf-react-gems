@@ -46,7 +46,8 @@ export const ProductItemProvider = ({ children }) => {
     };
 
     const addToBagHandler = () => {
-        if (selectedSize === null) {
+        console.log(categoryName);
+        if (selectedSize === null && categoryName !== 'earwear') {
             setDisplayNotSelectedSizeErrorMessage(true);
         } else {
             addToBag(selectedInventory);
@@ -58,9 +59,16 @@ export const ProductItemProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        getProduct({ categoryName, productId }).then((result) =>
-            setProduct(result)
-        );
+        getProduct({ categoryName, productId }).then((result) => {
+            setProduct(result);
+
+            if (categoryName === 'earwear') {
+                updateSelectedInventoryHandler(
+                    result.inventory.content_type,
+                    result.inventory.object_id
+                );
+            }
+        });
     }, [categoryName, productId, getProduct]);
 
     const productCategory =
