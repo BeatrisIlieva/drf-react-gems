@@ -9,7 +9,7 @@ export const RelatedProductsList = () => {
     return (
         <ul className={styles['related-products']}>
             {product.related_products.map((item) => (
-                <RelatedProductItem item={item} />
+                <RelatedProductItem key={item.id} item={item} />
             ))}
         </ul>
     );

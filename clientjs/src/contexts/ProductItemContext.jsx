@@ -7,7 +7,7 @@ import {
 } from 'react';
 import { useProductItem } from '../api/productsApi';
 import { useParams } from 'react-router';
-import { useShoppingBag } from '../api/useShoppingBagApi';
+import { useAddToShoppingBag } from '../api/useShoppingBagApi';
 
 const ProductListContext = createContext();
 
@@ -17,7 +17,7 @@ export const ProductItemProvider = ({ children }) => {
     const [product, setProduct] = useState(null);
     const { categoryName, productId } = useParams();
     const { getProduct } = useProductItem();
-    const { addToBag } = useShoppingBag();
+    const { addToBag } = useAddToShoppingBag();
 
     const [selectedSize, setSelectedSize] = useState(null);
     const [selectedInventory, setSelectedInventory] = useState({});

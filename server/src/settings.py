@@ -3,6 +3,8 @@ from datetime import timedelta
 from django.urls import reverse_lazy
 from django.templatetags.static import static
 from django.utils.translation import gettext_lazy as _
+from corsheaders.defaults import default_headers
+
 
 import cloudinary
 import cloudinary.uploader
@@ -26,6 +28,10 @@ ALLOWED_HOSTS = []
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
+]
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'Guest-Id',
 ]
 
 PROJECT_APPS = [

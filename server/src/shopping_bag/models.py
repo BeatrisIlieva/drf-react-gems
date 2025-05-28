@@ -22,7 +22,15 @@ class ShoppingBag(models.Model):
 
     user = models.ForeignKey(
         to=UserModel,
+        null=True,
+        blank=True,
         on_delete=models.CASCADE,
+    )
+
+    guest_id = models.UUIDField(
+        null=True,
+        blank=True,
+        db_index=True
     )
 
     content_type = models.ForeignKey(

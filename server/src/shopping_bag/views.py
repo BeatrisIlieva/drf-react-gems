@@ -1,5 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import AllowAny
+import uuid
 
 from src.shopping_bag.models import ShoppingBag
 from src.shopping_bag.serializers import ShoppingBagSerializer
@@ -7,23 +9,30 @@ from src.shopping_bag.serializers import ShoppingBagSerializer
 
 class ShoppingBagViewSet(viewsets.ModelViewSet):
     serializer_class = ShoppingBagSerializer
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
-        return ShoppingBag.objects.filter(user=self.request.user)
+        user = self.request.user if self.request.user.is_authenticated else None
+        guest_id = self.request.headers.get('Guest-Id')
+        filters = {'user': user} if user else {'guest_id': guest_id}
+        return ShoppingBag.objects.filter(**filters)
 
     def perform_create(self, serializer):
-        user = self.request.user
+        user = self.request.user if self.request.user.is_authenticated else None
+        guest_id = self.request.headers.get('Guest-Id')
+
+        if guest_id:
+            try:
+                guest_id = uuid.UUID(guest_id)
+            except ValueError:
+                raise ValidationError("Invalid guest ID format.")
 
         content_type = serializer.validated_data.get('content_type')
         object_id = serializer.validated_data.get('object_id')
         quantity_to_add = serializer.validated_data.get('quantity')
 
-        if not content_type:
-            raise ValidationError({"content_type": "This field is required."})
-        if not object_id:
-            raise ValidationError({"object_id": "This field is required."})
-        if quantity_to_add is None:
-            raise ValidationError({"quantity": "This field is required."})
+        if not content_type or not object_id or quantity_to_add is None:
+            raise ValidationError("Missing required fields.")
 
         try:
             inventory_obj = content_type.get_object_for_this_type(pk=object_id)
@@ -34,18 +43,21 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
         if quantity_to_add > inventory_obj.quantity:
             raise ValidationError("Not enough quantity in inventory.")
 
-        existing_item = ShoppingBag.objects.filter(
-            user=user,
-            content_type=content_type,
-            object_id=object_id
-        ).first()
+        filters = {
+            'content_type': content_type,
+            'object_id': object_id,
+            'user': user,
+            'guest_id': guest_id if not user else None,
+        }
+
+        existing_item = ShoppingBag.objects.filter(**filters).first()
 
         if existing_item:
             existing_item.quantity += quantity_to_add
             existing_item.save()
             serializer.instance = existing_item
         else:
-            serializer.save(user=user)
+            serializer.save(user=user, guest_id=guest_id)
 
         inventory_obj.quantity -= quantity_to_add
         inventory_obj.save()

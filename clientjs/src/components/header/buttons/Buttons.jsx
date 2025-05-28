@@ -1,10 +1,12 @@
 import { Link } from 'react-router';
 import styles from './Buttons.module.css';
 import { useAuth } from '../../../hooks/useAuth';
+// import { useShoppingBagContext } from '../../../contexts/ShoppingBagContext';
 
 export const Buttons = () => {
     const { isAuthenticated } = useAuth();
-    
+    // const { shoppingBagItemsCount } = useShoppingBagContext();
+
     return (
         <ul className={styles['buttons']}>
             <li>
@@ -24,7 +26,13 @@ export const Buttons = () => {
                 <span>Search</span>
             </li>
             <li>
-                <Link to={isAuthenticated ? '/my-account/details' : '/my-account/login'}>
+                <Link
+                    to={
+                        isAuthenticated
+                            ? '/my-account/details'
+                            : '/my-account/login'
+                    }
+                >
                     <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
@@ -62,7 +70,7 @@ export const Buttons = () => {
                 </Link>
             </li>
             <li>
-                <Link to='/my-account/register'>
+                <Link to='/user/shopping-bag'>
                     <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
@@ -77,7 +85,9 @@ export const Buttons = () => {
                         />
                     </svg>
                     <span>
-                        <span>1</span>
+                        {/* {shoppingBagItemsCount > 0 && (
+                            <span>{shoppingBagItemsCount}</span>
+                        )} */}
                     </span>
                 </Link>
             </li>

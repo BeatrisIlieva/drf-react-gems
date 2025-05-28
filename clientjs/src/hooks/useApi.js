@@ -1,10 +1,12 @@
 import { useContext, useCallback, useMemo } from 'react';
 import { UserContext } from '../contexts/UserContext';
 import { useAuthRefresh } from './useAuthRefresh';
+import { useGuest } from './useGuest';
 
 export const useApi = () => {
     const { access, refresh } = useContext(UserContext);
     const { authRefresh } = useAuthRefresh();
+    const { guestId } = useGuest();
 
     const request = useCallback(
         async (
@@ -28,29 +30,14 @@ export const useApi = () => {
                 options.headers.Authorization = `Bearer ${access}`;
             }
 
-            // if (method !== 'GET') {
-            //     let bodyData = data ? { ...data } : {};
-
-            //     if (refreshRequired) {
-            //         bodyData.refresh = refresh;
-            //     }
-
-            //     if (contentType === 'multipart/form-data') {
-            //         options.body = bodyData;
-            //         delete options.headers['Content-Type'];
-            //     } else {
-            //         options.body = JSON.stringify(bodyData);
-            //     }
-
-            // }
-
             if (method !== 'GET') {
                 let bodyData = data;
 
                 if (contentType === 'multipart/form-data') {
-                    // Make sure it's a FormData instance
                     if (!(bodyData instanceof FormData)) {
-                        throw new Error('Data must be a FormData instance for multipart/form-data');
+                        throw new Error(
+                            'Data must be a FormData instance for multipart/form-data'
+                        );
                     }
 
                     if (refreshRequired) {
@@ -59,7 +46,6 @@ export const useApi = () => {
 
                     options.body = bodyData;
 
-                    // Remove Content-Type so the browser sets it (with boundary)
                     delete options.headers['Content-Type'];
                 } else {
                     if (refreshRequired) {
@@ -67,6 +53,10 @@ export const useApi = () => {
                     }
 
                     options.body = JSON.stringify(bodyData);
+
+                    if (guestId) {
+                        options.headers['Guest-Id'] = guestId;
+                    }
                 }
             }
 
@@ -91,7 +81,7 @@ export const useApi = () => {
 
             return json;
         },
-        [access, refresh, authRefresh]
+        [access, refresh, authRefresh, guestId]
     );
 
     return useMemo(
