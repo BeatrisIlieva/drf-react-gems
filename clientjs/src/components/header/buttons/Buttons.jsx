@@ -1,11 +1,11 @@
 import { Link } from 'react-router';
 import styles from './Buttons.module.css';
 import { useAuth } from '../../../hooks/useAuth';
-// import { useShoppingBagContext } from '../../../contexts/ShoppingBagContext';
+import { useShoppingBagContext } from '../../../contexts/ShoppingBagContext';
 
 export const Buttons = () => {
     const { isAuthenticated } = useAuth();
-    // const { shoppingBagItemsCount } = useShoppingBagContext();
+    const { shoppingBagItemsCount } = useShoppingBagContext();
 
     return (
         <ul className={styles['buttons']}>
@@ -85,9 +85,9 @@ export const Buttons = () => {
                         />
                     </svg>
                     <span>
-                        {/* {shoppingBagItemsCount > 0 && (
+                        {shoppingBagItemsCount > 0 && (
                             <span>{shoppingBagItemsCount}</span>
-                        )} */}
+                        )}
                     </span>
                 </Link>
             </li>

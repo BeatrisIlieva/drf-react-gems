@@ -2,6 +2,9 @@ from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny
 import uuid
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
 
 from src.shopping_bag.models import ShoppingBag
 from src.shopping_bag.serializers import ShoppingBagSerializer
@@ -91,3 +94,19 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
         inventory_obj.quantity += instance.quantity
         inventory_obj.save()
         instance.delete()
+
+    @action(detail=False, methods=['get'], url_path='count')
+    def get_bag_count(self, request):
+        user = request.user if request.user.is_authenticated else None
+        guest_id = request.headers.get('Guest-Id')
+
+        if not user:
+            try:
+                guest_id = uuid.UUID(guest_id)
+            except (ValueError, TypeError):
+                return Response({'error': 'Invalid or missing Guest-Id'}, status=status.HTTP_400_BAD_REQUEST)
+
+        filters = {'user': user} if user else {'guest_id': guest_id}
+        count = ShoppingBag.objects.filter(**filters).count()
+
+        return Response({'count': count}, status=status.HTTP_200_OK)

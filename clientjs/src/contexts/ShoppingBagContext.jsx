@@ -6,6 +6,7 @@ import {
     useCallback
 } from 'react';
 import { useGetShoppingBagItems } from '../api/useShoppingBagApi';
+import { useGetShoppingBagCount } from '../api/useShoppingBagApi';
 
 const ShoppingBagContext = createContext();
 
@@ -13,6 +14,7 @@ export const useShoppingBagContext = () => useContext(ShoppingBagContext);
 
 export const ShoppingBagProvider = ({ children }) => {
     const { getShoppingBagItems } = useGetShoppingBagItems();
+    const { getShoppingBagCount } = useGetShoppingBagCount();
     const [shoppingBagItemsCount, setShoppingBagItemsCount] = useState(0);
 
     const [shoppingBagItems, setShoppingBagItems] = useState([]);
@@ -21,27 +23,21 @@ export const ShoppingBagProvider = ({ children }) => {
         getShoppingBagItems()
             .then((response) => {
                 setShoppingBagItems(response);
-                setShoppingBagItemsCount(response.length);
             })
             .catch((err) => console.log(err.message));
-    }
-
-    const getShoppingBagItemsCountHandler = () => { 
-        setShoppingBagItemsCount(response.length);
-    }
+    };
 
     useEffect(() => {
-        getShoppingBagItems()
+        getShoppingBagCount()
             .then((response) => {
-                setShoppingBagItems(response);
-                setShoppingBagItemsCount(response.length);
+                setShoppingBagItemsCount(response.count);
             })
             .catch((err) => console.log(err.message));
-    }, [getShoppingBagItems, setShoppingBagItemsCount]);
+    }, [getShoppingBagCount]);
 
     return (
         <ShoppingBagContext.Provider
-            value={{ shoppingBagItems, shoppingBagItemsCount }}
+            value={{ shoppingBagItems, shoppingBagItemsCount, getShoppingBagItemsHandler }}
         >
             {children}
         </ShoppingBagContext.Provider>

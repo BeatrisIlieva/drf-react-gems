@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model, authenticate
-from rest_framework.generics import CreateAPIView, DestroyAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView, DestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from drf_spectacular.utils import extend_schema
 from rest_framework.views import APIView
@@ -18,6 +18,8 @@ from src.accounts.serializers import (
     UserLogoutRequestSerializer,
     UserRegisterSerializer,
 )
+from src.accounts.utils import migrate_guest_bag_to_user
+from src.shopping_bag.models import ShoppingBag
 
 
 UserModel = get_user_model()
@@ -46,6 +48,9 @@ class UserRegisterView(CreateAPIView):
 
         # Generate tokens for the newly created user
         refresh = RefreshToken.for_user(user)
+
+        guest_id = request.headers.get('guest_id')
+        migrate_guest_bag_to_user(user, guest_id)
 
         return Response(
             {
@@ -89,6 +94,11 @@ class UserLoginView(APIView):
                 },
                 status=status.HTTP_401_UNAUTHORIZED,
             )
+
+        guest_id = request.headers.get('guest_id')
+
+        guest_id = request.headers.get('guest_id')
+        migrate_guest_bag_to_user(user, guest_id)
 
         # if the user credentials are valid we issue both `access token` and `refresh token`
         refresh = RefreshToken.for_user(user)

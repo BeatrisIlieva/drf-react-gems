@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export default function usePersistedState(stateKey, initalState) {
     const [state, setState] = useState(() => {
@@ -14,7 +14,7 @@ export default function usePersistedState(stateKey, initalState) {
         return persistedStateData;
     });
 
-    const setPersistedState = (input) => {
+    const setPersistedState = useCallback((input) => {
         const data = typeof input === 'function' 
             ? input(state) 
             : input;
@@ -24,7 +24,7 @@ export default function usePersistedState(stateKey, initalState) {
         localStorage.setItem(stateKey, persistedData);
 
         setState(data);
-    };
+    }, [state, stateKey]);
 
     return [
         state,

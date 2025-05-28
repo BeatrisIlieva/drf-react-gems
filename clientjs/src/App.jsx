@@ -19,9 +19,9 @@ import { ShoppingBagProvider } from './contexts/ShoppingBagContext';
 function App() {
     return (
         <div className={styles['body']}>
-            {/* <ShoppingBagProvider> */}
+            <ShoppingBagProvider>
                 <Header />
-            {/* </ShoppingBagProvider> */}
+            </ShoppingBagProvider>
             <main className={styles['main']}>
                 <Routes>
                     <Route index element={<Home />} />

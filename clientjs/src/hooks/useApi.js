@@ -6,7 +6,9 @@ import { useGuest } from './useGuest';
 export const useApi = () => {
     const { access, refresh } = useContext(UserContext);
     const { authRefresh } = useAuthRefresh();
-    const { guestId } = useGuest();
+    const { getGuestData } = useGuest();
+
+    const guestId = useMemo(() => getGuestData(), [getGuestData]);
 
     const request = useCallback(
         async (
@@ -22,9 +24,13 @@ export const useApi = () => {
             const options = {
                 method,
                 headers: {
-                    'Content-Type': contentType
+                    'Content-Type': contentType,
                 }
             };
+
+            if (guestId) {
+                options.headers['Guest-Id'] = guestId;
+            }
 
             if (accessRequired) {
                 options.headers.Authorization = `Bearer ${access}`;
@@ -53,10 +59,6 @@ export const useApi = () => {
                     }
 
                     options.body = JSON.stringify(bodyData);
-
-                    if (guestId) {
-                        options.headers['Guest-Id'] = guestId;
-                    }
                 }
             }
 
@@ -81,7 +83,7 @@ export const useApi = () => {
 
             return json;
         },
-        [access, refresh, authRefresh, guestId]
+        [access, refresh, authRefresh, getGuestData]
     );
 
     return useMemo(

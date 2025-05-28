@@ -1,14 +1,10 @@
 import { useCallback } from 'react';
 import { useApi } from '../hooks/useApi';
-import { useAuth } from '../hooks/useAuth';
-import { useGuest } from '../hooks/useGuest';
 
 const baseUrl = 'http://localhost:8000/shopping-bag/';
 
 export const useAddToShoppingBag = () => {
     const { post } = useApi();
-    const { isAuthenticated } = useAuth();
-    const { setGuestDataHandler } = useGuest();
 
     const addToBag = useCallback(
         async ({ contentType, objectId, quantity }) => {
@@ -17,10 +13,6 @@ export const useAddToShoppingBag = () => {
                 object_id: objectId,
                 quantity: quantity
             };
-
-            if (!isAuthenticated) {
-                setGuestDataHandler();
-            }
 
             try {
                 const response = await post(baseUrl, {
@@ -35,7 +27,7 @@ export const useAddToShoppingBag = () => {
                 throw err;
             }
         },
-        [post, isAuthenticated, setGuestDataHandler]
+        [post]
     );
 
     return { addToBag };
@@ -59,5 +51,23 @@ export const useGetShoppingBagItems = () => {
 
     return {
         getShoppingBagItems
+    };
+};
+
+export const useGetShoppingBagCount = () => {
+    const { get } = useApi();
+
+    const getShoppingBagCount = useCallback(async () => {
+        try {
+            const response = await get(`${baseUrl}count/`);
+
+            return response;
+        } catch (err) {
+            console.log(err.message);
+        }
+    }, [get]);
+
+    return {
+        getShoppingBagCount
     };
 };
