@@ -16,10 +16,12 @@
 
 .wrapper-left{
     flex: 0 0 41%;
-    background: lightcyan;
+}
+
+.shopping-bag-content {
+    box-shadow: 0 0 0.8em 0 rgb(0,0,0,0.1);
 }
 
 .wrapper-right{
     flex: 0 0 22%;
-    background: lightgoldenrodyellow;
 }

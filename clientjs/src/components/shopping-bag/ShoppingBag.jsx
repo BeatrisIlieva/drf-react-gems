@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useShoppingBagContext } from '../../contexts/ShoppingBagContext';
 import styles from './ShoppingBag.module.css';
 import { OrderSummary } from '../reusable/order-summary/OrderSummary';
+import { Delivery } from '../reusable/delivery/Delivery';
 
 export const ShoppingBag = () => {
     const { shoppingBagItems, getShoppingBagItemsHandler } =
@@ -16,7 +17,11 @@ export const ShoppingBag = () => {
     return (
         <section className={styles['shopping-bag']}>
             <h2>Shopping Bag</h2>
-            <div className={styles['wrapper-left']}>here</div>
+            <div className={styles['wrapper-left']}>
+                <Delivery fontSize={'large'}/>
+
+                <div className={styles['shopping-bag-content']}>here</div>
+            </div>
 
             <div className={styles['wrapper-right']}>
                 <OrderSummary />
