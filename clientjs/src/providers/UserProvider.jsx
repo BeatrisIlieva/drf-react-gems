@@ -1,8 +1,10 @@
 import { UserContext } from '../contexts/UserContext';
 import usePersistedState from '../hooks/usePersistedState';
+import { useGuest } from '../hooks/useGuest';
 
 export default function UserProvider({ children }) {
     const [authData, setAuthData] = usePersistedState('auth', {});
+    const { clearGuestData } = useGuest();
 
     const userLoginHandler = (resultData) => {
         setAuthData(resultData);
@@ -10,6 +12,7 @@ export default function UserProvider({ children }) {
 
     const userLogoutHandler = () => {
         setAuthData({});
+        clearGuestData();
     };
 
     return (

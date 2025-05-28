@@ -14,7 +14,12 @@ export const useGuest = () => {
         return guestData.guest_id;
     }, [guestData.guest_id, setGuestData]);
 
+    const clearGuestData = useCallback(() => {
+        setGuestData({});
+    }, [setGuestData]);
+
     return {
-        getGuestData
+        getGuestData,
+        clearGuestData
     };
 };

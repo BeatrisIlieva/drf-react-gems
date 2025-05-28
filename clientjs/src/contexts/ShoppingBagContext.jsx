@@ -27,7 +27,7 @@ export const ShoppingBagProvider = ({ children }) => {
             .catch((err) => console.log(err.message));
     };
 
-    useEffect(() => {
+    const updateShoppingBagCount = useCallback(() => {
         getShoppingBagCount()
             .then((response) => {
                 setShoppingBagItemsCount(response.count);
@@ -35,9 +35,18 @@ export const ShoppingBagProvider = ({ children }) => {
             .catch((err) => console.log(err.message));
     }, [getShoppingBagCount]);
 
+    useEffect(() => {
+        updateShoppingBagCount();
+    }, [updateShoppingBagCount]);
+
     return (
         <ShoppingBagContext.Provider
-            value={{ shoppingBagItems, shoppingBagItemsCount, getShoppingBagItemsHandler }}
+            value={{
+                shoppingBagItems,
+                shoppingBagItemsCount,
+                getShoppingBagItemsHandler,
+                updateShoppingBagCount
+            }}
         >
             {children}
         </ShoppingBagContext.Provider>

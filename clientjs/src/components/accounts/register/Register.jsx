@@ -1,6 +1,6 @@
 import { useActionState } from 'react';
 import useUserContext from '../../../contexts/UserContext';
-import { useRegister } from '../../../api/authApi';
+import { useLogin, useRegister } from '../../../api/authApi';
 import { AuthLayout } from '../auth-layout/ AuthLayout';
 import { useState } from 'react';
 import { Button } from '../../reusable/button/Button';
@@ -30,6 +30,7 @@ export const Register = () => {
 
     const { userLoginHandler } = useUserContext();
     const { register } = useRegister();
+    const { login } = useLogin()
     const navigate = useNavigate();
 
     useFocusOnInvalidInput();
@@ -48,6 +49,11 @@ export const Register = () => {
 
         if (authData?.access) {
             userLoginHandler(authData);
+
+            await login({
+                email: userData.email.value,
+                password: userData.password.value
+            });
 
             navigate('/my-account/details');
             return { success: true };

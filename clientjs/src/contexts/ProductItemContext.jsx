@@ -50,6 +50,10 @@ export const ProductItemProvider = ({ children }) => {
             setDisplayNotSelectedSizeErrorMessage(true);
         } else {
             addToBag(selectedInventory);
+
+            getProduct({ categoryName, productId }).then((result) =>
+                setProduct(result)
+            );
         }
     };
 

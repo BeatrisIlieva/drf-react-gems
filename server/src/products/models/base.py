@@ -68,6 +68,7 @@ class Inventory(models.Model):
 class Size(models.Model):
     class Meta:
         abstract = True
+        ordering = ['id']
 
     SIZE_MAX_DIGITS = 5
     SIZE_DECIMAL_PLACES = 2

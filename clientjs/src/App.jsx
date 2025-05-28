@@ -1,4 +1,3 @@
-import { UserContext } from './contexts/UserContext';
 import { Register } from './components/accounts/register/Register';
 import { Login } from './components/accounts/login/Login';
 import { Route, Routes } from 'react-router';
@@ -18,54 +17,58 @@ import { ShoppingBagProvider } from './contexts/ShoppingBagContext';
 
 function App() {
     return (
-        <div className={styles['body']}>
-            <ShoppingBagProvider>
+        <ShoppingBagProvider>
+            <div className={styles['body']}>
                 <Header />
-            </ShoppingBagProvider>
-            <main className={styles['main']}>
-                <Routes>
-                    <Route index element={<Home />} />
-                    <Route path='/my-account/register' element={<Register />} />
-                    <Route path='/my-account/login' element={<Login />} />
-                    <Route
-                        path='/user/shopping-bag'
-                        element={
-                            <ShoppingBagProvider>
-                                <ShoppingBag />
-                            </ShoppingBagProvider>
-                        }
-                    />
 
-                    <Route
-                        path='/products/:categoryName'
-                        element={
-                            <ProductListProvider>
-                                <ProductList />
-                            </ProductListProvider>
-                        }
-                    />
-
-                    <Route
-                        path='/products/:categoryName/:productId'
-                        element={
-                            <ProductItemProvider>
-                                <ProductItem />
-                            </ProductItemProvider>
-                        }
-                    />
-
-                    <Route element={<AuthGuard />}>
+                <main className={styles['main']}>
+                    <Routes>
+                        <Route index element={<Home />} />
                         <Route
-                            path='/my-account/details'
-                            element={<Details />}
+                            path='/my-account/register'
+                            element={<Register />}
                         />
-                    </Route>
-                </Routes>
-            </main>
+                        <Route path='/my-account/login' element={<Login />} />
+                        <Route
+                            path='/user/shopping-bag'
+                            element={
+                                <ShoppingBagProvider>
+                                    <ShoppingBag />
+                                </ShoppingBagProvider>
+                            }
+                        />
 
-            <Footer />
-            <ScrollToTop />
-        </div>
+                        <Route
+                            path='/products/:categoryName'
+                            element={
+                                <ProductListProvider>
+                                    <ProductList />
+                                </ProductListProvider>
+                            }
+                        />
+
+                        <Route
+                            path='/products/:categoryName/:productId'
+                            element={
+                                <ProductItemProvider>
+                                    <ProductItem />
+                                </ProductItemProvider>
+                            }
+                        />
+
+                        <Route element={<AuthGuard />}>
+                            <Route
+                                path='/my-account/details'
+                                element={<Details />}
+                            />
+                        </Route>
+                    </Routes>
+                </main>
+
+                <Footer />
+                <ScrollToTop />
+            </div>
+        </ShoppingBagProvider>
     );
 }
 

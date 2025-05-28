@@ -16,6 +16,7 @@ class FingerwearSize(Size):
 class FingerwearInventory(InventoryInfoMixin, Inventory):
     class Meta:
         unique_together = ('product', 'size')
+        ordering = ['size__id']
 
     size = models.ForeignKey(
         to=FingerwearSize,
@@ -25,5 +26,5 @@ class FingerwearInventory(InventoryInfoMixin, Inventory):
     product = models.ForeignKey(
         to=Fingerwear,
         on_delete=models.CASCADE,
-        related_name='inventory', 
+        related_name='inventory',
     )

@@ -16,6 +16,7 @@ class NeckwearSize(Size):
 class NeckwearInventory(InventoryInfoMixin, Inventory):
     class Meta:
         unique_together = ('product', 'size')
+        ordering = ['size__id']
 
     size = models.ForeignKey(
         to=NeckwearSize,
@@ -25,5 +26,5 @@ class NeckwearInventory(InventoryInfoMixin, Inventory):
     product = models.ForeignKey(
         to=Neckwear,
         on_delete=models.CASCADE,
-        related_name='inventory', 
+        related_name='inventory',
     )

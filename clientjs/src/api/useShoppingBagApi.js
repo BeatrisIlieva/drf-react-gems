@@ -1,10 +1,14 @@
 import { useCallback } from 'react';
 import { useApi } from '../hooks/useApi';
+import { useAuth } from '../hooks/useAuth';
+import { useShoppingBagContext } from '../contexts/ShoppingBagContext';
 
 const baseUrl = 'http://localhost:8000/shopping-bag/';
 
 export const useAddToShoppingBag = () => {
     const { post } = useApi();
+    const { isAuthenticated } = useAuth();
+    const { updateShoppingBagCount } = useShoppingBagContext();
 
     const addToBag = useCallback(
         async ({ contentType, objectId, quantity }) => {
@@ -16,18 +20,18 @@ export const useAddToShoppingBag = () => {
 
             try {
                 const response = await post(baseUrl, {
-                    data
-                    // accessRequired: true,
-                    // refreshRequired: true
+                    data,
+                    accessRequired: isAuthenticated,
+                    refreshRequired: isAuthenticated
                 });
-
+                updateShoppingBagCount();
                 return response;
             } catch (err) {
                 console.error('Error in addToBag:', err.message);
                 throw err;
             }
         },
-        [post]
+        [post, isAuthenticated, updateShoppingBagCount]
     );
 
     return { addToBag };
@@ -35,19 +39,20 @@ export const useAddToShoppingBag = () => {
 
 export const useGetShoppingBagItems = () => {
     const { get } = useApi();
+    const { isAuthenticated } = useAuth();
 
     const getShoppingBagItems = useCallback(async () => {
         try {
             const response = await get(baseUrl, {
-                accessRequired: true,
-                refreshRequired: true
+                accessRequired: isAuthenticated,
+                refreshRequired: isAuthenticated
             });
 
             return response;
         } catch (err) {
             console.log(err.message);
         }
-    }, [get]);
+    }, [get, isAuthenticated]);
 
     return {
         getShoppingBagItems
@@ -56,16 +61,20 @@ export const useGetShoppingBagItems = () => {
 
 export const useGetShoppingBagCount = () => {
     const { get } = useApi();
+    const { isAuthenticated } = useAuth();
 
     const getShoppingBagCount = useCallback(async () => {
         try {
-            const response = await get(`${baseUrl}count/`);
+            const response = await get(`${baseUrl}count/`, {
+                accessRequired: isAuthenticated,
+                refreshRequired: isAuthenticated
+            });
 
             return response;
         } catch (err) {
             console.log(err.message);
         }
-    }, [get]);
+    }, [get, isAuthenticated]);
 
     return {
         getShoppingBagCount

@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from django.db.models import Sum
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny
 import uuid
@@ -60,7 +61,10 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
             existing_item.save()
             serializer.instance = existing_item
         else:
-            serializer.save(user=user, guest_id=guest_id)
+            if user:
+                serializer.save(user=user)
+            else:
+                serializer.save(guest_id=guest_id)
 
         inventory_obj.quantity -= quantity_to_add
         inventory_obj.save()
@@ -107,6 +111,6 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
                 return Response({'error': 'Invalid or missing Guest-Id'}, status=status.HTTP_400_BAD_REQUEST)
 
         filters = {'user': user} if user else {'guest_id': guest_id}
-        count = ShoppingBag.objects.filter(**filters).count()
+        count = ShoppingBag.objects.filter(**filters).aggregate(total=Sum('quantity'))['total'] or 0
 
         return Response({'count': count}, status=status.HTTP_200_OK)

@@ -83,7 +83,7 @@ export const useApi = () => {
 
             return json;
         },
-        [access, refresh, authRefresh, getGuestData]
+        [access, refresh, authRefresh, guestId]
     );
 
     return useMemo(
