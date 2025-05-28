@@ -2,6 +2,8 @@
     background-color: var(--white);
     display: flex;
     flex-direction: column;
+    position: sticky;
+    top: 2em;
 }
 
 .order-summary  h3 {

@@ -1,0 +1,96 @@
+.shopping-bag-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 1em;
+}
+
+.shopping-bag-item > span,
+.shopping-bag-item > span:nth-child(2) > span:nth-child(1),
+.shopping-bag-item > span:nth-child(3),
+.shopping-bag-item > span:nth-child(3) > span:nth-child(2) {
+    display: flex;
+}
+
+.shopping-bag-item > span:nth-child(1) {
+    flex: 0 0 25%;
+}
+
+.shopping-bag-item > span:nth-child(3) {
+    flex: 0 0 15%;
+}
+
+.shopping-bag-item > span:nth-child(1) {
+    background: var(--lightest-grey);
+    aspect-ratio: 1/1;
+}
+
+.shopping-bag-item > span:nth-child(2) {
+    flex: 0 0 56%;
+}
+
+.shopping-bag-item > span:nth-child(3) {
+    flex-direction: column;
+    flex: 0 24%;
+}
+
+.shopping-bag-item > span:nth-child(2),
+.shopping-bag-item > span:nth-child(2) > span:nth-child(1),
+.shopping-bag-item > span:nth-child(3) {
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.shopping-bag-item > span:nth-child(2) > span:nth-child(1) {
+    gap: 0.25em;
+}
+
+.shopping-bag-item > span:nth-child(2) > span:nth-child(1) > span:nth-child(1) {
+    font-weight: 500;
+}
+
+.shopping-bag-item > span:nth-child(2) > span:nth-child(2) {
+    display: flex;
+    gap: 0.75em;
+}
+
+.shopping-bag-item > span:nth-child(2) > span:nth-child(2) button {
+    font-size: 0.9em;
+    opacity: 0.6;
+    text-decoration: underline;
+}
+
+.shopping-bag-item > span:nth-child(2) > span:nth-child(1) > span:nth-child(2),
+.shopping-bag-item > span:nth-child(2) > span:nth-child(1) > span:nth-child(3) {
+    opacity: 0.8;
+}
+
+.shopping-bag-item
+    > span:nth-child(2)
+    > span:nth-child(1)
+    > span:nth-child(3)
+    > span:nth-child(2) {
+    font-size: 0.8em;
+}
+
+.shopping-bag-item > span:nth-child(3) > span:nth-child(1) {
+    font-weight: 500;
+    font-size: 1.1em;
+    align-self: flex-end;
+}
+
+.shopping-bag-item > span:nth-child(3) > span:nth-child(2) {
+    justify-content: space-between;
+    align-items: center;
+    border: 0.1em solid var(--medium-grey);
+    padding: 0.1em 0.5em;
+}
+
+.shopping-bag-item > span:nth-child(3) > span:nth-child(2) > span,
+.shopping-bag-item > span:nth-child(3) > span:nth-child(2) button svg {
+    color: var(--dark-grey);
+}
+
+.shopping-bag-item > span:nth-child(3) > span:nth-child(2) button svg {
+    font-size: 0.5em;
+    line-height: 1;
+}

@@ -1,4 +1,4 @@
-.shopping-bag{
+.shopping-bag {
     display: flex;
     gap: 3em;
     justify-content: center;
@@ -14,14 +14,10 @@
     font-weight: 500;
 }
 
-.wrapper-left{
+.wrapper-left {
     flex: 0 0 41%;
 }
 
-.shopping-bag-content {
-    box-shadow: 0 0 0.8em 0 rgb(0,0,0,0.1);
-}
-
-.wrapper-right{
+.wrapper-right {
     flex: 0 0 22%;
 }

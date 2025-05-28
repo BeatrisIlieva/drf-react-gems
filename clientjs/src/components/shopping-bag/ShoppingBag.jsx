@@ -1,26 +1,16 @@
-import { useEffect } from 'react';
-import { useShoppingBagContext } from '../../contexts/ShoppingBagContext';
 import styles from './ShoppingBag.module.css';
 import { OrderSummary } from '../reusable/order-summary/OrderSummary';
 import { Delivery } from '../reusable/delivery/Delivery';
+import { ShoppingBagList } from './shopping-bag-list/ShoppingBagList';
 
 export const ShoppingBag = () => {
-    const { shoppingBagItems, getShoppingBagItemsHandler } =
-        useShoppingBagContext();
-
-    useEffect(() => {
-        getShoppingBagItemsHandler();
-    }, [getShoppingBagItemsHandler]);
-
-    console.log(shoppingBagItems);
-
     return (
         <section className={styles['shopping-bag']}>
             <h2>Shopping Bag</h2>
             <div className={styles['wrapper-left']}>
-                <Delivery fontSize={'large'}/>
+                <Delivery fontSize={'large'} />
 
-                <div className={styles['shopping-bag-content']}>here</div>
+                <ShoppingBagList />
             </div>
 
             <div className={styles['wrapper-right']}>

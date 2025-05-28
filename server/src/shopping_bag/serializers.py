@@ -26,6 +26,7 @@ class ShoppingBagSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id', 'created_at',
                             'user', 'product_info', 'total_price_per_product']
+        depth = 3
 
     def get_product_info(self, obj):
         inventory = obj.inventory
@@ -44,6 +45,9 @@ class ShoppingBagSerializer(serializers.ModelSerializer):
             'first_image': product.first_image,
             'available_quantity': inventory.quantity,
             'size': str(getattr(inventory, 'size', '')),
+            'material': str(product.material),
+            'stone': str(product.stone_by_color.stone),
+            'color': str(product.stone_by_color.color)
         }
 
     def get_total_price_per_product(self, obj):
@@ -51,4 +55,3 @@ class ShoppingBagSerializer(serializers.ModelSerializer):
             return round(obj.inventory.product.price * obj.quantity, 2)
         except Exception:
             return 0
-        
