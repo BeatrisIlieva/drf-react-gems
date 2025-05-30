@@ -1,22 +1,9 @@
 from django.contrib import admin
-from django.urls import path, include
-
-
-from drf_spectacular.views import (
-    SpectacularAPIView,
-    SpectacularSwaggerView,
-    SpectacularRedocView
-)
-
+from django.urls import path, include, reverse_lazy
+from django.shortcuts import redirect
 
 urlpatterns = [
-    path('',
-         SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('api/schema/redoc/',
-         SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
-    path('products/', include('src.products.urls')),
-    path('accounts/', include('src.accounts.urls')),
-    path('shopping-bag/', include('src.shopping_bag.urls')),
+    # path('admin/', lambda request: redirect(reverse_lazy('admin:products_product_changelist'))),
     path('admin/', admin.site.urls),
+    path('products/', include('src.products.urls'))
 ]

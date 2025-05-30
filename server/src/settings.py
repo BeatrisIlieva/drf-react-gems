@@ -10,21 +10,14 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SECRET_KEY = 'django-insecure--3tgzk2%%qtoj@iz7(-ag90sm&4g&(x+xdy%e4&bn#p6*n)83x'
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-f$$t_6jn+jj(my7bgs(sub#^brednrr*fdje+6$(ro%so&yo0_'
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
@@ -38,13 +31,16 @@ PROJECT_APPS = [
     'src.accounts',
     'src.products',
     'src.addresses',
-    'src.shopping_bag',
+    'src.shopping_bags',
 ]
 
 INSTALLED_APPS = [
     'unfold',
     'unfold.contrib.filters',
     'unfold.contrib.forms',
+
+    'cloudinary',
+    'cloudinary_storage',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -53,21 +49,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'cloudinary',
-    'cloudinary_storage',
-
-    # pip install django-restframework
     'rest_framework',
-    # pip install djangorestframework-simplejwt
     'rest_framework_simplejwt',
-    # pip install drf-spectacular (swagger)
-    'drf_spectacular',
-    # we do not install `token_blacklist`
-    # we just add it to installed apps
-    # so the blacklisting of the refresh token
-    # can happen
     'rest_framework_simplejwt.token_blacklist',
-    # pip install django-cors-headers
     'corsheaders',
 ] + PROJECT_APPS
 
@@ -75,12 +59,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-    # this setting says that, except explicitly specified,
-    # all views will expect the user to be authenticated
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',  # for swagger
 }
 
 SIMPLE_JWT = {
@@ -88,15 +69,7 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(weeks=1),
 }
 
-SPECTACULAR_SETTINGS = {
-    'TITLE': 'Django App',
-    'DESCRIPTION': 'Online store',
-    'VERSION': '1.0.0',
-}
-
 MIDDLEWARE = [
-    # middleware that checks if the Client that sends the request is allowed to
-    # this is done through a preflight request with a method `OPTIONS`
     'corsheaders.middleware.CorsMiddleware',
 
     'django.middleware.security.SecurityMiddleware',
@@ -129,7 +102,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'src.wsgi.application'
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -140,10 +112,6 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -176,9 +144,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
+AUTH_USER_MODEL = 'accounts.UserCredential'
 
 LANGUAGE_CODE = 'en-us'
 
@@ -188,10 +154,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = (
@@ -199,21 +161,10 @@ STATICFILES_DIRS = (
 )
 
 MEDIA_URL = 'media/'
+
 MEDIA_ROOT = BASE_DIR / 'mediafiles/'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Inform Django that we replace the default user with a custom one
-AUTH_USER_MODEL = 'accounts.UserCredential'
-
-# Inform Django to which url to redirect to after successful login
-# LOGIN_REDIRECT_URL = reverse_lazy('')
-
-# Inform Django to which url to redirect to after logout
-# LOGOUT_REDIRECT_URL = reverse_lazy('login')
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
@@ -268,7 +219,7 @@ UNFOLD = {
                 ],
             },
             {
-                'title': _('Materials'),
+                'title': _('Characteristics'),
                 'separator': True,
                 'collapsible': True,
                 'items': [
@@ -278,9 +229,9 @@ UNFOLD = {
                         'link': reverse_lazy('admin:products_color_changelist'),
                     },
                     {
-                        'title': _('Materials'),
+                        'title': _('Metals'),
                         'icon': 'Texture',
-                        'link': reverse_lazy('admin:products_material_changelist'),
+                        'link': reverse_lazy('admin:products_metal_changelist'),
                     },
                     {
                         'title': _('Stone'),
@@ -288,49 +239,14 @@ UNFOLD = {
                         'link': reverse_lazy('admin:products_stone_changelist'),
                     },
                     {
-                        'title': _('Stone by Color'),
-                        'icon': 'Diamond',
-                        'link': reverse_lazy('admin:products_stonebycolor_changelist'),
-                    },
-                ],
-            },
-            {
-                'title': _('Design'),
-                'separator': True,
-                'collapsible': True,
-                'items': [
-                    {
                         'title': _('Collections'),
                         'icon': 'Bookmarks',
                         'link': reverse_lazy('admin:products_collection_changelist'),
                     },
                     {
-                        'title': _('Reference'),
-                        'icon': 'Topic',
-                        'link': reverse_lazy('admin:products_reference_changelist'),
-                    },
-                ],
-            },
-            {
-                'title': _('Sizes'),
-                'icon': 'people',
-                'separator': True,
-                'collapsible': True,
-                'items': [
-                    {
-                        'title': _('Fingerwear'),
+                        'title': _('Size'),
                         'icon': 'crop',
-                        'link': reverse_lazy('admin:products_fingerwearsize_changelist'),
-                    },
-                    {
-                        'title': _('Neckwear'),
-                        'icon': 'crop',
-                        'link': reverse_lazy('admin:products_neckwearsize_changelist'),
-                    },
-                    {
-                        'title': _('Wristwear'),
-                        'icon': 'crop',
-                        'link': reverse_lazy('admin:products_wristwearsize_changelist'),
+                        'link': reverse_lazy('admin:products_size_changelist'),
                     },
                 ],
             },

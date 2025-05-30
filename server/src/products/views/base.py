@@ -4,8 +4,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView
-
-from src.products.serializers.product_list import ProductListSerializer
+from src.products.serializers import ProductListSerializer
 
 
 class ProductPagination(PageNumberPagination):
@@ -18,72 +17,89 @@ class BaseProductListView(ListAPIView):
     pagination_class = ProductPagination
     model = None
 
-    def _get_filters(self):
-        color_ids = self.request.query_params.getlist('color_ids')
-        stone_ids = self.request.query_params.getlist('stone_ids')
-        material_ids = self.request.query_params.getlist('material_ids')
-        collection_ids = self.request.query_params.getlist('collection_ids')
-        category_ids = self.request.query_params.getlist('category_ids')
-        min_price = self.request.query_params.getlist('min_price')
-        max_price = self.request.query_params.getlist('max_price')
-
-        filters = Q()
-        if color_ids:
-            filters &= Q(stone_by_color__color_id__in=color_ids)
-        if stone_ids:
-            filters &= Q(stone_by_color__stone_id__in=stone_ids)
-        if material_ids:
-            filters &= Q(material__id__in=material_ids)
-        if collection_ids:
-            filters &= Q(collection__id__in=collection_ids)
-        if category_ids:
-            filters &= Q(reference__id__in=category_ids)
-        if min_price:
-            filters &= Q(price__gt=Decimal(min_price[0]))
-        if max_price:
-            filters &= Q(price__lt=Decimal(max_price[0]))
-
-        return filters
-
-    def _get_products_data(self):
-        filters = self._get_filters()
-        if not self.model and not filters:
-            return {
-                'products': [],
-                'colors_by_count': {},
-                'stones_by_count': {},
-                'collections_by_count': {},
-                'categories_by_count': {},
-                'materials_by_count': {},
-                'price_ranges': {},
-            }
-
-        return self.model.objects.get_products(filters)
-
     def list(self, request, *args, **kwargs):
         data = self._get_products_data()
+
         page = self.paginate_queryset(data['products'])
 
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             response = self.get_paginated_response(serializer.data)
             response.data.update({
-                'colors_by_count': data['colors_by_count'],
-                'stones_by_count': data['stones_by_count'],
-                'materials_by_count': data['materials_by_count'],
-                'collections_by_count': data['collections_by_count'],
-                'categories_by_count': data['categories_by_count'],
-                'price_ranges': data['price_ranges'],
+                'colors': data['colors'],
+                'stones': data['stones'],
+                'materials': data['materials'],
+                'collections': data['collections'],
+                'prices': data['prices'],
             })
             return response
 
         serializer = self.get_serializer(data['products'], many=True)
         return Response({
             'products': serializer.data,
-            'colors_by_count': data['colors_by_count'],
-            'stones_by_count': data['stones_by_count'],
-            'materials_by_count': data['materials_by_count'],
-            'collections_by_count': data['collections_by_count'],
-            'categories_by_count': data['categories_by_count'],
-            'price_ranges': data['price_ranges'],
+            'colors': data['colors'],
+            'stones': data['stones'],
+            'materials': data['materials'],
+            'collections': data['collections'],
+            'prices': data['prices'],
         })
+
+    def _get_products_data(self):
+        filters = self._get_filters()
+        if not self.model and not filters:
+            return {
+                'products': [],
+                'colors': {},
+                'stones': {},
+                'collections': {},
+                'materials': {},
+                'prices': {},
+            }
+
+        raw_products = self.model.objects.get_product_list(filters)
+
+        colors_by_count = self.model.objects.get_colors_by_count(raw_products)
+        stones_by_count = self.model.objects.get_stones_by_count(raw_products)
+        metals_by_count = self.model.objects.get_metals_by_count(raw_products)
+        collections_by_count = self.model.objects.get_collections_by_count(
+            raw_products)
+        price_ranges_by_count = self.model.objects.get_price_ranges_by_count(
+            raw_products)
+
+        return {
+            'products': raw_products,
+            'colors': colors_by_count,
+            'stones': stones_by_count,
+            'collections': collections_by_count,
+            'materials': metals_by_count,
+            'prices': price_ranges_by_count,
+        }
+
+    def _get_filters(self):
+        colors = self.request.query_params.getlist('colors')
+        stones = self.request.query_params.getlist('stones')
+        metals = self.request.query_params.getlist('metals')
+        collections = self.request.query_params.getlist('collections')
+        prices = self.request.query_params.getlist('prices')
+
+        filters = Q()
+        if colors:
+            filters &= Q(stone_by_color__color_id__in=colors)
+        if stones:
+            filters &= Q(stone_by_color__stone_id__in=stones)
+        if metals:
+            filters &= Q(metal__id__in=metals)
+        if collections:
+            filters &= Q(collection__id__in=collections)
+        if prices:
+            price_q = Q()
+            for range_str in prices:
+                try:
+                    min_price, max_price = map(
+                        lambda p: Decimal(p.strip()), range_str.split('-'))
+                    price_q |= Q(price__gte=min_price, price__lte=max_price)
+                except (ValueError, Decimal.InvalidOperation):
+                    continue
+            filters &= price_q
+
+        return filters

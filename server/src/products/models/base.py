@@ -1,10 +1,9 @@
 from django.db import models
 
+from src.products.managers import ProductManager
+
 
 class Product(models.Model):
-    PRICE_MAX_DIGITS = 7
-    PRICE_DECIMAL_PLACES = 2
-
     class Meta:
         abstract = True
 
@@ -22,11 +21,6 @@ class Product(models.Model):
         }
     )
 
-    price = models.DecimalField(
-        max_digits=PRICE_MAX_DIGITS,
-        decimal_places=PRICE_DECIMAL_PLACES,
-    )
-
     created_at = models.DateTimeField(
         auto_now_add=True,
     )
@@ -36,47 +30,22 @@ class Product(models.Model):
         on_delete=models.CASCADE,
     )
 
-    material = models.ForeignKey(
-        to='products.Material',
+    color = models.ForeignKey(
+        to='products.Color',
         on_delete=models.CASCADE,
     )
 
-    reference = models.ForeignKey(
-        to='products.Reference',
+    metal = models.ForeignKey(
+        to='products.Metal',
         on_delete=models.CASCADE,
     )
 
-    stone_by_color = models.ForeignKey(
-        to='products.StoneByColor',
+    stone = models.ForeignKey(
+        to='products.Stone',
         on_delete=models.CASCADE,
     )
 
-    def __str__(self):
-        return f'{self.collection} {self.reference}'
-
-
-class Inventory(models.Model):
-    class Meta:
-        abstract = True
-
-    quantity = models.PositiveIntegerField()
+    objects = ProductManager()
 
     def __str__(self):
-        return f'Quantity: {self.quantity}'
-
-
-class Size(models.Model):
-    class Meta:
-        abstract = True
-        ordering = ['id']
-
-    SIZE_MAX_DIGITS = 5
-    SIZE_DECIMAL_PLACES = 2
-
-    name = models.DecimalField(
-        max_digits=SIZE_MAX_DIGITS,
-        decimal_places=SIZE_DECIMAL_PLACES,
-    )
-
-    def __str__(self):
-        return f'Size: {self.name}'
+        return f'{self.collection} {self.__class__.__name__}'

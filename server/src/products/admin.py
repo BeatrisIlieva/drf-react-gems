@@ -1,29 +1,19 @@
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from django.contrib import admin
+from django.contrib.contenttypes.admin import GenericTabularInline
 
-from src.products.models.relationships.collection import Collection
-from src.products.models.relationships.material import Material
-from src.products.models.relationships.reference import Reference
-from src.products.models.relationships.stone_by_color import StoneByColor
-from src.products.models.relationships.color import Color
-from src.products.models.relationships.stone import Stone
-
-from src.products.models.earwear import Earwear, EarwearInventory
-from src.products.models.fingerwear import (
+from src.products.models import (
+    Earwear,
     Fingerwear,
-    FingerwearInventory,
-    FingerwearSize
-)
-from src.products.models.wristwear import (
-    Wristwear,
-    WristwearInventory,
-    WristwearSize
-)
-from src.products.models.neckwear import (
     Neckwear,
-    NeckwearSize,
-    NeckwearInventory
+    Wristwear,
+    Collection,
+    Color,
+    Metal,
+    Stone,
+    Size,
+    Inventory
 )
 
 
@@ -37,18 +27,8 @@ class ColorAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Material)
-class MaterialAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(Reference)
-class ReferenceAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(StoneByColor)
-class StoneByColorAdmin(admin.ModelAdmin):
+@admin.register(Metal)
+class MetalAdmin(admin.ModelAdmin):
     pass
 
 
@@ -57,18 +37,13 @@ class StoneAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(FingerwearSize)
-class FingerwearSizeAdmin(admin.ModelAdmin):
+@admin.register(Size)
+class SizeAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(WristwearSize)
-class WristwearSizeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(NeckwearSize)
-class NeckwearSizeSizeAdmin(admin.ModelAdmin):
+@admin.register(Inventory)
+class InventoryAdmin(admin.ModelAdmin):
     pass
 
 
@@ -80,7 +55,7 @@ class StoneListFilter(admin.SimpleListFilter):
         return [(s.id, s.name) for s in Stone.objects.all()]
 
     def queryset(self, request, queryset):
-        return queryset.filter(stone_by_color__stone__id=self.value()) if self.value() else queryset
+        return queryset.filter(stone__id=self.value()) if self.value() else queryset
 
 
 class ColorListFilter(admin.SimpleListFilter):
@@ -91,34 +66,14 @@ class ColorListFilter(admin.SimpleListFilter):
         return [(c.id, c.name) for c in Color.objects.all()]
 
     def queryset(self, request, queryset):
-        return queryset.filter(stone_by_color__color__id=self.value()) if self.value() else queryset
+        return queryset.filter(color__id=self.value()) if self.value() else queryset
 
 
-class EarwearInventoryInline(admin.TabularInline):
-    model = EarwearInventory
+class InventoryInline(GenericTabularInline):
+    model = Inventory
+    ct_field = "content_type"
+    ct_fk_field = "object_id"
     min_num = 1
-    max_num = 1
-    validate_min = True
-
-
-class NeckwearInventoryInline(admin.TabularInline):
-    model = NeckwearInventory
-    min_num = 1
-    max_num = 1
-    validate_min = True
-
-
-class FingerInventoryInline(admin.TabularInline):
-    model = FingerwearInventory
-    min_num = 1
-    max_num = 1
-    validate_min = True
-
-
-class WristInventoryInline(admin.TabularInline):
-    model = WristwearInventory
-    min_num = 1
-    max_num = 1
     validate_min = True
 
 
@@ -127,7 +82,6 @@ class BaseProductAdmin(admin.ModelAdmin):
         'first_picture',
         'second_picture',
         'collection',
-        'reference',
         'created_at',
     )
 
@@ -135,23 +89,20 @@ class BaseProductAdmin(admin.ModelAdmin):
         StoneListFilter,
         ColorListFilter,
         'collection',
-        'reference',
-        'material'
+        'metal'
     )
 
     ordering = (
+        'created_at',
         'collection',
-        'reference',
-        'material',
-        'created_at'
+        'metal',
     )
 
     search_fields = (
         'collection__name',
-        'reference__name',
-        'material__name',
-        'stone_by_color__color__name',
-        'stone_by_color__stone__name',
+        'metal__name',
+        'color__name',
+        'stone__name',
     )
 
     fieldsets = (
@@ -166,16 +117,11 @@ class BaseProductAdmin(admin.ModelAdmin):
          {
              'fields': (
                  'collection',
-                 'reference',
-                 'material',
-                 'stone_by_color'
+                 'metal',
+                 'stone',
+                 'color',
              )
          }),
-        ('Price', {
-            'fields': (
-                'price',
-            )
-        })
     )
 
     def first_picture(self, obj):
@@ -189,21 +135,21 @@ class BaseProductAdmin(admin.ModelAdmin):
         )
 
 
+@admin.register(Earwear)
+class EarwearAdmin(BaseProductAdmin):
+    inlines = [InventoryInline]
+
+
 @admin.register(Neckwear)
 class NeckwearAdmin(BaseProductAdmin):
-    inlines = [NeckwearInventoryInline]
-
-
-@admin.register(Fingerwear)
-class FingerwearAdmin(BaseProductAdmin):
-    inlines = [FingerInventoryInline]
+    inlines = [InventoryInline]
 
 
 @admin.register(Wristwear)
 class WristwearAdmin(BaseProductAdmin):
-    inlines = [WristInventoryInline]
+    inlines = [InventoryInline]
 
 
-@admin.register(Earwear)
-class EarwearAdmin(BaseProductAdmin):
-    inlines = [EarwearInventoryInline]
+@admin.register(Fingerwear)
+class FingerwearAdmin(BaseProductAdmin):
+    inlines = [InventoryInline]

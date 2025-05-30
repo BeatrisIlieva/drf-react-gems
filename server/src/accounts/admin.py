@@ -9,7 +9,7 @@ UserModel = get_user_model()
 @admin.register(UserModel)
 class UserCredentialAdmin(UserAdmin):
     model = UserModel
-    list_display = ('email', 'is_staff', 'is_superuser')
+    list_display = ('pk', 'email', 'is_staff', 'is_superuser')
     search_fields = ('email',)
     ordering = ('pk',)
 

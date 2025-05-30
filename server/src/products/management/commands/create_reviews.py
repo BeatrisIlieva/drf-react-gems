@@ -8,11 +8,13 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
 from faker import Faker
 
-from src.products.models.earwear import Earwear
-from src.products.models.fingerwear import Fingerwear
-from src.products.models.neckwear import Neckwear
-from src.products.models.review import Review
-from src.products.models.wristwear import Wristwear
+from src.products.models import (
+    Earwear,
+    Fingerwear,
+    Neckwear,
+    Review,
+    Wristwear
+)
 
 
 UserModel = get_user_model()

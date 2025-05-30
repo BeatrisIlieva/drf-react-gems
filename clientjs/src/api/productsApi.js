@@ -35,13 +35,20 @@ export const useProductList = () => {
             if (categoryIds) {
                 categoryIds.forEach((id) => params.append('category_ids', id));
             }
+            // if (prices) {
+            //     prices.forEach((price) => {
+            //         const prices = price.split(' - ');
+            //         const [min_price, max_price] = prices.map((x) => x.slice(1));
+
+            //         params.append('min_price', min_price);
+            //         params.append('max_price', max_price);
+            //     });
+            // }
+
             if (prices) {
                 prices.forEach((price) => {
-                    const prices = price.split(' - ');
-                    const [min_price, max_price] = prices.map((x) => x.slice(1));
-
-                    params.append('min_price', min_price);
-                    params.append('max_price', max_price);
+                    const [min_price, max_price] = price.split(' - ').map(p => p.slice(1));
+                    params.append('prices', `${min_price}-${max_price}`);
                 });
             }
 

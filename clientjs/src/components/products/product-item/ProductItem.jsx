@@ -43,8 +43,39 @@ export const ProductItem = () => {
                             <span>{`$${product.price}`}</span>
 
                             <RelatedProductsList />
+                            <h5 className={styles['sizes-title']}>Size</h5>
+                            <div className={styles['image-sizes']}>
 
-                            {categoryName !== 'earwear' && <SizeList />}
+                                <div className={styles['image-size-wrapper']}>
+                                    <div className={styles['size-thumbnail']}>
+                                        <span className={styles['size-title']}>
+                                            Small
+                                        </span>
+                                        <img src={product.first_image} />
+                                    <span className={styles['size-price']}>{`$${product.price}`}</span>
+                                    </div>
+                                </div>
+                                <div className={styles['image-size-wrapper']}>
+                                    <div className={styles['size-thumbnail']}>
+                                        <span className={styles['size-title']}>
+                                            Medium
+                                        </span>
+                                        <img src={product.first_image} />
+                                    <span className={styles['size-price']}>{`$${product.price}`}</span>
+                                    </div>
+                                </div>
+                                <div className={styles['image-size-wrapper']}>
+                                    <div className={styles['size-thumbnail']}>
+                                        <span className={styles['size-title']}>
+                                            Large
+                                        </span>
+                                        <img src={product.first_image} />
+                                    <span className={styles['size-price']}>$16,365</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* {categoryName !== 'earwear' && <SizeList />} */}
 
                             <UserAction />
 
