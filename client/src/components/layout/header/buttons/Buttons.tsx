@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 
 import { Icon } from '../../../common/icon/Icon';
 
-import styles from './Buttons.module.css';
+import styles from './Buttons.module.scss';
 
 export const Buttons = (): ReactElement => {
     return (

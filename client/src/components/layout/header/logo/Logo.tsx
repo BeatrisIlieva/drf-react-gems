@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import { Link } from 'react-router';
 
-import styles from './Logo.module.css';
+import styles from './Logo.module.scss';
 
 export const Logo = (): ReactElement => {
     return (

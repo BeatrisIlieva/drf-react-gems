@@ -1,0 +1,10 @@
+@use '../../../styles/variables' as vars;
+
+.header {
+    display: flex;
+    align-items: center;
+    padding-inline: vars.$layout-inline-padding;
+    font-size: 0.9em;
+    letter-spacing: 0.1em;
+    padding-block: 1.25em;
+}

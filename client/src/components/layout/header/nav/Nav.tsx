@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 
 import { linkTitles } from './linkTitles';
 
-import styles from './Nav.module.css';
+import styles from './Nav.module.scss';
 import { Link } from 'react-router';
 
 export const Nav = (): ReactElement => {

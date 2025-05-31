@@ -1,8 +1,10 @@
+@use '../../../../styles/variables' as vars;
+
 .logo {
     text-decoration: none;
     opacity: 0.8;
     font-weight: 500;
     margin-right: 4em;
-    color: var(--black);
+    color: vars.$black;
     font-size: 1.6em;
 }

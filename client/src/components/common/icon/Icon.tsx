@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 
 import { icons } from './icons';
 
-import styles from './Icon.module.css';
+import styles from './Icon.module.scss';
 
 type IconName = keyof typeof icons;
 
