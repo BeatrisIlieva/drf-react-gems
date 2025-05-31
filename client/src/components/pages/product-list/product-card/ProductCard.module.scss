@@ -1,0 +1,22 @@
+@use '../../../../styles/variables' as vars;
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    background: vars.$lightest-grey;
+
+    span {
+        align-self: flex-end !important;
+    }
+
+    .thumbnail {
+        display: flex;
+    }
+
+    footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
