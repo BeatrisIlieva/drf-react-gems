@@ -12,10 +12,10 @@ class ProductPagination(PageNumberPagination):
 
 
 class BaseProductListView(ListAPIView):
+    model = None
     serializer_class = ProductListSerializer
     permission_classes = [AllowAny]
     pagination_class = ProductPagination
-    model = None
 
     def list(self, request, *args, **kwargs):
         data = self._get_products_data()
@@ -28,7 +28,7 @@ class BaseProductListView(ListAPIView):
             response.data.update({
                 'colors': data['colors'],
                 'stones': data['stones'],
-                'materials': data['materials'],
+                'metals': data['metals'],
                 'collections': data['collections'],
                 'prices': data['prices'],
             })
@@ -39,7 +39,7 @@ class BaseProductListView(ListAPIView):
             'products': serializer.data,
             'colors': data['colors'],
             'stones': data['stones'],
-            'materials': data['materials'],
+            'metals': data['metals'],
             'collections': data['collections'],
             'prices': data['prices'],
         })
@@ -52,7 +52,7 @@ class BaseProductListView(ListAPIView):
                 'colors': {},
                 'stones': {},
                 'collections': {},
-                'materials': {},
+                'metals': {},
                 'prices': {},
             }
 
@@ -71,7 +71,7 @@ class BaseProductListView(ListAPIView):
             'colors': colors_by_count,
             'stones': stones_by_count,
             'collections': collections_by_count,
-            'materials': metals_by_count,
+            'metals': metals_by_count,
             'prices': price_ranges_by_count,
         }
 

@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 
-import { Icon } from '../../../common/icon/Icon';
+import { Icon } from '../../../reusable/icon/Icon';
 
 import styles from './Buttons.module.scss';
 

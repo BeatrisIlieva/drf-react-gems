@@ -11,7 +11,7 @@ export const Nav = (): ReactElement => {
             <ul>
                 {linkTitles.map((title: string) => (
                     <li key={title}>
-                        <Link to={`products/${title}`}>{title}</Link>
+                        <Link to={`products/${title.toLowerCase()}`}>{title}</Link>
                     </li>
                 ))}
             </ul>

@@ -29,10 +29,10 @@ class ProductManager(models.Manager):
         return raw_products
 
     def get_colors_by_count(self, raw_products):
-        return self._get_entity_by_count(raw_products, 'color')
+        return self._get_entity_by_count(raw_products, 'color', extra_fields=['hex_code'])
 
     def get_stones_by_count(self, raw_products):
-        return self._get_entity_by_count(raw_products, 'stone')
+        return self._get_entity_by_count(raw_products, 'stone', extra_fields=['image'])
 
     def get_metals_by_count(self, raw_products):
         return self._get_entity_by_count(raw_products, 'metal')
@@ -120,9 +120,13 @@ class ProductManager(models.Manager):
             )
         )
 
-    def _get_entity_by_count(self, qs, entity):
+    def _get_entity_by_count(self, qs, entity, extra_fields=None):
+        values_fields = [f'{entity}__name', f'{entity}__id']
+        if extra_fields:
+            values_fields.extend(
+                [f'{entity}__{field}' for field in extra_fields])
         return (
-            qs.values(f'{entity}__name', f'{entity}__id')
+            qs.values(*values_fields)
             .annotate(**{f'{entity}_count': Count('id', distinct=True)})
             .order_by(f'-{entity}_count')
         )
