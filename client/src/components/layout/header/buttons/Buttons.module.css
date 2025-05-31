@@ -1,0 +1,71 @@
+.buttons {
+    display: flex;
+    gap: 1.15em;
+    align-items: center;
+}
+
+.buttons li {
+    display: flex;
+    gap: 0.75em;
+    cursor: pointer;
+}
+
+.buttons li:nth-child(1) {
+    margin-right: 0.75em;
+}
+
+.buttons li:nth-child(1) span {
+    text-transform: uppercase;
+    opacity: 0.6;
+    font-weight: 500;
+    transition: opacity 0.3s ease-in-out;
+    color: var(--black);
+}
+
+.buttons li:nth-child(1) span:hover {
+    opacity: 1;
+}
+
+.buttons li:nth-child(2),
+.buttons li:nth-child(3),
+.buttons li:nth-child(4) {
+    position: relative;
+}
+
+.buttons li:nth-child(2) > span:nth-child(2),
+.buttons li:nth-child(3) > span:nth-child(2),
+.buttons li:nth-child(4) > span:nth-child(2) {
+    position: absolute;
+    background-color: var(--black);
+}
+
+.buttons li:nth-child(2) > span:nth-child(2) {
+    top: -0.15rem;
+    right: 0;
+    width: 0.33rem;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttons li:nth-child(3) > span:nth-child(2),
+.buttons li:nth-child(4) > span:nth-child(2) {
+    border-radius: 3.125rem;
+    color: var(--white);
+    height: 0.75rem;
+    left: 0.8125rem;
+    min-width: 0.75rem;
+    padding: 0 0.1875rem;
+    font-size: 0.6em;
+}
+
+.buttons li:nth-child(3) > span:nth-child(2) {
+    top: 0.75rem;
+}
+
+.buttons li:nth-child(4) > span:nth-child(2) {
+    top: 0.85rem;
+}

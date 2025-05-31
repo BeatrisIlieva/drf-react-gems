@@ -1,0 +1,8 @@
+.header {
+    display: flex;
+    align-items: center;
+    padding-inline: var(--layout-inline-padding);
+    font-size: 0.9em;
+    letter-spacing: 0.1em;
+    padding-block: 2em;
+}

@@ -1,0 +1,22 @@
+:root {
+  --white: #ffffff;
+  --lightest-grey: #f9f9f9;
+  --light-grey: #f5f5f5;
+  --medium-grey: #d6d6d6;
+  --dark-grey: #6b6b6b;
+  --black: #000000;
+  --green: #208402;
+  --red: #d82325;
+  --orange: #ffb885;
+  --pink: #e48cb0;
+  --medium-pink: #ecafc8;
+  --light-pink: #fae8ef;
+  --very-light-pink: #fcf4f7;
+  --violet: #cb9bf7;
+  --dark-violet: #a27cc6;
+  --very-light-violet: #cb9bf717;
+  --blue: #2334a3;
+  --gold: #efbf04;
+
+  --layout-inline-padding: 3dvw;
+}

@@ -1,0 +1,27 @@
+.main-nav {
+    margin-right: auto;
+}
+
+.main-nav > ul {
+    display: flex;
+    gap: 3em;
+}
+
+.main-nav > ul li a {
+    text-transform: uppercase;
+    opacity: 0.6;
+    font-weight: 500;
+    transition: opacity 0.3s ease-in-out;
+    color: var(--black);
+    text-decoration: none;
+}
+
+.main-nav > ul li a:hover {
+    opacity: 1;
+}
+
+@media (max-width: 1000px) {
+    .main-nav > ul {
+        display: none;
+    }
+}
