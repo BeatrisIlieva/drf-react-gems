@@ -23,11 +23,6 @@ export const ProductList = (): ReactElement => {
         fetchProducts();
     }, [fetchProducts]);
 
-    // if (loading) return <p>Loading products...</p>;
-    // if (error) return <p>Error: {error}</p>;
-
-    console.log(products);
-
     return (
         <section className={styles['product-list']}>
             <p>

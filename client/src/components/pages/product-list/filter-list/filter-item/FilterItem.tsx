@@ -8,9 +8,14 @@ import {
 import styles from './FilterItem.module.scss';
 import type { NormalizedFilterItem } from '../../../../../types/NormalizedFilter';
 import { Icon } from '../../../../reusable/icon/Icon';
+import { useProductListContext } from '../../../../../contexts/ProductListContext';
 
 interface FilterItemProps {
-    label: string;
+    label: | 'Collection'
+    | 'Color'
+    | 'Metal'
+    | 'Price'
+    | 'Stone';
     data: NormalizedFilterItem[];
 }
 
@@ -18,6 +23,9 @@ export const FilterItem = ({
     label,
     data
 }: FilterItemProps): ReactElement => {
+    console.log(data)
+    const { updateEntityCharacteristics } = useProductListContext();
+
     const [displayFilter, setDisplayFilter] =
         useState<boolean>(false);
 
@@ -25,7 +33,7 @@ export const FilterItem = ({
         setDisplayFilter(() => !displayFilter);
     };
 
-    const [height, setHeight] = useState<string | number>(0);
+    const [height, setHeight] = useState<string | number>(8000);
     const contentRef = useRef<HTMLUListElement | null>(null);
 
     useEffect(() => {
@@ -43,7 +51,7 @@ export const FilterItem = ({
             onClick={toggleDisplayFilter}
         >
             <div className={styles['label-wrapper']}>
-                <h5>{label}</h5>
+                <h6>{label}</h6>
 
                 <span
                     className={`${styles['toggle-icon']} ${displayFilter ? styles['rotated'] : ''}`}
@@ -68,7 +76,16 @@ export const FilterItem = ({
                 }}
             >
                 {data.map((item) => (
-                    <li key={item.id}>
+                    <li
+                        key={item.id}
+                        onClick={() => {
+                            if (label === 'Price') {
+                                updateEntityCharacteristics(label, item.id as string);
+                            } else {
+                                updateEntityCharacteristics(label, item.id as number);
+                            }
+                        }}
+                    >
                         <div className={styles['add-filter']}>
                             {item.hex && (
                                 <span
@@ -95,6 +112,7 @@ export const FilterItem = ({
                                 ({item.count})
                             </span>
                         </div>
+
                         <div className={styles['remove-filter']}>
                             <Icon
                                 name={'xMark'}

@@ -84,9 +84,9 @@ class BaseProductListView(ListAPIView):
 
         filters = Q()
         if colors:
-            filters &= Q(stone_by_color__color_id__in=colors)
+            filters &= Q(color_id__in=colors)
         if stones:
-            filters &= Q(stone_by_color__stone_id__in=stones)
+            filters &= Q(stone_id__in=stones)
         if metals:
             filters &= Q(metal__id__in=metals)
         if collections:
@@ -96,8 +96,10 @@ class BaseProductListView(ListAPIView):
             for range_str in prices:
                 try:
                     min_price, max_price = map(
-                        lambda p: Decimal(p.strip()), range_str.split('-'))
-                    price_q |= Q(price__gte=min_price, price__lte=max_price)
+                        lambda p: Decimal(p.strip()), range_str.split('-')
+                    )
+                    price_q |= Q(inventory__price__gte=min_price,
+                                 inventory__price__lte=max_price)
                 except (ValueError, Decimal.InvalidOperation):
                     continue
             filters &= price_q

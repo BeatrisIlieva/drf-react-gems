@@ -22,6 +22,15 @@ interface ProductListContextType {
     fetchProducts: () => Promise<void>;
     loadMoreHandler: () => void;
     loadMoreDisabled: boolean;
+    updateEntityCharacteristics: (
+        entityName:
+            | 'Collection'
+            | 'Color'
+            | 'Metal'
+            | 'Price'
+            | 'Stone',
+        entityId: number | string
+    ) => void;
 }
 
 // params: {
@@ -47,6 +56,7 @@ export const ProductListContext =
         fetchProducts: async () => {},
         loadMoreHandler: () => null,
         loadMoreDisabled: false,
+        updateEntityCharacteristics: () => null
     });
 
 export const useProductListContext = () => {

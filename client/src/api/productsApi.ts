@@ -8,11 +8,11 @@ const baseUrl = 'http://localhost:8000/products';
 interface GetProductsParams {
     categoryName: string;
     pageNumber?: number | null;
-    colorIds?: string[];
-    stoneIds?: string[];
-    materialIds?: string[];
-    collectionIds?: string[];
-    prices?: string[];
+    colorIds?: number[];
+    stoneIds?: number[];
+    metalIds?: number[];
+    collectionIds?: number[];
+    priceIds?: string[];
 }
 
 export const useProductList = () => {
@@ -24,27 +24,27 @@ export const useProductList = () => {
             pageNumber = null,
             colorIds = [],
             stoneIds = [],
-            materialIds = [],
+            metalIds = [],
             collectionIds = [],
-            prices = []
+            priceIds = []
         }: GetProductsParams) => {
             const params = new URLSearchParams();
 
             if (pageNumber) params.append('page', pageNumber.toString());
             if (colorIds) {
-                colorIds.forEach((id) => params.append('colors', id));
+                colorIds.forEach((id) => params.append('colors', id.toString()));
             }
             if (stoneIds) {
-                stoneIds.forEach((id) => params.append('stones', id));
+                stoneIds.forEach((id) => params.append('stones', id.toString()));
             }
-            if (materialIds) {
-                materialIds.forEach((id) => params.append('materials', id));
+            if (metalIds) {
+                metalIds.forEach((id) => params.append('materials', id.toString()));
             }
             if (collectionIds) {
-                collectionIds.forEach((id) => params.append('collections', id));
+                collectionIds.forEach((id) => params.append('collections', id.toString()));
             }
-            if (prices) {
-                prices.forEach((price) => {
+            if (priceIds) {
+                priceIds.forEach((price) => {
                     const [min_price, max_price] = price
                         .split(' - ')
                         .map((p) => p.slice(1));

@@ -33,6 +33,12 @@ export const ProductListProvider = ({ children }: Props) => {
     const [prices, setPrices] = useState<PriceRange[]>([]);
     const [stones, setStones] = useState<Stone[]>([]);
 
+    const [colorIds, setColorIds] = useState<number[]>([]);
+    const [stoneIds, setStoneIds] = useState<number[]>([]);
+    const [metalIds, setMetalIds] = useState<number[]>([]);
+    const [collectionIds, setCollectionIds] = useState<number[]>([]);
+    const [priceIds, setPriceIds] = useState<string[]>([]);
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -47,7 +53,12 @@ export const ProductListProvider = ({ children }: Props) => {
                 const response: ProductsResponse =
                     await getProductList({
                         categoryName,
-                        pageNumber: page
+                        pageNumber: page,
+                        colorIds,
+                        stoneIds,
+                        metalIds,
+                        collectionIds,
+                        priceIds
                     });
 
                 if (page > 1) {
@@ -74,7 +85,17 @@ export const ProductListProvider = ({ children }: Props) => {
                 setLoading(false);
             }
         }
-    }, [getProductList, page, categoryName]);
+    }, [
+        getProductList,
+        page,
+        categoryName,
+        colorIds,
+        setPrices,
+        collectionIds,
+        metalIds,
+        priceIds,
+        stoneIds
+    ]);
 
     const loadMoreHandler = (): void => {
         if (count <= products.length) {
@@ -85,6 +106,63 @@ export const ProductListProvider = ({ children }: Props) => {
         const nextPage = page + 1;
         setPage(nextPage);
     };
+
+    type EntityName =
+        | 'collection'
+        | 'color'
+        | 'metal'
+        | 'stone'
+        | 'price';
+
+    const entityMapper: Record<
+        EntityName,
+        (id: number | string) => void
+    > = {
+        collection: (id) =>
+            setCollectionIds((prev) =>
+                prev.includes(id as number)
+                    ? prev.filter((i) => i !== id)
+                    : [...prev, id as number]
+            ),
+        color: (id) =>
+            setColorIds((prev) =>
+                prev.includes(id as number)
+                    ? prev.filter((i) => i !== id)
+                    : [...prev, id as number]
+            ),
+        metal: (id) =>
+            setMetalIds((prev) =>
+                prev.includes(id as number)
+                    ? prev.filter((i) => i !== id)
+                    : [...prev, id as number]
+            ),
+        stone: (id) =>
+            setStoneIds((prev) =>
+                prev.includes(id as number)
+                    ? prev.filter((i) => i !== id)
+                    : [...prev, id as number]
+            ),
+        price: (id) =>
+            setPriceIds((prev) =>
+                prev.includes(id as string)
+                    ? prev.filter((i) => i !== id)
+                    : [...prev, id as string]
+            )
+    };
+
+    function updateEntityCharacteristics(
+        entityName:
+            | 'Collection'
+            | 'Color'
+            | 'Metal'
+            | 'Price'
+            | 'Stone',
+        entityId: number | string
+    ): void {
+        entityMapper[
+            entityName.toLowerCase() as keyof typeof entityMapper
+        ](entityId);
+    }
 
     useEffect(() => {
         if (products.length > 0 && count <= products.length) {
@@ -107,7 +185,8 @@ export const ProductListProvider = ({ children }: Props) => {
                 error,
                 fetchProducts,
                 loadMoreHandler,
-                loadMoreDisabled
+                loadMoreDisabled,
+                updateEntityCharacteristics
             }}
         >
             {children}

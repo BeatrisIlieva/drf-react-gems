@@ -23,7 +23,7 @@
         }
     }
 
-    h5 {
+    h6 {
         text-transform: uppercase;
         font-weight: 500;
         vertical-align: middle;
@@ -33,13 +33,18 @@
     .list {
         display: flex;
         flex-direction: column;
-        gap: 1.25em;
+        gap: 0.5em;
 
         li {
             display: flex;
             align-items: center;
-            padding-inline: 0.75em;
+            padding-block: 0.5em;
+            padding-inline: 1em;
             justify-content: space-between;
+
+            &:hover {
+                background: vars.$light-grey;
+            }
 
             .add-filter {
                 display: flex;
