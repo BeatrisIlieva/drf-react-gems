@@ -16,12 +16,13 @@ interface ProductListContextType {
     }) => Promise<void>;
 }
 
-export const ProductListContext = createContext<ProductListContextType>({
-    data: null,
-    loading: false,
-    error: null,
-    fetchProducts: async () => {}
-});
+export const ProductListContext =
+    createContext<ProductListContextType>({
+        data: null,
+        loading: false,
+        error: null,
+        fetchProducts: async () => {}
+    });
 
 export const useProductListContext = () => {
     const data = useContext(ProductListContext);

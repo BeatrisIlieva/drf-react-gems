@@ -7,6 +7,9 @@ class ProductListSerializer(serializers.Serializer):
     first_image = serializers.CharField()
     second_image = serializers.CharField()
     is_sold_out = serializers.BooleanField()
+    color__name = serializers.CharField()
+    stone__name = serializers.CharField()
+    metal__name = serializers.CharField()
     min = serializers.DecimalField(
         max_digits=7,
         decimal_places=2

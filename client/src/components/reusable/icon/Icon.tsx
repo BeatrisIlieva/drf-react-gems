@@ -6,15 +6,15 @@ type IconName = keyof typeof icons;
 
 type Props = {
     name: IconName;
-    width?: number;
+    fontSize?: number;
     isSubtle?: boolean;
 };
 
-export const Icon = ({ name, width, isSubtle }: Props): ReactElement => {
+export const Icon = ({ name, fontSize, isSubtle }: Props): ReactElement => {
     return (
         <span
             style={{
-                fontSize: width ? `${width}em` : `${1.1}em`,
+                fontSize: fontSize ? `${fontSize}em` : `${1.1}em`,
                 opacity: isSubtle ? 0.6 : 1
             }}
         >

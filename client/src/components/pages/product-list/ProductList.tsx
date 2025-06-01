@@ -1,14 +1,15 @@
 import { useEffect, type ReactElement } from 'react';
 import { useProductListContext } from '../../../contexts/ProductListContext';
-import { useParams } from 'react-router';
 
 import styles from './ProductList.module.scss';
 import { ProductCard } from './product-card/ProductCard';
+import { useCategoryName } from '../../../hooks/useCategoryName';
 
 export const ProductList = (): ReactElement => {
     const { data, loading, error, fetchProducts } =
         useProductListContext();
-    const { categoryName } = useParams();
+    const { categoryName, categoryNameCapitalizedPlural } =
+        useCategoryName();
 
     useEffect(() => {
         if (categoryName) {
@@ -26,9 +27,9 @@ export const ProductList = (): ReactElement => {
             <p>
                 <span>Home</span>
                 <span>/</span>
-                <span>{categoryName}</span>
+                <span>{categoryNameCapitalizedPlural}</span>
             </p>
-            <h1>{categoryName}</h1>
+            <h1>{categoryNameCapitalizedPlural}</h1>
             <div>
                 <h5>images wrapper</h5>
             </div>
@@ -43,16 +44,11 @@ export const ProductList = (): ReactElement => {
                     <h3>filters</h3>
                 </div>
 
-                <div className={styles['products']}>
+                <ul className={styles['products']}>
                     {data?.results.map((product) => (
-                        <ul>
-                            <ProductCard
-                                key={product.id}
-                                {...product}
-                            />
-                        </ul>
+                        <ProductCard key={product.id} {...product} />
                     ))}
-                </div>
+                </ul>
             </div>
         </section>
     );

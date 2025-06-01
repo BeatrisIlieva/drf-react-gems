@@ -4,6 +4,9 @@ export interface Product {
     firstImage: string;
     secondImage: string;
     isSoldOut: boolean;
+    colorName: string;
+    stoneName: string;
+    metalName: string;
     min: string;
     max: string;
 }

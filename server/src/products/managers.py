@@ -103,6 +103,9 @@ class ProductManager(models.Manager):
                 'collection__name',
                 'first_image',
                 'second_image',
+                'color__name',
+                'stone__name',
+                'metal__name'
             )
             .annotate(
                 total_quantity=Sum('inventory__quantity'),

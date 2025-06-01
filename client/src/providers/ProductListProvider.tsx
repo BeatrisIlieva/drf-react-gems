@@ -24,6 +24,7 @@ export const ProductListProvider = ({ children }: Props) => {
 
             try {
                 const response = await getProductList(params);
+
                 setData(response);
             } catch (err) {
                 if (err instanceof Error) {

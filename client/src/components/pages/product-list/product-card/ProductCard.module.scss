@@ -1,22 +1,71 @@
 @use '../../../../styles/variables' as vars;
 
-.product-card {
+.product-card,
+.wrapper {
     display: flex;
     flex-direction: column;
-    padding: 1em;
-    background: vars.$lightest-grey;
+}
 
-    span {
-        align-self: flex-end !important;
+.product-card {
+    cursor: pointer;
+
+    .wrapper {
+        background: vars.$lightest-grey;
+        padding: 1em;
+
+        span {
+            align-self: flex-end;
+        }
+
+        .thumbnail {
+            display: flex;
+
+            width: 100%;
+            height: auto;
+
+            img {
+                position: relative;
+                display: inline-block;
+
+                &.slide-in-left {
+                    animation: slideInLeft 0.8s forwards;
+                }
+
+                &.slide-in-right {
+                    animation: slideInRight 0.8s forwards;
+                }
+            }
+
+            @keyframes slideInLeft {
+                from {
+                    transform: translateX(-1rem);
+                }
+                to {
+                    transform: translateX(0);
+                }
+            }
+
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(1rem);
+                }
+                to {
+                    transform: translateX(0);
+                }
+            }
+        }
+
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
     }
 
-    .thumbnail {
+    .product-info {
         display: flex;
-    }
-
-    footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column;
+        gap: 0.05em;
+        padding-top: 0.5em;
     }
 }
