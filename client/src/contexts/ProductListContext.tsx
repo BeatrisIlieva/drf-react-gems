@@ -19,16 +19,18 @@ interface ProductListContextType {
     stones: Stone[];
     loading: boolean;
     error: string | null;
-    fetchProducts: (params: {
-        categoryName: string;
-        pageNumber?: string | null;
-        colorIds?: string[];
-        stoneIds?: string[];
-        materialIds?: string[];
-        collectionIds?: string[];
-        prices?: string[];
-    }) => Promise<void>;
+    fetchProducts: () => Promise<void>;
+    loadMoreHandler: () => void;
+    loadMoreDisabled: boolean;
 }
+
+// params: {
+//     colorIds?: string[];
+//     stoneIds?: string[];
+//     materialIds?: string[];
+//     collectionIds?: string[];
+//     prices?: string[];
+// }
 
 export const ProductListContext =
     createContext<ProductListContextType>({
@@ -42,7 +44,9 @@ export const ProductListContext =
         stones: [],
         loading: false,
         error: null,
-        fetchProducts: async () => {}
+        fetchProducts: async () => {},
+        loadMoreHandler: () => null,
+        loadMoreDisabled: false,
     });
 
 export const useProductListContext = () => {

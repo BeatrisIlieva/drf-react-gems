@@ -56,7 +56,7 @@ export interface ProductsResponse {
 
 export interface FetchProductsParams {
     categoryName: string;
-    pageNumber?: string | null;
+    pageNumber?: number | null;
     colorIds?: string[];
     stoneIds?: string[];
     materialIds?: string[];

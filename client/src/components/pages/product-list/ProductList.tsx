@@ -5,21 +5,26 @@ import styles from './ProductList.module.scss';
 import { ProductCard } from './product-card/ProductCard';
 import { useCategoryName } from '../../../hooks/useCategoryName';
 import { FilterList } from './filter-list/FilterList';
+import { Button } from '../../reusable/button/Button';
 
 export const ProductList = (): ReactElement => {
-    const { products, loading, error, fetchProducts } =
-        useProductListContext();
-    const { categoryName, categoryNameCapitalizedPlural } =
-        useCategoryName();
+    const {
+        products,
+        loading,
+        error,
+        fetchProducts,
+        loadMoreHandler,
+        loadMoreDisabled
+    } = useProductListContext();
+
+    const { categoryNameCapitalizedPlural } = useCategoryName();
 
     useEffect(() => {
-        if (categoryName) {
-            fetchProducts({ categoryName, pageNumber: '1' });
-        }
-    }, [fetchProducts, categoryName]);
+        fetchProducts();
+    }, [fetchProducts]);
 
-    if (loading) return <p>Loading products...</p>;
-    if (error) return <p>Error: {error}</p>;
+    // if (loading) return <p>Loading products...</p>;
+    // if (error) return <p>Error: {error}</p>;
 
     console.log(products);
 
@@ -40,14 +45,27 @@ export const ProductList = (): ReactElement => {
                     <li>sort by</li>
                 </ul>
             </nav>
-            <div className={styles['products-wrapper']}>
+            <div className={styles['wrapper-products']}>
                 <FilterList />
 
-                <ul className={styles['products']}>
-                    {products?.map((product) => (
-                        <ProductCard key={product.id} {...product} />
-                    ))}
-                </ul>
+                <div className={styles['wrapper-inner']}>
+                    <ul className={styles['products']}>
+                        {products?.map((product) => (
+                            <ProductCard
+                                key={product.id}
+                                {...product}
+                            />
+                        ))}
+                    </ul>
+                    {!loadMoreDisabled && products.length > 0 && (
+                        <Button
+                            callbackHandler={loadMoreHandler}
+                            title={'Load More'}
+                            color={'white'}
+                            disabled={loadMoreDisabled}
+                        />
+                    )}
+                </div>
             </div>
         </section>
     );

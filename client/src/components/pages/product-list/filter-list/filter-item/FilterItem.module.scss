@@ -4,6 +4,7 @@
     padding-block: 1em;
     padding-left: 0.15em;
     border-top: 0.1em solid vars.$medium-grey;
+    cursor: pointer;
 
     &:last-of-type {
         border-bottom: 0.1em solid vars.$medium-grey;
@@ -15,7 +16,7 @@
         align-items: center;
 
         .toggle-icon {
-            transition: transform 0.3s ease;
+            transition: transform 0.5s ease;
             &.rotated {
                 transform: rotate(180deg);
             }

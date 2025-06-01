@@ -51,7 +51,7 @@ export const FilterItem = ({
                     <Icon
                         name={displayFilter ? 'arrowUp' : 'arrowDown'}
                         isSubtle={true}
-                        fontSize={0.7}
+                        fontSize={0.6}
                     />
                 </span>
             </div>

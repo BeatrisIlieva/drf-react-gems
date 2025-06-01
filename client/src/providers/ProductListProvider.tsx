@@ -1,4 +1,9 @@
-import { useCallback, useState, type ReactNode } from 'react';
+import {
+    useCallback,
+    useEffect,
+    useState,
+    type ReactNode
+} from 'react';
 import { useProductList } from '../api/productsApi';
 import {
     type Collection,
@@ -7,16 +12,17 @@ import {
     type PriceRange,
     type Product,
     type Stone,
-    type FetchProductsParams,
     type ProductsResponse
 } from '../types/ProductList';
 import { ProductListContext } from '../contexts/ProductListContext';
+import { useCategoryName } from '../hooks/useCategoryName';
 
 interface Props {
     children: ReactNode;
 }
 
 export const ProductListProvider = ({ children }: Props) => {
+    const { categoryName } = useCategoryName();
     const { getProductList } = useProductList();
     const [products, setProducts] = useState<Product[]>([]);
     const [collections, setCollections] = useState<Collection[]>([]);
@@ -30,16 +36,28 @@ export const ProductListProvider = ({ children }: Props) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const fetchProducts = useCallback(
-        async (params: FetchProductsParams) => {
-            setLoading(true);
-            setError(null);
+    const [loadMoreDisabled, setLoadMoreDisabled] =
+        useState<boolean>(false);
 
+    const fetchProducts = useCallback(async () => {
+        setLoading(true);
+        setError(null);
+        if (categoryName) {
             try {
                 const response: ProductsResponse =
-                    await getProductList(params);
+                    await getProductList({
+                        categoryName,
+                        pageNumber: page
+                    });
 
-                setProducts(response.results);
+                if (page > 1) {
+                    setProducts((prev) => [
+                        ...prev,
+                        ...response.results
+                    ]);
+                } else {
+                    setProducts(response.results);
+                }
                 setCollections(response.collections);
                 setColors(response.colors);
                 setCount(response.count);
@@ -55,9 +73,24 @@ export const ProductListProvider = ({ children }: Props) => {
             } finally {
                 setLoading(false);
             }
-        },
-        [getProductList]
-    );
+        }
+    }, [getProductList, page, categoryName]);
+
+    const loadMoreHandler = (): void => {
+        if (count <= products.length) {
+            setLoadMoreDisabled(true);
+            return;
+        }
+
+        const nextPage = page + 1;
+        setPage(nextPage);
+    };
+
+    useEffect(() => {
+        if (products.length > 0 && count <= products.length) {
+            setLoadMoreDisabled(true);
+        }
+    }, [count, products.length]);
 
     return (
         <ProductListContext.Provider
@@ -72,7 +105,9 @@ export const ProductListProvider = ({ children }: Props) => {
                 stones,
                 loading,
                 error,
-                fetchProducts
+                fetchProducts,
+                loadMoreHandler,
+                loadMoreDisabled
             }}
         >
             {children}

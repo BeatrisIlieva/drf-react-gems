@@ -7,7 +7,7 @@ const baseUrl = 'http://localhost:8000/products';
 
 interface GetProductsParams {
     categoryName: string;
-    pageNumber?: string | null;
+    pageNumber?: number | null;
     colorIds?: string[];
     stoneIds?: string[];
     materialIds?: string[];
@@ -30,7 +30,7 @@ export const useProductList = () => {
         }: GetProductsParams) => {
             const params = new URLSearchParams();
 
-            if (pageNumber) params.append('page', pageNumber);
+            if (pageNumber) params.append('page', pageNumber.toString());
             if (colorIds) {
                 colorIds.forEach((id) => params.append('colors', id));
             }

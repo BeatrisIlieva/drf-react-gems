@@ -1,8 +1,7 @@
 @use '../../../styles/variables' as vars;
 
 .product-list {
-    flex: 1 1 85%;
-    padding-inline: vars.$layout-inline-padding;
+    padding: vars.$layout-inline-padding;
 
     nav ul {
         display: flex;
@@ -10,16 +9,27 @@
         margin-bottom: 2em;
     }
 
-    .products-wrapper {
+    .wrapper-products {
         display: flex;
         gap: 3em;
 
-        .products {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            column-gap: 0.75em;
-            row-gap: 2.5em;
-            width: 100%;
+        .wrapper-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 4em;
+            flex: 1 1 80%;
+
+            .products {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                column-gap: 0.75em;
+                row-gap: 2.5em;
+            }
+
+            & > button {
+                margin-inline: auto;
+                width: 20ch;
+            }
         }
     }
 }
