@@ -4,9 +4,10 @@ import { useProductListContext } from '../../../contexts/ProductListContext';
 import styles from './ProductList.module.scss';
 import { ProductCard } from './product-card/ProductCard';
 import { useCategoryName } from '../../../hooks/useCategoryName';
+import { FilterList } from './filter-list/FilterList';
 
 export const ProductList = (): ReactElement => {
-    const { data, loading, error, fetchProducts } =
+    const { products, loading, error, fetchProducts } =
         useProductListContext();
     const { categoryName, categoryNameCapitalizedPlural } =
         useCategoryName();
@@ -20,7 +21,7 @@ export const ProductList = (): ReactElement => {
     if (loading) return <p>Loading products...</p>;
     if (error) return <p>Error: {error}</p>;
 
-    console.log(data);
+    console.log(products);
 
     return (
         <section className={styles['product-list']}>
@@ -40,12 +41,10 @@ export const ProductList = (): ReactElement => {
                 </ul>
             </nav>
             <div className={styles['products-wrapper']}>
-                <div className={styles['filters']}>
-                    <h3>filters</h3>
-                </div>
+                <FilterList />
 
                 <ul className={styles['products']}>
-                    {data?.results.map((product) => (
+                    {products?.map((product) => (
                         <ProductCard key={product.id} {...product} />
                     ))}
                 </ul>

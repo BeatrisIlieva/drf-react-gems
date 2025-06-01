@@ -1,8 +1,14 @@
 import { useCallback, useState, type ReactNode } from 'react';
 import { useProductList } from '../api/productsApi';
-import type {
-    FetchProductsParams,
-    ProductsResponse
+import {
+    type Collection,
+    type Color,
+    type Metal,
+    type PriceRange,
+    type Product,
+    type Stone,
+    type FetchProductsParams,
+    type ProductsResponse
 } from '../types/ProductList';
 import { ProductListContext } from '../contexts/ProductListContext';
 
@@ -12,8 +18,15 @@ interface Props {
 
 export const ProductListProvider = ({ children }: Props) => {
     const { getProductList } = useProductList();
+    const [products, setProducts] = useState<Product[]>([]);
+    const [collections, setCollections] = useState<Collection[]>([]);
+    const [colors, setColors] = useState<Color[]>([]);
+    const [count, setCount] = useState<number>(0);
+    const [metals, setMetals] = useState<Metal[]>([]);
+    const [page, setPage] = useState<number>(1);
+    const [prices, setPrices] = useState<PriceRange[]>([]);
+    const [stones, setStones] = useState<Stone[]>([]);
 
-    const [data, setData] = useState<ProductsResponse | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -23,9 +36,16 @@ export const ProductListProvider = ({ children }: Props) => {
             setError(null);
 
             try {
-                const response = await getProductList(params);
+                const response: ProductsResponse =
+                    await getProductList(params);
 
-                setData(response);
+                setProducts(response.results);
+                setCollections(response.collections);
+                setColors(response.colors);
+                setCount(response.count);
+                setMetals(response.metals);
+                setPrices(response.prices);
+                setStones(response.stones);
             } catch (err) {
                 if (err instanceof Error) {
                     setError(err.message);
@@ -41,7 +61,19 @@ export const ProductListProvider = ({ children }: Props) => {
 
     return (
         <ProductListContext.Provider
-            value={{ data, loading, error, fetchProducts }}
+            value={{
+                products,
+                collections,
+                colors,
+                count,
+                metals,
+                page,
+                prices,
+                stones,
+                loading,
+                error,
+                fetchProducts
+            }}
         >
             {children}
         </ProductListContext.Provider>

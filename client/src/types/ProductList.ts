@@ -11,33 +11,33 @@ export interface Product {
     max: string;
 }
 
-interface Color {
+export interface Color {
     colorName: string;
     colorId: number;
     colorHexCode: string;
     colorCount: number;
 }
 
-interface Stone {
+export interface Stone {
     stoneName: string;
     stoneId: number;
     stoneImage: string;
     stoneCount: number;
 }
 
-interface Metal {
+export interface Metal {
     metalName: string;
     metalId: number;
     metalCount: number;
 }
 
-interface Collection {
+export interface Collection {
     collectionName: string;
     collectionId: number;
     collectionCount: number;
 }
 
-interface PriceRange {
+export interface PriceRange {
     priceRange: string;
     count: number;
 }

@@ -1,8 +1,22 @@
 import { createContext, useContext } from 'react';
-import type { ProductsResponse } from '../types/ProductList';
+import type {
+    Collection,
+    Color,
+    Metal,
+    PriceRange,
+    Product,
+    Stone
+} from '../types/ProductList';
 
 interface ProductListContextType {
-    data: ProductsResponse | null;
+    products: Product[];
+    collections: Collection[];
+    colors: Color[];
+    count: number;
+    metals: Metal[];
+    page: number;
+    prices: PriceRange[];
+    stones: Stone[];
     loading: boolean;
     error: string | null;
     fetchProducts: (params: {
@@ -18,7 +32,14 @@ interface ProductListContextType {
 
 export const ProductListContext =
     createContext<ProductListContextType>({
-        data: null,
+        products: [],
+        collections: [],
+        colors: [],
+        count: 0,
+        metals: [],
+        page: 1,
+        prices: [],
+        stones: [],
         loading: false,
         error: null,
         fetchProducts: async () => {}

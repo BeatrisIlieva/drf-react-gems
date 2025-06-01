@@ -1,0 +1,78 @@
+@use '../../../../../styles/variables' as vars;
+
+.filter-item {
+    padding-block: 1em;
+    padding-left: 0.15em;
+    border-top: 0.1em solid vars.$medium-grey;
+
+    &:last-of-type {
+        border-bottom: 0.1em solid vars.$medium-grey;
+    }
+
+    .label-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .toggle-icon {
+            transition: transform 0.3s ease;
+            &.rotated {
+                transform: rotate(180deg);
+            }
+        }
+    }
+
+    h5 {
+        text-transform: uppercase;
+        font-weight: 500;
+        vertical-align: middle;
+        margin-bottom: 0;
+    }
+
+    .list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25em;
+
+        li {
+            display: flex;
+            align-items: center;
+            padding-inline: 0.75em;
+            justify-content: space-between;
+
+            .add-filter {
+                display: flex;
+                gap: 0.25em;
+                cursor: pointer;
+
+                .count {
+                    opacity: 0.6;
+                }
+
+                .visualization {
+                    display: flex;
+                    width: 1.4em;
+                    height: 1.4em;
+                    aspect-ratio: 1/1;
+                    border-radius: 50%;
+                    -webkit-clip-path: view-box;
+                    clip-path: view-box;
+                    display: block;
+                    margin: 0;
+                    margin-right: 0.25em;
+
+                    &.white {
+                        border: 0.1em solid vars.$dark-grey;
+                        opacity: 0.7;
+                    }
+                }
+            }
+
+            .remove-filter {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+            }
+        }
+    }
+}
