@@ -42,6 +42,13 @@ export const ProductListProvider = ({ children }: Props) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    const [displayFilters, setDisplayFilters] =
+        useState<boolean>(false);
+
+    const toggleDisplayFilters = () => {
+        setDisplayFilters(() => !displayFilters);
+    };
+
     const [loadMoreDisabled, setLoadMoreDisabled] =
         useState<boolean>(false);
 
@@ -206,7 +213,9 @@ export const ProductListProvider = ({ children }: Props) => {
                 loadMoreHandler,
                 loadMoreDisabled,
                 updateEntityCharacteristics,
-                entityStateMapper
+                entityStateMapper,
+                toggleDisplayFilters,
+                displayFilters
             }}
         >
             {children}

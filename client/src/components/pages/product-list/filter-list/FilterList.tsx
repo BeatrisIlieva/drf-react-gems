@@ -7,8 +7,14 @@ import { normalizeData } from './utils';
 import styles from './FilterList.module.scss';
 
 export const FilterList = (): ReactElement => {
-    const { collections, colors, metals, prices, stones } =
-        useProductListContext();
+    const {
+        collections,
+        colors,
+        metals,
+        prices,
+        stones,
+        displayFilters
+    } = useProductListContext();
 
     const filters: NormalizedFilterGroup[] = normalizeData(
         metals,
@@ -19,7 +25,11 @@ export const FilterList = (): ReactElement => {
     );
 
     return (
-        <ul className={styles['filter-list']}>
+        <ul
+            className={`${styles['filter-list']} ${
+                displayFilters ? styles['visible'] : styles['hidden']
+            }`}
+        >
             {filters.map(({ key, label, data }) => (
                 <FilterItem key={key} label={label} data={data} />
             ))}

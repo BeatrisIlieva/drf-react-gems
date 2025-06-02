@@ -1,3 +1,18 @@
 .filter-list {
-    flex: 0 0 17%;
+    width: 17%;
+    transition:
+        width 0.6s ease,
+        opacity 0.6s ease,
+        transform 0.6s ease;
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+    overflow: hidden;
+}
+
+.filter-list.hidden {
+    width: 0;
+    opacity: 0;
+    transform: translateX(-1rem);
+    pointer-events: none;
 }

@@ -32,6 +32,8 @@ interface ProductListContextType {
         entityId: number | string
     ) => void;
     entityStateMapper: any;
+    toggleDisplayFilters: () => void;
+    displayFilters: boolean;
 }
 
 // params: {
@@ -59,6 +61,8 @@ export const ProductListContext =
         loadMoreDisabled: false,
         updateEntityCharacteristics: () => null,
         entityStateMapper: {},
+        toggleDisplayFilters: () => null,
+        displayFilters: false
     });
 
 export const useProductListContext = () => {
