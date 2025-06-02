@@ -69,12 +69,18 @@ export const ProductListProvider = ({ children }: Props) => {
                 } else {
                     setProducts(response.results);
                 }
+
                 setCollections(response.collections);
+
                 setColors(response.colors);
-                setCount(response.count);
+
                 setMetals(response.metals);
+
                 setPrices(response.prices);
+
                 setStones(response.stones);
+
+                setCount(response.count);
             } catch (err) {
                 if (err instanceof Error) {
                     setError(err.message);
@@ -159,16 +165,29 @@ export const ProductListProvider = ({ children }: Props) => {
             | 'Stone',
         entityId: number | string
     ): void {
+        setPage(1);
         entityMapper[
             entityName.toLowerCase() as keyof typeof entityMapper
         ](entityId);
     }
 
     useEffect(() => {
-        if (products.length > 0 && count <= products.length) {
-            setLoadMoreDisabled(true);
+        if (products.length > 0) {
+            if (count <= products.length) {
+                setLoadMoreDisabled(true);
+            } else {
+                setLoadMoreDisabled(false);
+            }
         }
-    }, [count, products.length]);
+    }, [count, products.length, page]);
+
+    const entityStateMapper = {
+        Color: colorIds,
+        Stone: stoneIds,
+        Metal: metalIds,
+        Collection: collectionIds,
+        Price: priceIds
+    };
 
     return (
         <ProductListContext.Provider
@@ -186,7 +205,8 @@ export const ProductListProvider = ({ children }: Props) => {
                 fetchProducts,
                 loadMoreHandler,
                 loadMoreDisabled,
-                updateEntityCharacteristics
+                updateEntityCharacteristics,
+                entityStateMapper
             }}
         >
             {children}

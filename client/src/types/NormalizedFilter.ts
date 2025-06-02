@@ -6,8 +6,10 @@ export interface NormalizedFilterItem {
     image?: string;
 }
 
+export type FilterLabel = 'Collection' | 'Color' | 'Metal' | 'Price' | 'Stone';
+
 export interface NormalizedFilterGroup {
     key: string;
-    label: string;
+    label: FilterLabel;
     data: NormalizedFilterItem[];
 }

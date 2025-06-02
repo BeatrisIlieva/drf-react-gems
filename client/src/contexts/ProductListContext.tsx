@@ -31,6 +31,7 @@ interface ProductListContextType {
             | 'Stone',
         entityId: number | string
     ) => void;
+    entityStateMapper: any;
 }
 
 // params: {
@@ -56,7 +57,8 @@ export const ProductListContext =
         fetchProducts: async () => {},
         loadMoreHandler: () => null,
         loadMoreDisabled: false,
-        updateEntityCharacteristics: () => null
+        updateEntityCharacteristics: () => null,
+        entityStateMapper: {},
     });
 
 export const useProductListContext = () => {

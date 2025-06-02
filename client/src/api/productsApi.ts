@@ -38,7 +38,7 @@ export const useProductList = () => {
                 stoneIds.forEach((id) => params.append('stones', id.toString()));
             }
             if (metalIds) {
-                metalIds.forEach((id) => params.append('materials', id.toString()));
+                metalIds.forEach((id) => params.append('metals', id.toString()));
             }
             if (collectionIds) {
                 collectionIds.forEach((id) => params.append('collections', id.toString()));

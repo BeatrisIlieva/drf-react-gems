@@ -6,6 +6,7 @@ import { ProductCard } from './product-card/ProductCard';
 import { useCategoryName } from '../../../hooks/useCategoryName';
 import { FilterList } from './filter-list/FilterList';
 import { Button } from '../../reusable/button/Button';
+import { HomeLink } from './home-link/HomeLink';
 
 export const ProductList = (): ReactElement => {
     const {
@@ -14,7 +15,7 @@ export const ProductList = (): ReactElement => {
         error,
         fetchProducts,
         loadMoreHandler,
-        loadMoreDisabled
+        loadMoreDisabled,
     } = useProductListContext();
 
     const { categoryNameCapitalizedPlural } = useCategoryName();
@@ -25,15 +26,11 @@ export const ProductList = (): ReactElement => {
 
     return (
         <section className={styles['product-list']}>
-            <p>
-                <span>Home</span>
-                <span>/</span>
-                <span>{categoryNameCapitalizedPlural}</span>
-            </p>
-            <h1>{categoryNameCapitalizedPlural}</h1>
+            <HomeLink />
+            {/* <h1>{categoryNameCapitalizedPlural}</h1>
             <div>
                 <h5>images wrapper</h5>
-            </div>
+            </div> */}
             <nav>
                 <ul>
                     <li>filters</li>
@@ -41,7 +38,7 @@ export const ProductList = (): ReactElement => {
                 </ul>
             </nav>
             <div className={styles['wrapper-products']}>
-                <FilterList />
+            {products.length > 0 && (<FilterList />) }
 
                 <div className={styles['wrapper-inner']}>
                     <ul className={styles['products']}>
