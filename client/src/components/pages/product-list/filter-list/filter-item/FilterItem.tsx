@@ -9,6 +9,7 @@ import styles from './FilterItem.module.scss';
 import type { NormalizedFilterItem } from '../../../../../types/NormalizedFilter';
 import { Icon } from '../../../../reusable/icon/Icon';
 import { useProductListContext } from '../../../../../contexts/ProductListContext';
+import { ChevronToggle } from '../../../../reusable/chevron-toggle/ChevronToggle';
 
 interface FilterItemProps {
     label: 'Collection' | 'Color' | 'Metal' | 'Price' | 'Stone';
@@ -59,20 +60,7 @@ export const FilterItem = ({
                     <div className={styles['label-wrapper']}>
                         <h6 onClick={toggleDisplayFilter}>{label}</h6>
 
-                        <span
-                            onClick={toggleDisplayFilter}
-                            className={`${styles['toggle-icon']} ${displayFilter ? styles['rotated'] : ''}`}
-                        >
-                            <Icon
-                                name={
-                                    displayFilter
-                                        ? 'arrowUp'
-                                        : 'arrowDown'
-                                }
-                                isSubtle={true}
-                                fontSize={0.6}
-                            />
-                        </span>
+                        <ChevronToggle isOpen={displayFilter} onToggle={toggleDisplayFilter}/>
                     </div>
                     <ul
                         ref={contentRef}

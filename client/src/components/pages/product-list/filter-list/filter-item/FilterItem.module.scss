@@ -14,14 +14,6 @@
         justify-content: space-between;
         align-items: center;
 
-        .toggle-icon {
-            transition: transform 0.5s ease;
-            cursor: pointer;
-            &.rotated {
-                transform: rotate(180deg);
-            }
-        }
-
         h6 {
             flex: 1 1 80%;
             text-transform: uppercase;
@@ -29,6 +21,11 @@
             vertical-align: middle;
             margin-bottom: 0;
             cursor: pointer;
+            opacity: 0.8;
+
+            &:hover {
+                opacity: 1;
+            }
         }
     }
 

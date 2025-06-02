@@ -7,6 +7,7 @@ import { useCategoryName } from '../../../hooks/useCategoryName';
 import { FilterList } from './filter-list/FilterList';
 import { Button } from '../../reusable/button/Button';
 import { HomeLink } from './home-link/HomeLink';
+import { Nav } from './nav/Nav';
 
 export const ProductList = (): ReactElement => {
     const {
@@ -15,7 +16,7 @@ export const ProductList = (): ReactElement => {
         error,
         fetchProducts,
         loadMoreHandler,
-        loadMoreDisabled,
+        loadMoreDisabled
     } = useProductListContext();
 
     const { categoryNameCapitalizedPlural } = useCategoryName();
@@ -31,14 +32,9 @@ export const ProductList = (): ReactElement => {
             <div>
                 <h5>images wrapper</h5>
             </div> */}
-            <nav>
-                <ul>
-                    <li>filters</li>
-                    <li>sort by</li>
-                </ul>
-            </nav>
+            <Nav />
             <div className={styles['wrapper-products']}>
-            {products.length > 0 && (<FilterList />) }
+                {products.length > 0 && <FilterList />}
 
                 <div className={styles['wrapper-inner']}>
                     <ul className={styles['products']}>

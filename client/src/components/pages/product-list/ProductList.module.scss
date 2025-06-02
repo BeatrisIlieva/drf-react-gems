@@ -4,12 +4,6 @@
     padding-block: 2em;
     padding-inline: vars.$layout-inline-padding;
 
-    nav ul {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 2em;
-    }
-
     .wrapper-products {
         display: flex;
         gap: 3em;
