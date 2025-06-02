@@ -1,15 +1,22 @@
-.filters ul {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 2em;
+@use '../.../../../../../styles/variables' as vars;
 
-    li {
-        text-transform: uppercase;
-        font-weight: 500;
+.secondary-nav {
+    background: vars.$white;
+    margin-bottom: 1em;
+    padding-inline: vars.$layout-inline-padding;
+
+    ul {
         display: flex;
-        align-items: center;
-        line-height: 1;
-        gap: 0.5em;
-        letter-spacing: 0.1em;
+        justify-content: space-between;
+
+        li {
+            text-transform: uppercase;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            line-height: 1;
+            gap: 0.5em;
+            letter-spacing: 0.1em;
+        }
     }
 }

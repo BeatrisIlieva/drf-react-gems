@@ -7,7 +7,7 @@ import styles from './Nav.module.scss';
 
 export const Nav = (): ReactElement => {
     return (
-        <nav className={styles['filters']}>
+        <nav className={styles['secondary-nav']}>
             <ul>
                 <Filters />
                 <SortBy />

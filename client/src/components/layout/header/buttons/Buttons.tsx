@@ -8,12 +8,12 @@ export const Buttons = (): ReactElement => {
     return (
         <ul className={styles['buttons']}>
             <li>
-                <Icon name={'search'} width={0.7} />
+                <Icon name={'search'} fontSize={0.7} />
                 <span>Search</span>
             </li>
 
             <li>
-                <Icon name={'user'} width={1} />
+                <Icon name={'user'} fontSize={1} />
                 <span>1</span>
             </li>
 

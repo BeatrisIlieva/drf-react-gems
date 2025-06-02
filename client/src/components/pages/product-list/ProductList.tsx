@@ -1,4 +1,4 @@
-import { useEffect, type ReactElement } from 'react';
+import { useEffect, useRef, useState, type ReactElement } from 'react';
 import { useProductListContext } from '../../../contexts/ProductListContext';
 
 import styles from './ProductList.module.scss';
@@ -23,10 +23,42 @@ export const ProductList = (): ReactElement => {
         fetchProducts();
     }, [fetchProducts]);
 
+    const sentinelRef = useRef<HTMLDivElement>(null);
+    const [isSticky, setIsSticky] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsSticky(!entry.isIntersecting);
+            },
+            {
+                root: null,
+                threshold: 0,
+            }
+        );
+
+        const sentinel = sentinelRef.current;
+        if (sentinel) {
+            observer.observe(sentinel);
+        }
+
+        return () => {
+            if (sentinel) {
+                observer.unobserve(sentinel);
+            }
+        };
+    }, []);
+
+
+
     return (
         <section className={styles['product-list']}>
-            <HomeLink />
-            <Nav />
+             <div ref={sentinelRef} className={styles['sentinel']} />
+
+<header className={isSticky ? styles['sticky'] : ''}>
+    <HomeLink />
+    <Nav />
+</header>
             <div
                 className={`${styles['wrapper-products']} ${displayFilters ? styles['with-gap'] : styles['no-gap']}`}
             >

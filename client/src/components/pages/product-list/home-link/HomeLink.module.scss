@@ -6,6 +6,7 @@
     opacity: 0.5;
     font-size: 0.9em;
     margin-bottom: 2em;
+    padding-inline: vars.$layout-inline-padding;
 
     a {
         color: vars.$black;

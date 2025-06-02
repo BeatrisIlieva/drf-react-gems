@@ -1,12 +1,28 @@
 @use '../../../styles/variables' as vars;
 
 .product-list {
-    padding-block: 2em;
-    padding-inline: vars.$layout-inline-padding;
+    margin-bottom: 2em;
+
+    .sentinel {
+        height: 0.1em;
+    }
+
+    header {
+        position: sticky;
+        top: 0;
+        background: vars.$white;
+        z-index: 30;
+        margin-top: 1em;
+        transition: border-bottom 0.3s ease;
+
+        &.sticky {
+            border-bottom: 0.1em solid vars.$medium-grey;
+        }
+    }
 
     .wrapper-products {
         display: flex;
-        position: relative;
+        padding-inline: vars.$layout-inline-padding;
 
         &.with-gap {
             gap: 3em;
