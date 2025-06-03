@@ -18,9 +18,7 @@ export const useCategoryName = (): CategoryNameResult => {
             };
         }
 
-        const capitalized =
-            categoryName.charAt(0).toUpperCase() +
-            categoryName.slice(1);
+        const capitalized = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
         const singular = capitalized.slice(0, -1);
 
         return {

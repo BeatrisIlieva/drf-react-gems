@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactElement } from 'react';
+import { useEffect, type ReactElement } from 'react';
 import { useProductListContext } from '../../../contexts/ProductListContext';
 
 import styles from './ProductList.module.scss';
@@ -7,6 +7,7 @@ import { FilterList } from './filter-list/FilterList';
 import { Button } from '../../reusable/button/Button';
 import { HomeLink } from './home-link/HomeLink';
 import { Nav } from './nav/Nav';
+import { useSentinel } from '../../../hooks/useSentinel';
 
 export const ProductList = (): ReactElement => {
     const {
@@ -19,35 +20,11 @@ export const ProductList = (): ReactElement => {
         displayFilters
     } = useProductListContext();
 
+    const { sentinelRef, isSticky } = useSentinel();
+
     useEffect(() => {
         fetchProducts();
     }, [fetchProducts]);
-
-    const sentinelRef = useRef<HTMLDivElement>(null);
-    const [isSticky, setIsSticky] = useState(false);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                setIsSticky(!entry.isIntersecting);
-            },
-            {
-                root: null,
-                threshold: 0
-            }
-        );
-
-        const sentinel = sentinelRef.current;
-        if (sentinel) {
-            observer.observe(sentinel);
-        }
-
-        return () => {
-            if (sentinel) {
-                observer.unobserve(sentinel);
-            }
-        };
-    }, []);
 
     return (
         <section className={styles['product-list']}>

@@ -1,10 +1,14 @@
 @use '../../../styles/variables' as vars;
 
+.sentinel {
+    height: 0.1em;
+}
+
 .header {
     position: sticky;
     top: 0;
     left: 0;
-    z-index: 100;
+    z-index: 40;
     display: flex;
     align-items: center;
     padding-inline: vars.$layout-inline-padding;
@@ -13,6 +17,10 @@
     padding-block: 1.25em;
     transition: transform 0.3s ease-in-out;
     background: vars.$white;
+
+    &.sticky {
+        border-bottom: 0.1em solid vars.$medium-grey;
+    }
 }
 
 .hidden {

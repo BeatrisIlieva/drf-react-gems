@@ -1,9 +1,4 @@
-import {
-    useCallback,
-    useEffect,
-    useState,
-    type ReactNode
-} from 'react';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
 
 import { ProductListContext } from '../contexts/ProductListContext';
 import { useProductList } from '../api/productsApi';
@@ -44,37 +39,31 @@ export const ProductListProvider = ({ children }: Props) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const [displayFilters, setDisplayFilters] =
-        useState<boolean>(false);
+    const [displayFilters, setDisplayFilters] = useState<boolean>(false);
 
     const toggleDisplayFilters = () => {
         setDisplayFilters(() => !displayFilters);
     };
 
-    const [loadMoreDisabled, setLoadMoreDisabled] =
-        useState<boolean>(false);
+    const [loadMoreDisabled, setLoadMoreDisabled] = useState<boolean>(false);
 
     const fetchProducts = useCallback(async () => {
         setLoading(true);
         setError(null);
         if (categoryName) {
             try {
-                const response: ProductsResponse =
-                    await getProductList({
-                        categoryName,
-                        pageNumber: page,
-                        colorIds,
-                        stoneIds,
-                        metalIds,
-                        collectionIds,
-                        priceIds
-                    });
+                const response: ProductsResponse = await getProductList({
+                    categoryName,
+                    pageNumber: page,
+                    colorIds,
+                    stoneIds,
+                    metalIds,
+                    collectionIds,
+                    priceIds
+                });
 
                 if (page > 1) {
-                    setProducts((prev) => [
-                        ...prev,
-                        ...response.results
-                    ]);
+                    setProducts((prev) => [...prev, ...response.results]);
                 } else {
                     setProducts(response.results);
                 }
@@ -122,17 +111,9 @@ export const ProductListProvider = ({ children }: Props) => {
         setPage(nextPage);
     };
 
-    type EntityName =
-        | 'collection'
-        | 'color'
-        | 'metal'
-        | 'stone'
-        | 'price';
+    type EntityName = 'collection' | 'color' | 'metal' | 'stone' | 'price';
 
-    const entityMapper: Record<
-        EntityName,
-        (id: number | string) => void
-    > = {
+    const entityMapper: Record<EntityName, (id: number | string) => void> = {
         collection: (id) =>
             setCollectionIds((prev) =>
                 prev.includes(id as number)
@@ -166,18 +147,11 @@ export const ProductListProvider = ({ children }: Props) => {
     };
 
     function updateEntityCharacteristics(
-        entityName:
-            | 'Collection'
-            | 'Color'
-            | 'Metal'
-            | 'Price'
-            | 'Stone',
+        entityName: 'Collection' | 'Color' | 'Metal' | 'Price' | 'Stone',
         entityId: number | string
     ): void {
         setPage(1);
-        entityMapper[
-            entityName.toLowerCase() as keyof typeof entityMapper
-        ](entityId);
+        entityMapper[entityName.toLowerCase() as keyof typeof entityMapper](entityId);
     }
 
     useEffect(() => {
