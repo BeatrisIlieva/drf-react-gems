@@ -18,8 +18,7 @@ class ProductListSerializer(serializers.Serializer):
         max_digits=7,
         decimal_places=2
     )
-    average_rating=serializers.DecimalField(
+    average_rating = serializers.DecimalField(
         max_digits=7,
         decimal_places=2
     )
-    

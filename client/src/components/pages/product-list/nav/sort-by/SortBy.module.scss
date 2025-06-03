@@ -24,10 +24,11 @@
         font-weight: 500;
 
         & button {
-            opacity: 0.8;
+            opacity: 0.7;
         }
 
-        & button:hover {
+        & button:hover,
+        & button.selected {
             opacity: 1;
         }
     }

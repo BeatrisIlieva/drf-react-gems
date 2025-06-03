@@ -23,17 +23,14 @@ interface ProductListContextType {
     loadMoreHandler: () => void;
     loadMoreDisabled: boolean;
     updateEntityCharacteristics: (
-        entityName:
-            | 'Collection'
-            | 'Color'
-            | 'Metal'
-            | 'Price'
-            | 'Stone',
+        entityName: 'Collection' | 'Color' | 'Metal' | 'Price' | 'Stone',
         entityId: number | string
     ) => void;
     entityStateMapper: any;
     toggleDisplayFilters: () => void;
     displayFilters: boolean;
+    updateOrderingCriteria: (criteria: string) => void;
+    orderingCriteria: string;
 }
 
 // params: {
@@ -44,26 +41,27 @@ interface ProductListContextType {
 //     prices?: string[];
 // }
 
-export const ProductListContext =
-    createContext<ProductListContextType>({
-        products: [],
-        collections: [],
-        colors: [],
-        count: 0,
-        metals: [],
-        page: 1,
-        prices: [],
-        stones: [],
-        loading: false,
-        error: null,
-        fetchProducts: async () => {},
-        loadMoreHandler: () => null,
-        loadMoreDisabled: false,
-        updateEntityCharacteristics: () => null,
-        entityStateMapper: {},
-        toggleDisplayFilters: () => null,
-        displayFilters: false
-    });
+export const ProductListContext = createContext<ProductListContextType>({
+    products: [],
+    collections: [],
+    colors: [],
+    count: 0,
+    metals: [],
+    page: 1,
+    prices: [],
+    stones: [],
+    loading: false,
+    error: null,
+    fetchProducts: async () => {},
+    loadMoreHandler: () => null,
+    loadMoreDisabled: false,
+    updateEntityCharacteristics: () => null,
+    entityStateMapper: {},
+    toggleDisplayFilters: () => null,
+    displayFilters: false,
+    updateOrderingCriteria: () => null,
+    orderingCriteria: 'rating'
+});
 
 export const useProductListContext = () => {
     const data = useContext(ProductListContext);

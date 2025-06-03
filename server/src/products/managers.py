@@ -22,10 +22,21 @@ class ProductManager(models.Manager):
     def get_product_item(self, item_id):
         return self.get(pk=item_id)
 
-    def get_product_list(self, filters):
+    def get_product_list(self, filters, ordering=None):
         qs = self.filter(filters)
 
         raw_products = self._get_raw_products(qs)
+
+        if ordering:
+            ordering_map = {
+                'price_asc': 'min',
+                'price_desc': '-max',
+                'rating': '-average_rating',
+                'in_stock': '-total_quantity',
+            }
+            order_field = ordering_map.get(ordering)
+            if order_field:
+                raw_products = raw_products.order_by(order_field)
 
         return raw_products
 

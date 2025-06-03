@@ -13,6 +13,7 @@ interface GetProductsParams {
     metalIds?: number[];
     collectionIds?: number[];
     priceIds?: string[];
+    ordering?: string;
 }
 
 export const useProductList = () => {
@@ -26,7 +27,8 @@ export const useProductList = () => {
             stoneIds = [],
             metalIds = [],
             collectionIds = [],
-            priceIds = []
+            priceIds = [],
+            ordering = ''
         }: GetProductsParams) => {
             const params = new URLSearchParams();
 
@@ -41,7 +43,9 @@ export const useProductList = () => {
                 metalIds.forEach((id) => params.append('metals', id.toString()));
             }
             if (collectionIds) {
-                collectionIds.forEach((id) => params.append('collections', id.toString()));
+                collectionIds.forEach((id) =>
+                    params.append('collections', id.toString())
+                );
             }
             if (priceIds) {
                 priceIds.forEach((price) => {
@@ -51,6 +55,7 @@ export const useProductList = () => {
                     params.append('prices', `${min_price}-${max_price}`);
                 });
             }
+            if (ordering) params.append('ordering', ordering);
 
             const fullUrl = `${baseUrl}/${categoryName}/?${params.toString()}`;
 

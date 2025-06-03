@@ -36,6 +36,8 @@ export const ProductListProvider = ({ children }: Props) => {
     const [collectionIds, setCollectionIds] = useState<number[]>([]);
     const [priceIds, setPriceIds] = useState<string[]>([]);
 
+    const [orderingCriteria, setOrderingCriteria] = useState<string>('rating');
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -59,7 +61,8 @@ export const ProductListProvider = ({ children }: Props) => {
                     stoneIds,
                     metalIds,
                     collectionIds,
-                    priceIds
+                    priceIds,
+                    ordering: orderingCriteria
                 });
 
                 if (page > 1) {
@@ -98,8 +101,15 @@ export const ProductListProvider = ({ children }: Props) => {
         collectionIds,
         metalIds,
         priceIds,
-        stoneIds
+        stoneIds,
+        orderingCriteria
     ]);
+
+    const updateOrderingCriteria = (criteria: string) => {
+        setOrderingCriteria(criteria);
+
+        // fetchProducts()
+    };
 
     const loadMoreHandler = (): void => {
         if (count <= products.length) {
@@ -173,6 +183,7 @@ export const ProductListProvider = ({ children }: Props) => {
         setMetalIds([]);
         setCollectionIds([]);
         setPriceIds([]);
+        setOrderingCriteria('rating');
     }, [categoryName]);
 
     const entityStateMapper = {
@@ -202,7 +213,9 @@ export const ProductListProvider = ({ children }: Props) => {
                 updateEntityCharacteristics,
                 entityStateMapper,
                 toggleDisplayFilters,
-                displayFilters
+                displayFilters,
+                updateOrderingCriteria,
+                orderingCriteria
             }}
         >
             {children}

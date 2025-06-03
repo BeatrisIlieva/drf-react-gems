@@ -46,6 +46,8 @@ class BaseProductListView(ListAPIView):
 
     def _get_products_data(self):
         filters = self._get_filters()
+        ordering = self.request.query_params.get('ordering', '')
+
         if not self.model and not filters:
             return {
                 'products': [],
@@ -56,7 +58,7 @@ class BaseProductListView(ListAPIView):
                 'prices': {},
             }
 
-        raw_products = self.model.objects.get_product_list(filters)
+        raw_products = self.model.objects.get_product_list(filters, ordering)
 
         colors_by_count = self.model.objects.get_colors_by_count(raw_products)
         stones_by_count = self.model.objects.get_stones_by_count(raw_products)

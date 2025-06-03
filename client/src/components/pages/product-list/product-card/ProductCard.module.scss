@@ -67,5 +67,10 @@
         flex-direction: column;
         gap: 0.05em;
         padding-top: 0.5em;
+
+        & ul {
+            margin-top: 0.5em;
+            margin-left: -0.15em;
+        }
     }
 }

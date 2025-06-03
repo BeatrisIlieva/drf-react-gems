@@ -63,4 +63,5 @@ export interface FetchProductsParams {
     materialIds?: string[];
     collectionIds?: string[];
     prices?: string[];
+    ordering?: string;
 }

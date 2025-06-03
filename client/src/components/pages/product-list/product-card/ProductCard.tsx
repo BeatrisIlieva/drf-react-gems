@@ -23,8 +23,7 @@ export const ProductCard = ({
     averageRating
 }: Product): ReactElement => {
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-    const { categoryNameCapitalizedSingular, categoryName } =
-        useCategoryName();
+    const { categoryNameCapitalizedSingular, categoryName } = useCategoryName();
     const formattedMin = formatPrice(min);
     const formattedMax = formatPrice(max);
 
@@ -39,11 +38,7 @@ export const ProductCard = ({
 
                 <div className={styles['thumbnail']}>
                     <img
-                        src={
-                            selectedImageIndex === 0
-                                ? firstImage
-                                : secondImage
-                        }
+                        src={selectedImageIndex === 0 ? firstImage : secondImage}
                         className={`${selectedImageIndex === 0 ? styles['slide-in-right'] : styles['slide-in-left']}`}
                         alt={collectionName}
                     />
@@ -61,8 +56,6 @@ export const ProductCard = ({
                 </footer>
             </div>
             <div className={styles['product-info']}>
-                <Stars rating={averageRating} fontSize={0.9}/>
-                {/* <span>{averageRating}</span> */}
                 <StyledTextBlock
                     text={`${collectionName} ${categoryNameCapitalizedSingular}`}
                 />
@@ -74,6 +67,7 @@ export const ProductCard = ({
                     text={`${colorName} ${stoneName} set in ${metalName}`}
                     isSubtle={true}
                 />
+                <Stars rating={averageRating} fontSize={0.9} />
             </div>
         </article>
     );
