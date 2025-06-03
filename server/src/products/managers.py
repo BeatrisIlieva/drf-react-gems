@@ -12,6 +12,7 @@ from django.db.models import (
     Q,
     Min,
     Max,
+    Avg
 )
 
 from decimal import Decimal
@@ -97,6 +98,7 @@ class ProductManager(models.Manager):
             )
             .prefetch_related(
                 'inventory',
+                'review'
             )
             .values(
                 'id',
@@ -105,7 +107,7 @@ class ProductManager(models.Manager):
                 'second_image',
                 'color__name',
                 'stone__name',
-                'metal__name'
+                'metal__name',
             )
             .annotate(
                 total_quantity=Sum('inventory__quantity'),
@@ -116,6 +118,7 @@ class ProductManager(models.Manager):
                     default=Value(False),
                     output_field=BooleanField(),
                 ),
+                average_rating=Avg('review__rating', distinct=True),
             )
             .order_by(
                 'id',

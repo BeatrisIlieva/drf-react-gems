@@ -7,6 +7,7 @@ import { InventoryState } from './inventory-state/InventoryState';
 import { useCategoryName } from '../../../../hooks/useCategoryName';
 import { StyledTextBlock } from '../../../reusable/styled-text-block/StyledTextBlock';
 import { formatPrice } from '../../../../utils/formatPrice';
+import { Stars } from '../../../reusable/stars/Stars';
 
 export const ProductCard = ({
     id,
@@ -18,7 +19,8 @@ export const ProductCard = ({
     stoneName,
     metalName,
     min,
-    max
+    max,
+    averageRating
 }: Product): ReactElement => {
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
     const { categoryNameCapitalizedSingular, categoryName } =
@@ -59,6 +61,8 @@ export const ProductCard = ({
                 </footer>
             </div>
             <div className={styles['product-info']}>
+                <Stars rating={averageRating} fontSize={0.9}/>
+                {/* <span>{averageRating}</span> */}
                 <StyledTextBlock
                     text={`${collectionName} ${categoryNameCapitalizedSingular}`}
                 />

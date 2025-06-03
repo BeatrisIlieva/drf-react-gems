@@ -1,9 +1,16 @@
+from django.contrib.contenttypes.fields import GenericRelation
+
 from django.db import models
 
 from src.products.managers import ProductManager
+from src.products.models.inventory import Inventory
+from src.products.models.review import Review
 
 
 class Product(models.Model):
+    inventory = GenericRelation(Inventory)
+    review = GenericRelation(Review)
+
     class Meta:
         abstract = True
 

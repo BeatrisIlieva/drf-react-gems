@@ -9,6 +9,7 @@ export interface Product {
     metalName: string;
     min: string;
     max: string;
+    averageRating: number;
 }
 
 export interface Color {

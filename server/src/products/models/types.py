@@ -1,19 +1,17 @@
 from src.products.models.base import Product
-from django.contrib.contenttypes.fields import GenericRelation
-from src.products.models import Inventory
 
 
 class Earwear(Product):
-    inventory = GenericRelation(Inventory)
+    pass
 
 
 class Neckwear(Product):
-    inventory = GenericRelation(Inventory)
+    pass
 
 
 class Fingerwear(Product):
-    inventory = GenericRelation(Inventory)
+    pass
 
 
 class Wristwear(Product):
-    inventory = GenericRelation(Inventory)
+    pass
