@@ -1,10 +1,24 @@
 @use '../../../styles/variables' as vars;
 
 .header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 100;
     display: flex;
     align-items: center;
     padding-inline: vars.$layout-inline-padding;
     font-size: 0.9em;
     letter-spacing: 0.1em;
     padding-block: 1.25em;
+    transition: transform 0.3s ease-in-out;
+    background: vars.$white;
+}
+
+.hidden {
+    transform: translateY(-100%) !important;
+}
+
+.visible {
+    transform: translateY(0) !important;
 }

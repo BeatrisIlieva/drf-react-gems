@@ -1,4 +1,4 @@
-import { useState, type ReactElement } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import type { Product } from '../../../../types/ProductList';
 import styles from './ProductCard.module.scss';
 import { Icon } from '../../../reusable/icon/Icon';
@@ -21,9 +21,14 @@ export const ProductCard = ({
     max
 }: Product): ReactElement => {
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-    const { categoryNameCapitalizedSingular } = useCategoryName();
+    const { categoryNameCapitalizedSingular, categoryName } =
+        useCategoryName();
     const formattedMin = formatPrice(min);
     const formattedMax = formatPrice(max);
+
+    useEffect(() => {
+        setSelectedImageIndex(0);
+    }, [categoryName]);
 
     return (
         <article className={styles['product-card']}>

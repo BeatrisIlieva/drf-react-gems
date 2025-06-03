@@ -4,7 +4,11 @@ import {
     useState,
     type ReactNode
 } from 'react';
+
+import { ProductListContext } from '../contexts/ProductListContext';
 import { useProductList } from '../api/productsApi';
+import { useCategoryName } from '../hooks/useCategoryName';
+
 import {
     type Collection,
     type Color,
@@ -14,8 +18,6 @@ import {
     type Stone,
     type ProductsResponse
 } from '../types/ProductList';
-import { ProductListContext } from '../contexts/ProductListContext';
-import { useCategoryName } from '../hooks/useCategoryName';
 
 interface Props {
     children: ReactNode;
@@ -187,6 +189,17 @@ export const ProductListProvider = ({ children }: Props) => {
             }
         }
     }, [count, products.length, page]);
+
+    useEffect(() => {
+        setLoadMoreDisabled(false);
+        setDisplayFilters(false);
+        setPage(1);
+        setColorIds([]);
+        setStoneIds([]);
+        setMetalIds([]);
+        setCollectionIds([]);
+        setPriceIds([]);
+    }, [categoryName]);
 
     const entityStateMapper = {
         Color: colorIds,

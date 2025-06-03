@@ -6,9 +6,7 @@ import styles from './App.module.scss';
 function App() {
     return (
         <div className={styles['app']}>
-            <div className={styles['header-wrapper']}>
-                <Header />
-            </div>
+            <Header />
             <Main />
         </div>
     );

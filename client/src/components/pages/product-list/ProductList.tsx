@@ -33,7 +33,7 @@ export const ProductList = (): ReactElement => {
             },
             {
                 root: null,
-                threshold: 0,
+                threshold: 0
             }
         );
 
@@ -49,16 +49,14 @@ export const ProductList = (): ReactElement => {
         };
     }, []);
 
-
-
     return (
         <section className={styles['product-list']}>
-             <div ref={sentinelRef} className={styles['sentinel']} />
+            <div ref={sentinelRef} className={styles['sentinel']} />
 
-<header className={isSticky ? styles['sticky'] : ''}>
-    <HomeLink />
-    <Nav />
-</header>
+            <header className={isSticky ? styles['sticky'] : ''}>
+                <HomeLink />
+                <Nav />
+            </header>
             <div
                 className={`${styles['wrapper-products']} ${displayFilters ? styles['with-gap'] : styles['no-gap']}`}
             >
@@ -67,10 +65,7 @@ export const ProductList = (): ReactElement => {
                 <div className={styles['wrapper-inner']}>
                     <ul className={styles['products']}>
                         {products?.map((product) => (
-                            <ProductCard
-                                key={product.id}
-                                {...product}
-                            />
+                            <ProductCard key={product.id} {...product} />
                         ))}
                     </ul>
                     {!loadMoreDisabled && products.length > 0 && (

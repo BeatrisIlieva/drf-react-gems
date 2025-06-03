@@ -10,6 +10,7 @@ import type { NormalizedFilterItem } from '../../../../../types/NormalizedFilter
 import { Icon } from '../../../../reusable/icon/Icon';
 import { useProductListContext } from '../../../../../contexts/ProductListContext';
 import { ChevronToggle } from '../../../../reusable/chevron-toggle/ChevronToggle';
+import { useCategoryName } from '../../../../../hooks/useCategoryName';
 
 interface FilterItemProps {
     label: 'Collection' | 'Color' | 'Metal' | 'Price' | 'Stone';
@@ -22,6 +23,8 @@ export const FilterItem = ({
 }: FilterItemProps): ReactElement => {
     const { updateEntityCharacteristics, entityStateMapper } =
         useProductListContext();
+
+    const { categoryName } = useCategoryName();
 
     const [displayFilter, setDisplayFilter] =
         useState<boolean>(false);
@@ -41,6 +44,10 @@ export const FilterItem = ({
             setHeight(0);
         }
     }, [displayFilter, data]);
+
+    useEffect(() => {
+        setDisplayFilter(false);
+    }, [categoryName]);
 
     const clickHandler = (
         itemLabel: string,

@@ -7,10 +7,10 @@
     opacity: 1;
     transform: translateX(0);
     overflow-y: auto;
-    height: 100dvh;
 }
 
 .filter-list.visible {
+    height: 100dvh;
     position: sticky;
     top: 5.5em;
 }
