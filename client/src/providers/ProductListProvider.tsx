@@ -107,8 +107,6 @@ export const ProductListProvider = ({ children }: Props) => {
 
     const updateOrderingCriteria = (criteria: string) => {
         setOrderingCriteria(criteria);
-
-        // fetchProducts()
     };
 
     const loadMoreHandler = (): void => {

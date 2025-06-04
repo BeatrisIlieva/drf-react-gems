@@ -26,20 +26,18 @@ interface ProductListContextType {
         entityName: 'Collection' | 'Color' | 'Metal' | 'Price' | 'Stone',
         entityId: number | string
     ) => void;
-    entityStateMapper: any;
+    entityStateMapper: {
+        Color: number[];
+        Stone: number[];
+        Metal: number[];
+        Collection: number[];
+        Price: string[];
+    };
     toggleDisplayFilters: () => void;
     displayFilters: boolean;
     updateOrderingCriteria: (criteria: string) => void;
     orderingCriteria: string;
 }
-
-// params: {
-//     colorIds?: string[];
-//     stoneIds?: string[];
-//     materialIds?: string[];
-//     collectionIds?: string[];
-//     prices?: string[];
-// }
 
 export const ProductListContext = createContext<ProductListContextType>({
     products: [],
@@ -56,7 +54,13 @@ export const ProductListContext = createContext<ProductListContextType>({
     loadMoreHandler: () => null,
     loadMoreDisabled: false,
     updateEntityCharacteristics: () => null,
-    entityStateMapper: {},
+    entityStateMapper: {
+        Color: [],
+        Stone: [],
+        Metal: [],
+        Collection: [],
+        Price: []
+    },
     toggleDisplayFilters: () => null,
     displayFilters: false,
     updateOrderingCriteria: () => null,

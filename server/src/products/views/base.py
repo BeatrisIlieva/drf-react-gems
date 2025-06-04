@@ -4,7 +4,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView
-from src.products.serializers import ProductListSerializer
+
+from src.products.serializers.type_list import ProductListSerializer
 
 
 class ProductPagination(PageNumberPagination):

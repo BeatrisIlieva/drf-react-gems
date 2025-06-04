@@ -1,20 +1,26 @@
 import { type ReactElement } from 'react';
 
-import { useToggleDisplayModal } from '../../../../../hooks/useToggleDisplayModal';
-import styles from './SortBy.module.scss';
-import { ChevronToggle } from '../../../../reusable/chevron-toggle/ChevronToggle';
 import { useProductListContext } from '../../../../../contexts/ProductListContext';
+import { useToggleDisplayModal } from '../../../../../hooks/useToggleDisplayModal';
 
-const SORT_OPTIONS = [
-    { value: 'rating', label: 'Best Rating' },
-    { value: 'in_stock', label: 'Available Now' },
-    { value: 'price_asc', label: 'Price: Low to High' },
-    { value: 'price_desc', label: 'Price: High to Low' }
-];
+import { ChevronToggle } from '../../../../reusable/chevron-toggle/ChevronToggle';
+
+import { SORT_OPTIONS } from '../../../../../constants/sortOptions';
+
+import styles from './SortBy.module.scss';
 
 export const SortBy = (): ReactElement => {
     const { displayModal, containerRef, toggleDisplayModal } = useToggleDisplayModal();
     const { updateOrderingCriteria, orderingCriteria } = useProductListContext();
+
+    const clickHandler = (value: string) => {
+        updateOrderingCriteria(value);
+        toggleDisplayModal();
+    };
+
+    const selectedLabel = SORT_OPTIONS.find(
+        (option) => option.value === orderingCriteria
+    )?.label;
 
     return (
         <li className={styles['sort-by']} ref={containerRef}>
@@ -25,7 +31,7 @@ export const SortBy = (): ReactElement => {
                 aria-expanded={displayModal}
                 aria-controls='sort-options'
             >
-                sort by
+                {orderingCriteria ? selectedLabel : 'sort by'}
             </span>
             <ChevronToggle onToggle={toggleDisplayModal} isOpen={displayModal} />
 
@@ -35,7 +41,7 @@ export const SortBy = (): ReactElement => {
                         <button
                             key={value}
                             className={`${orderingCriteria === value && styles['selected']}`}
-                            onClick={() => updateOrderingCriteria(value)}
+                            onClick={() => clickHandler(value)}
                         >
                             {label}
                         </button>
