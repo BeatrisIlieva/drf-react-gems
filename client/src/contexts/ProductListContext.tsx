@@ -1,9 +1,10 @@
 import { createContext, useContext } from 'react';
+
 import type {
     Collection,
     Color,
+    FetchProductsParams,
     Metal,
-    PriceRange,
     Product,
     Stone
 } from '../types/ProductList';
@@ -15,28 +16,33 @@ interface ProductListContextType {
     count: number;
     metals: Metal[];
     page: number;
-    prices: PriceRange[];
     stones: Stone[];
     loading: boolean;
     error: string | null;
-    fetchProducts: () => Promise<void>;
+    fetchProducts: (params: FetchProductsParams) => Promise<void>;
     loadMoreHandler: () => void;
     loadMoreDisabled: boolean;
     updateEntityCharacteristics: (
         entityName: 'Collection' | 'Color' | 'Metal' | 'Price' | 'Stone',
-        entityId: number | string
+        entityId: number
     ) => void;
     entityStateMapper: {
         Color: number[];
         Stone: number[];
         Metal: number[];
         Collection: number[];
-        Price: string[];
     };
     toggleDisplayFilters: () => void;
+    resetPage: () => void;
+
     displayFilters: boolean;
     updateOrderingCriteria: (criteria: string) => void;
     orderingCriteria: string;
+
+    collectionIds: number[];
+    colorIds: number[];
+    metalIds: number[];
+    stoneIds: number[];
 }
 
 export const ProductListContext = createContext<ProductListContextType>({
@@ -46,25 +52,29 @@ export const ProductListContext = createContext<ProductListContextType>({
     count: 0,
     metals: [],
     page: 1,
-    prices: [],
     stones: [],
     loading: false,
     error: null,
     fetchProducts: async () => {},
     loadMoreHandler: () => null,
+    resetPage: () => null,
     loadMoreDisabled: false,
     updateEntityCharacteristics: () => null,
     entityStateMapper: {
         Color: [],
         Stone: [],
         Metal: [],
-        Collection: [],
-        Price: []
+        Collection: []
     },
     toggleDisplayFilters: () => null,
     displayFilters: false,
     updateOrderingCriteria: () => null,
-    orderingCriteria: 'rating'
+    orderingCriteria: 'rating',
+
+    collectionIds: [],
+    colorIds: [],
+    metalIds: [],
+    stoneIds: []
 });
 
 export const useProductListContext = () => {

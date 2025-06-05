@@ -8,23 +8,48 @@ import { Button } from '../../reusable/button/Button';
 import { HomeLink } from './home-link/HomeLink';
 import { Nav } from './nav/Nav';
 import { useSentinel } from '../../../hooks/useSentinel';
+import { useCategoryName } from '../../../hooks/useCategoryName';
 
 export const ProductList = (): ReactElement => {
+    const { categoryName } = useCategoryName();
     const {
         products,
-        loading,
-        error,
+        // loading,
+        // error,
         fetchProducts,
         loadMoreHandler,
         loadMoreDisabled,
-        displayFilters
+        displayFilters,
+        colorIds,
+        stoneIds,
+        metalIds,
+        collectionIds,
+        orderingCriteria,
+        page
     } = useProductListContext();
 
     const { sentinelRef, isSticky } = useSentinel();
 
     useEffect(() => {
-        fetchProducts();
-    }, [fetchProducts]);
+        fetchProducts({
+            categoryName,
+            colorIds,
+            stoneIds,
+            metalIds,
+            collectionIds,
+            ordering: orderingCriteria,
+            page
+        });
+    }, [
+        fetchProducts,
+        colorIds,
+        stoneIds,
+        metalIds,
+        collectionIds,
+        orderingCriteria,
+        page,
+        categoryName
+    ]);
 
     return (
         <section className={styles['product-list']}>

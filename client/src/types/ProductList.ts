@@ -38,11 +38,6 @@ export interface Collection {
     collectionCount: number;
 }
 
-export interface PriceRange {
-    priceRange: string;
-    count: number;
-}
-
 export interface ProductsResponse {
     count: number;
     next: string | null;
@@ -52,16 +47,14 @@ export interface ProductsResponse {
     stones: Stone[];
     metals: Metal[];
     collections: Collection[];
-    prices: PriceRange[];
 }
 
 export interface FetchProductsParams {
-    categoryName: string;
-    pageNumber?: number | null;
-    colorIds?: string[];
-    stoneIds?: string[];
-    materialIds?: string[];
-    collectionIds?: string[];
-    prices?: string[];
+    categoryName: string | undefined;
+    page?: number | null;
+    colorIds?: number[];
+    stoneIds?: number[];
+    metalIds?: number[];
+    collectionIds?: number[];
     ordering?: string;
 }

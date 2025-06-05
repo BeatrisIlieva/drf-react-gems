@@ -1,20 +1,9 @@
 import { useCallback } from 'react';
 import { useApi } from '../hooks/useApi';
 import { keysToCamelCase } from '../utils/convertToCamelCase';
-import type { ProductsResponse } from '../types/ProductList';
+import type { FetchProductsParams, ProductsResponse } from '../types/ProductList';
 
 const baseUrl = 'http://localhost:8000/products';
-
-interface GetProductsParams {
-    categoryName: string;
-    pageNumber?: number | null;
-    colorIds?: number[];
-    stoneIds?: number[];
-    metalIds?: number[];
-    collectionIds?: number[];
-    priceIds?: string[];
-    ordering?: string;
-}
 
 export const useProductList = () => {
     const { get } = useApi();
@@ -22,17 +11,16 @@ export const useProductList = () => {
     const getProductList = useCallback(
         async ({
             categoryName,
-            pageNumber = null,
+            page = null,
             colorIds = [],
             stoneIds = [],
             metalIds = [],
             collectionIds = [],
-            priceIds = [],
             ordering = ''
-        }: GetProductsParams) => {
+        }: FetchProductsParams) => {
             const params = new URLSearchParams();
 
-            if (pageNumber) params.append('page', pageNumber.toString());
+            if (page) params.append('page', page.toString());
             if (colorIds) {
                 colorIds.forEach((id) => params.append('colors', id.toString()));
             }
@@ -46,14 +34,6 @@ export const useProductList = () => {
                 collectionIds.forEach((id) =>
                     params.append('collections', id.toString())
                 );
-            }
-            if (priceIds) {
-                priceIds.forEach((price) => {
-                    const [min_price, max_price] = price
-                        .split(' - ')
-                        .map((p) => p.slice(1));
-                    params.append('prices', `${min_price}-${max_price}`);
-                });
             }
             if (ordering) params.append('ordering', ordering);
 

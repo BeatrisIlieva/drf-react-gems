@@ -1,15 +1,8 @@
-import type {
-    Collection,
-    Color,
-    Metal,
-    PriceRange,
-    Stone
-} from '../../../../types/ProductList';
+import type { Collection, Color, Metal, Stone } from '../../../../types/ProductList';
 import type { NormalizedFilterGroup } from '../../../../types/NormalizedFilter';
 
 export const normalizeData = (
     metals: Metal[],
-    prices: PriceRange[],
     colors: Color[],
     stones: Stone[],
     collections: Collection[]
@@ -22,15 +15,6 @@ export const normalizeData = (
                 id: item.metalId,
                 label: item.metalName,
                 count: item.metalCount
-            }))
-        },
-        {
-            key: 'prices',
-            label: 'Price',
-            data: prices.map((item) => ({
-                id: item.priceRange,
-                label: item.priceRange,
-                count: item.count
             }))
         },
         {

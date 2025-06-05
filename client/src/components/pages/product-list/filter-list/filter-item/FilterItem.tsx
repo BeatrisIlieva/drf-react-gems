@@ -1,9 +1,4 @@
-import {
-    useEffect,
-    useRef,
-    useState,
-    type ReactElement
-} from 'react';
+import { useEffect, useRef, useState, type ReactElement } from 'react';
 
 import styles from './FilterItem.module.scss';
 import type { NormalizedFilterItem } from '../../../../../types/NormalizedFilter';
@@ -13,21 +8,16 @@ import { ChevronToggle } from '../../../../reusable/chevron-toggle/ChevronToggle
 import { useCategoryName } from '../../../../../hooks/useCategoryName';
 
 interface FilterItemProps {
-    label: 'Collection' | 'Color' | 'Metal' | 'Price' | 'Stone';
+    label: 'Collection' | 'Color' | 'Metal' | 'Stone';
     data: NormalizedFilterItem[];
 }
 
-export const FilterItem = ({
-    label,
-    data
-}: FilterItemProps): ReactElement => {
-    const { updateEntityCharacteristics, entityStateMapper } =
-        useProductListContext();
+export const FilterItem = ({ label, data }: FilterItemProps): ReactElement => {
+    const { updateEntityCharacteristics, entityStateMapper } = useProductListContext();
 
     const { categoryName } = useCategoryName();
 
-    const [displayFilter, setDisplayFilter] =
-        useState<boolean>(false);
+    const [displayFilter, setDisplayFilter] = useState<boolean>(false);
 
     const toggleDisplayFilter = (): void => {
         setDisplayFilter(() => !displayFilter);
@@ -49,15 +39,8 @@ export const FilterItem = ({
         setDisplayFilter(false);
     }, [categoryName]);
 
-    const clickHandler = (
-        itemLabel: string,
-        itemId: string | number
-    ) => {
-        if (itemLabel === 'Price') {
-            updateEntityCharacteristics(label, itemId as string);
-        } else {
-            updateEntityCharacteristics(label, itemId as number);
-        }
+    const clickHandler = (itemId: string | number) => {
+        updateEntityCharacteristics(label, itemId as number);
     };
 
     return (
@@ -65,10 +48,7 @@ export const FilterItem = ({
             <div className={styles['label-wrapper']}>
                 <h6 onClick={toggleDisplayFilter}>{label}</h6>
 
-                <ChevronToggle
-                    isOpen={displayFilter}
-                    onToggle={toggleDisplayFilter}
-                />
+                <ChevronToggle isOpen={displayFilter} onToggle={toggleDisplayFilter} />
             </div>
             <ul
                 ref={contentRef}
@@ -77,8 +57,7 @@ export const FilterItem = ({
                     maxHeight: height,
                     opacity: displayFilter ? 1 : 0,
                     overflow: 'hidden',
-                    transition:
-                        'max-height 0.3s ease, opacity 0.3s ease',
+                    transition: 'max-height 0.3s ease, opacity 0.3s ease',
                     marginTop: displayFilter ? '1em' : '0'
                 }}
             >
@@ -88,13 +67,9 @@ export const FilterItem = ({
                         className={`${entityStateMapper[label].includes(item.id) ? styles['selected'] : ''}`.trim()}
                     >
                         <button
-                            disabled={entityStateMapper[
-                                label
-                            ].includes(item.id)}
+                            disabled={entityStateMapper[label].includes(item.id)}
                             className={styles['add-filter']}
-                            onClick={() =>
-                                clickHandler(item.label, item.id)
-                            }
+                            onClick={() => clickHandler(item.id)}
                         >
                             {item.hex && (
                                 <span
@@ -105,37 +80,20 @@ export const FilterItem = ({
                                 ></span>
                             )}
                             {item.image && (
-                                <span
-                                    className={
-                                        styles['visualization']
-                                    }
-                                >
-                                    <img
-                                        src={item.image}
-                                        alt={item.label}
-                                    />
+                                <span className={styles['visualization']}>
+                                    <img src={item.image} alt={item.label} />
                                 </span>
                             )}
                             <span>{item.label}</span>
-                            <span className={styles['count']}>
-                                ({item.count})
-                            </span>
+                            <span className={styles['count']}>({item.count})</span>
                         </button>
 
-                        {entityStateMapper[label].includes(
-                            item.id
-                        ) && (
+                        {entityStateMapper[label].includes(item.id) && (
                             <div
                                 className={styles['remove-filter']}
-                                onClick={() =>
-                                    clickHandler(item.label, item.id)
-                                }
+                                onClick={() => clickHandler(item.id)}
                             >
-                                <Icon
-                                    name={'xMark'}
-                                    isSubtle={true}
-                                    fontSize={0.7}
-                                />
+                                <Icon name={'xMark'} isSubtle={true} fontSize={0.7} />
                             </div>
                         )}
                     </li>

@@ -1,12 +1,12 @@
 export interface NormalizedFilterItem {
-    id: string | number;
+    id: number;
     label: string;
     count: number;
     hex?: string;
     image?: string;
 }
 
-export type FilterLabel = 'Collection' | 'Color' | 'Metal' | 'Price' | 'Stone';
+export type FilterLabel = 'Collection' | 'Color' | 'Metal' | 'Stone';
 
 export interface NormalizedFilterGroup {
     key: string;

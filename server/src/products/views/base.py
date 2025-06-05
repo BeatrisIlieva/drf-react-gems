@@ -1,4 +1,3 @@
-from decimal import Decimal
 from django.db.models import Q
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -31,7 +30,6 @@ class BaseProductListView(ListAPIView):
                 'stones': data['stones'],
                 'metals': data['metals'],
                 'collections': data['collections'],
-                'prices': data['prices'],
             })
             return response
 
@@ -42,7 +40,6 @@ class BaseProductListView(ListAPIView):
             'stones': data['stones'],
             'metals': data['metals'],
             'collections': data['collections'],
-            'prices': data['prices'],
         })
 
     def _get_products_data(self):
@@ -56,7 +53,6 @@ class BaseProductListView(ListAPIView):
                 'stones': {},
                 'collections': {},
                 'metals': {},
-                'prices': {},
             }
 
         raw_products = self.model.objects.get_product_list(filters, ordering)
@@ -66,8 +62,6 @@ class BaseProductListView(ListAPIView):
         metals_by_count = self.model.objects.get_metals_by_count(raw_products)
         collections_by_count = self.model.objects.get_collections_by_count(
             raw_products)
-        price_ranges_by_count = self.model.objects.get_price_ranges_by_count(
-            raw_products)
 
         return {
             'products': raw_products,
@@ -75,7 +69,6 @@ class BaseProductListView(ListAPIView):
             'stones': stones_by_count,
             'collections': collections_by_count,
             'metals': metals_by_count,
-            'prices': price_ranges_by_count,
         }
 
     def _get_filters(self):
@@ -83,7 +76,6 @@ class BaseProductListView(ListAPIView):
         stones = self.request.query_params.getlist('stones')
         metals = self.request.query_params.getlist('metals')
         collections = self.request.query_params.getlist('collections')
-        prices = self.request.query_params.getlist('prices')
 
         filters = Q()
         if colors:
@@ -94,17 +86,5 @@ class BaseProductListView(ListAPIView):
             filters &= Q(metal__id__in=metals)
         if collections:
             filters &= Q(collection__id__in=collections)
-        if prices:
-            price_q = Q()
-            for range_str in prices:
-                try:
-                    min_price, max_price = map(
-                        lambda p: Decimal(p.strip()), range_str.split('-')
-                    )
-                    price_q |= Q(inventory__price__gte=min_price,
-                                 inventory__price__lte=max_price)
-                except (ValueError, Decimal.InvalidOperation):
-                    continue
-            filters &= price_q
 
         return filters

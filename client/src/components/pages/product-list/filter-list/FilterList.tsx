@@ -11,14 +11,12 @@ export const FilterList = (): ReactElement => {
         collections,
         colors,
         metals,
-        prices,
         stones,
         displayFilters
     } = useProductListContext();
 
     const filters: NormalizedFilterGroup[] = normalizeData(
         metals,
-        prices,
         colors,
         stones,
         collections
