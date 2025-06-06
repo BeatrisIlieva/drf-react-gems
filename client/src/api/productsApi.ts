@@ -11,16 +11,17 @@ export const useProductList = () => {
     const getProductList = useCallback(
         async ({
             categoryName,
+            ordering = null,
             page = null,
             colorIds = [],
             stoneIds = [],
             metalIds = [],
-            collectionIds = [],
-            ordering = ''
+            collectionIds = []
         }: FetchProductsParams) => {
             const params = new URLSearchParams();
 
             if (page) params.append('page', page.toString());
+            if (ordering) params.append('ordering', ordering);
             if (colorIds) {
                 colorIds.forEach((id) => params.append('colors', id.toString()));
             }
@@ -35,9 +36,11 @@ export const useProductList = () => {
                     params.append('collections', id.toString())
                 );
             }
-            if (ordering) params.append('ordering', ordering);
 
-            const fullUrl = `${baseUrl}/${categoryName}/?${params.toString()}`;
+            const queryString = params.toString();
+            const fullUrl = queryString
+                ? `${baseUrl}/${categoryName}/?${queryString}`
+                : `${baseUrl}/${categoryName}/`;
 
             try {
                 const response: ProductsResponse = await get(fullUrl);
