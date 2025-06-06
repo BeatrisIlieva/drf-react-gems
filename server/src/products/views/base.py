@@ -44,7 +44,7 @@ class BaseProductListView(ListAPIView):
 
     def _get_products_data(self):
         filters = self._get_filters()
-        ordering = self.request.query_params.get('ordering', '')
+        ordering = self.request.query_params.get('ordering', 'rating')
 
         if not self.model and not filters:
             return {

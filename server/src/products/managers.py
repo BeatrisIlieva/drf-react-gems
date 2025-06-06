@@ -17,21 +17,10 @@ class ProductManager(models.Manager):
     def get_product_item(self, item_id):
         return self.get(pk=item_id)
 
-    def get_product_list(self, filters, ordering=None):
+    def get_product_list(self, filters, ordering):
         qs = self.filter(filters)
 
-        raw_products = self._get_raw_products(qs)
-
-        if ordering:
-            ordering_map = {
-                'price_asc': 'min',
-                'price_desc': '-max',
-                'rating': '-average_rating',
-                'in_stock': '-total_quantity',
-            }
-            order_field = ordering_map.get(ordering)
-            if order_field:
-                raw_products = raw_products.order_by(order_field)
+        raw_products = self._get_raw_products(qs, ordering)
 
         return raw_products
 
@@ -47,7 +36,15 @@ class ProductManager(models.Manager):
     def get_collections_by_count(self, raw_products):
         return self._get_entity_by_count(raw_products, 'collection')
 
-    def _get_raw_products(self, qs):
+    def _get_raw_products(self, qs, ordering):
+        ordering_map = {
+            'price_asc': 'inventory__price',
+            'price_desc': '-inventory__price',
+            'rating': '-average_rating',
+            'in_stock': '-inventory__quantity',
+        }
+        ordering_criteria = ordering_map[ordering]
+
         return (
             qs.select_related(
                 'collection',
@@ -77,6 +74,7 @@ class ProductManager(models.Manager):
                 average_rating=Avg('review__rating', distinct=True),
             )
             .order_by(
+                f'{ordering_criteria}',
                 'id',
                 'collection__name',
             )
