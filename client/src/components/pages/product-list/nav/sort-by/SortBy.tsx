@@ -11,16 +11,14 @@ import styles from './SortBy.module.scss';
 
 export const SortBy = (): ReactElement => {
     const { displayModal, containerRef, toggleDisplayModal } = useToggleDisplayModal();
-    const { updateOrderingCriteria, orderingCriteria } = useProductListContext();
+    const { updateOrdering, ordering } = useProductListContext();
 
     const clickHandler = (value: string) => {
-        updateOrderingCriteria(value);
+        updateOrdering(value);
         toggleDisplayModal();
     };
 
-    const selectedLabel = SORT_OPTIONS.find(
-        (option) => option.value === orderingCriteria
-    )?.label;
+    const selectedLabel = SORT_OPTIONS.find((option) => option.value === ordering)?.label;
 
     return (
         <li className={styles['sort-by']} ref={containerRef}>
@@ -31,7 +29,7 @@ export const SortBy = (): ReactElement => {
                 aria-expanded={displayModal}
                 aria-controls='sort-options'
             >
-                {orderingCriteria ? selectedLabel : 'sort by'}
+                {ordering ? selectedLabel : 'sort by'}
             </span>
             <ChevronToggle onToggle={toggleDisplayModal} isOpen={displayModal} />
 
@@ -40,7 +38,7 @@ export const SortBy = (): ReactElement => {
                     {SORT_OPTIONS.map(({ value, label }) => (
                         <button
                             key={value}
-                            className={`${orderingCriteria === value && styles['selected']}`}
+                            className={`${ordering === value && styles['selected']}`}
                             onClick={() => clickHandler(value)}
                         >
                             {label}

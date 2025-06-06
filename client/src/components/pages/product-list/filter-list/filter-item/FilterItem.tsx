@@ -13,7 +13,7 @@ interface FilterItemProps {
 }
 
 export const FilterItem = ({ label, data }: FilterItemProps): ReactElement => {
-    const { updateEntityCharacteristics, entityStateMapper } = useProductListContext();
+    const { updateEntityCharacteristics, filtersMapper } = useProductListContext();
 
     const { categoryName } = useCategoryName();
 
@@ -64,10 +64,10 @@ export const FilterItem = ({ label, data }: FilterItemProps): ReactElement => {
                 {data.map((item) => (
                     <li
                         key={item.id}
-                        className={`${entityStateMapper[label].includes(item.id) ? styles['selected'] : ''}`.trim()}
+                        className={`${filtersMapper[label].includes(item.id) ? styles['selected'] : ''}`.trim()}
                     >
                         <button
-                            disabled={entityStateMapper[label].includes(item.id)}
+                            disabled={filtersMapper[label].includes(item.id)}
                             className={styles['add-filter']}
                             onClick={() => clickHandler(item.id)}
                         >
@@ -88,7 +88,7 @@ export const FilterItem = ({ label, data }: FilterItemProps): ReactElement => {
                             <span className={styles['count']}>({item.count})</span>
                         </button>
 
-                        {entityStateMapper[label].includes(item.id) && (
+                        {filtersMapper[label].includes(item.id) && (
                             <div
                                 className={styles['remove-filter']}
                                 onClick={() => clickHandler(item.id)}

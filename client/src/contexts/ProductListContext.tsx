@@ -1,13 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import type {
-    Collection,
-    Color,
-    FetchProductsParams,
-    Metal,
-    Product,
-    Stone
-} from '../types/ProductList';
+import type { Collection, Color, Metal, Product, Stone } from '../types/ProductList';
 
 interface ProductListContextType {
     products: Product[];
@@ -15,34 +8,24 @@ interface ProductListContextType {
     colors: Color[];
     count: number;
     metals: Metal[];
-    page: number;
     stones: Stone[];
     loading: boolean;
-    error: string | null;
-    fetchProducts: (params: FetchProductsParams) => Promise<void>;
     loadMoreHandler: () => void;
     loadMoreDisabled: boolean;
     updateEntityCharacteristics: (
-        entityName: 'Collection' | 'Color' | 'Metal' | 'Price' | 'Stone',
+        entityName: 'Collection' | 'Color' | 'Metal' | 'Stone',
         entityId: number
     ) => void;
-    entityStateMapper: {
+    filtersMapper: {
         Color: number[];
         Stone: number[];
         Metal: number[];
         Collection: number[];
     };
     toggleDisplayFilters: () => void;
-    resetPage: () => void;
-
     displayFilters: boolean;
-    updateOrderingCriteria: (criteria: string) => void;
-    orderingCriteria: string;
-
-    collectionIds: number[];
-    colorIds: number[];
-    metalIds: number[];
-    stoneIds: number[];
+    updateOrdering: (criteria: string) => void;
+    ordering: string | null;
 }
 
 export const ProductListContext = createContext<ProductListContextType>({
@@ -51,16 +34,12 @@ export const ProductListContext = createContext<ProductListContextType>({
     colors: [],
     count: 0,
     metals: [],
-    page: 1,
     stones: [],
     loading: false,
-    error: null,
-    fetchProducts: async () => {},
     loadMoreHandler: () => null,
-    resetPage: () => null,
     loadMoreDisabled: false,
     updateEntityCharacteristics: () => null,
-    entityStateMapper: {
+    filtersMapper: {
         Color: [],
         Stone: [],
         Metal: [],
@@ -68,13 +47,8 @@ export const ProductListContext = createContext<ProductListContextType>({
     },
     toggleDisplayFilters: () => null,
     displayFilters: false,
-    updateOrderingCriteria: () => null,
-    orderingCriteria: 'rating',
-
-    collectionIds: [],
-    colorIds: [],
-    metalIds: [],
-    stoneIds: []
+    updateOrdering: () => null,
+    ordering: null
 });
 
 export const useProductListContext = () => {

@@ -49,12 +49,21 @@ export interface ProductsResponse {
     collections: Collection[];
 }
 
-export interface FetchProductsParams {
-    categoryName: string | undefined;
-    page?: number | null;
-    colorIds?: number[];
-    stoneIds?: number[];
-    metalIds?: number[];
-    collectionIds?: number[];
-    ordering?: string;
+// export interface FetchProductsParams {
+//     categoryName: string | undefined;
+//     page?: number | null;
+//     colorIds?: number[];
+//     stoneIds?: number[];
+//     metalIds?: number[];
+//     collectionIds?: number[];
+//     ordering?: string | null;
+// }
+
+export interface ProductFilters {
+    collections: Collection[];
+    colors: Color[];
+    metals: Metal[];
+    stones: Stone[];
 }
+
+export type EntityName = 'collection' | 'color' | 'metal' | 'stone';
