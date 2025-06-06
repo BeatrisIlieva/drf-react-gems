@@ -25,21 +25,35 @@ class ProductManager(models.Manager):
         return raw_products
 
     def get_colors_by_count(self, raw_products):
-        return self._get_entity_by_count(raw_products, 'color', extra_fields=['hex_code'])
+        return self._get_entity_by_count(
+            raw_products,
+            'color',
+            extra_fields=['hex_code']
+        )
 
     def get_stones_by_count(self, raw_products):
-        return self._get_entity_by_count(raw_products, 'stone', extra_fields=['image'])
+        return self._get_entity_by_count(
+            raw_products,
+            'stone',
+            extra_fields=['image']
+        )
 
     def get_metals_by_count(self, raw_products):
-        return self._get_entity_by_count(raw_products, 'metal')
+        return self._get_entity_by_count(
+            raw_products,
+            'metal'
+        )
 
     def get_collections_by_count(self, raw_products):
-        return self._get_entity_by_count(raw_products, 'collection')
+        return self._get_entity_by_count(
+            raw_products,
+            'collection'
+        )
 
     def _get_raw_products(self, qs, ordering):
         ordering_map = {
-            'price_asc': 'inventory__price',
-            'price_desc': '-inventory__price',
+            'price_asc': 'min',
+            'price_desc': '-max',
             'rating': '-average_rating',
             'in_stock': '-inventory__quantity',
         }
@@ -67,7 +81,10 @@ class ProductManager(models.Manager):
                 min=Min('inventory__price'),
                 max=Max('inventory__price'),
                 is_sold_out=Case(
-                    When(total_quantity=0, then=Value(True)),
+                    When(
+                        total_quantity=0,
+                        then=Value(True)
+                    ),
                     default=Value(False),
                     output_field=BooleanField(),
                 ),
@@ -76,17 +93,24 @@ class ProductManager(models.Manager):
             .order_by(
                 f'{ordering_criteria}',
                 'id',
-                'collection__name',
             )
         )
 
     def _get_entity_by_count(self, qs, entity, extra_fields=None):
         values_fields = [f'{entity}__name', f'{entity}__id']
+
         if extra_fields:
             values_fields.extend(
                 [f'{entity}__{field}' for field in extra_fields])
+
         return (
-            qs.values(*values_fields)
-            .annotate(**{f'{entity}_count': Count('id', distinct=True)})
-            .order_by(f'-{entity}_count')
+            qs.values(
+                *values_fields
+            )
+            .annotate(
+                **{f'{entity}_count': Count('id', distinct=True)}
+            )
+            .order_by(
+                f'-{entity}_count'
+            )
         )
