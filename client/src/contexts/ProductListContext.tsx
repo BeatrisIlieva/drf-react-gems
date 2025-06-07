@@ -10,49 +10,50 @@ import type {
 } from '../types/ProductList';
 
 interface ProductListContextType {
+    count: number;
+    ordering: string | null;
+    loading: boolean;
+    loadMoreDisabled: boolean;
+    displayFilters: boolean;
     products: Product[];
     collections: Collection[];
     colors: Color[];
-    count: number;
     metals: Metal[];
     stones: Stone[];
-    loading: boolean;
-    loadMoreHandler: () => void;
-    loadMoreDisabled: boolean;
-    updateFilterByEntity: (entityName: EntityName, entityId: number) => void;
     filtersMapper: {
         Color: number[];
         Stone: number[];
         Metal: number[];
         Collection: number[];
     };
+    loadMoreHandler: () => void;
     toggleDisplayFilters: () => void;
-    displayFilters: boolean;
     updateOrdering: (criteria: string) => void;
-    ordering: string | null;
+    updateFilterByEntity: (entityName: EntityName, entityId: number) => void;
 }
 
 export const ProductListContext = createContext<ProductListContextType>({
+    count: 0,
+    ordering: null,
+    loading: false,
+    loadMoreDisabled: false,
+    displayFilters: false,
+
     products: [],
     collections: [],
     colors: [],
-    count: 0,
     metals: [],
     stones: [],
-    loading: false,
-    loadMoreHandler: () => null,
-    loadMoreDisabled: false,
-    updateFilterByEntity: () => null,
     filtersMapper: {
         Color: [],
         Stone: [],
         Metal: [],
         Collection: []
     },
+    loadMoreHandler: () => null,
     toggleDisplayFilters: () => null,
-    displayFilters: false,
     updateOrdering: () => null,
-    ordering: null
+    updateFilterByEntity: () => null
 });
 
 export const useProductListContext = () => {
