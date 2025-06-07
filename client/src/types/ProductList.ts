@@ -67,11 +67,4 @@ export interface FetchProductsParamsExtended extends FetchProductsParams {
     shouldResetOrdering?: boolean;
 }
 
-// export interface ProductFilters {
-//     collections: Collection[];
-//     colors: Color[];
-//     metals: Metal[];
-//     stones: Stone[];
-// }
-
 export type EntityName = 'Collection' | 'Color' | 'Metal' | 'Stone';
