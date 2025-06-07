@@ -5,7 +5,7 @@ import type { NormalizedFilterItem } from '../../../../../types/NormalizedFilter
 import { Icon } from '../../../../reusable/icon/Icon';
 import { useProductListContext } from '../../../../../contexts/ProductListContext';
 import { ChevronToggle } from '../../../../reusable/chevron-toggle/ChevronToggle';
-import { useCategoryName } from '../../../../../hooks/useCategoryName';
+import { useCategoryName } from '../../../../../hooks/products/useCategoryName';
 
 interface FilterItemProps {
     label: 'Collection' | 'Color' | 'Metal' | 'Stone';

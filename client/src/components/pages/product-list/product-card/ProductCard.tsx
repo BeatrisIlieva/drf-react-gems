@@ -4,7 +4,7 @@ import styles from './ProductCard.module.scss';
 import { Icon } from '../../../reusable/icon/Icon';
 import { ToggleImageButtons } from './toggle-image-buttons/ToggleImageButtons';
 import { InventoryState } from './inventory-state/InventoryState';
-import { useCategoryName } from '../../../../hooks/useCategoryName';
+import { useCategoryName } from '../../../../hooks/products/useCategoryName';
 import { StyledTextBlock } from '../../../reusable/styled-text-block/StyledTextBlock';
 import { formatPrice } from '../../../../utils/formatPrice';
 import { Stars } from '../../../reusable/stars/Stars';

@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import { useCategoryName } from '../../../../hooks/useCategoryName';
+import { useCategoryName } from '../../../../hooks/products/useCategoryName';
 import { Link } from 'react-router';
 
 import styles from './HomeLink.module.scss';

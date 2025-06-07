@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
-import type { EntityName } from '../types/ProductList';
-import { toggleIdInArray } from '../utils/toggleIdInArray';
+import type { EntityName } from '../../types/ProductList';
+import { toggleIdInArray } from '../../utils/toggleIdInArray';
 
 export const useFilters = () => {
     const [colorIds, setColorIds] = useState<number[]>([]);

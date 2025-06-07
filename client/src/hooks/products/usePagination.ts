@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { getNextPageNumber } from '../utils/getNextPageNumber';
+import { getNextPageNumber } from '../../utils/getNextPageNumber';
 
 export const usePagination = () => {
     const [nextPage, setNextPage] = useState<number | null>(null);

@@ -2,7 +2,7 @@ import { type ReactNode, useMemo } from 'react';
 
 import { ProductListContext } from '../contexts/ProductListContext';
 
-import { useProductsData } from '../hooks/useProductsData';
+import { useProductsData } from '../hooks/products/useProductsData';
 
 interface Props {
     children: ReactNode;

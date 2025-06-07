@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { useProductList } from '../api/productsApi';
+import { useProductList } from '../../api/productsApi';
 import { useCategoryName } from './useCategoryName';
 import { useFilters } from './useFilters';
 import { useOrdering } from './useOrdering';
@@ -13,7 +13,7 @@ import type {
     Metal,
     Product,
     Stone
-} from '../types/ProductList';
+} from '../../types/ProductList';
 
 export const useProductsData = () => {
     const { categoryName } = useCategoryName();
