@@ -4,8 +4,6 @@ import { ProductListContext } from '../contexts/ProductListContext';
 import { useCategoryName } from '../hooks/useCategoryName';
 import { useProductList } from '../api/productsApi';
 
-import { getNextPageNumber } from '../utils/getNextPageNumber';
-
 import {
     type Collection,
     type Color,
@@ -16,6 +14,7 @@ import {
 } from '../types/ProductList';
 import { useFilters } from '../hooks/useFilters';
 import { useOrdering } from '../hooks/useOrdering';
+import { useUpdatePage } from '../hooks/useUpdatePage';
 
 interface Props {
     children: ReactNode;
@@ -24,6 +23,7 @@ interface Props {
 export const ProductListProvider = ({ children }: Props) => {
     const { categoryName } = useCategoryName();
     const { getProductList } = useProductList();
+    const { nextPage, updatePage } = useUpdatePage();
     const {
         colorIds,
         stoneIds,
@@ -47,16 +47,9 @@ export const ProductListProvider = ({ children }: Props) => {
     const [stones, setStones] = useState<Stone[]>([]);
 
     const [loading, setLoading] = useState(false);
-    const [nextPage, setNextPage] = useState<number | null>(null);
 
     // Derived state for loadMoreDisabled to avoid an extra state variable
     const loadMoreDisabled = useMemo(() => nextPage === null, [nextPage]);
-
-    // Update pagination state and load more disabling status
-    const updatePage = useCallback((next: string | null) => {
-        const pageNumber = getNextPageNumber(next);
-        setNextPage(pageNumber);
-    }, []);
 
     // Fetch products with parameters
     const fetchProducts = useCallback(
