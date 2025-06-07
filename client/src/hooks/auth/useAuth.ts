@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import { UserContext } from '../contexts/UserContext';
-import type { UserContextType } from '../types/UserContext';
+import { UserContext } from '../../contexts/UserContext';
+import type { UserContextType } from '../../types/UserContext';
 
 interface UseAuthResult extends UserContextType {
     userId: string;
