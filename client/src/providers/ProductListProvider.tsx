@@ -14,7 +14,7 @@ import {
 } from '../types/ProductList';
 import { useFilters } from '../hooks/useFilters';
 import { useOrdering } from '../hooks/useOrdering';
-import { useUpdatePage } from '../hooks/useUpdatePage';
+import { usePagination } from '../hooks/usePagination';
 
 interface Props {
     children: ReactNode;
@@ -23,7 +23,7 @@ interface Props {
 export const ProductListProvider = ({ children }: Props) => {
     const { categoryName } = useCategoryName();
     const { getProductList } = useProductList();
-    const { nextPage, updatePage } = useUpdatePage();
+    const { nextPage, updatePage } = usePagination();
     const {
         colorIds,
         stoneIds,
