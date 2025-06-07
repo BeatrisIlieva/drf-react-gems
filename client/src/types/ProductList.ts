@@ -64,6 +64,7 @@ export interface FetchProductsParamsExtended extends FetchProductsParams {
     shouldUpdateFiltersByEntity?: boolean;
     shouldResetFilters?: boolean;
     shouldSetProductsCount?: boolean;
+    shouldResetOrdering?: boolean;
 }
 
 // export interface ProductFilters {

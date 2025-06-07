@@ -15,7 +15,6 @@ import {
     type FetchProductsParamsExtended
 } from '../types/ProductList';
 import { useFilters } from '../hooks/useFilters';
-import { useOrdering } from '../hooks/useOrdering';
 
 interface Props {
     children: ReactNode;
@@ -36,8 +35,6 @@ export const ProductListProvider = ({ children }: Props) => {
         resetFilters
     } = useFilters();
 
-    const { ordering, updateOrdering, resetOrdering } = useOrdering();
-
     // State declarations
     const [products, setProducts] = useState<Product[]>([]);
     const [collections, setCollections] = useState<Collection[]>([]);
@@ -46,11 +43,17 @@ export const ProductListProvider = ({ children }: Props) => {
     const [metals, setMetals] = useState<Metal[]>([]);
     const [stones, setStones] = useState<Stone[]>([]);
 
+    const [ordering, setOrdering] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [nextPage, setNextPage] = useState<number | null>(null);
 
     // Derived state for loadMoreDisabled to avoid an extra state variable
     const loadMoreDisabled = useMemo(() => nextPage === null, [nextPage]);
+
+    // Update ordering criteria
+    const updateOrdering = useCallback((criteria: string) => {
+        setOrdering(criteria);
+    }, []);
 
     // Update pagination state and load more disabling status
     const updatePage = useCallback((next: string | null) => {
@@ -71,8 +74,7 @@ export const ProductListProvider = ({ children }: Props) => {
             shouldUpdateProducts = false,
             shouldUpdateFiltersByEntity = false,
             shouldResetFilters = false,
-            shouldSetProductsCount = false,
-            shouldResetOrdering = false
+            shouldSetProductsCount = false
         }: FetchProductsParamsExtended) => {
             setLoading(true);
 
@@ -108,10 +110,7 @@ export const ProductListProvider = ({ children }: Props) => {
 
                 if (shouldResetFilters) {
                     resetFilters();
-                }
-
-                if (shouldResetOrdering) {
-                    resetOrdering();
+                    setOrdering(null);
                 }
             } catch (error) {
                 console.error(error);
@@ -119,7 +118,7 @@ export const ProductListProvider = ({ children }: Props) => {
                 setLoading(false);
             }
         },
-        [getProductList, updatePage, resetFilters, resetOrdering]
+        [getProductList, updatePage, resetFilters]
     );
 
     // Load more products handler
@@ -152,8 +151,7 @@ export const ProductListProvider = ({ children }: Props) => {
         fetchProducts({
             categoryName,
             shouldUpdateFiltersByEntity: true,
-            shouldResetFilters: true,
-            shouldResetOrdering: true
+            shouldResetFilters: true
         });
     }, [categoryName, fetchProducts]);
 
