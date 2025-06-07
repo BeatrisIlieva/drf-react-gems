@@ -13,7 +13,7 @@ interface FilterItemProps {
 }
 
 export const FilterItem = ({ label, data }: FilterItemProps): ReactElement => {
-    const { updateEntityCharacteristics, filtersMapper } = useProductListContext();
+    const { updateFilterByEntity, filtersMapper } = useProductListContext();
 
     const { categoryName } = useCategoryName();
 
@@ -40,7 +40,7 @@ export const FilterItem = ({ label, data }: FilterItemProps): ReactElement => {
     }, [categoryName]);
 
     const clickHandler = (itemId: string | number) => {
-        updateEntityCharacteristics(label, itemId as number);
+        updateFilterByEntity(label, itemId as number);
     };
 
     return (

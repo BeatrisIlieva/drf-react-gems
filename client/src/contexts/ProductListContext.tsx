@@ -1,6 +1,13 @@
 import { createContext, useContext } from 'react';
 
-import type { Collection, Color, Metal, Product, Stone } from '../types/ProductList';
+import type {
+    Collection,
+    Color,
+    EntityName,
+    Metal,
+    Product,
+    Stone
+} from '../types/ProductList';
 
 interface ProductListContextType {
     products: Product[];
@@ -12,10 +19,7 @@ interface ProductListContextType {
     loading: boolean;
     loadMoreHandler: () => void;
     loadMoreDisabled: boolean;
-    updateEntityCharacteristics: (
-        entityName: 'Collection' | 'Color' | 'Metal' | 'Stone',
-        entityId: number
-    ) => void;
+    updateFilterByEntity: (entityName: EntityName, entityId: number) => void;
     filtersMapper: {
         Color: number[];
         Stone: number[];
@@ -38,7 +42,7 @@ export const ProductListContext = createContext<ProductListContextType>({
     loading: false,
     loadMoreHandler: () => null,
     loadMoreDisabled: false,
-    updateEntityCharacteristics: () => null,
+    updateFilterByEntity: () => null,
     filtersMapper: {
         Color: [],
         Stone: [],
