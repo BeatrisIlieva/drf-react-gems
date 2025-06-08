@@ -2,36 +2,23 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useProductList } from '../../api/productsApi';
 import { useCategoryName } from './useCategoryName';
-import { useFilters } from './useFilters';
-import { useOrdering } from './useOrdering';
 import { usePagination } from './usePagination';
 
 import type {
     Collection,
     Color,
+    EntityName,
     FetchProductsParamsExtended,
     Metal,
     Product,
     Stone
 } from '../../types/ProductList';
+import { toggleIdInArray } from '../../utils/toggleIdInArray';
 
 export const useProductsData = () => {
     const { categoryName } = useCategoryName();
     const { getProductList } = useProductList();
     const { nextPage, updatePage } = usePagination();
-    const {
-        colorIds,
-        stoneIds,
-        metalIds,
-        collectionIds,
-        displayFilters,
-        filtersMapper,
-        toggleDisplayFilters,
-        updateFilterByEntity,
-        resetFilters
-    } = useFilters();
-
-    const { ordering, updateOrdering, resetOrdering } = useOrdering();
 
     const [products, setProducts] = useState<Product[]>([]);
     const [collections, setCollections] = useState<Collection[]>([]);
@@ -39,10 +26,54 @@ export const useProductsData = () => {
     const [count, setCount] = useState(0);
     const [metals, setMetals] = useState<Metal[]>([]);
     const [stones, setStones] = useState<Stone[]>([]);
-
+    const [colorIds, setColorIds] = useState<number[]>([]);
+    const [stoneIds, setStoneIds] = useState<number[]>([]);
+    const [metalIds, setMetalIds] = useState<number[]>([]);
+    const [collectionIds, setCollectionIds] = useState<number[]>([]);
+    const [displayFilters, setDisplayFilters] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    const [ordering, setOrdering] = useState<string | null>(null);
+
     const loadMoreDisabled = useMemo(() => nextPage === null, [nextPage]);
+
+    const resetOrdering = useCallback(() => {
+        setOrdering(null);
+    }, []);
+
+    const filtersMapper = useMemo(
+        () => ({
+            Color: colorIds,
+            Stone: stoneIds,
+            Metal: metalIds,
+            Collection: collectionIds
+        }),
+        [colorIds, stoneIds, metalIds, collectionIds]
+    );
+
+    const filterToggleFunctions = useMemo<
+        Record<EntityName, (id: number | string) => void>
+    >(
+        () => ({
+            Collection: (id) =>
+                setCollectionIds((prev) => toggleIdInArray(prev, id as number)),
+            Color: (id) => setColorIds((prev) => toggleIdInArray(prev, id as number)),
+            Metal: (id) => setMetalIds((prev) => toggleIdInArray(prev, id as number)),
+            Stone: (id) => setStoneIds((prev) => toggleIdInArray(prev, id as number))
+        }),
+        []
+    );
+
+    const resetFilters = useCallback(() => {
+        setColorIds([]);
+        setStoneIds([]);
+        setMetalIds([]);
+        setCollectionIds([]);
+    }, []);
+
+    const toggleDisplayFilters = useCallback(() => {
+        setDisplayFilters((prev) => !prev);
+    }, []);
 
     const fetchProducts = useCallback(
         async ({
@@ -107,6 +138,62 @@ export const useProductsData = () => {
         [getProductList, updatePage, resetFilters, resetOrdering]
     );
 
+    const updateFilterByEntity = useCallback(
+        (entityName: EntityName, entityId: number | string) => {
+            const toggle = toggleIdInArray;
+
+            const newColorIds =
+                entityName === 'Color' ? toggle(colorIds, entityId as number) : colorIds;
+            const newStoneIds =
+                entityName === 'Stone' ? toggle(stoneIds, entityId as number) : stoneIds;
+            const newMetalIds =
+                entityName === 'Metal' ? toggle(metalIds, entityId as number) : metalIds;
+            const newCollectionIds =
+                entityName === 'Collection'
+                    ? toggle(collectionIds, entityId as number)
+                    : collectionIds;
+
+            filterToggleFunctions[entityName](entityId);
+
+            fetchProducts({
+                categoryName,
+                colorIds: newColorIds,
+                stoneIds: newStoneIds,
+                metalIds: newMetalIds,
+                collectionIds: newCollectionIds,
+                ordering,
+                shouldUpdateFiltersByEntity: true
+            });
+        },
+        [
+            colorIds,
+            stoneIds,
+            metalIds,
+            collectionIds,
+            ordering,
+            fetchProducts,
+            categoryName,
+            filterToggleFunctions
+        ]
+    );
+
+    const updateOrdering = useCallback(
+        (criteria: string) => {
+            setOrdering(criteria);
+
+            fetchProducts({
+                categoryName,
+                colorIds,
+                stoneIds,
+                metalIds,
+                collectionIds,
+                ordering: criteria,
+                shouldUpdateFiltersByEntity: true
+            });
+        },
+        [categoryName, colorIds, stoneIds, metalIds, collectionIds, fetchProducts]
+    );
+
     const loadMoreHandler = useCallback(() => {
         if (!nextPage) return;
 
@@ -140,26 +227,6 @@ export const useProductsData = () => {
         });
     }, [categoryName, fetchProducts]);
 
-    useEffect(() => {
-        fetchProducts({
-            categoryName,
-            colorIds,
-            stoneIds,
-            metalIds,
-            collectionIds,
-            ordering,
-            shouldUpdateFiltersByEntity: true
-        });
-    }, [
-        categoryName,
-        colorIds,
-        stoneIds,
-        metalIds,
-        collectionIds,
-        ordering,
-        fetchProducts
-    ]);
-
     return {
         products,
         collections,
@@ -175,6 +242,7 @@ export const useProductsData = () => {
         toggleDisplayFilters,
         displayFilters,
         updateOrdering,
-        ordering
+        ordering,
+        fetchProducts
     };
 };

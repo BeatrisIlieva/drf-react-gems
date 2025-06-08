@@ -38,7 +38,6 @@ export const ProductListContext = createContext<ProductListContextType>({
     loading: false,
     loadMoreDisabled: false,
     displayFilters: false,
-
     products: [],
     collections: [],
     colors: [],

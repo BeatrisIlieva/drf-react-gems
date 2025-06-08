@@ -1,6 +1,6 @@
 import { useContext, useCallback, useMemo } from 'react';
 import { UserContext} from '../contexts/UserContext';
-import { useAuthRefresh } from './useAuthRefresh';
+import { useAuthRefresh } from './auth/useAuthRefresh';
 import { useGuest } from './useGuest';
 import type { UserContextType } from '../types/UserContext';
 
