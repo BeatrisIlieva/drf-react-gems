@@ -2,11 +2,12 @@ import { useCallback, useEffect, type ReactElement } from 'react';
 import { useProductListContext } from '../../../contexts/ProductListContext';
 
 import styles from './ProductList.module.scss';
-import { ProductCard } from './product-card/ProductCard';
+
 import { FilterList } from './filter-list/FilterList';
 import { HomeLink } from './home-link/HomeLink';
 import { Nav } from './nav/Nav';
 import { useSentinel } from '../../../hooks/useSentinel';
+import { ProductCard } from './product-card/ProductCard';
 
 const SCROLL_OFFSET = 10;
 
@@ -59,8 +60,8 @@ export const ProductList = (): ReactElement => {
                 <FilterList />
 
                 <div className={styles['wrapper-inner']}>
+                    
                     <ul className={styles['products']}>
-                        {/* {loading && <LoadingSpinner />} */}
                         {products?.map((product) => (
                             <ProductCard key={product.id} {...product} />
                         ))}

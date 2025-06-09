@@ -222,6 +222,7 @@ export const useProductsData = () => {
     ]);
 
     useEffect(() => {
+        setProducts([]);
         fetchProducts({
             categoryName,
             shouldUpdateFiltersByEntity: true,
