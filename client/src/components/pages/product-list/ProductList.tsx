@@ -1,58 +1,70 @@
-import { useEffect, type ReactElement } from 'react';
+import { useCallback, useEffect, type ReactElement } from 'react';
 import { useProductListContext } from '../../../contexts/ProductListContext';
 
 import styles from './ProductList.module.scss';
 import { ProductCard } from './product-card/ProductCard';
 import { FilterList } from './filter-list/FilterList';
-import { Button } from '../../reusable/button/Button';
 import { HomeLink } from './home-link/HomeLink';
 import { Nav } from './nav/Nav';
 import { useSentinel } from '../../../hooks/useSentinel';
 
+const SCROLL_OFFSET = 10;
+
+function debounce(fn: () => void, delay: number) {
+    let timeoutId: number;
+    return () => {
+        clearTimeout(timeoutId);
+        timeoutId = window.setTimeout(fn, delay);
+    };
+}
+
 export const ProductList = (): ReactElement => {
-    const {
-        products,
-        // loading,
-        // error,
-        fetchProducts,
-        loadMoreHandler,
-        loadMoreDisabled,
-        displayFilters
-    } = useProductListContext();
+    const { products, loading, loadMoreHandler, loadMoreDisabled, displayFilters } =
+        useProductListContext();
 
     const { sentinelRef, isSticky } = useSentinel();
 
-    // useEffect(() => {
-    //     fetchProducts();
-    // }, [fetchProducts]);
+    const handleScroll = useCallback(() => {
+        const scrollPosition = window.innerHeight + window.scrollY;
+        const bottomPosition = document.documentElement.scrollHeight;
+
+        const nearBottom = bottomPosition - scrollPosition < SCROLL_OFFSET;
+
+        if (nearBottom && !loading && !loadMoreDisabled) {
+            loadMoreHandler();
+        }
+    }, [loading, loadMoreDisabled, loadMoreHandler]);
+
+    useEffect(() => {
+        const debouncedScroll = debounce(handleScroll, 150);
+        window.addEventListener('scroll', debouncedScroll);
+        return () => window.removeEventListener('scroll', debouncedScroll);
+    }, [handleScroll]);
 
     return (
         <section className={styles['product-list']}>
             <div ref={sentinelRef} className={styles['sentinel']} />
 
+            <HomeLink />
+
             <header className={isSticky ? styles['sticky'] : ''}>
-                <HomeLink />
                 <Nav />
             </header>
+
             <div
-                className={`${styles['wrapper-products']} ${displayFilters ? styles['with-gap'] : styles['no-gap']}`}
+                className={`${styles['wrapper-products']} ${
+                    displayFilters ? styles['with-gap'] : styles['no-gap']
+                }`}
             >
                 <FilterList />
 
                 <div className={styles['wrapper-inner']}>
                     <ul className={styles['products']}>
+                        {/* {loading && <LoadingSpinner />} */}
                         {products?.map((product) => (
                             <ProductCard key={product.id} {...product} />
                         ))}
                     </ul>
-                    {!loadMoreDisabled && products.length > 0 && (
-                        <Button
-                            callbackHandler={loadMoreHandler}
-                            title={'Load More'}
-                            color={'white'}
-                            disabled={loadMoreDisabled}
-                        />
-                    )}
                 </div>
             </div>
         </section>

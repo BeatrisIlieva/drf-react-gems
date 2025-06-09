@@ -8,12 +8,12 @@
     }
 
     header {
+        background: vars.$white;
+        z-index: 20;
+        padding-top: 1.25em;
+        transition: border-bottom 0.3s ease;
         position: sticky;
         top: 0;
-        background: vars.$white;
-        z-index: 50;
-        margin-top: 1em;
-        transition: border-bottom 0.3s ease;
 
         &.sticky {
             border-bottom: 0.1em solid vars.$medium-grey;

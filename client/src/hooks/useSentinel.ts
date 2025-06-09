@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 
-
 export const useSentinel = () => {
     const sentinelRef = useRef<HTMLDivElement>(null);
     const [isSticky, setIsSticky] = useState(false);
@@ -33,3 +32,5 @@ export const useSentinel = () => {
         isSticky
     };
 };
+
+

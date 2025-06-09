@@ -18,7 +18,7 @@ export const Header = (): ReactElement => {
             const header = headerRef.current;
             if (!header) return;
 
-            if (currentScrollY > 20 && currentScrollY > lastScrollY) {
+            if (currentScrollY > 0 && currentScrollY > lastScrollY) {
                 header.classList.remove(styles.visible);
                 header.classList.add(styles.hidden);
             } else if (currentScrollY < lastScrollY) {

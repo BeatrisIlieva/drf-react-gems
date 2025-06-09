@@ -194,10 +194,10 @@ export const useProductsData = () => {
         [categoryName, colorIds, stoneIds, metalIds, collectionIds, fetchProducts]
     );
 
-    const loadMoreHandler = useCallback(() => {
-        if (!nextPage) return;
+    const loadMoreHandler = useCallback(async () => {
+        if (!nextPage || loading || loadMoreDisabled) return;
 
-        fetchProducts({
+        await fetchProducts({
             page: nextPage,
             categoryName,
             colorIds,
@@ -207,6 +207,7 @@ export const useProductsData = () => {
             ordering,
             shouldUpdateProducts: true
         });
+
     }, [
         nextPage,
         categoryName,
@@ -215,7 +216,9 @@ export const useProductsData = () => {
         metalIds,
         collectionIds,
         ordering,
-        fetchProducts
+        fetchProducts,
+        loading,
+        loadMoreDisabled
     ]);
 
     useEffect(() => {
