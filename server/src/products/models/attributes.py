@@ -1,5 +1,6 @@
 from django.db import models
 
+from src.products.managers import StoneManager
 from src.products.models.mixins import NameFieldMixin
 
 
@@ -21,3 +22,4 @@ class Metal(NameFieldMixin):
 
 class Stone(NameFieldMixin, models.Model):
     image = models.URLField()
+    objects = StoneManager()

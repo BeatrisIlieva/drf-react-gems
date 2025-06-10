@@ -1,4 +1,4 @@
-from src.products.models.base import Product
+from src.products.models.product import Product
 
 
 class Earwear(Product):

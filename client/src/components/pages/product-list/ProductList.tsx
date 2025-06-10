@@ -60,7 +60,6 @@ export const ProductList = (): ReactElement => {
                 <FilterList />
 
                 <div className={styles['wrapper-inner']}>
-                    
                     <ul className={styles['products']}>
                         {products?.map((product) => (
                             <ProductCard key={product.id} {...product} />

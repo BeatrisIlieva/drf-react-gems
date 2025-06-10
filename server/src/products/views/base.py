@@ -3,6 +3,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView
+from django.core.exceptions import ImproperlyConfigured
 
 from src.products.serializers.type_list import ProductListSerializer
 
@@ -12,10 +13,16 @@ class ProductPagination(PageNumberPagination):
 
 
 class BaseProductListView(ListAPIView):
-    model = None
     serializer_class = ProductListSerializer
     permission_classes = [AllowAny]
     pagination_class = ProductPagination
+    
+    def get_model(self):
+        if self.model is None:
+            raise ImproperlyConfigured(
+                f"{self.__class__.__name__} must define a 'model' attribute."
+            )
+        return self.model
 
     def list(self, request, *args, **kwargs):
         data = self._get_products_data()
