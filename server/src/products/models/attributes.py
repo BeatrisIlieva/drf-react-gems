@@ -1,4 +1,4 @@
-from src.products.models.mixins import NameFieldMixin
+from src.products.mixins import NameFieldMixin
 from src.products.managers.attributes import (
     CollectionManager,
     ColorManager,

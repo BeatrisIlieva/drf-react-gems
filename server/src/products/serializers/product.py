@@ -6,15 +6,15 @@ from src.products.models.product import Earwear, Neckwear, Wristwear, Fingerwear
 class BaseProductListSerializer(serializers.ModelSerializer):
     min_price = serializers.DecimalField(
         max_digits=7,
-        decimal_places=2
+        decimal_places=2,
     )
     max_price = serializers.DecimalField(
         max_digits=7,
-        decimal_places=2
+        decimal_places=2,
     )
     average_rating = serializers.DecimalField(
         max_digits=7,
-        decimal_places=2
+        decimal_places=2,
     )
     is_sold_out = serializers.BooleanField()
     collection__name = serializers.CharField()

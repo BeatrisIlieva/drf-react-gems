@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.validators import MinValueValidator
 from django.db import models
 
-from src.products.models.mixins import NameFieldMixin
+from src.products.mixins import NameFieldMixin
 
 
 class Inventory(models.Model):

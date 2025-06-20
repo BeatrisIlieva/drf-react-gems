@@ -4,11 +4,12 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.db.models import Q
 
+from src.products.mixins import FilterMixin
 from src.products.models.attributes import Collection, Color, Metal, Stone
 from src.products.serializers.attributes import CollectionSerializer, ColorSerializer, MetalSerializer, StoneSerializer
 
 
-class BaseAttributeView(RetrieveAPIView):
+class BaseAttributeView(FilterMixin, RetrieveAPIView):
     permission_classes = [AllowAny]
     model = None
     serializer_class = None
@@ -29,7 +30,7 @@ class BaseAttributeView(RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         category = self.request.query_params.get('category')
-        filters = self._get_filters(category)
+        filters = self._get_filters_for_attributes(category)
         data = self.model.objects.get_attributes_count(filters, category)
 
         serializer = self.get_serializer(data, many=True)
@@ -37,32 +38,6 @@ class BaseAttributeView(RetrieveAPIView):
         return Response({
             'stones': serializer.data,
         })
-
-    def _get_filters(self, category):
-        colors = self.request.query_params.getlist('colors')
-        stones = self.request.query_params.getlist('stones')
-        metals = self.request.query_params.getlist('metals')
-        collections = self.request.query_params.getlist('collections')
-
-        filters = Q()
-        if colors:
-            filters &= Q(
-                **{f'{category}__color_id__in': colors}
-            )
-        if stones:
-            filters &= Q(
-                **{f'{category}__stone_id__in': stones}
-            )
-        if metals:
-            filters &= Q(
-                **{f'{category}__metal_id__in': metals}
-            )
-        if collections:
-            filters &= Q(
-                **{f'{category}__collection_id__in': collections}
-            )
-
-        return filters
 
 
 class CollectionRetrieveView(BaseAttributeView):

@@ -5,6 +5,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView
 from django.core.exceptions import ImproperlyConfigured
 
+from src.products.mixins import FilterMixin
 from src.products.serializers.product import NeckwearSerializer, EarwearSerializer, WristwearSerializer, FingerwearSerializer
 from src.products.models import Earwear, Neckwear, Wristwear, Fingerwear
 
@@ -13,7 +14,7 @@ class ProductPagination(PageNumberPagination):
     page_size = 8
 
 
-class BaseProductListView(ListAPIView):
+class BaseProductListView(FilterMixin, ListAPIView):
     permission_classes = [AllowAny]
     pagination_class = ProductPagination
     model = None
@@ -50,28 +51,10 @@ class BaseProductListView(ListAPIView):
         })
 
     def _get_products_data(self):
-        filters = self._get_filters()
+        filters = self._get_filters_for_product()
         ordering = self.request.query_params.get('ordering', 'rating')
 
         return self.model.objects.get_product_list(filters, ordering)
-
-    def _get_filters(self):
-        colors = self.request.query_params.getlist('colors')
-        stones = self.request.query_params.getlist('stones')
-        metals = self.request.query_params.getlist('metals')
-        collections = self.request.query_params.getlist('collections')
-
-        filters = Q()
-        if colors:
-            filters &= Q(color_id__in=colors)
-        if stones:
-            filters &= Q(stone_id__in=stones)
-        if metals:
-            filters &= Q(metal__id__in=metals)
-        if collections:
-            filters &= Q(collection__id__in=collections)
-
-        return filters
 
 
 class EarwearListView(BaseProductListView):
