@@ -14,5 +14,8 @@ urlpatterns = [
     path('fingerwears/', FingerwearListView.as_view(), name='fingerwear-list'),
     path('neckwears/', NeckwearListView.as_view(), name='neckwear-list'),
     path('wristwears/', WristwearListView.as_view(), name='wristwear-list'),
-    path('stones/', StoneRetrieveView.as_view(), name='stone-retrieve')
+    path('stones/', StoneRetrieveView.as_view(), name='stone-retrieve'),
+    path('colors/', StoneRetrieveView.as_view(), name='color-retrieve'),
+    path('collections/', StoneRetrieveView.as_view(), name='collection-retrieve'),
+    path('metals/', StoneRetrieveView.as_view(), name='metal-retrieve'),
 ]

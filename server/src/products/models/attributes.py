@@ -1,5 +1,10 @@
-from src.products.managers import CollectionManager, ColorManager, MetalManager, StoneManager
 from src.products.models.mixins import NameFieldMixin
+from src.products.managers.attributes import (
+    CollectionManager,
+    ColorManager,
+    MetalManager,
+    StoneManager
+)
 
 
 class Collection(NameFieldMixin):
