@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 
 from src.products.management.commands.utils.create_product import create_product
 from src.products.management.products_data import products_data
-from src.products.management.commands.utils.entities_as_list_mapper import entities_as_list_mapper
+from src.products.management.commands.utils.attributes_as_list_mapper import attributes_as_list_mapper
 
 
 class Command(BaseCommand):
@@ -33,7 +33,7 @@ class Command(BaseCommand):
 
     def initialize_data(self):
 
-        for model, list in entities_as_list_mapper.items():
+        for model, list in attributes_as_list_mapper.items():
             for element in list:
                 model.objects.create(
                     name=element,

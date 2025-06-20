@@ -195,7 +195,7 @@ class Command(BaseCommand):
                 random.shuffle(shuffled_users)
 
                 for user in shuffled_users:
-                    rating = randint(2, 5)
+                    rating = randint(3, 5)
                     comment = random.choice(sample_reviews)
 
                     Review.objects.create(

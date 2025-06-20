@@ -1,7 +1,7 @@
 from src.products.models import Collection, Metal, Size, Stone, Color
 
 
-entities_as_list_mapper = {
+attributes_as_list_mapper = {
     Collection: [
         'Daisy',
         'Gerbera',
