@@ -3,8 +3,6 @@ import random
 import django
 from django.core.management.base import BaseCommand
 
-from src.products.management.commands.utils.create_colors import create_colors
-from src.products.management.commands.utils.create_stones import create_stones
 from src.products.management.commands.utils.create_product import create_product
 from src.products.management.products_data import products_data
 from src.products.management.commands.utils.entities_as_list_mapper import entities_as_list_mapper
@@ -41,9 +39,6 @@ class Command(BaseCommand):
                     name=element,
                 )
 
-        create_colors()
-        create_stones()
-        
         random.shuffle(products_data)
 
         for product_data in products_data:

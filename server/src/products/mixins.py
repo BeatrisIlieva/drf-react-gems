@@ -19,7 +19,6 @@ class NameFieldMixin(models.Model):
 
 
 class FilterMixin:
-
     def _get_params(self):
         return {
             'colors': self.request.query_params.getlist('colors'),
