@@ -51,8 +51,8 @@ class BaseProductManager(models.Manager):
             )
             .annotate(
                 total_quantity=Sum('inventory__quantity'),
-                min=Min('inventory__price'),
-                max=Max('inventory__price'),
+                min_price=Min('inventory__price'),
+                max_price=Max('inventory__price'),
                 is_sold_out=Case(
                     When(
                         total_quantity=0,

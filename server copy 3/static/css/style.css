@@ -1,0 +1,38 @@
+button,
+input,
+select,
+optgroup,
+textarea {
+    font: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    opacity: 1;
+    background-color: #0000;
+    border-radius: 0.3rem;
+    border: 0.1rem solid lightgray !important;
+    padding: 0.3rem;
+}
+
+label {
+    font-weight: 700;
+    margin-bottom: 1em;
+    color: #000;
+    opacity: 0.8;
+}
+
+button {
+    cursor: pointer;
+}
+
+input,
+select {
+    padding: 0.6em !important;
+}
+
+@media (min-width: 600px) {
+    #toolbar > form > div {
+        min-width: 50ch !important;
+    }
+}

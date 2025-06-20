@@ -1,2 +1,2 @@
-from .base import *
 from .product import *
+from .attributtes import *

@@ -16,6 +16,11 @@ class BaseProductListSerializer(serializers.ModelSerializer):
         max_digits=7,
         decimal_places=2
     )
+    is_sold_out = serializers.BooleanField()
+    collection__name = serializers.CharField()
+    color__name = serializers.CharField()
+    stone__name = serializers.CharField()
+    metal__name = serializers.CharField()
 
     class Meta:
         fields = [
@@ -23,12 +28,12 @@ class BaseProductListSerializer(serializers.ModelSerializer):
             'first_image',
             'second_image',
             'collection__name',
-            'is_sold_out',
             'color__name',
             'stone__name',
             'metal__name',
             'min_price',
             'max_price',
+            'is_sold_out',
             'average_rating',
         ]
         depth = 2
