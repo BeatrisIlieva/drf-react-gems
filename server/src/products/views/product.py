@@ -1,7 +1,4 @@
-
-
-from src.products.models.types import Earwear, Fingerwear, Wristwear, Neckwear
-
+from src.products.models import Earwear, Neckwear, Wristwear, Fingerwear
 from src.products.views.base import BaseProductListView
 
 

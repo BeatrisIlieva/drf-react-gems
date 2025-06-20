@@ -5,7 +5,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView
 from django.core.exceptions import ImproperlyConfigured
 
-from src.products.serializers.type_list import ProductListSerializer
+from src.products.serializers.product import ProductListSerializer
 
 
 class ProductPagination(PageNumberPagination):

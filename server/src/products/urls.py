@@ -1,7 +1,7 @@
 from django.urls import path
 
 from src.products.views.attributtes import StoneRetrieveView
-from src.products.views.type_list import (
+from src.products.views.product import (
     EarwearListView,
     FingerwearListView,
     NeckwearListView,

@@ -1,4 +1,4 @@
-from src.products.models import Collection, Metal, Size
+from src.products.models import Collection, Metal, Size, Stone, Color
 
 
 entities_as_list_mapper = {
@@ -27,5 +27,20 @@ entities_as_list_mapper = {
         'Small',
         'Medium',
         'Large',
+    ],
+    Stone: [
+        'Aquamarine',
+        'Diamond',
+        'Emerald',
+        'Ruby',
+        'Sapphire',
+    ],
+    Color: [
+        'Blue',
+        'Green',
+        'Pink',
+        'Red',
+        'White',
+        'Yellow',
     ]
 }

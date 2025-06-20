@@ -1,25 +1,18 @@
-from django.db import models
-
-from src.products.managers import StoneManager
+from src.products.managers import CollectionManager, ColorManager, MetalManager, StoneManager
 from src.products.models.mixins import NameFieldMixin
 
 
 class Collection(NameFieldMixin):
-    pass
+    objects = CollectionManager()
 
 
-class Color(NameFieldMixin, models.Model):
-    HEX_CODE_MAX_LENGTH = 7
-
-    hex_code = models.CharField(
-        max_length=HEX_CODE_MAX_LENGTH,
-    )
+class Color(NameFieldMixin):
+    objects = ColorManager()
 
 
 class Metal(NameFieldMixin):
-    pass
+    objects = MetalManager()
 
 
-class Stone(NameFieldMixin, models.Model):
-    image = models.URLField()
+class Stone(NameFieldMixin):
     objects = StoneManager()

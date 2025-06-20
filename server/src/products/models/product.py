@@ -1,5 +1,4 @@
 from django.contrib.contenttypes.fields import GenericRelation
-
 from django.db import models
 
 from src.products.managers import ProductManager
@@ -7,7 +6,7 @@ from src.products.models.inventory import Inventory
 from src.products.models.review import Review
 
 
-class Product(models.Model):
+class BaseProduct(models.Model):
     inventory = GenericRelation(Inventory)
     review = GenericRelation(Review)
 
@@ -56,3 +55,19 @@ class Product(models.Model):
 
     def __str__(self):
         return f'{self.collection} {self.__class__.__name__}'
+
+
+class Earwear(BaseProduct):
+    pass
+
+
+class Neckwear(BaseProduct):
+    pass
+
+
+class Fingerwear(BaseProduct):
+    pass
+
+
+class Wristwear(BaseProduct):
+    pass

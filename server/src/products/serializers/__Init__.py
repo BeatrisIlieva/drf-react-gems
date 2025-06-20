@@ -1,2 +1,2 @@
 from .review import *
-from .type_list import *
+from .product import *
