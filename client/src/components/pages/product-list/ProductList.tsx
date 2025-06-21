@@ -8,6 +8,7 @@ import { HomeLink } from './home-link/HomeLink';
 import { Nav } from './nav/Nav';
 import { useSentinel } from '../../../hooks/useSentinel';
 import { ProductCard } from './product-card/ProductCard';
+import { useProductFiltersContext } from '../../../contexts/ProductFiltersContext';
 
 const SCROLL_OFFSET = 10;
 
@@ -20,8 +21,9 @@ function debounce(fn: () => void, delay: number) {
 }
 
 export const ProductList = (): ReactElement => {
-    const { products, loading, loadMoreHandler, loadMoreDisabled, displayFilters } =
+    const { products, loading, loadMoreHandler, loadMoreDisabled } =
         useProductListContext();
+    const { displayFilters } = useProductFiltersContext();
 
     const { sentinelRef, isSticky } = useSentinel();
 

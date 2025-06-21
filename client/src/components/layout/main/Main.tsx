@@ -6,6 +6,7 @@ import { ProductList } from '../../pages/product-list/ProductList';
 
 import styles from './Main.module.scss';
 import { Home } from '../../pages/home/Home';
+import { ProductFiltersProvider } from '../../../providers/ProductFiltersProvider';
 
 export const Main = (): ReactElement => {
     return (
@@ -16,9 +17,11 @@ export const Main = (): ReactElement => {
                 <Route
                     path='/products/:categoryName'
                     element={
-                        <ProductListProvider>
-                            <ProductList />
-                        </ProductListProvider>
+                        <ProductFiltersProvider>
+                            <ProductListProvider>
+                                <ProductList />
+                            </ProductListProvider>
+                        </ProductFiltersProvider>
                     }
                 />
             </Routes>

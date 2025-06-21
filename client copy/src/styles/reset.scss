@@ -1,0 +1,47 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+*,
+*::before,
+*::after,
+button,
+blockquote {
+  box-sizing: inherit;
+  font: inherit;
+}
+
+li,
+a,
+img,
+figure,
+details,
+details > summary {
+  display: block;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+button {
+  all: unset;
+  cursor: pointer;
+}
+
+svg {
+  width: 1.6em;
+  height: 1.6em;
+}
+
+button:disabled {
+  cursor: auto !important;
+}

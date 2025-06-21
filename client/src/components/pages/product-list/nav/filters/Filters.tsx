@@ -1,19 +1,15 @@
 import { type ReactElement } from 'react';
 
-import { useProductListContext } from '../../../../../contexts/ProductListContext';
 import { Icon } from '../../../../reusable/icon/Icon';
 
 import styles from './Filters.module.scss';
+import { useProductFiltersContext } from '../../../../../contexts/ProductFiltersContext';
 
 export const Filters = (): ReactElement => {
-    const { toggleDisplayFilters, displayFilters } =
-        useProductListContext();
+    const { toggleDisplayFilters, displayFilters } = useProductFiltersContext();
 
     return (
-        <li
-            className={styles['filters']}
-            onClick={toggleDisplayFilters}
-        >
+        <li className={styles['filters']} onClick={toggleDisplayFilters}>
             <span>{displayFilters ? 'hide filters' : 'filters'}</span>
             <Icon name={'filter'} fontSize={0.85} />
         </li>

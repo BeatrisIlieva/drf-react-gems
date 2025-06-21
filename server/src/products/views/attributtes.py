@@ -29,15 +29,15 @@ class BaseAttributeView(FilterMixin, RetrieveAPIView):
         return self.serializer_class
 
     def get(self, request, *args, **kwargs):
-        category = self.request.query_params.get('category')
+        category = self.request.query_params.get('category')[:-1]
         filters = self._get_filters_for_attributes(category)
         data = self.model.objects.get_attributes_count(filters, category)
 
         serializer = self.get_serializer(data, many=True)
         model_name = self.get_model().__name__.lower()
-        
+
         return Response({
-            f'{model_name}': serializer.data,
+            'results': serializer.data,
         })
 
 

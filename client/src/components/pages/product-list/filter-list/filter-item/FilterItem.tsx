@@ -3,17 +3,18 @@ import { useEffect, useRef, useState, type ReactElement } from 'react';
 import styles from './FilterItem.module.scss';
 import type { NormalizedFilterItem } from '../../../../../types/NormalizedFilter';
 import { Icon } from '../../../../reusable/icon/Icon';
-import { useProductListContext } from '../../../../../contexts/ProductListContext';
 import { ChevronToggle } from '../../../../reusable/chevron-toggle/ChevronToggle';
 import { useCategoryName } from '../../../../../hooks/products/useCategoryName';
+import { useProductFiltersContext } from '../../../../../contexts/ProductFiltersContext';
+import type { EntityName } from '../../../../../types/ProductFilters';
 
 interface FilterItemProps {
-    label: 'Collection' | 'Color' | 'Metal' | 'Stone';
+    label: EntityName;
     data: NormalizedFilterItem[];
 }
 
 export const FilterItem = ({ label, data }: FilterItemProps): ReactElement => {
-    const { updateFilterByEntity, filtersMapper } = useProductListContext();
+    const { filterToggleFunctions, filtersMapper } = useProductFiltersContext();
 
     const { categoryName } = useCategoryName();
 
@@ -39,8 +40,8 @@ export const FilterItem = ({ label, data }: FilterItemProps): ReactElement => {
         setDisplayFilter(false);
     }, [categoryName]);
 
-    const clickHandler = (itemId: string | number) => {
-        updateFilterByEntity(label, itemId as number);
+    const clickHandler = (itemId: number) => {
+        filterToggleFunctions[label](itemId);
     };
 
     return (
@@ -48,7 +49,10 @@ export const FilterItem = ({ label, data }: FilterItemProps): ReactElement => {
             <div className={styles['label-wrapper']}>
                 <h6 onClick={toggleDisplayFilter}>{label}</h6>
 
-                <ChevronToggle isOpen={displayFilter} onToggle={toggleDisplayFilter} />
+                <ChevronToggle
+                    isOpen={displayFilter}
+                    onToggle={toggleDisplayFilter}
+                />
             </div>
             <ul
                 ref={contentRef}
@@ -85,7 +89,9 @@ export const FilterItem = ({ label, data }: FilterItemProps): ReactElement => {
                                 </span>
                             )}
                             <span>{item.label}</span>
-                            <span className={styles['count']}>({item.count})</span>
+                            <span className={styles['count']}>
+                                ({item.count})
+                            </span>
                         </button>
 
                         {filtersMapper[label].includes(item.id) && (
@@ -93,7 +99,11 @@ export const FilterItem = ({ label, data }: FilterItemProps): ReactElement => {
                                 className={styles['remove-filter']}
                                 onClick={() => clickHandler(item.id)}
                             >
-                                <Icon name={'xMark'} isSubtle={true} fontSize={0.7} />
+                                <Icon
+                                    name={'xMark'}
+                                    isSubtle={true}
+                                    fontSize={0.7}
+                                />
                             </div>
                         )}
                     </li>

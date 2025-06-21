@@ -18,14 +18,14 @@ export const ProductCard = ({
     colorName,
     stoneName,
     metalName,
-    min,
-    max,
+    minPrice,
+    maxPrice,
     averageRating
 }: Product): ReactElement => {
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
     const { categoryNameCapitalizedSingular, categoryName } = useCategoryName();
-    const formattedMin = formatPrice(min);
-    const formattedMax = formatPrice(max);
+    const formattedMinPrice = formatPrice(minPrice);
+    const formattedMaxPrice = formatPrice(maxPrice);
 
     useEffect(() => {
         setSelectedImageIndex(0);
@@ -60,7 +60,7 @@ export const ProductCard = ({
                     text={`${collectionName} ${categoryNameCapitalizedSingular}`}
                 />
                 <StyledTextBlock
-                    text={`${formattedMin} - ${formattedMax}`}
+                    text={`${formattedMinPrice} - ${formattedMaxPrice}`}
                     isLighter={true}
                 />
                 <StyledTextBlock

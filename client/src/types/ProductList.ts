@@ -7,35 +7,9 @@ export interface Product {
     colorName: string;
     stoneName: string;
     metalName: string;
-    min: string;
-    max: string;
+    minPrice: string;
+    maxPrice: string;
     averageRating: number;
-}
-
-export interface Color {
-    colorName: string;
-    colorId: number;
-    colorHexCode: string;
-    colorCount: number;
-}
-
-export interface Stone {
-    stoneName: string;
-    stoneId: number;
-    stoneImage: string;
-    stoneCount: number;
-}
-
-export interface Metal {
-    metalName: string;
-    metalId: number;
-    metalCount: number;
-}
-
-export interface Collection {
-    collectionName: string;
-    collectionId: number;
-    collectionCount: number;
 }
 
 export interface ProductsResponse {
@@ -43,10 +17,6 @@ export interface ProductsResponse {
     next: string | null;
     previous: string | null;
     results: Product[];
-    colors: Color[];
-    stones: Stone[];
-    metals: Metal[];
-    collections: Collection[];
 }
 
 export interface FetchProductsParams {
@@ -61,10 +31,6 @@ export interface FetchProductsParams {
 
 export interface FetchProductsParamsExtended extends FetchProductsParams {
     shouldUpdateProducts?: boolean;
-    shouldUpdateFiltersByEntity?: boolean;
-    shouldResetFilters?: boolean;
     shouldSetProductsCount?: boolean;
     shouldResetOrdering?: boolean;
 }
-
-export type EntityName = 'Collection' | 'Color' | 'Metal' | 'Stone';

@@ -1,9 +1,14 @@
 import { useCallback } from 'react';
 import { useApi } from '../hooks/useApi';
 import { keysToCamelCase } from '../utils/convertToCamelCase';
-import type { FetchProductsParams, ProductsResponse } from '../types/ProductList';
+import type {
+    FetchProductsParams,
+    ProductsResponse
+} from '../types/ProductList';
 
-const baseUrl = 'http://localhost:8000/products';
+import { HOST } from '../constants/host';
+
+const baseUrl = `${HOST}/products`;
 
 export const useProductList = () => {
     const { get } = useApi();
@@ -23,13 +28,19 @@ export const useProductList = () => {
             if (page) params.append('page', page.toString());
             if (ordering) params.append('ordering', ordering);
             if (colorIds) {
-                colorIds.forEach((id) => params.append('colors', id.toString()));
+                colorIds.forEach((id) =>
+                    params.append('colors', id.toString())
+                );
             }
             if (stoneIds) {
-                stoneIds.forEach((id) => params.append('stones', id.toString()));
+                stoneIds.forEach((id) =>
+                    params.append('stones', id.toString())
+                );
             }
             if (metalIds) {
-                metalIds.forEach((id) => params.append('metals', id.toString()));
+                metalIds.forEach((id) =>
+                    params.append('metals', id.toString())
+                );
             }
             if (collectionIds) {
                 collectionIds.forEach((id) =>

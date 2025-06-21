@@ -1,19 +1,15 @@
 import type { ReactElement } from 'react';
 
-import { useProductListContext } from '../../../../contexts/ProductListContext';
 import type { NormalizedFilterGroup } from '../../../../types/NormalizedFilter';
 import { FilterItem } from './filter-item/FilterItem';
-import { normalizeData } from './utils';
+
 import styles from './FilterList.module.scss';
+import { useProductFiltersContext } from '../../../../contexts/ProductFiltersContext';
+import { normalizeData } from './utils';
 
 export const FilterList = (): ReactElement => {
-    const {
-        collections,
-        colors,
-        metals,
-        stones,
-        displayFilters
-    } = useProductListContext();
+    const { collections, colors, metals, stones, displayFilters } =
+        useProductFiltersContext();
 
     const filters: NormalizedFilterGroup[] = normalizeData(
         metals,

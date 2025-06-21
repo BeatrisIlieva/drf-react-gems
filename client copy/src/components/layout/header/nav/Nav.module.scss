@@ -1,0 +1,29 @@
+@use '../../../../styles/variables' as vars;
+
+.main-nav {
+    margin-right: auto;
+
+    & > ul {
+        display: flex;
+        gap: 3em;
+
+        & li a {
+            text-transform: uppercase;
+            opacity: 0.6;
+            font-weight: 500;
+            transition: opacity 0.3s ease-in-out;
+            color: vars.$black;
+            text-decoration: none;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+}
+
+@media (max-width: 1000px) {
+    .main-nav > ul {
+        display: none;
+    }
+}
