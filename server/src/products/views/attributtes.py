@@ -1,8 +1,6 @@
-from django.core.exceptions import ImproperlyConfigured
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from django.db.models import Q
 
 from src.products.mixins import FilterMixin
 from src.products.models.attributes import Collection, Color, Metal, Stone
@@ -11,22 +9,6 @@ from src.products.serializers.attributes import CollectionSerializer, ColorSeria
 
 class BaseAttributeView(FilterMixin, RetrieveAPIView):
     permission_classes = [AllowAny]
-    model = None
-    serializer_class = None
-
-    def get_model(self):
-        if self.model is None:
-            raise ImproperlyConfigured(
-                f"{self.__class__.__name__} must define a 'model' attribute."
-            )
-        return self.model
-
-    def get_serializer_class(self):
-        if self.serializer_class is None:
-            raise ImproperlyConfigured(
-                f"{self.__class__.__name__} must define a 'serializer_class' attribute."
-            )
-        return self.serializer_class
 
     def get(self, request, *args, **kwargs):
         category = self.request.query_params.get('category')[:-1]
@@ -34,7 +16,6 @@ class BaseAttributeView(FilterMixin, RetrieveAPIView):
         data = self.model.objects.get_attributes_count(filters, category)
 
         serializer = self.get_serializer(data, many=True)
-        model_name = self.get_model().__name__.lower()
 
         return Response({
             'results': serializer.data,
