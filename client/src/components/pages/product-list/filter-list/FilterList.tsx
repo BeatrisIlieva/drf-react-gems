@@ -1,11 +1,11 @@
 import type { ReactElement } from 'react';
 
-import type { NormalizedFilterGroup } from '../../../../types/NormalizedFilter';
 import { FilterItem } from './filter-item/FilterItem';
 
 import styles from './FilterList.module.scss';
 import { useProductFiltersContext } from '../../../../contexts/ProductFiltersContext';
 import { normalizeData } from './utils';
+import type { NormalizedFilterGroup } from '../../../../types/Products';
 
 export const FilterList = (): ReactElement => {
     const { collections, colors, metals, stones, displayFilters } =

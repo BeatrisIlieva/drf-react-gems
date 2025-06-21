@@ -2,9 +2,9 @@ import type {
     Collection,
     Color,
     Metal,
+    NormalizedFilterGroup,
     Stone
-} from '../../../../types/ProductList';
-import type { NormalizedFilterGroup } from '../../../../types/NormalizedFilter';
+} from '../../../../types/Products';
 
 type StoneName = 'Aquamarine' | 'Diamond' | 'Emerald' | 'Ruby' | 'Sapphire';
 
@@ -44,7 +44,7 @@ export const normalizeData = (
             data: metals.map((item) => ({
                 id: item.id,
                 label: item.name,
-                count: item.count
+                count: item.count!
             }))
         },
         {
@@ -53,7 +53,7 @@ export const normalizeData = (
             data: colors.map((item) => ({
                 id: item.id,
                 label: item.name,
-                count: item.count,
+                count: item.count!,
                 hex: colorNameByHex[item.name as ColorName]
             }))
         },
@@ -63,7 +63,7 @@ export const normalizeData = (
             data: stones.map((item) => ({
                 id: item.id,
                 label: item.name,
-                count: item.count,
+                count: item.count!,
                 image: stoneNameByImage[item.name as StoneName]
             }))
         },
@@ -73,7 +73,7 @@ export const normalizeData = (
             data: collections.map((item) => ({
                 id: item.id,
                 label: item.name,
-                count: item.count
+                count: item.count!
             }))
         }
     ];

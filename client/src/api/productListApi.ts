@@ -22,7 +22,7 @@ export const useProductList = () => {
             stoneIds = [],
             metalIds = [],
             collectionIds = []
-        }: FetchProductsParams) => {
+        }: FetchProductsParams): Promise<ProductsResponse> => {
             const params = new URLSearchParams();
 
             if (page) params.append('page', page.toString());
@@ -54,7 +54,7 @@ export const useProductList = () => {
                 : `${baseUrl}/${categoryName}/`;
 
             try {
-                const response: ProductsResponse = await get(fullUrl);
+                const response = await get(fullUrl);
 
                 return keysToCamelCase(response);
             } catch (err: unknown) {

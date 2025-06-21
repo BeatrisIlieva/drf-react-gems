@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState, type ReactElement } from 'react';
 
 import styles from './FilterItem.module.scss';
-import type { NormalizedFilterItem } from '../../../../../types/NormalizedFilter';
 import { Icon } from '../../../../reusable/icon/Icon';
 import { ChevronToggle } from '../../../../reusable/chevron-toggle/ChevronToggle';
 import { useCategoryName } from '../../../../../hooks/products/useCategoryName';
 import { useProductFiltersContext } from '../../../../../contexts/ProductFiltersContext';
-import type { EntityName } from '../../../../../types/ProductFilters';
+import type {
+    EntityName,
+    NormalizedFilterItem
+} from '../../../../../types/Products';
 
 interface FilterItemProps {
     label: EntityName;

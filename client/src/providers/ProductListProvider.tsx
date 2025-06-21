@@ -7,14 +7,15 @@ import {
 } from 'react';
 
 import { ProductListContext } from '../contexts/ProductListContext';
-import { useProductList } from '../api/productsApi';
+import { useProductList } from '../api/productListApi';
 import { useCategoryName } from '../hooks/products/useCategoryName';
 import { usePagination } from '../hooks/products/usePagination';
+
+import { useProductFiltersContext } from '../contexts/ProductFiltersContext';
 import type {
     FetchProductsParamsExtended,
-    Product
-} from '../types/ProductList';
-import { useProductFiltersContext } from '../contexts/ProductFiltersContext';
+    ProductListType
+} from '../types/Products';
 
 interface Props {
     children: ReactNode;
@@ -28,7 +29,7 @@ export const ProductListProvider = ({ children }: Props) => {
         useProductFiltersContext();
 
     const [count, setCount] = useState(0);
-    const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<ProductListType[]>([]);
     const [loading, setLoading] = useState(false);
     const [ordering, setOrdering] = useState<string | null>(null);
 
