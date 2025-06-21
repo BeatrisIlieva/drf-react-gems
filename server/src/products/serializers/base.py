@@ -48,11 +48,34 @@ class AverageRatingField(serializers.Field):
         return round(avg, 2)
 
 
+class RelatedProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ['id', 'first_image']
+        model = None
+
+
 class BaseProductItemSerializer(serializers.ModelSerializer):
     inventory = InventorySerializer(many=True, read_only=True)
     review = ReviewSerializer(many=True, read_only=True)
     average_rating = AverageRatingField(source='*')
+    related_collection_products = serializers.SerializerMethodField()
 
     class Meta:
         fields = '__all__'
         depth = 2
+
+    def get_related_collection_products(self, obj):
+        model_class = obj.__class__
+
+        related_products = model_class.objects.filter(
+            collection=obj.collection
+        )
+
+        class DynamicRelatedProductSerializer(RelatedProductSerializer):
+            class Meta(RelatedProductSerializer.Meta):
+                model = model_class
+
+        serializer = DynamicRelatedProductSerializer(
+            related_products, many=True)
+
+        return serializer.data

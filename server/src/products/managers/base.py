@@ -11,11 +11,10 @@ from django.db.models import (
     Avg
 )
 
-
 class BaseProductManager(models.Manager):
     def get_product_item(self, item_id):
         return self.get(pk=item_id)
-
+    
     def get_product_list(self, filters, ordering):
         qs = self.filter(filters)
 
