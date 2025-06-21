@@ -74,6 +74,7 @@ class InventoryInline(GenericTabularInline):
     ct_field = "content_type"
     ct_fk_field = "object_id"
     min_num = 1
+    max_num = 3
     validate_min = True
 
 

@@ -25,8 +25,8 @@ class BaseProductManager(models.Manager):
 
     def _get_raw_products(self, qs, ordering):
         ordering_map = {
-            'price_asc': 'min',
-            'price_desc': '-max',
+            'price_asc': 'min_price',
+            'price_desc': '-max_price',
             'rating': '-average_rating',
             'in_stock': '-inventory__quantity',
         }

@@ -34,9 +34,10 @@ class BaseAttributeView(FilterMixin, RetrieveAPIView):
         data = self.model.objects.get_attributes_count(filters, category)
 
         serializer = self.get_serializer(data, many=True)
-
+        model_name = self.get_model().__name__.lower()
+        
         return Response({
-            'stones': serializer.data,
+            f'{model_name}': serializer.data,
         })
 
 
