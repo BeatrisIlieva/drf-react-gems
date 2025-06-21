@@ -69,69 +69,61 @@ export const ProductFiltersProvider = ({ children }: Props) => {
         setDisplayFilters((prev) => !prev);
     }, []);
 
+    const fetchFiltersData = useCallback(
+        async (entityName: EntityName) => {
+            try {
+                const response = await getFilters({
+                    categoryName,
+                    entityName: `${entityName.toLowerCase()}s`,
+                    colorIds,
+                    stoneIds,
+                    metalIds,
+                    collectionIds
+                });
+
+                return response.results;
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        [getFilters, categoryName, colorIds, stoneIds, metalIds, collectionIds]
+    );
+
     const fetchCollections = useCallback(async () => {
         try {
-            const response = await getFilters({
-                categoryName,
-                entityName: 'collections',
-                colorIds,
-                stoneIds,
-                metalIds,
-                collectionIds
-            });
-            setCollections(response.results as Collection[]);
+            const data = await fetchFiltersData('Collection');
+            setCollections(data as Collection[]);
         } catch (error) {
             console.error(error);
         }
-    }, [getFilters, categoryName, colorIds, stoneIds, metalIds, collectionIds]);
+    }, [fetchFiltersData]);
 
     const fetchColors = useCallback(async () => {
         try {
-            const response = await getFilters({
-                categoryName,
-                entityName: 'colors',
-                colorIds,
-                stoneIds,
-                metalIds,
-                collectionIds
-            });
-            setColors(response.results as Color[]);
+            const data = await fetchFiltersData('Color');
+            setColors(data as Color[]);
         } catch (error) {
             console.error(error);
         }
-    }, [getFilters, categoryName, colorIds, stoneIds, metalIds, collectionIds]);
+    }, [fetchFiltersData]);
 
     const fetchMetals = useCallback(async () => {
         try {
-            const response = await getFilters({
-                categoryName,
-                entityName: 'metals',
-                colorIds,
-                stoneIds,
-                metalIds,
-                collectionIds
-            });
-            setMetals(response.results as Metal[]);
+            const data = await fetchFiltersData('Metal');
+            setMetals(data as Metal[]);
         } catch (error) {
             console.error(error);
         }
-    }, [getFilters, categoryName, colorIds, stoneIds, metalIds, collectionIds]);
+    }, [fetchFiltersData]);
 
     const fetchStones = useCallback(async () => {
         try {
-            const response = await getFilters({
-                categoryName,
-                entityName: 'stones',
-                colorIds,
-                stoneIds,
-                metalIds,
-                collectionIds
-            });
-            setStones(response.results as Stone[]);
+            const data = await fetchFiltersData('Stone');
+            setStones(data as Stone[]);
         } catch (error) {
             console.error(error);
         }
-    }, [getFilters, categoryName, colorIds, stoneIds, metalIds, collectionIds]);
+    }, [fetchFiltersData]);
 
     useEffect(() => {
         fetchCollections();

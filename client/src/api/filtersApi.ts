@@ -1,6 +1,9 @@
 import { useCallback } from 'react';
 import { useApi } from '../hooks/useApi';
-import type { FetchFiltersParams, FiltersResponse } from '../types/ProductList';
+import type {
+    FetchFiltersParams,
+    FiltersResponse
+} from '../types/ProductFilters';
 import { keysToCamelCase } from '../utils/convertToCamelCase';
 
 import { HOST } from '../constants/host';
