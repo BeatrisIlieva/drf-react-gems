@@ -4,6 +4,7 @@ import { Nav } from './nav/Nav';
 import { Buttons } from './buttons/Buttons';
 import styles from './Header.module.scss';
 import { useSentinel } from '../../../hooks/useSentinel';
+import { Banner } from './banner/Banner';
 
 export const Header = (): ReactElement => {
     const headerRef = useRef<HTMLElement | null>(null);
@@ -35,6 +36,7 @@ export const Header = (): ReactElement => {
 
     return (
         <>
+        <Banner/>
             <div ref={sentinelRef} className={styles['sentinel']} />
 
             <header
