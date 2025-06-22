@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import styles from './Button.module.scss';
 
 interface Props {
-    title: string;
+    title: string | ReactElement;
     callbackHandler: () => void;
     color: string;
     actionType?: 'button' | 'submit' | 'reset';
