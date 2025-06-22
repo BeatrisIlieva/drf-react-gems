@@ -1,7 +1,22 @@
+@use '../../../../styles/variables' as vars;
+
 .related-products {
+    margin-block: 3em;
+
+    h4 {
+        text-transform: uppercase;
+        font-weight: 500;
+        font-size: 1.4em;
+        margin-left: 2em;
+        margin-bottom: 1.2em;
+    }
 
     ul {
-
         display: flex;
+        gap: 0.5em;
+
+        li {
+            background: vars.$lightest-grey;
+        }
     }
 }

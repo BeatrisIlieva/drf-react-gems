@@ -116,4 +116,4 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
         related_products.extend(serialize_products_of_type(
             Wristwear, current_product_type == Wristwear))
 
-        return related_products[:8]
+        return related_products[:6]

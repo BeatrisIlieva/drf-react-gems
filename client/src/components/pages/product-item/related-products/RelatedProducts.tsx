@@ -8,6 +8,7 @@ export const RelatedProducts = (): ReactElement => {
 
     return (
         <section className={styles['related-products']}>
+            <h4>You may also like</h4>
             <ul>
                 {relatedProducts!.map((product) => (
                     <li
