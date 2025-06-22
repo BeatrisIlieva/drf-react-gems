@@ -17,8 +17,6 @@ export const MainContent = (): ReactElement => {
     const [product, setProduct] =
         useState<ProductItemType | null>(null);
 
-    console.log(product);
-
     useEffect(() => {
         getProductItem({ categoryName, productId })
             .then((response) => {
@@ -43,13 +41,15 @@ export const MainContent = (): ReactElement => {
                         reviews={product.review}
                     />
                     <UserAction
-                        productId={product.id} 
+                        productId={product.id}
                         collectionName={product.collection.name}
                         colorName={product.color.name}
                         stoneName={product.stone.name}
                         metalName={product.metal.name}
                         inventory={product.inventory}
-                        relatedProducts={product.relatedCollectionProducts}
+                        relatedProducts={
+                            product.relatedCollectionProducts
+                        }
                         firstImage={product.firstImage}
                     />
                 </section>

@@ -1,0 +1,27 @@
+import type { ReactElement } from 'react';
+
+import styles from './RelatedProducts.module.scss';
+import type { Params } from './type';
+
+export const RelatedProducts = ({
+    relatedProducts
+}: Params): ReactElement => {
+    return (
+        <section className={styles['related-products']}>
+            <ul>
+                {relatedProducts.map((product) => (
+                    <li
+                        key={product.id}
+                        className={styles['related-product']}
+                    >
+                        <img
+                            src={product.firstImage}
+                            alt={`Related product ${product.id}`}
+                        />
+                        {/* <p>{product.productType}</p> */}
+                    </li>
+                ))}
+            </ul>
+        </section>
+    );
+};

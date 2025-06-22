@@ -127,10 +127,17 @@ export interface ProductListResponse {
     results: ProductListType[];
 }
 
+export interface RelatedProductType {
+    id: number;
+    firstImage: string;
+    productType: string;
+}
+
 export interface ProductItemType extends BaseProduct {
     inventory: InventoryItem[];
     review: Review[];
     relatedCollectionProducts: ProductItemType[];
+    relatedProducts: RelatedProductType[];
     createdAt: string;
     collection: Collection;
     color: Color;
@@ -141,8 +148,3 @@ export interface ProductItemType extends BaseProduct {
 export interface ProductItemResponse {
     product: ProductItemType;
 }
-
-export type FirstImage = string;
-export type SecondImage = string;
-
-export type ProductImages = FirstImage & SecondImage;
