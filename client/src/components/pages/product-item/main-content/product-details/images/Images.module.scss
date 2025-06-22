@@ -1,0 +1,11 @@
+@use '../../../../../../styles/variables' as vars;
+
+.images {
+    display: flex;
+    gap: 0.5em;
+
+    .thumbnail {
+        display: flex;
+        background: vars.$lightest-grey;
+    }
+}
