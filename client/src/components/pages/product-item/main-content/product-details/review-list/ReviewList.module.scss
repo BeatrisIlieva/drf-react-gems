@@ -1,5 +1,7 @@
+@use '../../../../../../styles/variables' as vars;
+
 .reviews {
-    padding: 2em;
+    padding: vars.$layout-inline-padding;
 
     > ul {
         display: flex;

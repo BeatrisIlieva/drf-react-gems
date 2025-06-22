@@ -5,6 +5,7 @@
     gap: 0.5em;
 
     .thumbnail {
+        flex: 0 0 50%;
         display: flex;
         background: vars.$lightest-grey;
     }
