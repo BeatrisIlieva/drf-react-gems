@@ -5,30 +5,16 @@ import { useParams } from 'react-router';
 
 import styles from './ProductItem.module.scss';
 import { Nav } from './nav/Nav';
+import { MainContent } from './main-content/MainContent';
 
 export const ProductItem = (): ReactElement => {
-    const { getProductItem } = useProductItem();
-    const { categoryName, productId } = useParams<{
-        categoryName: string;
-        productId: string;
-    }>();
 
-    const [product, setProduct] = useState<ProductItemType | null>(null);
-
-    useEffect(() => {
-        getProductItem({ categoryName, productId })
-            .then((response) => {
-                setProduct(response.product);
-            })
-            .catch((error) => {
-                console.error('Error fetching product item:', error);
-            });
-    }, [categoryName, productId, getProductItem]);
     
 
     return (
         <section className={styles['product-item']}>
             <Nav />
+            <MainContent />
             <section>
                 <section>
                     <section>

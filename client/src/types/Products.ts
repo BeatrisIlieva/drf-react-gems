@@ -35,7 +35,11 @@ export interface FiltersResponse {
     results: Color[] | Stone[] | Collection[] | Metal[];
 }
 
-export type EntityName = 'Collection' | 'Color' | 'Metal' | 'Stone';
+export type EntityName =
+    | 'Collection'
+    | 'Color'
+    | 'Metal'
+    | 'Stone';
 
 export interface NormalizedFilterItem {
     id: number;
@@ -61,7 +65,8 @@ export interface FetchProductsParams {
     ordering?: string | null;
 }
 
-export interface FetchProductsParamsExtended extends FetchProductsParams {
+export interface FetchProductsParamsExtended
+    extends FetchProductsParams {
     shouldUpdateProducts?: boolean;
     shouldSetProductsCount?: boolean;
     shouldResetOrdering?: boolean;
@@ -77,7 +82,7 @@ interface Size {
     name: string;
 }
 
-interface InventoryItem {
+export interface InventoryItem {
     id: number;
     size: Size;
     quantity: number;
@@ -86,12 +91,12 @@ interface InventoryItem {
     objectId: number;
 }
 
-interface Review {
+export interface Review {
     id: number;
     user: number;
     rating: number;
     comment: string;
-    createdTt: string;
+    createdAt: string;
     contentType: number;
     objectId: number;
     photoUrl: string;
@@ -125,6 +130,7 @@ export interface ProductListResponse {
 export interface ProductItemType extends BaseProduct {
     inventory: InventoryItem[];
     review: Review[];
+    relatedCollectionProducts: ProductItemType[];
     createdAt: string;
     collection: Collection;
     color: Color;
@@ -135,3 +141,8 @@ export interface ProductItemType extends BaseProduct {
 export interface ProductItemResponse {
     product: ProductItemType;
 }
+
+export type FirstImage = string;
+export type SecondImage = string;
+
+export type ProductImages = FirstImage & SecondImage;
