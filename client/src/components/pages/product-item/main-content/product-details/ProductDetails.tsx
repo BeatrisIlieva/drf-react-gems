@@ -3,6 +3,7 @@ import type { Params } from './types';
 
 import styles from './ProductDetails.module.scss';
 import { Images } from './images/Images';
+import { ReviewList } from './review-list/ReviewList';
 
 export const ProductDetails = ({
     firstImage,
@@ -15,6 +16,10 @@ export const ProductDetails = ({
             <Images
                 firstImage={firstImage}
                 secondImage={secondImage}
+            />
+            <ReviewList
+                averageRating={averageRating}
+                reviews={reviews}
             />
         </section>
     );
