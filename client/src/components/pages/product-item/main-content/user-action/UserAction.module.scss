@@ -3,6 +3,10 @@
 .user-action {
     flex: 0 1 26%;
     margin-inline: auto;
+    position: sticky;
+    margin-top: 1em;
+    top: 1em;
+    height: 100%;
 
     & > h1,
     & > p {

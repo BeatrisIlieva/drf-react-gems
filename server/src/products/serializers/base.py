@@ -4,6 +4,7 @@ from rest_framework import serializers
 
 from src.products.serializers.inventory import InventorySerializer
 from src.products.serializers.review import ReviewSerializer
+from src.products.models.product import Earwear, Neckwear, Fingerwear, Wristwear
 
 
 class BaseProductListSerializer(serializers.ModelSerializer):
@@ -59,14 +60,14 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
     review = serializers.SerializerMethodField()
     average_rating = AverageRatingField(source='*')
     related_collection_products = serializers.SerializerMethodField()
+    related_products = serializers.SerializerMethodField()
 
     class Meta:
         fields = '__all__'
         depth = 2
 
     def get_review(self, obj):
-
-        latest_reviews = obj.review.all()[:8]
+        latest_reviews = obj.review.all()[:6]
         return ReviewSerializer(latest_reviews, many=True).data
 
     def get_related_collection_products(self, obj):
@@ -81,6 +82,38 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
                 model = model_class
 
         serializer = DynamicRelatedProductSerializer(
-            related_products, many=True)
+            related_products, many=True
+        )
 
         return serializer.data
+
+    def get_related_products(self, obj):
+        color_id = obj.color_id
+
+        def serialize_products_of_type(model_class, is_current_type):
+            products = model_class.objects.filter(color_id=color_id)
+            if is_current_type:
+                products = products.exclude(id=obj.id)
+
+            result = []
+            for product in products:
+                result.append({
+                    'id': product.id,
+                    'first_image': product.first_image,
+                    'product_type': model_class.__name__
+                })
+            return result
+
+        current_product_type = type(obj)
+
+        related_products = []
+        related_products.extend(serialize_products_of_type(
+            Earwear, current_product_type == Earwear))
+        related_products.extend(serialize_products_of_type(
+            Neckwear, current_product_type == Neckwear))
+        related_products.extend(serialize_products_of_type(
+            Fingerwear, current_product_type == Fingerwear))
+        related_products.extend(serialize_products_of_type(
+            Wristwear, current_product_type == Wristwear))
+
+        return related_products[:8]
