@@ -1,0 +1,15 @@
+@use '../../../../../../styles/variables' as vars;
+
+.related-products {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.3em;
+
+    li {
+        background: vars.$lightest-grey;
+    }
+
+    & .selected {
+        border: 0.1em solid vars.$black;
+    }
+}
