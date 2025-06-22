@@ -1,12 +1,11 @@
 import type { ReactElement } from 'react';
-import type { Params } from './types';
 
 import styles from './Images.module.scss';
+import { useProductItemContext } from '../../../../../../contexts/ProductItemContext';
 
-export const Images = ({
-    firstImage,
-    secondImage
-}: Params): ReactElement => {
+export const Images = (): ReactElement => {
+    const { firstImage, secondImage } = useProductItemContext();
+
     return (
         <section className={styles['images']}>
             <div className={styles['thumbnail']}>

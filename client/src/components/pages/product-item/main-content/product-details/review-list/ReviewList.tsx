@@ -1,14 +1,13 @@
 import type { ReactElement } from 'react';
-import type { Params } from './types';
 import { Stars } from '../../../../../reusable/stars/Stars';
 
 import styles from './ReviewList.module.scss';
 import { ReviewItem } from './review-item/ReviewItem';
+import { useProductItemContext } from '../../../../../../contexts/ProductItemContext';
 
-export const ReviewList = ({
-    averageRating,
-    reviews
-}: Params): ReactElement => {
+export const ReviewList = (): ReactElement => {
+    const { averageRating, reviews } = useProductItemContext();
+    
     return (
         <section className={styles['reviews']}>
             <div className={styles['wrapper-top']}>

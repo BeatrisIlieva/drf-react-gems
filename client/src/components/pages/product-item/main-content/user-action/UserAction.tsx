@@ -1,29 +1,25 @@
 import type { ReactElement } from 'react';
-import type { Params } from './types';
-
 import styles from './UserAction.module.scss';
 import { useCategoryName } from '../../../../../hooks/products/useCategoryName';
 import { StyledTextBlock } from '../../../../reusable/styled-text-block/StyledTextBlock';
-import { Link } from 'react-router';
 import { formatPrice } from '../../../../../utils/formatPrice';
 import { RelatedProducts } from './related-products/RelatedProducts';
 import { SizeList } from './size-list/SizeList';
 import { Button } from '../../../../reusable/button/Button';
 import { Icon } from '../../../../reusable/icon/Icon';
+import { useProductItemContext } from '../../../../../contexts/ProductItemContext';
 
-export const UserAction = ({
-    productId,
-    collectionName,
-    colorName,
-    stoneName,
-    metalName,
-    inventory,
-    relatedProducts,
-    firstImage
-}: Params): ReactElement => {
+export const UserAction = (): ReactElement => {
     const { categoryNameCapitalizedSingular } = useCategoryName();
+    const {
+        collectionName,
+        colorName,
+        stoneName,
+        metalName,
+        inventory
+    } = useProductItemContext();
 
-    const prices = inventory.map((item) =>
+    const prices = inventory!.map((item) =>
         parseFloat(item.price)
     );
     const formattedMinPrice = formatPrice(
@@ -35,7 +31,7 @@ export const UserAction = ({
 
     const addToBagHandler = () => {};
 
-    const addToWishlistHandler = () => {}
+    const addToWishlistHandler = () => {};
 
     return (
         <section className={styles['user-action']}>
@@ -52,13 +48,9 @@ export const UserAction = ({
                 <span>-</span>
                 <span>{formattedMaxPrice}</span>
             </p>
-            <RelatedProducts
-                relatedProducts={relatedProducts}
-                collectionName={collectionName}
-                productId={productId}
-            />
+            <RelatedProducts />
             <p>Size:</p>
-            <SizeList inventory={inventory} />
+            <SizeList />
             <div className={styles['buttons-wrapper']}>
                 <Button
                     title={'Add to Bag'}

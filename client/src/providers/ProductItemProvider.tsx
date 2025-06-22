@@ -19,11 +19,13 @@ export const ProductItemProvider = ({ children }: Props) => {
         categoryName: string;
         productId: string;
     }>();
+    const [loading, setLoading] = useState<boolean>(true);
 
     const [product, setProduct] =
         useState<ProductItemType | null>(null);
 
     useEffect(() => {
+        setLoading(true);
         getProductItem({ categoryName, productId })
             .then((response) => {
                 setProduct(response.product);
@@ -33,26 +35,31 @@ export const ProductItemProvider = ({ children }: Props) => {
                     'Error fetching product item:',
                     error
                 );
+            })
+            .finally(() => {
+                setLoading(false);
             });
     }, [categoryName, productId, getProductItem]);
 
     const contextValue = useMemo(
         () => ({
-            firstImage: product!.firstImage,
-            secondImage: product!.secondImage,
-            averageRating: product!.averageRating,
-            reviews: product!.review,
-            productId: product!.id,
-            collectionName: product!.collection.name,
-            colorName: product!.color.name,
-            stoneName: product!.stone.name,
-            metalName: product!.metal.name,
-            inventory: product!.inventory,
-            relatedProducts: product!.relatedProducts,
+            firstImage: product?.firstImage,
+            secondImage: product?.secondImage,
+            averageRating: product?.averageRating,
+            reviews: product?.review,
+            productId: product?.id,
+            collectionName: product?.collection.name,
+            colorName: product?.color.name,
+            stoneName: product?.stone.name,
+            metalName: product?.metal.name,
+            inventory: product?.inventory,
+            relatedProducts: product?.relatedProducts,
             relatedCollectionProducts:
-                product!.relatedCollectionProducts
+                product?.relatedCollectionProducts,
+            loading,
+            product
         }),
-        [product]
+        [product, loading]
     );
 
     return (

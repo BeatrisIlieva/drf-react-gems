@@ -2,17 +2,19 @@ import type { ReactElement } from 'react';
 import styles from './RelatedProducts.module.scss';
 import { Link } from 'react-router';
 import { useCategoryName } from '../../../../../../hooks/products/useCategoryName';
-import type { Props } from './types';
+import { useProductItemContext } from '../../../../../../contexts/ProductItemContext';
 
-export const RelatedProducts = ({
-    relatedProducts,
-    collectionName,
-    productId
-}: Props): ReactElement => {
+export const RelatedProducts = (): ReactElement => {
     const { categoryNameCapitalizedPlural } = useCategoryName();
+    const {
+        relatedCollectionProducts,
+        productId,
+        collectionName
+    } = useProductItemContext();
+
     return (
         <ul className={styles['related-products']}>
-            {relatedProducts.map((product) => (
+            {relatedCollectionProducts!.map((product) => (
                 <li
                     key={product.id}
                     className={

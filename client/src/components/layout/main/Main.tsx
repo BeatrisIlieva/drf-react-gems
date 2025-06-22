@@ -8,6 +8,7 @@ import styles from './Main.module.scss';
 import { Home } from '../../pages/home/Home';
 import { ProductFiltersProvider } from '../../../providers/ProductFiltersProvider';
 import { ProductItem } from '../../pages/product-item/ProductItem';
+import { ProductItemProvider } from '../../../providers/ProductItemProvider';
 
 export const Main = (): ReactElement => {
     return (
@@ -27,7 +28,11 @@ export const Main = (): ReactElement => {
                 />
                 <Route
                     path='/products/:categoryName/:productId'
-                    element={<ProductItem />}
+                    element={
+                        <ProductItemProvider>
+                            <ProductItem />
+                        </ProductItemProvider>
+                    }
                 />
             </Routes>
         </main>

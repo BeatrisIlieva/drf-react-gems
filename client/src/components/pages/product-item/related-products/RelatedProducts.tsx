@@ -1,15 +1,15 @@
 import type { ReactElement } from 'react';
 
 import styles from './RelatedProducts.module.scss';
-import type { Params } from './type';
+import { useProductItemContext } from '../../../../contexts/ProductItemContext';
 
-export const RelatedProducts = ({
-    relatedProducts
-}: Params): ReactElement => {
+export const RelatedProducts = (): ReactElement => {
+    const { relatedProducts } = useProductItemContext();
+
     return (
         <section className={styles['related-products']}>
             <ul>
-                {relatedProducts.map((product) => (
+                {relatedProducts!.map((product) => (
                     <li
                         key={product.id}
                         className={styles['related-product']}

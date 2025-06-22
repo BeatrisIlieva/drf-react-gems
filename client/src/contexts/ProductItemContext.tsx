@@ -7,18 +7,19 @@ import type {
 } from '../types/Products';
 
 interface ProductItemContextType {
-    firstImage: string;
-    secondImage: string;
-    averageRating: number;
-    reviews: Review[];
-    productId: number;
-    collectionName: string;
-    colorName: string;
-    stoneName: string;
-    metalName: string;
-    inventory: InventoryItem[];
-    relatedCollectionProducts: ProductItemType[];
-    relatedProducts: RelatedProductType[];
+    firstImage?: string;
+    secondImage?: string;
+    averageRating?: number;
+    reviews?: Review[];
+    productId?: number;
+    collectionName?: string;
+    colorName?: string;
+    stoneName?: string;
+    metalName?: string;
+    inventory?: InventoryItem[];
+    relatedCollectionProducts?: ProductItemType[];
+    relatedProducts?: RelatedProductType[];
+    loading?: boolean;
 }
 
 export const ProductItemContext =
@@ -34,7 +35,8 @@ export const ProductItemContext =
         metalName: '',
         inventory: [],
         relatedCollectionProducts: [],
-        relatedProducts: []
+        relatedProducts: [],
+        loading: true
     });
 
 export const useProductItemContext = () => {
