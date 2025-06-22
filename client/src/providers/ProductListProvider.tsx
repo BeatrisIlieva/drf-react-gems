@@ -29,11 +29,16 @@ export const ProductListProvider = ({ children }: Props) => {
         useProductFiltersContext();
 
     const [count, setCount] = useState(0);
-    const [products, setProducts] = useState<ProductListType[]>([]);
+    const [products, setProducts] = useState<ProductListType[]>(
+        []
+    );
     const [loading, setLoading] = useState(false);
     const [ordering, setOrdering] = useState<string | null>(null);
 
-    const loadMoreDisabled = useMemo(() => nextPage === null, [nextPage]);
+    const loadMoreDisabled = useMemo(
+        () => nextPage === null,
+        [nextPage]
+    );
 
     const resetOrdering = useCallback(() => {
         setOrdering(null);
@@ -72,7 +77,10 @@ export const ProductListProvider = ({ children }: Props) => {
                 }
 
                 if (shouldUpdateProducts) {
-                    setProducts((prev) => [...prev, ...response.results]);
+                    setProducts((prev) => [
+                        ...prev,
+                        ...response.results
+                    ]);
                 } else {
                     setProducts(response.results);
                 }
@@ -166,7 +174,7 @@ export const ProductListProvider = ({ children }: Props) => {
         categoryName,
         fetchProducts,
         ordering,
-        updatePage,
+        updatePage
     ]);
 
     const contextValue = useMemo(

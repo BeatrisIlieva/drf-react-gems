@@ -16,7 +16,7 @@ import type {
     EntityName,
     Metal,
     Stone
-} from '../types/ProductFilters';
+} from '../types/Products';
 
 interface Props {
     children: ReactNode;
@@ -25,14 +25,18 @@ interface Props {
 export const ProductFiltersProvider = ({ children }: Props) => {
     const { categoryName } = useCategoryName();
     const { getFilters } = useFilters();
-    const [collections, setCollections] = useState<Collection[]>([]);
+    const [collections, setCollections] = useState<Collection[]>(
+        []
+    );
     const [colors, setColors] = useState<Color[]>([]);
     const [metals, setMetals] = useState<Metal[]>([]);
     const [stones, setStones] = useState<Stone[]>([]);
     const [colorIds, setColorIds] = useState<number[]>([]);
     const [stoneIds, setStoneIds] = useState<number[]>([]);
     const [metalIds, setMetalIds] = useState<number[]>([]);
-    const [collectionIds, setCollectionIds] = useState<number[]>([]);
+    const [collectionIds, setCollectionIds] = useState<number[]>(
+        []
+    );
     const [displayFilters, setDisplayFilters] = useState(false);
 
     const filtersMapper = useMemo(
@@ -50,10 +54,15 @@ export const ProductFiltersProvider = ({ children }: Props) => {
     >(
         () => ({
             Collection: (id) =>
-                setCollectionIds((prev) => toggleIdInArray(prev, id)),
-            Color: (id) => setColorIds((prev) => toggleIdInArray(prev, id)),
-            Metal: (id) => setMetalIds((prev) => toggleIdInArray(prev, id)),
-            Stone: (id) => setStoneIds((prev) => toggleIdInArray(prev, id))
+                setCollectionIds((prev) =>
+                    toggleIdInArray(prev, id)
+                ),
+            Color: (id) =>
+                setColorIds((prev) => toggleIdInArray(prev, id)),
+            Metal: (id) =>
+                setMetalIds((prev) => toggleIdInArray(prev, id)),
+            Stone: (id) =>
+                setStoneIds((prev) => toggleIdInArray(prev, id))
         }),
         []
     );
@@ -86,7 +95,14 @@ export const ProductFiltersProvider = ({ children }: Props) => {
                 console.error(error);
             }
         },
-        [getFilters, categoryName, colorIds, stoneIds, metalIds, collectionIds]
+        [
+            getFilters,
+            categoryName,
+            colorIds,
+            stoneIds,
+            metalIds,
+            collectionIds
+        ]
     );
 
     const fetchCollections = useCallback(async () => {
@@ -130,7 +146,13 @@ export const ProductFiltersProvider = ({ children }: Props) => {
         fetchColors();
         fetchMetals();
         fetchStones();
-    }, [fetchCollections, fetchColors, fetchMetals, fetchStones, categoryName]);
+    }, [
+        fetchCollections,
+        fetchColors,
+        fetchMetals,
+        fetchStones,
+        categoryName
+    ]);
 
     const contextValue = useMemo(
         () => ({

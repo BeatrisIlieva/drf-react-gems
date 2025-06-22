@@ -8,27 +8,7 @@ import { ProductDetails } from './product-details/ProductDetails';
 import { UserAction } from './user-action/UserAction';
 
 export const MainContent = (): ReactElement => {
-    const { getProductItem } = useProductItem();
-    const { categoryName, productId } = useParams<{
-        categoryName: string;
-        productId: string;
-    }>();
 
-    const [product, setProduct] =
-        useState<ProductItemType | null>(null);
-
-    useEffect(() => {
-        getProductItem({ categoryName, productId })
-            .then((response) => {
-                setProduct(response.product);
-            })
-            .catch((error) => {
-                console.error(
-                    'Error fetching product item:',
-                    error
-                );
-            });
-    }, [categoryName, productId, getProductItem]);
 
     return (
         <>
