@@ -1,0 +1,26 @@
+@use '../../../../../styles/variables' as vars;
+
+.user-action {
+    flex: 0 1 26%;
+    margin-inline: auto;
+
+    & > h1,
+    & > p {
+        display: flex;
+        gap: 0.25em;
+    }
+
+    & > p:not(:first-of-type) {
+        margin-block: 1.25em;
+    }
+    
+    .buttons-wrapper {
+        display: flex;
+        gap: 0.5em;
+        margin-top: 1em;
+
+        & button:nth-child(2) {
+            flex: 0 0 3%;
+        }
+    }
+}
