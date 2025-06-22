@@ -56,13 +56,18 @@ class RelatedProductSerializer(serializers.ModelSerializer):
 
 class BaseProductItemSerializer(serializers.ModelSerializer):
     inventory = InventorySerializer(many=True, read_only=True)
-    review = ReviewSerializer(many=True, read_only=True)
+    review = serializers.SerializerMethodField()
     average_rating = AverageRatingField(source='*')
     related_collection_products = serializers.SerializerMethodField()
 
     class Meta:
         fields = '__all__'
         depth = 2
+
+    def get_review(self, obj):
+
+        latest_reviews = obj.review.all()[:8]
+        return ReviewSerializer(latest_reviews, many=True).data
 
     def get_related_collection_products(self, obj):
         model_class = obj.__class__
