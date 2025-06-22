@@ -3,6 +3,7 @@ import { Main } from './components/layout/main/Main';
 
 import styles from './App.module.scss';
 import { ScrollToTop } from './components/layout/scroll-to-top/ScrollToTop';
+import { Footer } from './components/layout/footer/Footer';
 
 function App() {
     return (
@@ -10,6 +11,7 @@ function App() {
             <Header />
             <Main />
             <ScrollToTop />
+            <Footer />
         </div>
     );
 }
