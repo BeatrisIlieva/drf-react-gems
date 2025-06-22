@@ -69,7 +69,7 @@ export interface FetchProductsParamsExtended extends FetchProductsParams {
 
 export interface FetchProductParams {
     categoryName: string | undefined;
-    itemId: number;
+    productId: string | undefined;
 }
 
 interface Size {

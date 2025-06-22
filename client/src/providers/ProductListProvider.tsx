@@ -147,6 +147,9 @@ export const ProductListProvider = ({ children }: Props) => {
     }, [categoryName, fetchProducts]);
 
     useEffect(() => {
+        setProducts([]);
+        setCount(0);
+        updatePage(null);
         fetchProducts({
             categoryName,
             colorIds,
@@ -162,7 +165,8 @@ export const ProductListProvider = ({ children }: Props) => {
         collectionIds,
         categoryName,
         fetchProducts,
-        ordering
+        ordering,
+        updatePage,
     ]);
 
     const contextValue = useMemo(

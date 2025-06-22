@@ -1,5 +1,4 @@
-import { useEffect, useState, type ReactElement } from 'react';
-import type { Product } from '../../../../types/ProductList';
+import { useCallback, useEffect, useState, type ReactElement } from 'react';
 import styles from './ProductCard.module.scss';
 import { Icon } from '../../../reusable/icon/Icon';
 import { ToggleImageButtons } from './toggle-image-buttons/ToggleImageButtons';
@@ -8,6 +7,8 @@ import { useCategoryName } from '../../../../hooks/products/useCategoryName';
 import { StyledTextBlock } from '../../../reusable/styled-text-block/StyledTextBlock';
 import { formatPrice } from '../../../../utils/formatPrice';
 import { Stars } from '../../../reusable/stars/Stars';
+import { useNavigate } from 'react-router';
+import type { ProductListType } from '../../../../types/Products';
 
 export const ProductCard = ({
     id,
@@ -21,11 +22,16 @@ export const ProductCard = ({
     minPrice,
     maxPrice,
     averageRating
-}: Product): ReactElement => {
+}: ProductListType): ReactElement => {
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
     const { categoryNameCapitalizedSingular, categoryName } = useCategoryName();
     const formattedMinPrice = formatPrice(minPrice);
     const formattedMaxPrice = formatPrice(maxPrice);
+    const navigate = useNavigate();
+
+    const navigateToProductItem = useCallback(() => {
+        navigate(`/products/${categoryName}/${id}`);
+    }, [categoryName, id, navigate]);
 
     useEffect(() => {
         setSelectedImageIndex(0);
@@ -38,9 +44,12 @@ export const ProductCard = ({
 
                 <div className={styles['thumbnail']}>
                     <img
-                        src={selectedImageIndex === 0 ? firstImage : secondImage}
+                        src={
+                            selectedImageIndex === 0 ? firstImage : secondImage
+                        }
                         className={`${selectedImageIndex === 0 ? styles['slide-in-right'] : styles['slide-in-left']}`}
                         alt={collectionName}
+                        onClick={navigateToProductItem}
                     />
                 </div>
 

@@ -16,9 +16,9 @@ export const useProductItem = () => {
     const getProductItem = useCallback(
         async ({
             categoryName,
-            itemId
+            productId
         }: FetchProductParams): Promise<ProductItemResponse> => {
-            const fullUrl = `${baseUrl}/${categoryName}/?${itemId}`;
+            const fullUrl = `${baseUrl}/${categoryName}/${productId}`;
 
             try {
                 const response = await get(fullUrl);

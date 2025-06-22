@@ -7,6 +7,7 @@ import { ProductList } from '../../pages/product-list/ProductList';
 import styles from './Main.module.scss';
 import { Home } from '../../pages/home/Home';
 import { ProductFiltersProvider } from '../../../providers/ProductFiltersProvider';
+import { ProductItem } from '../../pages/product-item/ProductItem';
 
 export const Main = (): ReactElement => {
     return (
@@ -23,6 +24,10 @@ export const Main = (): ReactElement => {
                             </ProductListProvider>
                         </ProductFiltersProvider>
                     }
+                />
+                <Route
+                    path='/products/:categoryName/:productId'
+                    element={<ProductItem />}
                 />
             </Routes>
         </main>
