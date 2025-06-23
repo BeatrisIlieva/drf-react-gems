@@ -1,4 +1,4 @@
-export interface AddToBagParams {
+export interface CreateShoppingBagParams {
     contentType: string;
     objectId: number;
     quantity: number;

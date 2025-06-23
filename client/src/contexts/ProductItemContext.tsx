@@ -26,7 +26,7 @@ interface ProductItemContextType {
         contentType: string,
         objectId: number
     ) => void;
-    addToBagHandler: () => void;
+    createShoppingBagHandler: () => void;
     addToWishlistHandler: () => void;
     notSelectedSizeError: boolean | null;
 }
@@ -48,7 +48,7 @@ export const ProductItemContext =
         loading: true,
         selectedSize: null,
         setSelectedSizeHandler: () => null,
-        addToBagHandler: () => null,
+        createShoppingBagHandler: () => null,
         addToWishlistHandler: () => null,
         notSelectedSizeError: null
     });

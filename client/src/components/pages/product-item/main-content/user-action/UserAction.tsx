@@ -18,7 +18,7 @@ export const UserAction = (): ReactElement => {
         stoneName,
         metalName,
         inventory,
-        addToBagHandler,
+        createShoppingBagHandler,
         addToWishlistHandler,
         notSelectedSizeError
     } = useProductItemContext();
@@ -66,7 +66,7 @@ export const UserAction = (): ReactElement => {
                 <Button
                     title={'Add to Bag'}
                     color={'black'}
-                    callbackHandler={addToBagHandler}
+                    callbackHandler={createShoppingBagHandler}
                     actionType={'button'}
                 />
                 <Button

@@ -3,24 +3,24 @@ import { useApi } from '../hooks/useApi';
 import { useAuth } from '../hooks/auth/useAuth';
 import { useShoppingBagContext } from '../contexts/ShoppingBagContext';
 import type {
-    AddToBagParams,
+    CreateShoppingBagParams,
     ShoppingBagItemResponse
 } from '../types/ShoppingBag';
 import { keysToCamelCase } from '../utils/convertToCamelCase';
 
 const baseUrl = 'http://localhost:8000/shopping-bags/';
 
-export const useAddToShoppingBag = () => {
+export const useCreateShoppingBag = () => {
     const { post } = useApi();
     const { isAuthenticated } = useAuth();
     const { updateShoppingBagCount } = useShoppingBagContext();
 
-    const addToBag = useCallback(
+    const createShoppingBag = useCallback(
         async ({
             contentType,
             objectId,
             quantity
-        }: AddToBagParams): Promise<ShoppingBagItemResponse> => {
+        }: CreateShoppingBagParams): Promise<ShoppingBagItemResponse> => {
             const data = {
                 content_type: contentType,
                 object_id: objectId,
@@ -37,14 +37,51 @@ export const useAddToShoppingBag = () => {
                 console.log(response);
                 return keysToCamelCase(response);
             } catch (err: any) {
-                console.error('Error in addToBag:', err.message);
+                console.error('Error in createShoppingBag:', err.message);
                 throw err;
             }
         },
         [post, isAuthenticated, updateShoppingBagCount]
     );
 
-    return { addToBag };
+    return { createShoppingBag };
+};
+
+export const useRemoveFromShoppingBag = () => {
+    const { del } = useApi();
+    const { isAuthenticated } = useAuth();
+    const { updateShoppingBagCount } = useShoppingBagContext();
+
+    const removeFromBag = useCallback(
+        async ({
+            contentType,
+            objectId,
+            quantity
+        }: CreateShoppingBagParams): Promise<ShoppingBagItemResponse> => {
+            const data = {
+                content_type: contentType,
+                object_id: objectId,
+                quantity: quantity
+            };
+
+            try {
+                const response = await post(baseUrl, {
+                    data,
+                    accessRequired: isAuthenticated,
+                    refreshRequired: isAuthenticated
+                });
+                updateShoppingBagCount();
+                console.log(response);
+                return keysToCamelCase(response);
+            } catch (err: any) {
+                console.error('Error in createShoppingBag:', err.message);
+                throw err;
+            }
+        },
+        [post, isAuthenticated, updateShoppingBagCount]
+    );
+
+    return { createShoppingBag };
 };
 
 export const useGetShoppingBagItems = () => {

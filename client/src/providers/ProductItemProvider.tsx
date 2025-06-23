@@ -9,8 +9,8 @@ import {
     type ReactNode
 } from 'react';
 import { ProductItemContext } from '../contexts/ProductItemContext';
-import { useAddToShoppingBag } from '../api/shoppingBagApi';
-import type { AddToBagParams } from '../types/ShoppingBag';
+import { useCreateShoppingBag } from '../api/shoppingBagApi';
+import type { CreateShoppingBagParams } from '../types/ShoppingBag';
 
 interface Props {
     children: ReactNode;
@@ -22,7 +22,7 @@ export const ProductItemProvider = ({ children }: Props) => {
         categoryName: string;
         productId: string;
     }>();
-    const { addToBag } = useAddToShoppingBag();
+    const { createShoppingBag } = useCreateShoppingBag();
 
     const [loading, setLoading] = useState<boolean>(true);
     const [product, setProduct] =
@@ -33,7 +33,7 @@ export const ProductItemProvider = ({ children }: Props) => {
     const [notSelectedSizeError, setNotSelectedSizeError] =
         useState<boolean | null>(null);
     const [selectedInventory, setSelectedInventory] =
-        useState<AddToBagParams | null>(null);
+        useState<CreateShoppingBagParams | null>(null);
 
     useEffect(() => {
         setLoading(true);
@@ -52,14 +52,14 @@ export const ProductItemProvider = ({ children }: Props) => {
             });
     }, [categoryName, productId, getProductItem]);
 
-    const addToBagHandler = useCallback((): void => {
+    const createShoppingBagHandler = useCallback((): void => {
         if (selectedSize === null) {
             setNotSelectedSizeError(true);
             return;
         }
 
-        addToBag(selectedInventory!);
-    }, [selectedSize, addToBag, selectedInventory]);
+        createShoppingBag(selectedInventory!);
+    }, [selectedSize, createShoppingBag, selectedInventory]);
 
     const addToWishlistHandler = (): void => {};
 
@@ -122,7 +122,7 @@ export const ProductItemProvider = ({ children }: Props) => {
             product,
             selectedSize,
             setSelectedSizeHandler,
-            addToBagHandler,
+            createShoppingBagHandler,
             addToWishlistHandler,
             notSelectedSizeError
         }),
@@ -130,7 +130,7 @@ export const ProductItemProvider = ({ children }: Props) => {
             product,
             loading,
             selectedSize,
-            addToBagHandler,
+            createShoppingBagHandler,
             setSelectedSizeHandler,
             notSelectedSizeError
         ]
