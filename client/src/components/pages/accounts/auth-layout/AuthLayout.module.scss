@@ -1,0 +1,26 @@
+.auth-layout {
+    display: flex;
+}
+
+.thumbnail {
+    flex: 0 0 50%;
+}
+
+.form {
+    flex: 0 0 50%;
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+    padding-inline: clamp(1em, 10vw, 11em);
+}
+
+@media (max-width: 1000px) {
+    .auth-layout {
+        flex-direction: column;
+    }
+
+    .form {
+        order: -1;
+        margin-bottom: 3em;
+    }
+}
