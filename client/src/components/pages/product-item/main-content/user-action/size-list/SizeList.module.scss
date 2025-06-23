@@ -7,22 +7,26 @@
     margin-top: -0.75em;
 
     li {
+        display: flex;
+    }
+
+    button {
+        flex-grow: 1;
         border: 0.1em solid vars.$medium-grey;
         text-align: center;
         padding: 0.5em;
         cursor: pointer;
-
-        & .selected {
-            border: 0.1em solid vars.$black;
-        }
     }
 
-    li.sold-out {
+    button.selected {
+        border: 0.1em solid vars.$black;
+    }
+
+    button.sold-out {
         position: relative;
-        cursor: not-allowed;
     }
 
-    li.sold-out::before {
+    button.sold-out::before {
         content: '';
         position: absolute;
         top: 50%;

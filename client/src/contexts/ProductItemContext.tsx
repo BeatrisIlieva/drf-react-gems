@@ -20,6 +20,10 @@ interface ProductItemContextType {
     relatedCollectionProducts?: ProductItemType[];
     relatedProducts?: RelatedProductType[];
     loading?: boolean;
+    selectedSize: number | null;
+    setSelectedSizeHandler: (size: number) => void;
+    addToBagHandler: () => void;
+    addToWishlistHandler: () => void;
 }
 
 export const ProductItemContext =
@@ -36,7 +40,11 @@ export const ProductItemContext =
         inventory: [],
         relatedCollectionProducts: [],
         relatedProducts: [],
-        loading: true
+        loading: true,
+        selectedSize: null,
+        setSelectedSizeHandler: () => null,
+        addToBagHandler: () => null,
+        addToWishlistHandler: () => null
     });
 
 export const useProductItemContext = () => {

@@ -16,9 +16,11 @@ export const UserAction = (): ReactElement => {
         colorName,
         stoneName,
         metalName,
-        inventory
+        inventory,
+        addToBagHandler,
+        addToWishlistHandler
     } = useProductItemContext();
-    console.log(inventory)
+    console.log(inventory);
 
     const prices = inventory!.map((item) =>
         parseFloat(item.price)
@@ -29,10 +31,6 @@ export const UserAction = (): ReactElement => {
     const formattedMaxPrice = formatPrice(
         Math.max(...prices).toString()
     );
-
-    const addToBagHandler = () => {};
-
-    const addToWishlistHandler = () => {};
 
     return (
         <section className={styles['user-action']}>

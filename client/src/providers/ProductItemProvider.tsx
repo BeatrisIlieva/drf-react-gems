@@ -20,9 +20,11 @@ export const ProductItemProvider = ({ children }: Props) => {
         productId: string;
     }>();
     const [loading, setLoading] = useState<boolean>(true);
-
     const [product, setProduct] =
         useState<ProductItemType | null>(null);
+    const [selectedSize, setSelectedSize] = useState<
+        number | null
+    >(null);
 
     useEffect(() => {
         setLoading(true);
@@ -41,6 +43,20 @@ export const ProductItemProvider = ({ children }: Props) => {
             });
     }, [categoryName, productId, getProductItem]);
 
+    const addToBagHandler = (): void => {};
+
+    const addToWishlistHandler = (): void => {};
+
+    const setSelectedSizeHandler = (size: number): void => {
+        if (selectedSize === null) {
+            setSelectedSize(size);
+        } else if (selectedSize === size) {
+            setSelectedSize(null);
+        } else {
+            setSelectedSize(size);
+        }
+    };
+
     const contextValue = useMemo(
         () => ({
             firstImage: product?.firstImage,
@@ -57,9 +73,13 @@ export const ProductItemProvider = ({ children }: Props) => {
             relatedCollectionProducts:
                 product?.relatedCollectionProducts,
             loading,
-            product
+            product,
+            selectedSize,
+            setSelectedSizeHandler,
+            addToBagHandler,
+            addToWishlistHandler
         }),
-        [product, loading]
+        [product, loading, selectedSize]
     );
 
     return (
