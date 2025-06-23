@@ -12,7 +12,8 @@
     }
 
     ul {
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
         gap: 0.5em;
 
         li {

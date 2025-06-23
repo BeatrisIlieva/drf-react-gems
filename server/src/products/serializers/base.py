@@ -1,5 +1,6 @@
 from django.db.models import Avg
 from rest_framework import serializers
+from django.db.models import Q
 
 
 from src.products.serializers.inventory import InventorySerializer
@@ -89,9 +90,11 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
 
     def get_related_products(self, obj):
         color_id = obj.color_id
+        collection = obj.collection
+        filter = Q(color_id=color_id) | Q(collection=collection)
 
         def serialize_products_of_type(model_class, is_current_type):
-            products = model_class.objects.filter(color_id=color_id)
+            products = model_class.objects.filter(filter)
             if is_current_type:
                 products = products.exclude(id=obj.id)
 
