@@ -25,6 +25,7 @@
     .buttons-wrapper {
         display: flex;
         gap: 0.25em;
+        margin-bottom: 1em;
 
         & button:nth-child(2) {
             flex: 0 0 3%;

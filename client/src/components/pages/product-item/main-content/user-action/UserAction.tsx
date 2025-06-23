@@ -8,6 +8,7 @@ import { SizeList } from './size-list/SizeList';
 import { Button } from '../../../../reusable/button/Button';
 import { Icon } from '../../../../reusable/icon/Icon';
 import { useProductItemContext } from '../../../../../contexts/ProductItemContext';
+import { ComplimentaryShipping } from '../../../../reusable/complimentary-shipping/ComplimentaryShipping';
 
 export const UserAction = (): ReactElement => {
     const { categoryNameCapitalizedSingular } = useCategoryName();
@@ -75,6 +76,7 @@ export const UserAction = (): ReactElement => {
                     callbackHandler={addToWishlistHandler}
                 />
             </div>
+            <ComplimentaryShipping />
         </section>
     );
 };
