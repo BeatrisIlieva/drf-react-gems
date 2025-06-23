@@ -1,5 +1,7 @@
+@use '../../../styles/variables' as vars;
+
 .order-summary {
-    background-color: var(--white);
+    background-color: vars.$white;
     display: flex;
     flex-direction: column;
     position: sticky;
@@ -10,7 +12,7 @@
     }
 
     button {
-        margin-bottom: 1.25em;
+        margin-top: 1.25em;
     }
 
     > div:nth-of-type(1) {
@@ -21,7 +23,7 @@
         p:nth-last-of-type(2) {
             margin-bottom: 1em;
             padding-bottom: 1em;
-            border-bottom: 0.1em solid var(--medium-grey);
+            border-bottom: 0.1em solid vars.$medium-grey;
         }
     }
 }

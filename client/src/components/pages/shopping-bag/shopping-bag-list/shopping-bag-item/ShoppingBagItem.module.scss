@@ -1,3 +1,5 @@
+@use '../../../../../styles/variables' as vars;
+
 .shopping-bag-item {
     display: flex;
     justify-content: space-between;
@@ -12,7 +14,7 @@
 
     > span:nth-child(1) {
         flex: 0 0 25%;
-        background: var(--lightest-grey);
+        background: vars.$lightest-grey;
         aspect-ratio: 1/1;
     }
 
@@ -68,12 +70,12 @@
         > span:nth-child(2) {
             justify-content: space-between;
             align-items: center;
-            border: 0.1em solid var(--medium-grey);
+            border: 0.1em solid vars.$medium-grey;
             padding: 0.1em 0.5em;
 
             > span,
             button svg {
-                color: var(--dark-grey);
+                color: vars.$dark-grey;
             }
 
             button svg {
