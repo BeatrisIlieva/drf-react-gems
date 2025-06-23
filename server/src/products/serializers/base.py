@@ -103,7 +103,7 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
                 result.append({
                     'id': product.id,
                     'first_image': product.first_image,
-                    'product_type': model_class.__name__
+                    'product_type': f'{model_class.__name__.lower()}s',
                 })
             return result
 

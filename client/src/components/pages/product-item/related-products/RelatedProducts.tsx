@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 
 import styles from './RelatedProducts.module.scss';
 import { useProductItemContext } from '../../../../contexts/ProductItemContext';
+import { Link } from 'react-router';
 
 export const RelatedProducts = (): ReactElement => {
     const { relatedProducts } = useProductItemContext();
@@ -15,11 +16,14 @@ export const RelatedProducts = (): ReactElement => {
                         key={product.id}
                         className={styles['related-product']}
                     >
-                        <img
-                            src={product.firstImage}
-                            alt={`Related product ${product.id}`}
-                        />
-                        {/* <p>{product.productType}</p> */}
+                        <Link
+                            to={`/products/${product.productType}/${product.id}`}
+                        >
+                            <img
+                                src={product.firstImage}
+                                alt={`Related product ${product.id}`}
+                            />
+                        </Link>
                     </li>
                 ))}
             </ul>
