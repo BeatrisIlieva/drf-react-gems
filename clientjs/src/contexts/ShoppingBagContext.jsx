@@ -55,8 +55,6 @@ export const ShoppingBagProvider = ({ children }) => {
         updateShoppingBagTotalPrice();
     }, [updateShoppingBagCount, updateShoppingBagTotalPrice]);
 
-    console.log(shoppingBagTotalPrice)
-
     return (
         <ShoppingBagContext.Provider
             value={{
