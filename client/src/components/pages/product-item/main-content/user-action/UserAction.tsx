@@ -18,6 +18,7 @@ export const UserAction = (): ReactElement => {
         metalName,
         inventory
     } = useProductItemContext();
+    console.log(inventory)
 
     const prices = inventory!.map((item) =>
         parseFloat(item.price)

@@ -10,9 +10,28 @@
         border: 0.1em solid vars.$medium-grey;
         text-align: center;
         padding: 0.5em;
+        cursor: pointer;
 
         & .selected {
             border: 0.1em solid vars.$black;
         }
+    }
+
+    li.sold-out {
+        position: relative;
+        cursor: not-allowed;
+    }
+
+    li.sold-out::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 0.08em;
+        background: vars.$medium-grey;
+        transform: rotate(-21deg);
+        transform-origin: center;
+        pointer-events: none;
     }
 }
