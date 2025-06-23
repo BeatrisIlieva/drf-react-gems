@@ -9,32 +9,40 @@ import { Home } from '../../pages/home/Home';
 import { ProductFiltersProvider } from '../../../providers/ProductFiltersProvider';
 import { ProductItem } from '../../pages/product-item/ProductItem';
 import { ProductItemProvider } from '../../../providers/ProductItemProvider';
+import ShoppingBagProvider from '../../../providers/ShoppingBagProvider';
+import { ShoppingBag } from '../../pages/shopping-bag/ShoppingBag';
 
 export const Main = (): ReactElement => {
     return (
-        <main className={styles['main']}>
-            <Routes>
-                <Route path='/' element={<Home />} />
+        <ShoppingBagProvider>
+            <main className={styles['main']}>
+                <Routes>
+                    <Route path='/' element={<Home />} />
 
-                <Route
-                    path='/products/:categoryName'
-                    element={
-                        <ProductFiltersProvider>
-                            <ProductListProvider>
-                                <ProductList />
-                            </ProductListProvider>
-                        </ProductFiltersProvider>
-                    }
-                />
-                <Route
-                    path='/products/:categoryName/:productId'
-                    element={
-                        <ProductItemProvider>
-                            <ProductItem />
-                        </ProductItemProvider>
-                    }
-                />
-            </Routes>
-        </main>
+                    <Route
+                        path='/products/:categoryName'
+                        element={
+                            <ProductFiltersProvider>
+                                <ProductListProvider>
+                                    <ProductList />
+                                </ProductListProvider>
+                            </ProductFiltersProvider>
+                        }
+                    />
+                    <Route
+                        path='/products/:categoryName/:productId'
+                        element={
+                            <ProductItemProvider>
+                                <ProductItem />
+                            </ProductItemProvider>
+                        }
+                    />
+                    <Route
+                        path='/user/shopping-bag'
+                        element={<ShoppingBag />}
+                    />
+                </Routes>
+            </main>
+        </ShoppingBagProvider>
     );
 };

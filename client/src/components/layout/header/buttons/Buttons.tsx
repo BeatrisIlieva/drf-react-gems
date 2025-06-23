@@ -3,6 +3,7 @@ import type { ReactElement } from 'react';
 import { Icon } from '../../../reusable/icon/Icon';
 
 import styles from './Buttons.module.scss';
+import { Link } from 'react-router';
 
 export const Buttons = (): ReactElement => {
     return (
@@ -21,10 +22,11 @@ export const Buttons = (): ReactElement => {
                 <Icon name={'heart'} />
                 <span>8</span>
             </li>
-
             <li>
-                <Icon name={'bag'} />
-                <span>18</span>
+                <Link to='/user/shopping-bag'>
+                    <Icon name={'bag'} />
+                    <span>18</span>
+                </Link>
             </li>
         </ul>
     );

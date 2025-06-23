@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 import { useApi } from '../hooks/useApi';
 import { keysToCamelCase } from '../utils/convertToCamelCase';
-import type {
-    FetchProductsParams,
-    ProductsResponse
-} from '../types/ProductList';
 
 import { HOST } from '../constants/host';
+import type {
+    FetchProductsParams,
+    ProductListResponse
+} from '../types/Products';
 
 const baseUrl = `${HOST}/products`;
 
@@ -22,7 +22,7 @@ export const useProductList = () => {
             stoneIds = [],
             metalIds = [],
             collectionIds = []
-        }: FetchProductsParams): Promise<ProductsResponse> => {
+        }: FetchProductsParams): Promise<ProductListResponse> => {
             const params = new URLSearchParams();
 
             if (page) params.append('page', page.toString());
@@ -59,7 +59,10 @@ export const useProductList = () => {
                 return keysToCamelCase(response);
             } catch (err: unknown) {
                 if (err instanceof Error) {
-                    console.error('Error in getProducts:', err.message);
+                    console.error(
+                        'Error in getProducts:',
+                        err.message
+                    );
                     throw err;
                 }
                 throw new Error('Unknown error in getProducts');
