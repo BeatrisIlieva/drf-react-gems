@@ -1,19 +1,19 @@
 import { type ReactElement } from 'react';
 import styles from './ShoppingBagItem.module.scss';
 import { Icon } from '../../../../reusable/icon/Icon';
-import type { ProductInfo } from '../../../../../types/ShoppingBag';
+import type { ShoppingBagItemResponse } from '../../../../../types/ShoppingBag';
 
-interface Props {
-    quantity: number;
-    totalPricePerProduct: number;
-    productInfo: ProductInfo;
-}
+import { useShoppingBagContext } from '../../../../../contexts/ShoppingBagContext';
 
 export const ShoppingBagItem = ({
     quantity,
     totalPricePerProduct,
-    productInfo
-}: Props): ReactElement => {
+    productInfo,
+    id
+}: ShoppingBagItemResponse): ReactElement => {
+    const { deleteShoppingBagHandler, isDeleting } =
+        useShoppingBagContext();
+
     return (
         <li className={styles['shopping-bag-item']}>
             <span>
@@ -38,7 +38,14 @@ export const ShoppingBagItem = ({
 
                 <span>
                     <button>Move to Wish List</button>
-                    <button>Remove</button>
+                    <button
+                        onClick={() =>
+                            deleteShoppingBagHandler(id)
+                        }
+                        disabled={isDeleting}
+                    >
+                        Remove
+                    </button>
                 </span>
             </span>
 

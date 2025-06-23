@@ -34,10 +34,13 @@ export const useCreateShoppingBag = () => {
                     refreshRequired: isAuthenticated
                 });
                 updateShoppingBagCount();
-                console.log(response);
+
                 return keysToCamelCase(response);
             } catch (err: any) {
-                console.error('Error in createShoppingBag:', err.message);
+                console.error(
+                    'Error in createShoppingBag:',
+                    err.message
+                );
                 throw err;
             }
         },
@@ -47,41 +50,32 @@ export const useCreateShoppingBag = () => {
     return { createShoppingBag };
 };
 
-export const useRemoveFromShoppingBag = () => {
+export const useDeleteShoppingBag = () => {
     const { del } = useApi();
     const { isAuthenticated } = useAuth();
     const { updateShoppingBagCount } = useShoppingBagContext();
 
-    const removeFromBag = useCallback(
-        async ({
-            contentType,
-            objectId,
-            quantity
-        }: CreateShoppingBagParams): Promise<ShoppingBagItemResponse> => {
-            const data = {
-                content_type: contentType,
-                object_id: objectId,
-                quantity: quantity
-            };
-
+    const deleteShoppingBag = useCallback(
+        async (bagItemId: number | string): Promise<void> => {
             try {
-                const response = await post(baseUrl, {
-                    data,
+                await del(`${baseUrl}${bagItemId}/`, {
                     accessRequired: isAuthenticated,
                     refreshRequired: isAuthenticated
                 });
+
                 updateShoppingBagCount();
-                console.log(response);
-                return keysToCamelCase(response);
             } catch (err: any) {
-                console.error('Error in createShoppingBag:', err.message);
+                console.error(
+                    'Error in deleteShoppingBag:',
+                    err.message
+                );
                 throw err;
             }
         },
-        [post, isAuthenticated, updateShoppingBagCount]
+        [del, isAuthenticated, updateShoppingBagCount]
     );
 
-    return { createShoppingBag };
+    return { deleteShoppingBag };
 };
 
 export const useGetShoppingBagItems = () => {

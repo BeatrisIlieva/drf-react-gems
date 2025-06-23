@@ -5,15 +5,16 @@ import {
     type ReactNode
 } from 'react';
 import {
+    useDeleteShoppingBag,
     useGetShoppingBagCount,
     useGetShoppingBagItems,
     useGetShoppingBagTotalPrice
 } from '../api/shoppingBagApi';
 import {
     ShoppingBagContext,
-    type ShoppingBagContextType,
-    type ShoppingBagItem
+    type ShoppingBagContextType
 } from '../contexts/ShoppingBagContext';
+import type { ShoppingBagItemResponse } from '../types/ShoppingBag';
 
 export interface CountResponse {
     count: number;
@@ -32,22 +33,22 @@ export const ShoppingBagProvider = ({ children }: Props) => {
     const { getShoppingBagCount } = useGetShoppingBagCount();
     const { getShoppingBagTotalPrice } =
         useGetShoppingBagTotalPrice();
+    const { deleteShoppingBag } = useDeleteShoppingBag();
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const [shoppingBagItemsCount, setShoppingBagItemsCount] =
         useState<number>(0);
     const [shoppingBagTotalPrice, setShoppingBagTotalPrice] =
         useState<number>(0);
     const [shoppingBagItems, setShoppingBagItems] = useState<
-        ShoppingBagItem[]
+        ShoppingBagItemResponse[]
     >([]);
 
     const getShoppingBagItemsHandler = useCallback(() => {
         getShoppingBagItems()
             .then((response) => {
                 if (response) {
-                    setShoppingBagItems(
-                        response as unknown as ShoppingBagItem[]
-                    );
+                    setShoppingBagItems(response);
                 }
             })
             .catch((err: Error) => console.log(err.message));
@@ -57,10 +58,7 @@ export const ShoppingBagProvider = ({ children }: Props) => {
         getShoppingBagCount()
             .then((response) => {
                 if (response) {
-                    setShoppingBagItemsCount(
-                        (response as unknown as CountResponse)
-                            .count
-                    );
+                    setShoppingBagItemsCount(response.count);
                 }
             })
             .catch((err: Error) => console.log(err.message));
@@ -69,29 +67,35 @@ export const ShoppingBagProvider = ({ children }: Props) => {
     const updateShoppingBagTotalPrice = useCallback(() => {
         getShoppingBagTotalPrice()
             .then((response) => {
-                console.log(response);
                 if (response) {
-                    setShoppingBagTotalPrice(
-                        (
-                            response as unknown as TotalPriceResponse
-                        ).totalPrice
-                    );
+                    setShoppingBagTotalPrice(response.totalPrice);
                 }
             })
             .catch((err: Error) => console.log(err.message));
     }, [getShoppingBagTotalPrice]);
 
-    useEffect(() => {
-        updateShoppingBagCount();
-        updateShoppingBagTotalPrice();
-    }, [updateShoppingBagCount, updateShoppingBagTotalPrice]);
+    const deleteShoppingBagHandler = async (id: number) => {
+        setIsDeleting(true);
+        try {
+            await deleteShoppingBag(id);
+            getShoppingBagItemsHandler();
+            updateShoppingBagCount();
+            updateShoppingBagTotalPrice();
+        } catch (error) {
+            console.error(error);
+        }
+        setIsDeleting(false);
+    };
 
     const contextValue: ShoppingBagContextType = {
         shoppingBagItems,
         shoppingBagItemsCount,
         getShoppingBagItemsHandler,
         updateShoppingBagCount,
-        shoppingBagTotalPrice
+        shoppingBagTotalPrice,
+        deleteShoppingBagHandler,
+        isDeleting,
+        updateShoppingBagTotalPrice
     };
 
     return (
