@@ -2,14 +2,10 @@ import { useCallback } from 'react';
 import { useApi } from '../hooks/useApi';
 import { useAuth } from '../hooks/auth/useAuth';
 import { useShoppingBagContext } from '../contexts/ShoppingBagContext';
+import type { AddToBagParams } from '../types/ShoppingBag';
+import { keysToCamelCase } from '../utils/convertToCamelCase';
 
-const baseUrl = 'http://localhost:8000/shopping-bag/';
-
-interface AddToBagParams {
-    contentType: string;
-    objectId: number;
-    quantity: number;
-}
+const baseUrl = 'http://localhost:8000/shopping-bags/';
 
 interface ApiResponse<T = any> {
     data?: T;
@@ -41,7 +37,7 @@ export const useAddToShoppingBag = () => {
                     refreshRequired: isAuthenticated
                 });
                 updateShoppingBagCount();
-                return response;
+                return keysToCamelCase(response);
             } catch (err: any) {
                 console.error('Error in addToBag:', err.message);
                 throw err;
@@ -66,7 +62,7 @@ export const useGetShoppingBagItems = () => {
                 refreshRequired: isAuthenticated
             });
 
-            return response;
+            return keysToCamelCase(response);
         } catch (err: any) {
             console.log(err.message);
             return undefined;
@@ -91,7 +87,7 @@ export const useGetShoppingBagCount = () => {
                 refreshRequired: isAuthenticated
             });
 
-            return response;
+            return keysToCamelCase(response);
         } catch (err: any) {
             console.log(err.message);
             return undefined;
@@ -120,7 +116,7 @@ export const useGetShoppingBagTotalPrice = () => {
                     }
                 );
 
-                return response;
+                return keysToCamelCase(response);
             } catch (err: any) {
                 console.log(err.message);
                 return undefined;

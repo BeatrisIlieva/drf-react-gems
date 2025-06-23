@@ -2,64 +2,49 @@ import React from 'react';
 import styles from './ShoppingBagItem.module.scss';
 
 export interface ProductInfo {
-    first_image: string;
+    firstImage: string;
     collection: string;
-    reference: string;
     color: string;
     stone: string;
-    material: string;
-    size?: string | number;
+    metal: string;
+    size: string;
+    category: string;
 }
 
 export interface ShoppingBagItemProps {
-    id: number | string; // Added id since it's used as a key in map
+    id: number;
     quantity: number;
-    content_type: string;
-    object_id: number | string;
-    total_price_per_product: number;
-    product_info: ProductInfo;
+    contentType: string;
+    objectId: number | string;
+    totalPricePerProduct: number;
+    productInfo: ProductInfo;
 }
 
 export const ShoppingBagItem: React.FC<ShoppingBagItemProps> = (
     props
 ) => {
-    const {
-        // id is used as a key in the parent component but not used directly here
-        quantity,
-        content_type,
-        total_price_per_product,
-        product_info
-    } = props;
-    // object_id is available in props but not used in this component
-    const productCategory = content_type.split('inventory')[0];
-    const productCategoryCapitalized =
-        productCategory.charAt(0).toUpperCase() +
-        productCategory.slice(1);
+    const { quantity, totalPricePerProduct, productInfo } = props;
 
     return (
         <li className={styles['shopping-bag-item']}>
             <span>
                 <img
-                    src={product_info.first_image}
-                    alt={product_info.collection}
+                    src={productInfo.firstImage}
+                    alt={productInfo.collection}
                 />
             </span>
 
             <span>
                 <span>
+                    <span>{`${productInfo.collection} ${productInfo.category}`}</span>
+
                     <span>
-                        {`${product_info.collection} ${product_info.reference} ${productCategoryCapitalized}`}
+                        {`${productInfo.color} ${productInfo.stone} set in ${productInfo.metal}`}
                     </span>
 
                     <span>
-                        {`${product_info.color} ${product_info.stone} set in ${product_info.material}`}
+                        <span>Size: {productInfo.size}</span>
                     </span>
-                    {product_info.size && (
-                        <span>
-                            <span>{product_info.size}</span>
-                            <span>cm</span>
-                        </span>
-                    )}
                 </span>
 
                 <span>
@@ -69,7 +54,7 @@ export const ShoppingBagItem: React.FC<ShoppingBagItemProps> = (
             </span>
 
             <span>
-                <span>{`$${total_price_per_product}`}</span>
+                <span>{`$${totalPricePerProduct}`}</span>
                 <span>
                     <button>
                         <svg

@@ -25,7 +25,7 @@ class ShoppingBagSerializer(serializers.ModelSerializer):
             'total_price_per_product',
         ]
         read_only_fields = [
-            'id', 
+            'id',
             'created_at',
             'user',
             'product_info',
@@ -42,21 +42,26 @@ class ShoppingBagSerializer(serializers.ModelSerializer):
         if not product:
             return {}
 
+        product_content_type = ContentType.objects.get_for_model(
+            product.__class__
+        )
+        model_name = product_content_type.model.capitalize()
+
         return {
             'product_id': product.id,
             'collection': str(product.collection),
-            'reference': str(product.reference),
-            'price': float(product.price),
+            'price': float(inventory.price),
             'first_image': product.first_image,
             'available_quantity': inventory.quantity,
             'size': str(getattr(inventory, 'size', '')),
-            'material': str(product.material),
-            'stone': str(product.stone_by_color.stone),
-            'color': str(product.stone_by_color.color)
+            'metal': str(product.metal.name),
+            'stone': str(product.stone.name),
+            'color': str(product.color.name),
+            'category': model_name,
         }
 
     def get_total_price_per_product(self, obj):
         try:
-            return round(obj.inventory.product.price * obj.quantity, 2)
+            return round(obj.inventory.price * obj.quantity, 2)
         except Exception:
             return 0

@@ -138,9 +138,9 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
         total_price = 0.0
         for item in bag_items:
             inventory = item.inventory
-            if inventory and hasattr(inventory, 'product'):
+            if inventory:
                 try:
-                    total_price += float(inventory.product.price) * \
+                    total_price += float(inventory.price) * \
                         item.quantity
                 except Exception:
                     continue

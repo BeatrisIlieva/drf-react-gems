@@ -20,7 +20,7 @@ export interface CountResponse {
 }
 
 export interface TotalPriceResponse {
-    total_price: number;
+    totalPrice: number;
 }
 
 interface Props {
@@ -48,7 +48,6 @@ export const ShoppingBagProvider = ({ children }: Props) => {
                     setShoppingBagItems(
                         response as unknown as ShoppingBagItem[]
                     );
-                    console.log(response, 'here');
                 }
             })
             .catch((err: Error) => console.log(err.message));
@@ -70,11 +69,12 @@ export const ShoppingBagProvider = ({ children }: Props) => {
     const updateShoppingBagTotalPrice = useCallback(() => {
         getShoppingBagTotalPrice()
             .then((response) => {
+                console.log(response);
                 if (response) {
                     setShoppingBagTotalPrice(
                         (
                             response as unknown as TotalPriceResponse
-                        ).total_price
+                        ).totalPrice
                     );
                 }
             })

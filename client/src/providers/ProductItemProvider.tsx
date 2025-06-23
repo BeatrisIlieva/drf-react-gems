@@ -1,6 +1,8 @@
 import { useParams } from 'react-router';
 import { useProductItem } from '../api/productItemApi';
-import type { ProductItemType } from '../types/Products';
+import type {
+    ProductItemType
+} from '../types/Products';
 import {
     useCallback,
     useEffect,
@@ -9,6 +11,8 @@ import {
     type ReactNode
 } from 'react';
 import { ProductItemContext } from '../contexts/ProductItemContext';
+import { useAddToShoppingBag } from '../api/shoppingBagApi';
+import type { AddToBagParams } from '../types/ShoppingBag';
 
 interface Props {
     children: ReactNode;
@@ -20,6 +24,8 @@ export const ProductItemProvider = ({ children }: Props) => {
         categoryName: string;
         productId: string;
     }>();
+    const { addToBag } = useAddToShoppingBag();
+
     const [loading, setLoading] = useState<boolean>(true);
     const [product, setProduct] =
         useState<ProductItemType | null>(null);
@@ -28,6 +34,8 @@ export const ProductItemProvider = ({ children }: Props) => {
     >(null);
     const [notSelectedSizeError, setNotSelectedSizeError] =
         useState<boolean | null>(null);
+    const [selectedInventory, setSelectedInventory] =
+        useState<AddToBagParams | null>(null);
 
     useEffect(() => {
         setLoading(true);
@@ -51,22 +59,51 @@ export const ProductItemProvider = ({ children }: Props) => {
             setNotSelectedSizeError(true);
             return;
         }
-    }, [selectedSize]);
+
+        addToBag(selectedInventory!);
+    }, [selectedSize, addToBag, selectedInventory]);
 
     const addToWishlistHandler = (): void => {};
 
-    const setSelectedSizeHandler = useCallback((size: number): void => {
-        if (selectedSize === null) {
-            setSelectedSize(size);
-            setNotSelectedSizeError(false);
-        } else if (selectedSize === size) {
-            setSelectedSize(null);
-            setNotSelectedSizeError(null);
-        } else {
-            setSelectedSize(size);
-            setNotSelectedSizeError(false);
-        }
-    }, [selectedSize]);
+    const updateSelectedInventoryHandler = (
+        contentType: string,
+        objectId: number
+    ) => {
+        setSelectedInventory({
+            quantity: 1,
+            contentType,
+            objectId
+        });
+    };
+
+    const setSelectedSizeHandler = useCallback(
+        (
+            size: number,
+            contentType: string,
+            objectId: number
+        ): void => {
+            if (selectedSize === null) {
+                setSelectedSize(size);
+                setNotSelectedSizeError(false);
+                updateSelectedInventoryHandler(
+                    contentType,
+                    objectId
+                );
+            } else if (selectedSize === size) {
+                setSelectedSize(null);
+                setNotSelectedSizeError(null);
+                setSelectedInventory(null);
+            } else {
+                setSelectedSize(size);
+                setNotSelectedSizeError(false);
+                updateSelectedInventoryHandler(
+                    contentType,
+                    objectId
+                );
+            }
+        },
+        [selectedSize]
+    );
 
     const contextValue = useMemo(
         () => ({
