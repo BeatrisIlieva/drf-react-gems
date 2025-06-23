@@ -1,0 +1,23 @@
+.shopping-bag {
+    display: flex;
+    gap: 3em;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2em;
+    margin-bottom: 6em;
+
+    h2 {
+        flex: 0 0 100%;
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: 500;
+    }
+}
+
+.wrapper-left {
+    flex: 0 0 41%;
+}
+
+.wrapper-right {
+    flex: 0 0 22%;
+}
