@@ -5,7 +5,8 @@ import { useCategoryName } from '../../../../../../hooks/products/useCategoryNam
 import { useProductItemContext } from '../../../../../../contexts/ProductItemContext';
 
 export const RelatedProducts = (): ReactElement => {
-    const { categoryNameCapitalizedPlural } = useCategoryName();
+    const { categoryNameCapitalizedPlural, categoryName } =
+        useCategoryName();
     const {
         relatedCollectionProducts,
         productId,
@@ -24,7 +25,7 @@ export const RelatedProducts = (): ReactElement => {
                     }
                 >
                     <Link
-                        to={`/products/${categoryNameCapitalizedPlural}/${product.id}`}
+                        to={`/products/${categoryName}/${product.id}`}
                     >
                         <img
                             src={product.firstImage}

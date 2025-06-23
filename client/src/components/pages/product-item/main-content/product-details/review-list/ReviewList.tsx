@@ -15,13 +15,13 @@ export const ReviewList = (): ReactElement => {
                     <h3>Latest Customer Reviews</h3>
                     <div>
                         <span>{averageRating}</span>
-                        <Stars rating={averageRating} />
+                        <Stars rating={averageRating!} />
                     </div>
                     <p>Average rating of all time</p>
                 </div>
             </div>
             <ul>
-                {reviews.map((review) => (
+                {reviews!.map((review) => (
                     <ReviewItem key={review.id} review={review} />
                 ))}
             </ul>
