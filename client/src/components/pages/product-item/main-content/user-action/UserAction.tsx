@@ -18,7 +18,8 @@ export const UserAction = (): ReactElement => {
         metalName,
         inventory,
         addToBagHandler,
-        addToWishlistHandler
+        addToWishlistHandler,
+        notSelectedSizeError
     } = useProductItemContext();
     console.log(inventory);
 
@@ -48,8 +49,18 @@ export const UserAction = (): ReactElement => {
                 <span>{formattedMaxPrice}</span>
             </p>
             <RelatedProducts />
-            <p>Size:</p>
+            <p
+                className={`${notSelectedSizeError ? styles['error'] : ''}`.trim()}
+            >
+                Size:
+            </p>
             <SizeList />
+            <p
+                className={`${notSelectedSizeError ? styles['error'] : styles['invisible']}`.trim()}
+            >
+                Please select a size.
+            </p>
+
             <div className={styles['buttons-wrapper']}>
                 <Button
                     title={'Add to Bag'}

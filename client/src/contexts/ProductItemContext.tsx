@@ -24,6 +24,7 @@ interface ProductItemContextType {
     setSelectedSizeHandler: (size: number) => void;
     addToBagHandler: () => void;
     addToWishlistHandler: () => void;
+    notSelectedSizeError: boolean | null;
 }
 
 export const ProductItemContext =
@@ -44,7 +45,8 @@ export const ProductItemContext =
         selectedSize: null,
         setSelectedSizeHandler: () => null,
         addToBagHandler: () => null,
-        addToWishlistHandler: () => null
+        addToWishlistHandler: () => null,
+        notSelectedSizeError: null,
     });
 
 export const useProductItemContext = () => {

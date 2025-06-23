@@ -2,6 +2,7 @@ import { useParams } from 'react-router';
 import { useProductItem } from '../api/productItemApi';
 import type { ProductItemType } from '../types/Products';
 import {
+    useCallback,
     useEffect,
     useMemo,
     useState,
@@ -25,6 +26,8 @@ export const ProductItemProvider = ({ children }: Props) => {
     const [selectedSize, setSelectedSize] = useState<
         number | null
     >(null);
+    const [notSelectedSizeError, setNotSelectedSizeError] =
+        useState<boolean | null>(null);
 
     useEffect(() => {
         setLoading(true);
@@ -43,19 +46,27 @@ export const ProductItemProvider = ({ children }: Props) => {
             });
     }, [categoryName, productId, getProductItem]);
 
-    const addToBagHandler = (): void => {};
+    const addToBagHandler = useCallback((): void => {
+        if (selectedSize === null) {
+            setNotSelectedSizeError(true);
+            return;
+        }
+    }, [selectedSize]);
 
     const addToWishlistHandler = (): void => {};
 
-    const setSelectedSizeHandler = (size: number): void => {
+    const setSelectedSizeHandler = useCallback((size: number): void => {
         if (selectedSize === null) {
             setSelectedSize(size);
+            setNotSelectedSizeError(false);
         } else if (selectedSize === size) {
             setSelectedSize(null);
+            setNotSelectedSizeError(null);
         } else {
             setSelectedSize(size);
+            setNotSelectedSizeError(false);
         }
-    };
+    }, [selectedSize]);
 
     const contextValue = useMemo(
         () => ({
@@ -77,9 +88,17 @@ export const ProductItemProvider = ({ children }: Props) => {
             selectedSize,
             setSelectedSizeHandler,
             addToBagHandler,
-            addToWishlistHandler
+            addToWishlistHandler,
+            notSelectedSizeError
         }),
-        [product, loading, selectedSize]
+        [
+            product,
+            loading,
+            selectedSize,
+            addToBagHandler,
+            setSelectedSizeHandler,
+            notSelectedSizeError
+        ]
     );
 
     return (

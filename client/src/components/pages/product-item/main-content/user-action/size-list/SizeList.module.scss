@@ -19,7 +19,11 @@
     }
 
     button.selected {
-        border: 0.1em solid vars.$black;
+        border-color: vars.$black;
+    }
+
+    button:not(.sold-out).error {
+        border-color: vars.$red;
     }
 
     button.sold-out {
