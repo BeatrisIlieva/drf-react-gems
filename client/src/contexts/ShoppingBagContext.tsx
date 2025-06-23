@@ -1,14 +1,8 @@
 import { createContext, useContext } from 'react';
-
-// Define types for the context value
-export interface ShoppingBagItem {
-    id: number;
-    // Add other properties of shopping bag items here
-    // For example: product_id: number, quantity: number, etc.
-}
+import type { ShoppingBagItemResponse } from '../types/ShoppingBag';
 
 export interface ShoppingBagContextType {
-    shoppingBagItems: ShoppingBagItem[];
+    shoppingBagItems: ShoppingBagItemResponse[];
     shoppingBagItemsCount: number;
     getShoppingBagItemsHandler: () => void;
     updateShoppingBagCount: () => void;

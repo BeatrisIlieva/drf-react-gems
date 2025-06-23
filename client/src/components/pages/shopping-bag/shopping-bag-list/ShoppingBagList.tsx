@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import { useEffect, type ReactElement } from 'react';
 import { useShoppingBagContext } from '../../../../contexts/ShoppingBagContext';
 import styles from './ShoppingBagList.module.scss';
 import { ShoppingBagItem } from './shopping-bag-item/ShoppingBagItem';
-import type { ShoppingBagItemProps } from './shopping-bag-item/ShoppingBagItem';
 
-export const ShoppingBagList: React.FC = () => {
+export const ShoppingBagList = (): ReactElement => {
     const { shoppingBagItems, getShoppingBagItemsHandler } =
         useShoppingBagContext();
 
@@ -14,11 +13,9 @@ export const ShoppingBagList: React.FC = () => {
 
     return (
         <ul className={styles['shopping-bag-list']}>
-            {(shoppingBagItems as ShoppingBagItemProps[]).map(
-                (item) => (
-                    <ShoppingBagItem key={item.id} {...item} />
-                )
-            )}
+            {shoppingBagItems.map((item) => (
+                <ShoppingBagItem key={item.id} {...item} />
+            ))}
         </ul>
     );
 };

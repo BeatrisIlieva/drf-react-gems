@@ -1,31 +1,19 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 import styles from './ShoppingBagItem.module.scss';
 import { Icon } from '../../../../reusable/icon/Icon';
+import type { ProductInfo } from '../../../../../types/ShoppingBag';
 
-export interface ProductInfo {
-    firstImage: string;
-    collection: string;
-    color: string;
-    stone: string;
-    metal: string;
-    size: string;
-    category: string;
-}
-
-export interface ShoppingBagItemProps {
-    id: number;
+interface Props {
     quantity: number;
-    contentType: string;
-    objectId: number | string;
     totalPricePerProduct: number;
     productInfo: ProductInfo;
 }
 
-export const ShoppingBagItem: React.FC<ShoppingBagItemProps> = (
-    props
-) => {
-    const { quantity, totalPricePerProduct, productInfo } = props;
-
+export const ShoppingBagItem = ({
+    quantity,
+    totalPricePerProduct,
+    productInfo
+}: Props): ReactElement => {
     return (
         <li className={styles['shopping-bag-item']}>
             <span>

@@ -5,11 +5,11 @@ export interface AddToBagParams {
 }
 
 export interface ProductInfo {
-    product_id: number;
+    productId: number;
     collection: string;
     price: number;
-    first_image: string;
-    available_quantity: number;
+    firstImage: string;
+    availableQuantity: number;
     size: string;
     metal: string;
     stone: string;
@@ -21,9 +21,9 @@ export interface ShoppingBagItemResponse {
     id: number;
     user: string | null;
     quantity: number;
-    created_at: string; // ISO date string format
-    content_type: string;
-    object_id: number;
-    product_info: ProductInfo;
-    total_price_per_product: number;
+    createdAt: string;
+    contentType: string;
+    objectId: number;
+    productInfo: ProductInfo;
+    totalPricePerProduct: number;
 }
