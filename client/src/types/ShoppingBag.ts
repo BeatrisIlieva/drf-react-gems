@@ -4,6 +4,10 @@ export interface CreateShoppingBagParams {
     quantity: number;
 }
 
+export interface UpdateShoppingBagParams extends CreateShoppingBagParams {
+    id: number;  // Shopping bag item ID
+}
+
 export interface ProductInfo {
     productId: number;
     collection: string;

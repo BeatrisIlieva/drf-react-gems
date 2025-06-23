@@ -1,9 +1,4 @@
-import {
-    useCallback,
-    useEffect,
-    useState,
-    type ReactNode
-} from 'react';
+import { useCallback, useState, type ReactNode } from 'react';
 import {
     useDeleteShoppingBag,
     useGetShoppingBagCount,

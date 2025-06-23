@@ -4,7 +4,8 @@ import { useAuth } from '../hooks/auth/useAuth';
 import { useShoppingBagContext } from '../contexts/ShoppingBagContext';
 import type {
     CreateShoppingBagParams,
-    ShoppingBagItemResponse
+    ShoppingBagItemResponse,
+    UpdateShoppingBagParams
 } from '../types/ShoppingBag';
 import { keysToCamelCase } from '../utils/convertToCamelCase';
 
@@ -48,6 +49,69 @@ export const useCreateShoppingBag = () => {
     );
 
     return { createShoppingBag };
+};
+
+export const useUpdateShoppingBag = () => {
+    const { put } = useApi();
+    const { isAuthenticated } = useAuth();
+    const { updateShoppingBagCount } = useShoppingBagContext();
+    const { deleteShoppingBag } = useDeleteShoppingBag();
+
+    const updateShoppingBag = useCallback(
+        async ({
+            contentType,
+            objectId,
+            quantity,
+            id
+        }: UpdateShoppingBagParams): Promise<ShoppingBagItemResponse> => {
+            if (quantity <= 0) {
+                await deleteShoppingBag(id);
+                return { success: true } as any;
+            }
+
+            const data = {
+                content_type: contentType,
+                object_id: objectId,
+                quantity: quantity
+            };
+
+            try {
+                const response = await put(`${baseUrl}${id}/`, {
+                    data,
+                    accessRequired: isAuthenticated,
+                    refreshRequired: isAuthenticated
+                });
+
+                updateShoppingBagCount();
+
+                return keysToCamelCase(response);
+            } catch (err: any) {
+                if (
+                    err.response?.data?.detail?.includes(
+                        'Not enough quantity in inventory'
+                    )
+                ) {
+                    throw new Error(
+                        "Sorry, we don't have enough items in stock."
+                    );
+                }
+
+                console.error(
+                    'Error in updateShoppingBag:',
+                    err.message
+                );
+                throw err;
+            }
+        },
+        [
+            put,
+            isAuthenticated,
+            updateShoppingBagCount,
+            deleteShoppingBag
+        ]
+    );
+
+    return { updateShoppingBag };
 };
 
 export const useDeleteShoppingBag = () => {

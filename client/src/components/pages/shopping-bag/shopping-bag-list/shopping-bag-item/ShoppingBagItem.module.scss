@@ -66,22 +66,5 @@
             font-size: 1.1em;
             align-self: flex-end;
         }
-
-        > span:nth-child(2) {
-            justify-content: space-between;
-            align-items: center;
-            border: 0.1em solid vars.$medium-grey;
-            padding: 0.1em 0.5em;
-
-            > span,
-            button svg {
-                color: vars.$dark-grey;
-            }
-
-            button svg {
-                font-size: 0.5em;
-                line-height: 1;
-            }
-        }
     }
 }

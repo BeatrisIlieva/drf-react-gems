@@ -1,15 +1,17 @@
 import { type ReactElement } from 'react';
 import styles from './ShoppingBagItem.module.scss';
-import { Icon } from '../../../../reusable/icon/Icon';
 import type { ShoppingBagItemResponse } from '../../../../../types/ShoppingBag';
 
 import { useShoppingBagContext } from '../../../../../contexts/ShoppingBagContext';
+import { QuantitySelector } from './quantity-selector/QuantitySelector';
 
 export const ShoppingBagItem = ({
     quantity,
     totalPricePerProduct,
     productInfo,
-    id
+    id,
+    contentType,
+    objectId
 }: ShoppingBagItemResponse): ReactElement => {
     const { deleteShoppingBagHandler, isDeleting } =
         useShoppingBagContext();
@@ -51,15 +53,13 @@ export const ShoppingBagItem = ({
 
             <span>
                 <span>{`$${totalPricePerProduct}`}</span>
-                <span>
-                    <button>
-                        <Icon name='minus' />
-                    </button>
-                    <span>{quantity}</span>
-                    <button>
-                        <Icon name='plus' />
-                    </button>
-                </span>
+                <QuantitySelector
+                    quantity={quantity}
+                    id={id}
+                    contentType={contentType}
+                    objectId={objectId}
+                    availableQuantity={productInfo.availableQuantity}
+                />
             </span>
         </li>
     );
