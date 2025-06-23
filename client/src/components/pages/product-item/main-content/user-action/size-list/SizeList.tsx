@@ -2,8 +2,12 @@ import { useProductItemContext } from '../../../../../../contexts/ProductItemCon
 import styles from './SizeList.module.scss';
 
 export const SizeList = () => {
-    const { inventory, selectedSize, setSelectedSizeHandler, notSelectedSizeError } =
-        useProductItemContext();
+    const {
+        inventory,
+        selectedSize,
+        setSelectedSizeHandler,
+        notSelectedSizeError
+    } = useProductItemContext();
 
     return (
         <ul className={styles['size-list']}>
@@ -17,7 +21,11 @@ export const SizeList = () => {
                         } ${selectedSize === item.size.id ? styles['selected'] : ''} ${notSelectedSizeError === true ? styles['error'] : ''}`.trim()}
                         disabled={item.quantity === 0}
                         onClick={() =>
-                            setSelectedSizeHandler(item.size.id, item.contentType, item.objectId)
+                            setSelectedSizeHandler(
+                                item.size.id,
+                                item.contentType,
+                                item.objectId
+                            )
                         }
                     >
                         {item.size.name}

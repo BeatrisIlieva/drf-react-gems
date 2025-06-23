@@ -1,8 +1,6 @@
 import { useParams } from 'react-router';
 import { useProductItem } from '../api/productItemApi';
-import type {
-    ProductItemType
-} from '../types/Products';
+import type { ProductItemType } from '../types/Products';
 import {
     useCallback,
     useEffect,

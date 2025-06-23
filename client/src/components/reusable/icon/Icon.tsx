@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
-
 import { icons } from './icons';
+import styles from './Icon.module.scss';
 
 type IconName = keyof typeof icons;
 
@@ -10,9 +10,14 @@ type Props = {
     isSubtle?: boolean;
 };
 
-export const Icon = ({ name, fontSize, isSubtle }: Props): ReactElement => {
+export const Icon = ({
+    name,
+    fontSize,
+    isSubtle
+}: Props): ReactElement => {
     return (
         <span
+            className={styles['icon']}
             style={{
                 fontSize: fontSize ? `${fontSize}em` : `${1.1}em`,
                 opacity: isSubtle ? 0.6 : 1

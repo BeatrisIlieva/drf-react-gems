@@ -22,9 +22,9 @@ interface ProductItemContextType {
     loading?: boolean;
     selectedSize: number | null;
     setSelectedSizeHandler: (
-            size: number,
-            contentType: string,
-            objectId: number
+        size: number,
+        contentType: string,
+        objectId: number
     ) => void;
     addToBagHandler: () => void;
     addToWishlistHandler: () => void;
