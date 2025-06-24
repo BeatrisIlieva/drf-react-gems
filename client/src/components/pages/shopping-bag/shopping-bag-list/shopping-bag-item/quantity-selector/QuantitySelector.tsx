@@ -2,13 +2,14 @@ import { useEffect, useState, type ReactElement } from 'react';
 import styles from './QuantitySelector.module.scss';
 import { Icon } from '../../../../../reusable/icon/Icon';
 import { useUpdateShoppingBag } from '../../../../../../api/shoppingBagApi';
+import { useShoppingBagContext } from '../../../../../../contexts/ShoppingBagContext';
 
 interface Props {
     quantity: number;
     id: number;
     objectId: number;
     contentType: string;
-    availableQuantity: number;
+    availableQuantity: number | string;
 }
 
 export const QuantitySelector = ({
@@ -19,8 +20,18 @@ export const QuantitySelector = ({
     availableQuantity
 }: Props): ReactElement => {
     const { updateShoppingBag } = useUpdateShoppingBag();
+    const {
+        getShoppingBagItemsHandler,
+        updateShoppingBagCount,
+        updateShoppingBagTotalPrice
+    } = useShoppingBagContext();
     const [isUpdating, setIsUpdating] = useState(false);
     const [localQuantity, setLocalQuantity] = useState(quantity);
+
+    const totalAvailableQuantity =
+        typeof availableQuantity === 'string'
+            ? parseInt(availableQuantity, 10) + quantity
+            : availableQuantity + quantity;
 
     useEffect(() => {
         setLocalQuantity(quantity);
@@ -38,6 +49,9 @@ export const QuantitySelector = ({
                 id
             });
             setLocalQuantity(newQuantity);
+
+            getShoppingBagItemsHandler();
+            updateShoppingBagTotalPrice();
         } catch (error) {
             console.error('Error updating quantity:', error);
 
@@ -56,6 +70,12 @@ export const QuantitySelector = ({
             handleQuantityChange(localQuantity - 1);
         } else {
             handleQuantityChange(0);
+            // For item removal, we use a timeout to ensure the backend operation completes
+            setTimeout(() => {
+                getShoppingBagItemsHandler();
+                updateShoppingBagCount();
+                updateShoppingBagTotalPrice();
+            }, 300);
         }
     };
 
@@ -63,7 +83,7 @@ export const QuantitySelector = ({
         <span className={styles['quantity-selector']}>
             <button
                 onClick={decrementQuantity}
-                disabled={isUpdating || availableQuantity === 0}
+                disabled={isUpdating}
             >
                 <Icon name='minus' />
             </button>
@@ -72,7 +92,7 @@ export const QuantitySelector = ({
                 onClick={incrementQuantity}
                 disabled={
                     isUpdating ||
-                    localQuantity === availableQuantity
+                    localQuantity >= totalAvailableQuantity
                 }
             >
                 <Icon name='plus' />
