@@ -1,3 +1,5 @@
+@use '../styles/variables' as vars;
+
 form {
     display: flex;
     flex-direction: column;
@@ -10,25 +12,29 @@ form {
         flex-grow: 1;
 
         input {
-            border-color: var(--dark-grey);
+            border-color: vars.$medium-grey;
 
             &.valid {
-                border-color: var(--green);
-            }
-
-            &.invalid {
-                border-color: var(--red);
+                border-color: vars.$green !important;
 
                 ~ label {
-                    color: var(--red);
+                    color: vars.$green !important;
                 }
             }
 
-            &:focus {
-                border-color: var(--blue);
+            &.invalid {
+                border-color: vars.$red;
 
                 ~ label {
-                    color: var(--blue);
+                    color: vars.$red;
+                }
+            }
+
+            &:focus:not(.valid) {
+                border-color: vars.$blue;
+
+                ~ label {
+                    color: vars.$blue;
                 }
             }
 
@@ -49,27 +55,34 @@ form {
                 top 0.3s ease-in-out;
         }
 
-        // Using :has (not supported in all browsers yet)
         &:has(input:focus) {
             input.valid ~ label {
-                color: var(--green);
+                color: vars.$green !important;
             }
 
-            input:focus ~ label,
-            input:not(:placeholder-shown) ~ label {
-                color: var(--blue);
+            input:focus:not(.valid) ~ label,
+            input:not(:placeholder-shown):not(.valid) ~ label {
+                color: vars.$blue;
             }
 
             span.error {
-                color: var(--blue);
+                color: vars.$blue;
             }
         }
     }
 
     span.error {
-        color: var(--red);
+        color: vars.$red;
         font-size: 0.95em;
         padding-top: 0.5em;
+    }
+}
+
+input.valid {
+    border-color: vars.$green !important;
+
+    ~ label {
+        color: vars.$green !important;
     }
 }
 
@@ -77,7 +90,7 @@ input,
 select,
 textarea {
     outline: none;
-    border: 0.08em solid var(--dark-grey);
+    border: 0.08em solid vars.$dark-grey;
     border-radius: 0.1em;
     transition: border-color 0.3s ease-in-out;
     overflow: hidden;

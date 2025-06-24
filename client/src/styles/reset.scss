@@ -1,11 +1,11 @@
 * {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 html {
-  box-sizing: border-box;
-  scroll-behavior: smooth;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
 }
 
 *,
@@ -13,8 +13,8 @@ html {
 *::after,
 button,
 blockquote {
-  box-sizing: inherit;
-  font: inherit;
+    box-sizing: inherit;
+    font: inherit;
 }
 
 li,
@@ -23,25 +23,29 @@ img,
 figure,
 details,
 details > summary {
-  display: block;
+    display: block;
 }
 
 img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
 }
 
 button {
-  all: unset;
-  cursor: pointer;
+    all: unset;
+    cursor: pointer;
 }
 
 svg {
-  width: 1.6em;
-  height: 1.6em;
+    width: 1.6em;
+    height: 1.6em;
+}
+
+a {
+    color: inherit;
 }
 
 button:disabled {
-  cursor: auto !important;
+    cursor: auto !important;
 }
