@@ -11,6 +11,9 @@ class Inventory(models.Model):
     PRICE_MAX_DIGITS = 7
     PRICE_DECIMAL_PLACES = 2
 
+    class Meta:
+        ordering = ['id']
+
     quantity = models.PositiveIntegerField()
 
     price = models.DecimalField(
