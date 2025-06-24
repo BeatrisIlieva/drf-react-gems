@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useApi } from '../hooks/useApi';
-import { useAuth } from '../hooks/auth/useAuth';
+
 import { useShoppingBagContext } from '../contexts/ShoppingBagContext';
 import type {
     CreateShoppingBagParams,
@@ -8,6 +8,7 @@ import type {
     UpdateShoppingBagParams
 } from '../types/ShoppingBag';
 import { keysToCamelCase } from '../utils/convertToCamelCase';
+import { useAuth } from '../hooks/auth/useAuth';
 
 const baseUrl = 'http://localhost:8000/shopping-bags/';
 
@@ -54,7 +55,10 @@ export const useCreateShoppingBag = () => {
 export const useUpdateShoppingBag = () => {
     const { put } = useApi();
     const { isAuthenticated } = useAuth();
-    const { updateShoppingBagCount } = useShoppingBagContext();
+    const {
+        updateShoppingBagCount,
+        updateShoppingBagTotalPrice
+    } = useShoppingBagContext();
     const { deleteShoppingBag } = useDeleteShoppingBag();
 
     const updateShoppingBag = useCallback(
@@ -82,7 +86,9 @@ export const useUpdateShoppingBag = () => {
                     refreshRequired: isAuthenticated
                 });
 
+                // Update both count and total price when bag is updated
                 updateShoppingBagCount();
+                updateShoppingBagTotalPrice();
 
                 return keysToCamelCase(response);
             } catch (err: any) {
@@ -107,7 +113,8 @@ export const useUpdateShoppingBag = () => {
             put,
             isAuthenticated,
             updateShoppingBagCount,
-            deleteShoppingBag
+            deleteShoppingBag,
+            updateShoppingBagTotalPrice
         ]
     );
 
@@ -117,7 +124,6 @@ export const useUpdateShoppingBag = () => {
 export const useDeleteShoppingBag = () => {
     const { del } = useApi();
     const { isAuthenticated } = useAuth();
-    const { updateShoppingBagCount } = useShoppingBagContext();
 
     const deleteShoppingBag = useCallback(
         async (bagItemId: number | string): Promise<void> => {
@@ -127,16 +133,18 @@ export const useDeleteShoppingBag = () => {
                     refreshRequired: isAuthenticated
                 });
 
-                updateShoppingBagCount();
+                // Let the provider handle state updates
             } catch (err: any) {
                 console.error(
                     'Error in deleteShoppingBag:',
-                    err.message
+                    err instanceof Error
+                        ? err.message
+                        : String(err)
                 );
                 throw err;
             }
         },
-        [del, isAuthenticated, updateShoppingBagCount]
+        [del, isAuthenticated]
     );
 
     return { deleteShoppingBag };

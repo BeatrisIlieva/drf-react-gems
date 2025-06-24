@@ -26,7 +26,10 @@ export const useProductItem = () => {
                 return keysToCamelCase(response);
             } catch (err: unknown) {
                 if (err instanceof Error) {
-                    console.error('Error in getProducts:', err.message);
+                    console.error(
+                        'Error in getProducts:',
+                        err.message
+                    );
                     throw err;
                 }
                 throw new Error('Unknown error in getProducts');
