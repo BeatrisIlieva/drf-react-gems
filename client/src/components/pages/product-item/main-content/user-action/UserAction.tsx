@@ -20,7 +20,9 @@ export const UserAction = (): ReactElement => {
         inventory,
         createShoppingBagHandler,
         addToWishlistHandler,
-        notSelectedSizeError
+        notSelectedSizeError,
+        addToCartError,
+        isSoldOut
     } = useProductItemContext();
     console.log(inventory);
 
@@ -62,12 +64,21 @@ export const UserAction = (): ReactElement => {
                 Please select a size.
             </p>
 
+            {addToCartError && (
+                <div className={styles['error-alert']}>
+                    <p className={styles['error']}>
+                        {addToCartError}
+                    </p>
+                </div>
+            )}
+
             <div className={styles['buttons-wrapper']}>
                 <Button
-                    title={'Add to Bag'}
-                    color={'black'}
+                    title={isSoldOut ? 'Sold Out' : 'Add to Bag'}
+                    color={isSoldOut ? 'grey' : 'black'}
                     callbackHandler={createShoppingBagHandler}
                     actionType={'button'}
+                    disabled={isSoldOut}
                 />
                 <Button
                     title={<Icon name={'heart'} />}

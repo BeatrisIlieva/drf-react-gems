@@ -36,6 +36,20 @@
         color: vars.$red;
     }
 
+    .error-alert {
+        background-color: rgba(255, 0, 0, 0.1);
+        border: 1px solid vars.$red;
+        border-radius: 0.1em;
+        padding: 0.75em;
+        margin-bottom: 1em;
+
+        p {
+            color: vars.$red;
+            margin: 0;
+            font-weight: 500;
+        }
+    }
+
     .invisible {
         visibility: hidden;
     }
