@@ -18,6 +18,11 @@
     text-transform: uppercase;
     font-size: 0.9em;
 
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
     &.black {
         background: vars.$black;
         color: vars.$white;
@@ -25,6 +30,18 @@
 
         &:hover {
             opacity: 0.6;
+        }
+    }
+
+    &.grey {
+        background: #aaaaaa;
+        color: vars.$white;
+        border: 0.1rem solid #999999;
+        cursor: not-allowed;
+        opacity: 0.7;
+
+        &:hover {
+            opacity: 0.7;
         }
     }
 
