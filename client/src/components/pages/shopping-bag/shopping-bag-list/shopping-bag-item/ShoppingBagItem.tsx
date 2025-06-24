@@ -4,6 +4,7 @@ import type { ShoppingBagItemResponse } from '../../../../../types/ShoppingBag';
 
 import { useShoppingBagContext } from '../../../../../contexts/ShoppingBagContext';
 import { QuantitySelector } from './quantity-selector/QuantitySelector';
+import { formatPrice } from '../../../../../utils/formatPrice';
 
 export const ShoppingBagItem = ({
     quantity,
@@ -15,6 +16,10 @@ export const ShoppingBagItem = ({
 }: ShoppingBagItemResponse): ReactElement => {
     const { deleteShoppingBagHandler, isDeleting } =
         useShoppingBagContext();
+
+    const formattedTotalPricePerProduct = formatPrice(
+        totalPricePerProduct.toString()
+    );
 
     return (
         <li className={styles['shopping-bag-item']}>
@@ -41,24 +46,29 @@ export const ShoppingBagItem = ({
                 <span>
                     <button>Move to Wish List</button>
                     <button
-                        onClick={() =>
-                            deleteShoppingBagHandler(id)
-                        }
+                        onClick={() => {
+                            deleteShoppingBagHandler(id);
+                        }}
                         disabled={isDeleting}
+                        className={
+                            isDeleting ? styles['removing'] : ''
+                        }
                     >
-                        Remove
+                        {isDeleting ? 'Removing...' : 'Remove'}
                     </button>
                 </span>
             </span>
 
             <span>
-                <span>{`$${totalPricePerProduct}`}</span>
+                <span>{`${formattedTotalPricePerProduct}`}</span>
                 <QuantitySelector
                     quantity={quantity}
                     id={id}
                     contentType={contentType}
                     objectId={objectId}
-                    availableQuantity={productInfo.availableQuantity}
+                    availableQuantity={
+                        productInfo.availableQuantity
+                    }
                 />
             </span>
         </li>

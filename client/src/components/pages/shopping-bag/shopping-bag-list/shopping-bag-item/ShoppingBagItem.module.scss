@@ -67,4 +67,9 @@
             align-self: flex-end;
         }
     }
+
+    &.removing {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
 }
