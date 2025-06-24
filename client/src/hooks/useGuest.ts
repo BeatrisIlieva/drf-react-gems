@@ -1,18 +1,23 @@
 import { useCallback } from 'react';
-import { usePersistedState } from './usePersistedState';
+import usePersistedState from './usePersistedState';
 
 interface GuestData {
     guest_id?: string;
 }
 
-export const useGuest = () => {
+interface UseGuestReturn {
+    getGuestData: () => string | undefined;
+    clearGuestData: () => void;
+}
+
+export const useGuest = (): UseGuestReturn => {
     const [guestData, setGuestData] = usePersistedState<GuestData>('guest', {});
 
-    const getGuestData = useCallback((): string | undefined => {
+    const getGuestData = useCallback(() => {
         if (!guestData.guest_id) {
             const guestId = crypto.randomUUID();
+
             setGuestData({ guest_id: guestId });
-            return guestId;
         }
 
         return guestData.guest_id;
