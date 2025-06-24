@@ -72,6 +72,7 @@ export const ProductFiltersProvider = ({ children }: Props) => {
         setStoneIds([]);
         setMetalIds([]);
         setCollectionIds([]);
+        setDisplayFilters(false);
     }, []);
 
     const toggleDisplayFilters = useCallback(() => {
