@@ -1,35 +1,34 @@
 import React from 'react';
 import styles from './OrderSummary.module.scss';
 import { useShoppingBagContext } from '../../../contexts/ShoppingBagContext';
-import { Button } from '../button/Button';
-import { ComplimentaryShipping } from '../complimentary-shipping/ComplimentaryShipping';
 import { getTextRows } from './utils';
 import { FlexTextRow } from '../flex-text-row/FlexTextRow';
+import { Skeleton } from './skeleton/Skeleton';
 
 export const OrderSummary: React.FC = () => {
-    const { shoppingBagTotalPrice } = useShoppingBagContext();
-    const textRows = getTextRows(shoppingBagTotalPrice);
+    const { shoppingBagTotalPrice, isLoading } =
+        useShoppingBagContext();
+
+    const textRows = React.useMemo(
+        () => getTextRows(shoppingBagTotalPrice),
+        [shoppingBagTotalPrice]
+    );
 
     return (
         <section className={styles['order-summary']}>
-            <h3>Order Summary</h3>
+            {isLoading ? (
+                <Skeleton />
+            ) : (
+                <>
+                    <h3>Order Summary</h3>
 
-            <div>
-                {textRows.map((row, index) => (
-                    <FlexTextRow key={index} {...row} />
-                ))}
-            </div>
-
-            <Button
-                title={'Continue Checkout'}
-                color={'black'}
-                actionType={'button'}
-                callbackHandler={() =>
-                    console.log('Checkout clicked')
-                }
-            />
-
-            <ComplimentaryShipping />
+                    <div>
+                        {textRows.map((row, index) => (
+                            <FlexTextRow key={index} {...row} />
+                        ))}
+                    </div>
+                </>
+            )}
         </section>
     );
 };
