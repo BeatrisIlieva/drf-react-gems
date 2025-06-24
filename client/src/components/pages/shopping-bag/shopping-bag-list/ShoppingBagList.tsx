@@ -2,13 +2,15 @@ import { useEffect, type ReactElement } from 'react';
 import { useShoppingBagContext } from '../../../../contexts/ShoppingBagContext';
 import styles from './ShoppingBagList.module.scss';
 import { ShoppingBagItem } from './shopping-bag-item/ShoppingBagItem';
+import { Skeleton } from './skeleton/Skeleton';
 
 export const ShoppingBagList = (): ReactElement => {
     const {
         shoppingBagItems,
         getShoppingBagItemsHandler,
         updateShoppingBagCount,
-        updateShoppingBagTotalPrice
+        updateShoppingBagTotalPrice,
+        isLoading
     } = useShoppingBagContext();
 
     useEffect(() => {
@@ -20,6 +22,13 @@ export const ShoppingBagList = (): ReactElement => {
         updateShoppingBagTotalPrice,
         getShoppingBagItemsHandler
     ]);
+
+    if (
+        isLoading &&
+        (!shoppingBagItems || shoppingBagItems.length === 0)
+    ) {
+        return <Skeleton />;
+    }
 
     return (
         <ul className={styles['shopping-bag-list']}>
