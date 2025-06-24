@@ -26,9 +26,11 @@ interface ProductItemContextType {
         contentType: string,
         objectId: number
     ) => void;
-    createShoppingBagHandler: () => void;
+    createShoppingBagHandler: () => Promise<void>;
     addToWishlistHandler: () => void;
     notSelectedSizeError: boolean | null;
+    addToCartError: string | null;
+    isSoldOut: boolean;
 }
 
 export const ProductItemContext =
@@ -48,9 +50,11 @@ export const ProductItemContext =
         loading: true,
         selectedSize: null,
         setSelectedSizeHandler: () => null,
-        createShoppingBagHandler: () => null,
+        createShoppingBagHandler: async () => {},
         addToWishlistHandler: () => null,
-        notSelectedSizeError: null
+        notSelectedSizeError: null,
+        addToCartError: null,
+        isSoldOut: false
     });
 
 export const useProductItemContext = () => {

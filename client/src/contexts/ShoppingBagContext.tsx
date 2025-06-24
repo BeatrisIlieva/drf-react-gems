@@ -9,7 +9,9 @@ export interface ShoppingBagContextType {
     shoppingBagTotalPrice: number;
     deleteShoppingBagHandler: (id: number) => void;
     isDeleting: boolean;
+    isLoading: boolean;
     updateShoppingBagTotalPrice: () => void;
+    continueCheckoutHandler: () => void;
 }
 
 export const ShoppingBagContext =
@@ -21,7 +23,9 @@ export const ShoppingBagContext =
         shoppingBagTotalPrice: 0,
         deleteShoppingBagHandler: () => null,
         isDeleting: false,
-        updateShoppingBagTotalPrice: () => null
+        isLoading: false,
+        updateShoppingBagTotalPrice: () => null,
+        continueCheckoutHandler: () => null
     });
 
 export const useShoppingBagContext = () => {
