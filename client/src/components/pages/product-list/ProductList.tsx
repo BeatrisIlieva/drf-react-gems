@@ -7,8 +7,9 @@ import { FilterList } from './filter-list/FilterList';
 import { HomeLink } from './home-link/HomeLink';
 import { Nav } from './nav/Nav';
 import { useSentinel } from '../../../hooks/useSentinel';
-import { ProductCard } from './product-card/ProductCard';
 import { useProductFiltersContext } from '../../../contexts/ProductFiltersContext';
+import { Skeleton } from './skeleton/Skeleton';
+import { Items } from './items/Items';
 
 const SCROLL_OFFSET = 10;
 
@@ -21,17 +22,24 @@ function debounce(fn: () => void, delay: number) {
 }
 
 export const ProductList = (): ReactElement => {
-    const { products, loading, loadMoreHandler, loadMoreDisabled } =
-        useProductListContext();
+    const {
+        products,
+        loading,
+        loadMoreHandler,
+        loadMoreDisabled
+    } = useProductListContext();
     const { displayFilters } = useProductFiltersContext();
 
     const { sentinelRef, isSticky } = useSentinel();
 
     const handleScroll = useCallback(() => {
-        const scrollPosition = window.innerHeight + window.scrollY;
-        const bottomPosition = document.documentElement.scrollHeight;
+        const scrollPosition =
+            window.innerHeight + window.scrollY;
+        const bottomPosition =
+            document.documentElement.scrollHeight;
 
-        const nearBottom = bottomPosition - scrollPosition < SCROLL_OFFSET;
+        const nearBottom =
+            bottomPosition - scrollPosition < SCROLL_OFFSET;
 
         if (nearBottom && !loading && !loadMoreDisabled) {
             loadMoreHandler();
@@ -41,12 +49,16 @@ export const ProductList = (): ReactElement => {
     useEffect(() => {
         const debouncedScroll = debounce(handleScroll, 150);
         window.addEventListener('scroll', debouncedScroll);
-        return () => window.removeEventListener('scroll', debouncedScroll);
+        return () =>
+            window.removeEventListener('scroll', debouncedScroll);
     }, [handleScroll]);
 
     return (
         <section className={styles['product-list']}>
-            <div ref={sentinelRef} className={styles['sentinel']} />
+            <div
+                ref={sentinelRef}
+                className={styles['sentinel']}
+            />
 
             <HomeLink />
 
@@ -56,17 +68,20 @@ export const ProductList = (): ReactElement => {
 
             <div
                 className={`${styles['wrapper-products']} ${
-                    displayFilters ? styles['with-gap'] : styles['no-gap']
+                    displayFilters
+                        ? styles['with-gap']
+                        : styles['no-gap']
                 }`}
             >
                 <FilterList />
 
                 <div className={styles['wrapper-inner']}>
-                    <ul className={styles['products']}>
-                        {products?.map((product) => (
-                            <ProductCard key={product.id} {...product} />
-                        ))}
-                    </ul>
+                    {loading &&
+                    (!products || products.length === 0) ? (
+                        <Skeleton />
+                    ) : (
+                        <Items />
+                    )}
                 </div>
             </div>
         </section>
