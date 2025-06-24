@@ -1,5 +1,5 @@
 export interface UserContextType {
-    _id: string;
+    id: string;
     email: string;
     refresh: string;
     access: string;
