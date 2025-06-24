@@ -19,7 +19,10 @@ export const Header = (): ReactElement => {
             const header = headerRef.current;
             if (!header) return;
 
-            if (currentScrollY > 0 && currentScrollY > lastScrollY) {
+            if (
+                currentScrollY > 0 &&
+                currentScrollY > lastScrollY
+            ) {
                 header.classList.remove(styles.visible);
                 header.classList.add(styles.hidden);
             } else if (currentScrollY < lastScrollY) {
@@ -31,13 +34,17 @@ export const Header = (): ReactElement => {
         };
 
         window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        return () =>
+            window.removeEventListener('scroll', handleScroll);
     }, []);
 
     return (
         <>
-        <Banner/>
-            <div ref={sentinelRef} className={styles['sentinel']} />
+            <Banner />
+            <div
+                ref={sentinelRef}
+                className={styles['sentinel']}
+            />
 
             <header
                 ref={headerRef}
