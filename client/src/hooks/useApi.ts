@@ -78,12 +78,7 @@ export const useApi = () => {
             }
 
             const response = await fetch(url, options);
-            let json;
-            try {
-                json = await response.json();
-            } catch {
-                json = null;
-            }
+            const json = await response.json();
 
             if (!response.ok) {
                 if (response.status === 401) {
