@@ -1,37 +1,25 @@
+
 import type { ReactNode } from 'react';
 import { UserContext } from '../contexts/UserContext';
-import { usePersistedState } from '../hooks/usePersistedState';
-import { useGuest } from '../hooks/useGuest';
-import type { UserContextPayload } from '../types/UserContext';
+import usePersistedState from '../hooks/usePersistedState';
 
-interface Props {
+import type { UserData } from '../types/User';
+import { useGuest } from '../hooks/useGuest';
+
+interface UserProviderProps {
     children: ReactNode;
 }
 
-export const UserProvider = ({ children }: Props) => {
-    const [authData, setAuthData] = usePersistedState<UserContextPayload>(
-        'auth',
-        {
-            _id: '',
-            email: '',
-            refresh: '',
-            access: ''
-        }
-    );
-
+export default function UserProvider({ children }: UserProviderProps) {
+    const [authData, setAuthData] = usePersistedState<UserData>('auth', {});
     const { clearGuestData } = useGuest();
 
-    const userLoginHandler = (resultData: UserContextPayload) => {
+    const userLoginHandler = (resultData: UserData) => {
         setAuthData(resultData);
     };
 
     const userLogoutHandler = () => {
-        setAuthData({
-            _id: '',
-            email: '',
-            refresh: '',
-            access: ''
-        });
+        setAuthData({});
         clearGuestData();
     };
 
@@ -42,4 +30,4 @@ export const UserProvider = ({ children }: Props) => {
             {children}
         </UserContext.Provider>
     );
-};
+}
