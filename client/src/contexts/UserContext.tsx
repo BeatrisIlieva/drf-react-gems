@@ -1,17 +1,16 @@
 import { createContext, useContext } from 'react';
-import type { UserContextType } from '../types/UserContext';
+import type { UserContextType } from '../types/User';
 
 export const UserContext = createContext<UserContextType>({
-    _id: '',
+    id: '',
     email: '',
     refresh: '',
     access: '',
     userLoginHandler: () => null,
-    userLogoutHandler: () => null
+    userLogoutHandler: () => null,
 });
 
-export const useUserContext = () => {
+export default function useUserContext(): UserContextType {
     const data = useContext(UserContext);
-
     return data;
-};
+}
