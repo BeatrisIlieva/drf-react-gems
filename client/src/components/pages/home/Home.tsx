@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import styles from './Home.module.scss';
-import { UserAction } from './user-action/UserAction';
+import { ShopByCategory } from '../../common/shop-by-category/ShopByCategory';
 
 export const Home = (): ReactElement => {
     return (
@@ -33,7 +33,7 @@ export const Home = (): ReactElement => {
                     />
                 </div>
             </div>
-            <UserAction />
+            <ShopByCategory />
         </section>
     );
 };

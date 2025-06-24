@@ -1,9 +1,11 @@
 @use '../../../styles/variables' as vars;
+@use '../../../styles/animations' as anim;
 
 .home {
     display: flex;
     flex-direction: column;
     gap: 0.5em;
+    @include anim.animate-fade-in(1.2s);
 }
 
 .thumbnail {
