@@ -1,3 +1,5 @@
+@use '../../../styles/animations' as anim;
+
 .shopping-bag {
     display: flex;
     gap: 3em;
@@ -5,6 +7,7 @@
     flex-wrap: wrap;
     margin-top: 2em;
     margin-bottom: 6em;
+    @include anim.animate-fade-in(1s);
 
     h2 {
         flex: 0 0 100%;
@@ -20,4 +23,11 @@
 
 .wrapper-right {
     flex: 0 0 22%;
+    display: flex;
+    flex-direction: column;
+
+    button {
+        margin-top: 1.25em;
+        flex-grow: 0;
+    }
 }
