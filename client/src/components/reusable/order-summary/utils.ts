@@ -1,3 +1,5 @@
+import { formatPrice } from '../../../utils/formatPrice';
+
 interface TextRow {
     firstWord: string;
     firstWordImportance?: 'highlighted' | string;
@@ -9,11 +11,13 @@ interface TextRow {
 export const getTextRows = (
     shoppingBagTotalPrice: number
 ): TextRow[] => {
+    const price = formatPrice(shoppingBagTotalPrice.toString());
+
     const textRows: TextRow[] = [
         {
             firstWord: 'Subtotal',
             firstWordImportance: 'highlighted',
-            secondWord: `$${shoppingBagTotalPrice}`,
+            secondWord: `${price}`,
             secondWordImportance: 'highlighted'
         },
         {
@@ -24,7 +28,7 @@ export const getTextRows = (
         {
             firstWord: 'Total',
             firstWordImportance: 'highlighted',
-            secondWord: `$${shoppingBagTotalPrice}`,
+            secondWord: `${price}`,
             secondWordImportance: 'highlighted',
             rowImportance: 'increased-font-size'
         }
