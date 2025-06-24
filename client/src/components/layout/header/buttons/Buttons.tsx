@@ -1,11 +1,22 @@
-import type { ReactElement } from 'react';
+import { useEffect, type ReactElement } from 'react';
 
 import { Icon } from '../../../reusable/icon/Icon';
 
 import styles from './Buttons.module.scss';
 import { Link } from 'react-router';
 
+import { useShoppingBagContext } from '../../../../contexts/ShoppingBagContext';
+import { useAuth } from '../../../../hooks/auth/useAuth';
+
 export const Buttons = (): ReactElement => {
+    const { isAuthenticated } = useAuth();
+    const { shoppingBagItemsCount, updateShoppingBagCount } =
+        useShoppingBagContext();
+
+    useEffect(() => {
+        updateShoppingBagCount();
+    }, [updateShoppingBagCount]);
+
     return (
         <ul className={styles['buttons']}>
             <li>
@@ -14,18 +25,32 @@ export const Buttons = (): ReactElement => {
             </li>
 
             <li>
-                <Icon name={'user'} fontSize={1} />
-                <span>1</span>
+                <Link
+                    to={
+                        isAuthenticated
+                            ? '/my-account/details'
+                            : '/my-account/login'
+                    }
+                >
+                    <Icon name={'user'} fontSize={1} />
+                    <span>1</span>
+                </Link>
             </li>
 
             <li>
                 <Icon name={'heart'} />
-                <span>8</span>
+                <span>
+                    <span>8</span>
+                </span>
             </li>
             <li>
                 <Link to='/user/shopping-bag'>
                     <Icon name={'bag'} />
-                    <span>18</span>
+                    {shoppingBagItemsCount > 0 && (
+                        <span>
+                            <span>{shoppingBagItemsCount}</span>
+                        </span>
+                    )}
                 </Link>
             </li>
         </ul>
