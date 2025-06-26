@@ -1,0 +1,134 @@
+@use '../../../../../styles/variables' as vars;
+
+.photo-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.photo-wrapper {
+    position: relative;
+    width: 10em;
+    height: 10em;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 0.1em solid vars.$medium-grey;
+    display: flex;
+
+    &:hover {
+        border-color: vars.$dark-grey;
+        transform: scale(1.02);
+
+        .overlay {
+            opacity: 0.5;
+        }
+    }
+
+    &.drag-over {
+        border-color: vars.$medium-grey;
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(vars.$medium-grey, 0.3);
+
+        .overlay {
+            opacity: 1;
+        }
+    }
+}
+
+.profile-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    color: vars.$medium-grey;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+    color: white;
+    gap: 0.5rem;
+
+    &.uploading {
+        opacity: 1;
+        background: rgba(vars.$black, 0.6);
+    }
+}
+
+.upload-text {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.loading-spinner {
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.hidden-input {
+    display: none;
+}
+
+.helper-text {
+    text-align: center;
+    color: vars.$dark-grey;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.file-info {
+    font-size: 0.75rem;
+    color: vars.$medium-grey;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+    .photo-wrapper {
+        width: 6rem;
+        height: 6rem;
+    }
+
+    .upload-text {
+        font-size: 0.625rem;
+    }
+}
