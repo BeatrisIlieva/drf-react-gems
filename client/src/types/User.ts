@@ -21,7 +21,8 @@ export interface UserFormData {
   email: FormFieldState;
   password: FormFieldState;
   password_confirmation?: FormFieldState;
-  first_name?: FormFieldState;
-  last_name?: FormFieldState;
+  firstName?: FormFieldState;
+  lastName?: FormFieldState;
+  phoneNumber?: FormFieldState;
   [key: string]: FormFieldState | undefined;
 }

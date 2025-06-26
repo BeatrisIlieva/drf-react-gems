@@ -1,8 +1,9 @@
 import { useContext, useCallback, useMemo } from 'react';
-import { UserContext} from '../contexts/UserContext';
+
 import { useAuthRefresh } from './auth/useAuthRefresh';
 import { useGuest } from './useGuest';
-import type { UserContextType } from '../types/UserContext';
+import type { UserContextType } from '../types/User';
+import { UserContext } from '../contexts/UserContext';
 
 interface RequestOptions {
     data?: any;
@@ -19,7 +20,8 @@ interface ApiError extends Error {
 }
 
 export const useApi = () => {
-    const { access, refresh } = useContext<UserContextType>(UserContext);
+    const { access, refresh } =
+        useContext<UserContextType>(UserContext);
     const { authRefresh } = useAuthRefresh();
     const { getGuestData } = useGuest();
 
@@ -34,7 +36,9 @@ export const useApi = () => {
                 contentType = 'application/json'
             }: RequestOptions = {}
         ): Promise<any> => {
-            const options: RequestInit & { headers: Record<string, string> } = {
+            const options: RequestInit & {
+                headers: Record<string, string>;
+            } = {
                 method,
                 headers: {
                     'Content-Type': contentType
@@ -62,14 +66,16 @@ export const useApi = () => {
                     }
 
                     if (refreshRequired) {
-                        bodyData.append('refresh', refresh);
+                        if (refresh) {
+                            bodyData.append('refresh', refresh);
+                        }
                     }
 
                     options.body = bodyData;
 
                     delete options.headers['Content-Type'];
                 } else {
-                    if (refreshRequired) {
+                    if (refreshRequired && refresh) {
                         bodyData = { ...bodyData, refresh };
                     }
 
@@ -78,21 +84,25 @@ export const useApi = () => {
             }
 
             const response = await fetch(url, options);
-            
+
             // Check if response has content before trying to parse JSON
             let json = null;
-            const hasContent = response.status !== 204 && 
-                              response.status !== 205 && 
-                              contentType && 
-                              contentType.includes('application/json');
-            
+            const hasContent =
+                response.status !== 204 &&
+                response.status !== 205 &&
+                contentType &&
+                contentType.includes('application/json');
+
             if (hasContent) {
                 const responseText = await response.text();
                 if (responseText && responseText.trim()) {
                     try {
                         json = JSON.parse(responseText);
                     } catch {
-                        console.warn('Failed to parse JSON response:', responseText);
+                        console.warn(
+                            'Failed to parse JSON response:',
+                            responseText
+                        );
                         json = null;
                     }
                 }
@@ -101,16 +111,19 @@ export const useApi = () => {
             if (!response.ok) {
                 // For 401 errors, check if we have a JSON response with error details
                 if (response.status === 401 && json) {
-                    if (json?.error === 'Invalid username or password') {
+                    if (
+                        json?.error ===
+                        'Invalid username or password'
+                    ) {
                         return 'Invalid username or password';
                     }
                     await authRefresh();
                 }
 
                 const error: ApiError = new Error(
-                    json?.message || 
-                    json?.error || 
-                    `HTTP ${response.status}: ${response.statusText}`
+                    json?.message ||
+                        json?.error ||
+                        `HTTP ${response.status}: ${response.statusText}`
                 );
                 error.status = response.status;
                 error.data = json;
