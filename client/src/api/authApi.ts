@@ -1,8 +1,9 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { useApi } from '../hooks/useApi';
+import { HOST } from '../constants/host';
 
-const baseUrl = 'http://localhost:8000/accounts';
+const baseUrl = `${HOST}/accounts`;
 
 interface DeleteResponse {
     success: boolean;
@@ -231,5 +232,68 @@ export const useGetPhoto = () => {
 
     return {
         getPhoto
+    };
+};
+
+interface PersonalInfoResponse {
+    firstName?: string;
+    lastName?: string;
+    phoneNumber?: string;
+    [key: string]: any;
+}
+
+export const useGetPersonalInfo = () => {
+    const { get } = useApi();
+
+    const getPersonalInfo = useCallback(async (): Promise<
+        PersonalInfoResponse | undefined
+    > => {
+        try {
+            const result = await get(`${baseUrl}/profile/`, {
+                accessRequired: true,
+                refreshRequired: true
+            });
+
+            return result;
+        } catch (err) {
+            console.log(
+                err instanceof Error ? err.message : String(err)
+            );
+            return undefined;
+        }
+    }, [get]);
+
+    return {
+        getPersonalInfo
+    };
+};
+
+export const useUpdatePersonalInfo = () => {
+    const { patch } = useApi();
+
+    const updatePersonalInfo = useCallback(
+        async (
+            personalData: Record<string, any>
+        ): Promise<PersonalInfoResponse | undefined> => {
+            try {
+                const result = await patch(
+                    `${baseUrl}/profile/`,
+                    {
+                        data: personalData,
+                        accessRequired: true,
+                        refreshRequired: true
+                    }
+                );
+
+                return result;
+            } catch (err: any) {
+                return err.data;
+            }
+        },
+        [patch]
+    );
+
+    return {
+        updatePersonalInfo
     };
 };
