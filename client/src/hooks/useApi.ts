@@ -23,8 +23,6 @@ export const useApi = () => {
     const { authRefresh } = useAuthRefresh();
     const { getGuestData } = useGuest();
 
-    const guestId = useMemo(() => getGuestData(), [getGuestData]);
-
     const request = useCallback(
         async (
             method: HttpMethod,
@@ -43,8 +41,10 @@ export const useApi = () => {
                 }
             };
 
-            if (guestId) {
-                options.headers['Guest-Id'] = guestId;
+            // Get guest ID dynamically to ensure we have the latest value
+            const currentGuestId = getGuestData();
+            if (currentGuestId) {
+                options.headers['Guest-Id'] = currentGuestId;
             }
 
             if (accessRequired) {
@@ -119,7 +119,8 @@ export const useApi = () => {
 
             return json;
         },
-        [access, refresh, authRefresh, guestId]
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [access, refresh, authRefresh]
     );
 
     return useMemo(
