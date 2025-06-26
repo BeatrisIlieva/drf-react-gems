@@ -18,7 +18,7 @@ from src.accounts.serializers import (
     UserLogoutRequestSerializer,
     UserRegisterSerializer,
 )
-from src.accounts.utils import migrate_guest_bag_to_user
+from src.accounts.utils import migrate_guest_data_to_user
 
 
 UserModel = get_user_model()
@@ -49,7 +49,7 @@ class UserRegisterView(CreateAPIView):
         refresh = RefreshToken.for_user(user)
 
         guest_id = request.headers.get('guest_id')
-        migrate_guest_bag_to_user(user, guest_id)
+        migrate_guest_data_to_user(user, guest_id)
 
         return Response(
             {
@@ -95,9 +95,7 @@ class UserLoginView(APIView):
             )
 
         guest_id = request.headers.get('guest_id')
-
-        guest_id = request.headers.get('guest_id')
-        migrate_guest_bag_to_user(user, guest_id)
+        migrate_guest_data_to_user(user, guest_id)
 
         # if the user credentials are valid we issue both `access token` and `refresh token`
         refresh = RefreshToken.for_user(user)

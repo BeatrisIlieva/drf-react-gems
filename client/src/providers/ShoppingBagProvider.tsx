@@ -1,4 +1,9 @@
-import { useCallback, useState, type ReactNode } from 'react';
+import {
+    useCallback,
+    useMemo,
+    useState,
+    type ReactNode
+} from 'react';
 import {
     useDeleteShoppingBag,
     useGetShoppingBagCount,
@@ -89,71 +94,85 @@ export const ShoppingBagProvider = ({ children }: Props) => {
         }
     }, [getShoppingBagTotalPrice]);
 
-    const deleteShoppingBagHandler = async (id: number) => {
-        setIsDeleting(true);
-        try {
-            await deleteShoppingBag(id);
+    const deleteShoppingBagHandler = useCallback(
+        async (id: number) => {
+            setIsDeleting(true);
+            try {
+                await deleteShoppingBag(id);
 
-            // Immediately update local state to reflect the deletion
-            const updatedItems = shoppingBagItems.filter(
-                (item) => item.id !== id
-            );
-            setShoppingBagItems(updatedItems);
+                // Immediately update local state to reflect the deletion
+                const updatedItems = shoppingBagItems.filter(
+                    (item) => item.id !== id
+                );
+                setShoppingBagItems(updatedItems);
 
-            // Optimistically update the count
-            setShoppingBagItemsCount((prev) =>
-                Math.max(0, prev - 1)
-            );
+                // Optimistically update the count
+                setShoppingBagItemsCount((prev) =>
+                    Math.max(0, prev - 1)
+                );
 
-            // Calculate and update the total price optimistically
-            const deletedItem = shoppingBagItems.find(
-                (item) => item.id === id
-            );
-            if (deletedItem) {
-                setShoppingBagTotalPrice((prev) =>
-                    Math.max(
-                        0,
-                        prev - deletedItem.totalPricePerProduct
+                // Calculate and update the total price optimistically
+                const deletedItem = shoppingBagItems.find(
+                    (item) => item.id === id
+                );
+                if (deletedItem) {
+                    setShoppingBagTotalPrice((prev) =>
+                        Math.max(
+                            0,
+                            prev -
+                                deletedItem.totalPricePerProduct
+                        )
+                    );
+                }
+
+                // Also fetch the latest data from the server to ensure consistency
+                Promise.all([
+                    getShoppingBagCount().then((response) => {
+                        if (response) {
+                            setShoppingBagItemsCount(
+                                response.count
+                            );
+                        }
+                    }),
+                    getShoppingBagTotalPrice().then(
+                        (response) => {
+                            if (response) {
+                                setShoppingBagTotalPrice(
+                                    response.totalPrice
+                                );
+                            }
+                        }
                     )
-                );
-            }
-
-            // Also fetch the latest data from the server to ensure consistency
-            Promise.all([
-                getShoppingBagCount().then((response) => {
-                    if (response) {
-                        setShoppingBagItemsCount(response.count);
-                    }
-                }),
-                getShoppingBagTotalPrice().then((response) => {
-                    if (response) {
-                        setShoppingBagTotalPrice(
-                            response.totalPrice
-                        );
-                    }
-                })
-            ]).catch((err) => {
+                ]).catch((err) => {
+                    console.error(
+                        'Error updating shopping bag data after deletion:',
+                        err instanceof Error
+                            ? err.message
+                            : String(err)
+                    );
+                });
+            } catch (error) {
                 console.error(
-                    'Error updating shopping bag data after deletion:',
-                    err instanceof Error
-                        ? err.message
-                        : String(err)
+                    'Error deleting shopping bag item:',
+                    error instanceof Error
+                        ? error.message
+                        : String(error)
                 );
-            });
-        } catch (error) {
-            console.error(
-                'Error deleting shopping bag item:',
-                error instanceof Error
-                    ? error.message
-                    : String(error)
-            );
 
-            // Fallback: refresh all data in case of error
-            getShoppingBagItemsHandler();
-        } finally {
-            setIsDeleting(false);
-        }
-    };
+                // Fallback: refresh all data in case of error
+                getShoppingBagItemsHandler();
+            } finally {
+                setIsDeleting(false);
+            }
+        },
+        [
+            deleteShoppingBag,
+            getShoppingBagCount,
+            getShoppingBagItemsHandler,
+            getShoppingBagTotalPrice,
+            shoppingBagItems
+        ]
+    );
 
     const continueCheckoutHandler = useCallback(() => {
         if (!isAuthenticated) {
@@ -164,18 +183,32 @@ export const ShoppingBagProvider = ({ children }: Props) => {
         navigate('/checkout');
     }, [isAuthenticated, navigate]);
 
-    const contextValue: ShoppingBagContextType = {
-        shoppingBagItems,
-        shoppingBagItemsCount,
-        getShoppingBagItemsHandler,
-        updateShoppingBagCount,
-        shoppingBagTotalPrice,
-        deleteShoppingBagHandler,
-        isDeleting,
-        isLoading,
-        updateShoppingBagTotalPrice,
-        continueCheckoutHandler
-    };
+    const contextValue: ShoppingBagContextType = useMemo(
+        () => ({
+            shoppingBagItems,
+            shoppingBagItemsCount,
+            getShoppingBagItemsHandler,
+            updateShoppingBagCount,
+            shoppingBagTotalPrice,
+            deleteShoppingBagHandler,
+            isDeleting,
+            isLoading,
+            updateShoppingBagTotalPrice,
+            continueCheckoutHandler
+        }),
+        [
+            continueCheckoutHandler,
+            deleteShoppingBagHandler,
+            getShoppingBagItemsHandler,
+            isDeleting,
+            isLoading,
+            shoppingBagItems,
+            shoppingBagItemsCount,
+            shoppingBagTotalPrice,
+            updateShoppingBagCount,
+            updateShoppingBagTotalPrice
+        ]
+    );
 
     return (
         <ShoppingBagContext.Provider value={contextValue}>

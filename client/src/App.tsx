@@ -4,13 +4,14 @@ import styles from './App.module.scss';
 import { ScrollToTop } from './components/layout/scroll-to-top/ScrollToTop';
 import { Footer } from './components/layout/footer/Footer';
 import ShoppingBagProvider from './providers/ShoppingBagProvider';
+import WishlistProvider from './providers/WishlistProvider';
 import { Route, Routes } from 'react-router';
 import { Home } from './components/pages/home/Home';
 
 import { ProductFiltersProvider } from './providers/ProductFiltersProvider';
 import { ProductListProvider } from './providers/ProductListProvider';
-import { ProductList } from './components/pages/product-list/ProductList';
 import { ProductItemProvider } from './providers/ProductItemProvider';
+import { ProductList } from './components/pages/product-list/ProductList';
 import { ProductItem } from './components/pages/product-item/ProductItem';
 import { ShoppingBag } from './components/pages/shopping-bag/ShoppingBag';
 import { Register } from './components/accounts/register/Register';
@@ -23,10 +24,11 @@ import { AuthGuard } from './guards/AuthGuard';
 function App() {
     return (
         <div className={styles['app']}>
-            <ShoppingBagProvider>
-                <Header />
-                <main className={styles['main']}>
-                    <Routes>
+            <WishlistProvider>
+                <ShoppingBagProvider>
+                    <Header />
+                    <main className={styles['main']}>
+                        <Routes>
                         <Route path='/' element={<Home />} />
                         <Route
                             path='/my-account/register'
@@ -70,8 +72,9 @@ function App() {
             </ShoppingBagProvider>
             <ScrollToTop />
             <Footer />
-        </div>
-    );
+        </WishlistProvider>
+    </div>
+);
 }
 
 export default App;

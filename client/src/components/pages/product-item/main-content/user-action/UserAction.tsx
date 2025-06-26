@@ -24,7 +24,7 @@ export const UserAction = (): ReactElement => {
         addToCartError,
         isSoldOut
     } = useProductItemContext();
-    console.log(inventory);
+
 
     const prices = inventory!.map((item) =>
         parseFloat(item.price)

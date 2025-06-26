@@ -32,6 +32,7 @@ PROJECT_APPS = [
     'src.products',
     'src.addresses',
     'src.shopping_bags',
+    'src.wishlist',
 ]
 
 INSTALLED_APPS = [
@@ -53,7 +54,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
-    
+
     'drf_spectacular',
 ] + PROJECT_APPS
 

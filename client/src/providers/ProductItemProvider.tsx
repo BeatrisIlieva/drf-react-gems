@@ -6,11 +6,13 @@ import {
     useEffect,
     useMemo,
     useState,
+    useContext,
     type ReactNode
 } from 'react';
 import { ProductItemContext } from '../contexts/ProductItemContext';
 import { useCreateShoppingBag } from '../api/shoppingBagApi';
 import type { CreateShoppingBagParams } from '../types/ShoppingBag';
+import { WishlistContext } from '../contexts/WishlistContext';
 
 interface Props {
     children: ReactNode;
@@ -23,6 +25,7 @@ export const ProductItemProvider = ({ children }: Props) => {
         productId: string;
     }>();
     const { createShoppingBag } = useCreateShoppingBag();
+    const { addToWishlist, removeFromWishlist, isInWishlist } = useContext(WishlistContext);
 
     const [loading, setLoading] = useState<boolean>(true);
     const [product, setProduct] =
@@ -55,60 +58,9 @@ export const ProductItemProvider = ({ children }: Props) => {
 
     useEffect(() => {
         getProductItemHandler();
-
-        // Set up a polling mechanism to refresh product data periodically
-        // Only update if the user is actively viewing the product (not typing/navigating away)
-        const pollInterval = 1000;
-        const pollTimer = setInterval(() => {
-            // Silently refresh data without showing loading indicators
-            const refreshProductData = async () => {
-                try {
-                    const response = await getProductItem({
-                        categoryName,
-                        productId
-                    });
-                    // Only update if there's a significant change in inventory to avoid unnecessary re-renders
-                    setProduct((prevProduct) => {
-                        if (!prevProduct) return response.product;
-
-                        // Check if inventory structure has changed significantly
-                        const hasInventoryStructureChanged = 
-                            prevProduct.inventory.length !== response.product.inventory.length;
-                        
-                        // If structure hasn't changed, check if any available items have become unavailable
-                        // or if any unavailable items have become available (ignoring quantity changes for already available items)
-                        if (!hasInventoryStructureChanged) {
-                            const hasAvailabilityChanged = prevProduct.inventory.some((prevItem, index) => {
-                                const newItem = response.product.inventory[index];
-                                // Check if an item has gone from available to unavailable or vice versa
-                                return (prevItem.quantity > 0 && newItem.quantity === 0) || 
-                                       (prevItem.quantity === 0 && newItem.quantity > 0);
-                            });
-                            
-                            // Only update if availability has changed
-                            return hasAvailabilityChanged ? response.product : prevProduct;
-                        }
-                        
-                        return response.product;
-                    });
-                } catch (error) {
-                    // Silent fail - doesn't update UI on polling errors
-                    console.debug(
-                        'Background refresh failed:',
-                        error
-                    );
-                }
-            };
-
-            refreshProductData();
-        }, pollInterval);
-
-        // Clean up the interval when component unmounts or params change
-        return () => clearInterval(pollTimer);
     }, [
         categoryName,
         productId,
-        getProductItem,
         getProductItemHandler
     ]);
 
@@ -201,7 +153,20 @@ export const ProductItemProvider = ({ children }: Props) => {
             getProductItemHandler
         ]);
 
-    const addToWishlistHandler = (): void => {};
+    const addToWishlistHandler = useCallback(async (): Promise<void> => {
+        if (!product || !categoryName) return;
+        
+        const contentType = categoryName.slice(0, -1); // Remove 's' to make it singular
+        const objectId = product.id;
+        
+        const isCurrentlyInWishlist = isInWishlist(contentType, objectId);
+        
+        if (isCurrentlyInWishlist) {
+            await removeFromWishlist(contentType, objectId);
+        } else {
+            await addToWishlist(contentType, objectId);
+        }
+    }, [product, categoryName, isInWishlist, addToWishlist, removeFromWishlist]);
 
     const updateSelectedInventoryHandler = (
         contentType: string,
@@ -289,6 +254,7 @@ export const ProductItemProvider = ({ children }: Props) => {
             selectedSize,
             createShoppingBagHandler,
             setSelectedSizeHandler,
+            addToWishlistHandler,
             notSelectedSizeError,
             addToCartError,
             isSoldOut

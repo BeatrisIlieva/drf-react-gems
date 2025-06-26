@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { useApi } from '../hooks/useApi';
 
-
 const baseUrl = 'http://localhost:8000/accounts';
 
 interface DeleteResponse {
@@ -13,7 +12,9 @@ interface DeleteResponse {
 export const useDelete = () => {
     const { del } = useApi();
 
-    const deleteUser = useCallback(async (): Promise<DeleteResponse | undefined> => {
+    const deleteUser = useCallback(async (): Promise<
+        DeleteResponse | undefined
+    > => {
         try {
             const result = await del(`${baseUrl}/delete/`, {
                 accessRequired: true
@@ -21,7 +22,9 @@ export const useDelete = () => {
 
             return result;
         } catch (err) {
-            console.log(err instanceof Error ? err.message : String(err));
+            console.log(
+                err instanceof Error ? err.message : String(err)
+            );
             return undefined;
         }
     }, [del]);
@@ -43,11 +46,16 @@ export const useRegister = () => {
     const { post } = useApi();
 
     const register = useCallback(
-        async (userData: Record<string, any>): Promise<RegisterResponse> => {
+        async (
+            userData: Record<string, any>
+        ): Promise<RegisterResponse> => {
             try {
-                const result = await post(`${baseUrl}/register/`, {
-                    data: userData
-                });
+                const result = await post(
+                    `${baseUrl}/register/`,
+                    {
+                        data: userData
+                    }
+                );
 
                 return result;
             } catch (err: any) {
@@ -73,7 +81,9 @@ export const useLogin = () => {
     const { post } = useApi();
 
     const login = useCallback(
-        async (userData: Record<string, any>): Promise<LoginResponse | undefined> => {
+        async (
+            userData: Record<string, any>
+        ): Promise<LoginResponse | undefined> => {
             try {
                 const result = await post(`${baseUrl}/login/`, {
                     data: userData
@@ -81,7 +91,11 @@ export const useLogin = () => {
 
                 return result;
             } catch (err) {
-                console.log(err instanceof Error ? err.message : String(err));
+                console.log(
+                    err instanceof Error
+                        ? err.message
+                        : String(err)
+                );
                 return undefined;
             }
         },
@@ -106,7 +120,9 @@ export const useLogout = () => {
 
             navigate('/my-account/register');
         } catch (err) {
-            console.log(err instanceof Error ? err.message : String(err));
+            console.log(
+                err instanceof Error ? err.message : String(err)
+            );
         }
     }, [post, navigate]);
 
@@ -126,7 +142,9 @@ interface UserDetailResponse {
 export const useDetail = () => {
     const { get } = useApi();
 
-    const detail = useCallback(async (): Promise<UserDetailResponse | undefined> => {
+    const detail = useCallback(async (): Promise<
+        UserDetailResponse | undefined
+    > => {
         try {
             const result = await get(`${baseUrl}/detail/`, {
                 accessRequired: true
@@ -134,7 +152,9 @@ export const useDetail = () => {
 
             return result;
         } catch (err) {
-            console.log(err instanceof Error ? err.message : String(err));
+            console.log(
+                err instanceof Error ? err.message : String(err)
+            );
             return undefined;
         }
     }, [get]);
@@ -154,7 +174,9 @@ export const useUploadPhoto = () => {
     const { patch } = useApi();
 
     const upload = useCallback(
-        async (data: FormData): Promise<PhotoUploadResponse | undefined> => {
+        async (
+            data: FormData
+        ): Promise<PhotoUploadResponse | undefined> => {
             try {
                 const result = await patch(`${baseUrl}/photo/`, {
                     data,
@@ -165,7 +187,11 @@ export const useUploadPhoto = () => {
 
                 return result;
             } catch (err) {
-                console.log(err instanceof Error ? err.message : String(err));
+                console.log(
+                    err instanceof Error
+                        ? err.message
+                        : String(err)
+                );
                 return undefined;
             }
         },
@@ -185,7 +211,9 @@ interface PhotoResponse {
 export const useGetPhoto = () => {
     const { get } = useApi();
 
-    const getPhoto = useCallback(async (): Promise<PhotoResponse | undefined> => {
+    const getPhoto = useCallback(async (): Promise<
+        PhotoResponse | undefined
+    > => {
         try {
             const result = await get(`${baseUrl}/photo/`, {
                 accessRequired: true,
@@ -194,7 +222,9 @@ export const useGetPhoto = () => {
 
             return result;
         } catch (err) {
-            console.log(err instanceof Error ? err.message : String(err));
+            console.log(
+                err instanceof Error ? err.message : String(err)
+            );
             return undefined;
         }
     }, [get]);

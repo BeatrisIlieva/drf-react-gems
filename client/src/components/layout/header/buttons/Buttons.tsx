@@ -6,16 +6,19 @@ import styles from './Buttons.module.scss';
 import { Link } from 'react-router';
 
 import { useShoppingBagContext } from '../../../../contexts/ShoppingBagContext';
+import { useWishlistContext } from '../../../../contexts/WishlistContext';
 import { useAuth } from '../../../../hooks/auth/useAuth';
 
 export const Buttons = (): ReactElement => {
     const { isAuthenticated } = useAuth();
     const { shoppingBagItemsCount, updateShoppingBagCount } =
         useShoppingBagContext();
+    const { wishlistCount, updateWishlistCount } = useWishlistContext();
 
     useEffect(() => {
         updateShoppingBagCount();
-    }, [updateShoppingBagCount]);
+        updateWishlistCount();
+    }, [updateShoppingBagCount, updateWishlistCount]);
 
     return (
         <ul className={styles['buttons']}>
@@ -39,9 +42,11 @@ export const Buttons = (): ReactElement => {
 
             <li>
                 <Icon name={'heart'} />
-                <span>
-                    <span>8</span>
-                </span>
+                {wishlistCount > 0 && (
+                    <span>
+                        <span>{wishlistCount}</span>
+                    </span>
+                )}
             </li>
             <li>
                 <Link to='/user/shopping-bag'>

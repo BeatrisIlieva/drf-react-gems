@@ -78,18 +78,40 @@ export const useApi = () => {
             }
 
             const response = await fetch(url, options);
-            const json = await response.json();
+            
+            // Check if response has content before trying to parse JSON
+            let json = null;
+            const hasContent = response.status !== 204 && 
+                              response.status !== 205 && 
+                              contentType && 
+                              contentType.includes('application/json');
+            
+            if (hasContent) {
+                const responseText = await response.text();
+                if (responseText && responseText.trim()) {
+                    try {
+                        json = JSON.parse(responseText);
+                    } catch {
+                        console.warn('Failed to parse JSON response:', responseText);
+                        json = null;
+                    }
+                }
+            }
 
             if (!response.ok) {
-                if (response.status === 401) {
+                // For 401 errors, check if we have a JSON response with error details
+                if (response.status === 401 && json) {
                     if (json?.error === 'Invalid username or password') {
                         return 'Invalid username or password';
                     }
-
                     await authRefresh();
                 }
 
-                const error: ApiError = new Error('Request failed');
+                const error: ApiError = new Error(
+                    json?.message || 
+                    json?.error || 
+                    `HTTP ${response.status}: ${response.statusText}`
+                );
                 error.status = response.status;
                 error.data = json;
                 throw error;

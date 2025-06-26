@@ -128,12 +128,15 @@ export const useDeleteShoppingBag = () => {
     const deleteShoppingBag = useCallback(
         async (bagItemId: number | string): Promise<void> => {
             try {
+                // DELETE requests typically return null/undefined for successful deletions
                 await del(`${baseUrl}${bagItemId}/`, {
                     accessRequired: isAuthenticated,
                     refreshRequired: isAuthenticated
                 });
 
-                // Let the provider handle state updates
+                // For delete operations, we don't need to return anything
+                // The success is indicated by not throwing an error
+                return;
             } catch (err: any) {
                 console.error(
                     'Error in deleteShoppingBag:',

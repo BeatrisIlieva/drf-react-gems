@@ -82,7 +82,9 @@ export const Login: React.FC = () => {
             return { success: true };
         }
 
-        if (authData === undefined || (typeof authData === 'object' && 'error' in authData)) {
+        console.log(authData)
+
+        if (authData === undefined || (authData as string === 'Invalid username or password')) {
             setInvalidUsernameOrPassword(true);
         }
 
@@ -97,6 +99,8 @@ export const Login: React.FC = () => {
     };
 
     const [, loginAction, isPending] = useActionState(loginHandler);
+
+    console.log(invalidUsernameOrPassword);
 
     return (
         <AuthLayout>
