@@ -4,6 +4,7 @@ from rest_framework import serializers
 from cloudinary.utils import cloudinary_url
 
 from src.accounts.models.user_photo import UserPhoto
+from src.accounts.models.user_profile import UserProfile
 
 
 UserModel = get_user_model()
@@ -72,3 +73,26 @@ class PhotoSerializer(serializers.ModelSerializer):
         if obj.photo:
             return cloudinary_url(obj.photo.public_id)[0]
         return None
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ['first_name', 'last_name', 'phone_number']
+        
+    def update(self, instance, validated_data):
+        """
+        Update user profile fields, creating the profile if it doesn't exist
+        """
+        # Get the user from the instance (which should be the user object)
+        user = instance
+        
+        # Get or create the user profile
+        profile, created = UserProfile.objects.get_or_create(user=user)
+        
+        # Update the profile with validated data
+        for attr, value in validated_data.items():
+            setattr(profile, attr, value)
+        
+        profile.save()
+        return profile

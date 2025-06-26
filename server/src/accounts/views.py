@@ -10,6 +10,7 @@ from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework.parsers import MultiPartParser, FormParser
 
 from src.accounts.models.user_photo import UserPhoto
+from src.accounts.models.user_profile import UserProfile
 from src.accounts.serializers import (
     PhotoSerializer,
     UserDetailSerializer,
@@ -17,6 +18,7 @@ from src.accounts.serializers import (
     UserLoginResponseSerializer,
     UserLogoutRequestSerializer,
     UserRegisterSerializer,
+    UserProfileSerializer,
 )
 from src.accounts.utils import migrate_guest_data_to_user
 
@@ -184,3 +186,45 @@ class PhotoUploadView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except UserPhoto.DoesNotExist:
             return Response({"detail": "Photo not found."}, status=status.HTTP_404_NOT_FOUND)
+
+
+@extend_schema(
+    tags=['User Profile'],
+    summary='User Profile endpoint',
+    description='Get and update user profile information',
+    responses={
+        200: UserProfileSerializer,
+        404: 'Profile not found'
+    }
+)
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        """
+        Get user profile information
+        """
+        try:
+            profile = UserProfile.objects.get(user=request.user)
+            serializer = UserProfileSerializer(profile)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except UserProfile.DoesNotExist:
+            # Return empty profile data if profile doesn't exist yet
+            return Response({
+                'first_name': '',
+                'last_name': '',
+                'phone_number': ''
+            }, status=status.HTTP_200_OK)
+    
+    def patch(self, request):
+        """
+        Update user profile information
+        """
+        serializer = UserProfileSerializer(request.user, data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            profile = serializer.save()
+            response_serializer = UserProfileSerializer(profile)
+            return Response(response_serializer.data, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

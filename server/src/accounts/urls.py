@@ -8,7 +8,8 @@ from src.accounts.views import (
     UserLoginView,
     UserLogoutView,
     UserDeleteView,
-    UserDetailView
+    UserDetailView,
+    UserProfileView
 )
 
 urlpatterns = [
@@ -17,6 +18,7 @@ urlpatterns = [
     path('logout/', UserLogoutView.as_view(), name='logout'),
     path('delete/', UserDeleteView.as_view(), name='delete'),
     path('detail/', UserDetailView.as_view(), name='detail'),
+    path('profile/', UserProfileView.as_view(), name='profile'),
     path('photo/', PhotoUploadView.as_view(), name='photo'),
     path('token/refresh/', TokenRefreshView.as_view(), name='refresh-token'),
 ]
