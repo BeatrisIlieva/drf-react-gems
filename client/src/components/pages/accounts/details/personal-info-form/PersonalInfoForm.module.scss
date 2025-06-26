@@ -1,0 +1,49 @@
+.personal-info-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+
+    h2 {
+        margin-bottom: 0.5rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    p {
+        margin-bottom: 2rem;
+        color: #666;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        button {
+            margin-top: 1rem;
+            align-self: flex-start;
+        }
+    }
+}
+
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.loading {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.1rem;
+    color: #666;
+}
