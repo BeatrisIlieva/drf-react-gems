@@ -1,7 +1,8 @@
-@use '../../../../styles/variables' as vars;
+@use '../../../styles/variables' as vars;
 
 .main-nav {
-    margin-right: auto;
+    // Full width to match parent, content will be centered by parent
+    width: 100%;
 
     & > ul {
         display: flex;
@@ -18,6 +19,10 @@
             &:hover {
                 opacity: 1;
             }
+        }
+
+        & li a.active-link {
+            opacity: 1;
         }
     }
 }

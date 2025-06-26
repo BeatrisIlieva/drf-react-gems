@@ -1,10 +1,12 @@
 import { useEffect, type ReactElement, useRef } from 'react';
 import { Logo } from './logo/Logo';
-import { Nav } from './nav/Nav';
+
 import { Buttons } from './buttons/Buttons';
 import styles from './Header.module.scss';
 import { useSentinel } from '../../../hooks/useSentinel';
 import { Banner } from './banner/Banner';
+import { Nav } from '../../reusable/nav/Nav';
+import { navLinks } from '../../../constants/mainNavLinksData';
 
 export const Header = (): ReactElement => {
     const headerRef = useRef<HTMLElement | null>(null);
@@ -51,7 +53,7 @@ export const Header = (): ReactElement => {
                 className={`${styles['header']} ${styles['visible']} ${isSticky ? styles['sticky'] : ''}`}
             >
                 <Logo />
-                <Nav />
+                <Nav links={navLinks} />
                 <Buttons />
             </header>
         </>

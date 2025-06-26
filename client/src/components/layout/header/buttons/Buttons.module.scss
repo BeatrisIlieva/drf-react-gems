@@ -3,7 +3,8 @@
 .buttons {
     display: flex;
     gap: 1.4em;
-    align-items: center;
+    align-items: flex-start;
+    margin-left: auto;
 
     & li {
         display: flex;
