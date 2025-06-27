@@ -46,7 +46,8 @@ class BaseProductListSerializer(serializers.ModelSerializer):
 
 class AverageRatingField(serializers.Field):
     def to_representation(self, value):
-        avg = value.review.aggregate(avg=Avg('rating'))['avg'] or 0
+        # avg = value.review.aggregate(avg=Avg('rating'))['avg'] or 0
+        avg = value.review.filter(approved=True).aggregate(avg=Avg('rating'))['avg'] or 0
         return round(avg, 2)
 
 
@@ -68,7 +69,7 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
         depth = 2
 
     def get_review(self, obj):
-        latest_reviews = obj.review.all()[:6]
+        latest_reviews = obj.review.filter(approved=True)[:6]
         return ReviewSerializer(latest_reviews, many=True).data
 
     def get_related_collection_products(self, obj):

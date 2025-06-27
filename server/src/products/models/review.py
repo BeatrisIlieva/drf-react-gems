@@ -12,11 +12,9 @@ class Review(models.Model):
     class Meta:
         ordering = ['-created_at']
         unique_together = ('user', 'content_type', 'object_id')
-
-    user = models.ForeignKey(
-        to=User,
-        on_delete=models.CASCADE,
-    )
+        permissions = [
+            ('approve_review', 'Can approve reviews'),
+        ]
 
     rating = models.IntegerField(
         choices=RATING_CHOICES,
@@ -24,6 +22,11 @@ class Review(models.Model):
 
     comment = models.TextField(
         blank=True,
+    )
+
+    approved = models.BooleanField(
+        default=False,
+        help_text='Indicates whether the review has been approved by an admin.',
     )
 
     created_at = models.DateTimeField(
@@ -40,6 +43,11 @@ class Review(models.Model):
     product = GenericForeignKey(
         'content_type',
         'object_id',
+    )
+
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
     )
 
     def __str__(self):

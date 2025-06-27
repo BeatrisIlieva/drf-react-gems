@@ -15,6 +15,7 @@ from src.products.models import (
     Size,
     Inventory
 )
+from src.products.models.review import Review
 
 
 @admin.register(Collection)
@@ -154,3 +155,30 @@ class WristwearAdmin(BaseProductAdmin):
 @admin.register(Fingerwear)
 class FingerwearAdmin(BaseProductAdmin):
     inlines = [InventoryInline]
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ['__str__', 'user', 'rating', 'approved', 'created_at', 'product_link']
+    list_filter = ['approved', 'rating', 'created_at',]
+    search_fields = ['user__email', 'user__userprofile__first_name', 'user__userprofile__last_name', 'comment']
+    list_editable = ['approved']
+    readonly_fields = ['user', 'rating', 'comment', 'created_at', 'content_type', 'object_id', 'product']
+    ordering = ['-created_at']
+    
+    def product_link(self, obj):
+        if obj.product:
+            return format_html(
+                '<a href="/admin/products/{}/{}/change/">{}</a>',
+                obj.content_type.model,
+                obj.object_id,
+                str(obj.product)
+            )
+        return '-'
+    product_link.short_description = 'Product'
+    
+    def has_add_permission(self, request):
+        return False
+    
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_superuser

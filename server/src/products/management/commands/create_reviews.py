@@ -71,6 +71,7 @@ class Command(BaseCommand):
 
         users_data = [
             {
+                'username': 'Simon',
                 'email': 'simon.smith@mail.com',
                 'password': '!1Aabb',
                 'first_name': 'Simon',
@@ -78,6 +79,7 @@ class Command(BaseCommand):
                 'photo': 'image/upload/v1748258755/boy2_aijwxt_rqfolu.jpg'
             },
             {
+                'username': 'Ava',
                 'email': 'ava.johnson@mail.com',
                 'password': '!1Aabb',
                 'first_name': 'Ava',
@@ -85,6 +87,7 @@ class Command(BaseCommand):
                 'photo': 'image/upload/v1748258753/3d-illustration-cute-little-girl-with-backpack-her-hands_fxkmfo_nflhb4.jpg'
             },
             {
+                'username': 'Sophia',
                 'email': 'sophia.brown@mail.com',
                 'password': '!1Aabb',
                 'first_name': 'Sophia',
@@ -92,6 +95,7 @@ class Command(BaseCommand):
                 'photo': 'image/upload/v1748258753/3d-illustration-cute-little-girl-hat-jacket_bdlvpk_qo4b95.jpg'
             },
             {
+                'username': 'Michael',
                 'email': 'michael.clark@mail.com',
                 'password': '!1Aabb',
                 'first_name': 'Michael',
@@ -99,6 +103,7 @@ class Command(BaseCommand):
                 'photo': 'image/upload/v1748258754/little-boy-cap-with-backpack-street-3d-rendering_i2mw52_frkquw.jpg'
             },
             {
+                'username': 'Emma',
                 'email': 'emma.watson@mail.com',
                 'password': '!1Aabb',
                 'first_name': 'Emma',
@@ -106,6 +111,7 @@ class Command(BaseCommand):
                 'photo': 'image/upload/v1748258754/girl2_rjcjz2_y54zla.jpg'
             },
             {
+                'username': 'Olivia',
                 'email': 'olivia.smith@mail.com',
                 'password': '!1Aabb',
                 'first_name': 'Olivia',
@@ -113,6 +119,7 @@ class Command(BaseCommand):
                 'photo': 'image/upload/v1748258753/3d-illustration-cute-little-girl-bokeh-background_wyylpf_seqqgg.jpg'
             },
             {
+                'username': 'William',
                 'email': 'william.lewis@mail.com',
                 'password': '!1Aabb',
                 'first_name': 'William',
@@ -120,6 +127,7 @@ class Command(BaseCommand):
                 'photo': 'image/upload/v1748258753/boy1_cli59g_czbmce.jpg'
             },
             {
+                'username': 'Isabella',
                 'email': 'isabella.jones@mail.com',
                 'password': '!1Aabb',
                 'first_name': 'Isabella',
@@ -128,6 +136,7 @@ class Command(BaseCommand):
             },
 
             {
+                'username': 'Mia',
                 'email': 'mia.davis@mail.com',
                 'password': '!1Aabb',
                 'first_name': 'Mia',
@@ -135,6 +144,7 @@ class Command(BaseCommand):
                 'photo': 'image/upload/v1748267948/bambino-cartoon-carino-che-posa-per-il-ritratto_z6edpw.jpg',
             },
             {
+                'username': 'Liam',
                 'email': 'liam.martin@mail.com',
                 'password': '!1Aabb',
                 'first_name': 'Liam',
@@ -142,6 +152,7 @@ class Command(BaseCommand):
                 'photo': 'image/upload/v1748267949/l-uomo-del-fitness-dei-cartoni-animati-3d_egayjv.jpg',
             },
             {
+                'username': 'Amelia',
                 'email': 'amelia.wilson@mail.com',
                 'password': '!1Aabb',
                 'first_name': 'Amelia',
@@ -153,16 +164,23 @@ class Command(BaseCommand):
         created_users = []
 
         for item in users_data:
-            user = UserModel.objects.create(email=item['email'])
-            user.set_password(item['password'])
-            user.save()
+            user, created = UserModel.objects.get_or_create(
+                email=item['email'],
+                defaults={
+                    'username': item['username']
+                }
+            )
+            
+            if created:
+                user.set_password(item['password'])
+                user.save()
 
-            user.userprofile.first_name = item['first_name']
-            user.userprofile.last_name = item['last_name']
-            user.userprofile.save()
+                user.userprofile.first_name = item['first_name']
+                user.userprofile.last_name = item['last_name']
+                user.userprofile.save()
 
-            user.userphoto.photo = item['photo']
-            user.userphoto.save()
+                user.userphoto.photo = item['photo']
+                user.userphoto.save()
 
             created_users.append(user)
 
@@ -201,6 +219,7 @@ class Command(BaseCommand):
                     Review.objects.create(
                         user=user,
                         rating=rating,
+                        approved=True,
                         comment=comment,
                         content_type=content_type,
                         object_id=product.pk,

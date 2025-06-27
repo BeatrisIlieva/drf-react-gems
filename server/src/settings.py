@@ -204,26 +204,44 @@ UNFOLD = {
             {
                 'title': _('Products'),
                 'separator': True,
+                'permission': lambda request: request.user.has_perm('products.view_earwear'),
                 'items': [
                     {
                         'title': _('Earwear'),
                         'icon': 'inventory',
                         'link': reverse_lazy('admin:products_earwear_changelist'),
+                        'permission': lambda request: request.user.has_perm('products.view_earwear'),
                     },
                     {
                         'title': _('Fingerwear'),
                         'icon': 'inventory',
                         'link': reverse_lazy('admin:products_fingerwear_changelist'),
+                        'permission': lambda request: request.user.has_perm('products.view_fingerwear'),
                     },
                     {
                         'title': _('Neckwear'),
                         'icon': 'inventory',
                         'link': reverse_lazy('admin:products_neckwear_changelist'),
+                        'permission': lambda request: request.user.has_perm('products.view_neckwear'),
                     },
                     {
                         'title': _('Wristwear'),
                         'icon': 'inventory',
                         'link': reverse_lazy('admin:products_wristwear_changelist'),
+                        'permission': lambda request: request.user.has_perm('products.view_wristwear'),
+                    },
+                ],
+            },
+            {
+                'title': _('Reviews'),
+                'separator': True,
+                'permission': lambda request: request.user.has_perm('products.view_review'),
+                'items': [
+                    {
+                        'title': _('Product Reviews'),
+                        'icon': 'star',
+                        'link': reverse_lazy('admin:products_review_changelist'),
+                        'permission': lambda request: request.user.has_perm('products.view_review'),
                     },
                 ],
             },
@@ -231,31 +249,37 @@ UNFOLD = {
                 'title': _('Characteristics'),
                 'separator': True,
                 'collapsible': True,
+                'permission': lambda request: request.user.has_perm('products.view_color'),
                 'items': [
                     {
                         'title': _('Colors'),
                         'icon': 'Palette',
                         'link': reverse_lazy('admin:products_color_changelist'),
+                        'permission': lambda request: request.user.has_perm('products.view_color'),
                     },
                     {
                         'title': _('Metals'),
                         'icon': 'Texture',
                         'link': reverse_lazy('admin:products_metal_changelist'),
+                        'permission': lambda request: request.user.has_perm('products.view_metal'),
                     },
                     {
                         'title': _('Stone'),
                         'icon': 'Diamond',
                         'link': reverse_lazy('admin:products_stone_changelist'),
+                        'permission': lambda request: request.user.has_perm('products.view_stone'),
                     },
                     {
                         'title': _('Collections'),
                         'icon': 'Bookmarks',
                         'link': reverse_lazy('admin:products_collection_changelist'),
+                        'permission': lambda request: request.user.has_perm('products.view_collection'),
                     },
                     {
                         'title': _('Size'),
                         'icon': 'crop',
                         'link': reverse_lazy('admin:products_size_changelist'),
+                        'permission': lambda request: request.user.has_perm('products.view_size'),
                     },
                 ],
             },

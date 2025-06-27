@@ -16,7 +16,7 @@ class BaseProductManager(models.Manager):
         return self.get(pk=item_id)
     
     def get_product_list(self, filters, ordering):
-        qs = self.filter(filters)
+        qs = self.filter(filters) 
 
         raw_products = self._get_raw_products(qs, ordering)
 

@@ -14,6 +14,7 @@ from src.products.models import (
     Size,
     Inventory
 )
+from src.products.models.review import Review
 
 
 class Command(BaseCommand):
@@ -38,6 +39,7 @@ class Command(BaseCommand):
             Metal: ['add', 'change', 'delete', 'view'],
             Color: ['add', 'change', 'delete', 'view'],
             Stone: ['add', 'change', 'delete', 'view'],
+            Review: ['approve_review'],
         }
 
         # === Create Inventory group with full CRUD ===
@@ -71,9 +73,34 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.WARNING(
                         f'Permission {codename} not found.'))
 
+        # === Create Reviewer group with review approval permissions ===
+        reviewer_group, _ = Group.objects.get_or_create(name='Reviewer')
+
+        # Add review-related permissions only
+        review_content_type = ContentType.objects.get_for_model(Review)
+        review_permissions = ['approve_review', 'view_review', 'change_review']
+
+        for perm_codename in review_permissions:
+            try:
+                # For custom permissions like approve_review, use the exact codename
+                if perm_codename == 'approve_review':
+                    perm = Permission.objects.get(
+                        codename=perm_codename, content_type=review_content_type)
+                else:
+                    # For standard permissions, use the model name
+                    perm = Permission.objects.get(
+                        codename=perm_codename, content_type=review_content_type)
+                reviewer_group.permissions.add(perm)
+                self.stdout.write(self.style.SUCCESS(
+                    f'Added {perm_codename} permission to Reviewer group.'))
+            except Permission.DoesNotExist:
+                self.stdout.write(self.style.WARNING(
+                    f'Permission {perm_codename} not found.'))
+
         # === Create Inventory staff user ===
         inventory_user, created = User.objects.get_or_create(
             email='inventory_user@mail.com',
+            username='inventory_user',
             defaults={'is_staff': True}
         )
 
@@ -86,6 +113,7 @@ class Command(BaseCommand):
         # === Create Manager staff user ===
         manager_user, created = User.objects.get_or_create(
             email='manager_user@mail.com',
+            username='manager_user',
             defaults={'is_staff': True}
         )
 
@@ -94,6 +122,19 @@ class Command(BaseCommand):
             manager_user.save()
             self.stdout.write(self.style.SUCCESS('Manager user created.'))
         manager_user.groups.add(manager_group)
+
+        # === Create Reviewer staff user ===
+        reviewer_user, created = User.objects.get_or_create(
+            email='reviewer_user@mail.com',
+            username='reviewer_user',
+            defaults={'is_staff': True}
+        )
+
+        if created:
+            reviewer_user.set_password('@dmin123')
+            reviewer_user.save()
+            self.stdout.write(self.style.SUCCESS('Reviewer user created.'))
+        reviewer_user.groups.add(reviewer_group)
 
         # === Create Superuser ===
         if not User.objects.filter(email='super_user@mail.com').exists():
