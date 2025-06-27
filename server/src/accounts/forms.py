@@ -8,7 +8,7 @@ UserModel = get_user_model()
 class UserCredentialCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = UserModel
-        fields = ('email',)
+        fields = ('email', 'username',)
 
 
 class UserCredentialChangeForm(UserChangeForm):

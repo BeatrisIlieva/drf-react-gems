@@ -58,6 +58,7 @@ class UserRegisterView(CreateAPIView):
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
                 'email': user.email,
+                'username': user.username,
                 'id': user.pk,
 
             },
@@ -79,12 +80,20 @@ class UserLoginView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
-        # in DRF `request.data` is like `request.POST` and `request.GET` in Django
-        username = request.data.get('email')
-        password = request.data.get('password')
+        # Validate the request data using the serializer
+        serializer = UserLoginRequestSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Extract validated data
+        email_or_username = serializer.validated_data['email_or_username']
+        password = serializer.validated_data['password']
 
         user = authenticate(
-            username=username,
+            username=email_or_username,
             password=password,
         )
 

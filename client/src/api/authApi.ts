@@ -35,12 +35,24 @@ export const useDelete = () => {
     };
 };
 
+interface RegisterRequest {
+    email: string;
+    username: string;
+    password: string;
+}
+
+interface LoginRequest {
+    email_or_username: string;
+    password: string;
+}
+
 interface RegisterResponse {
     id?: string;
     email?: string;
+    username?: string;
     access?: string;
     refresh?: string;
-    [key: string]: any;
+    [key: string]: string | undefined;
 }
 
 export const useRegister = () => {
@@ -48,7 +60,7 @@ export const useRegister = () => {
 
     const register = useCallback(
         async (
-            userData: Record<string, any>
+            userData: RegisterRequest
         ): Promise<RegisterResponse> => {
             try {
                 const result = await post(
@@ -59,8 +71,8 @@ export const useRegister = () => {
                 );
 
                 return result;
-            } catch (err: any) {
-                return err.data;
+            } catch (err: unknown) {
+                return (err as { data: RegisterResponse }).data;
             }
         },
         [post]
@@ -74,6 +86,7 @@ export const useRegister = () => {
 interface LoginResponse {
     id?: string;
     email?: string;
+    username?: string;
     access?: string;
     refresh?: string;
 }
@@ -83,7 +96,7 @@ export const useLogin = () => {
 
     const login = useCallback(
         async (
-            userData: Record<string, any>
+            userData: LoginRequest
         ): Promise<LoginResponse | undefined> => {
             try {
                 const result = await post(`${baseUrl}/login/`, {

@@ -106,6 +106,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'src.wsgi.application'
 
+AUTHENTICATION_BACKENDS = [
+    'src.accounts.authentication.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

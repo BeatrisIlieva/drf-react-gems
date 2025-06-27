@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useForm } from '../../../hooks/useForm';
+import { useLoginForm } from '../../../hooks/useLoginForm';
 import { useFocusOnInvalidInput } from '../../../hooks/useFocusOnInvalidInput';
 import useUserContext from '../../../contexts/UserContext';
 import { useLogin } from '../../../api/authApi';
@@ -9,7 +9,7 @@ import { Button } from '../../reusable/button/Button';
 import { AuthLayout } from '../../reusable/auth-layout/AuthLayout';
 
 import styles from './Login.module.scss';
-import type { UserFormData } from '../../../types/User';
+import type { LoginFormData } from '../../../types/User';
 import { Footer } from './footer/Footer';
 
 // Since useActionState is React 19+ feature, we'll use our own implementation
@@ -51,19 +51,19 @@ function useActionState<T>(
 }
 
 export const Login: React.FC = () => {
-    const initialFormValues: UserFormData = {
-        email: { value: '', error: '', valid: false },
+    const initialFormValues: LoginFormData = {
+        email_or_username: { value: '', error: '', valid: false },
         password: { value: '', error: '', valid: false }
     };
 
     const {
-        userData,
+        loginData,
         validateFields,
         validateField,
         handleFieldChange,
         setServerSideError,
         getInputClassName
-    } = useForm(initialFormValues);
+    } = useLoginForm(initialFormValues);
 
     const { userLoginHandler } = useUserContext();
     const { login } = useLogin();
@@ -84,8 +84,8 @@ export const Login: React.FC = () => {
         }
 
         const authData = await login({
-            email: userData.email.value,
-            password: userData.password.value
+            email_or_username: loginData.email_or_username.value,
+            password: loginData.password.value
         });
 
         if (authData?.access) {
@@ -131,7 +131,7 @@ export const Login: React.FC = () => {
                         }
                     >
                         <p>
-                            Your email or password is incorrect.
+                            Your email/username or password is incorrect.
                             Try again or reset your password.
                         </p>
                     </div>
@@ -143,7 +143,7 @@ export const Login: React.FC = () => {
                         loginAction();
                     }}
                 >
-                    {Object.entries(userData).map(
+                    {Object.entries(loginData).map(
                         ([fieldName, fieldData]) => (
                             <Fragment key={fieldName}>
                                 {fieldData && (

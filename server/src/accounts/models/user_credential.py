@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser
 
 from src.accounts.managers import UserCredentialManager
+from src.accounts.validators.models import UsernameValidator
 
 
 class UserCredential(AbstractBaseUser, PermissionsMixin):
@@ -10,6 +11,15 @@ class UserCredential(AbstractBaseUser, PermissionsMixin):
         unique=True,
         error_messages={
             'unique': 'A user with this email already exists.'
+        }
+    )
+
+    username = models.CharField(
+        max_length=150,
+        unique=True,
+        validators=[UsernameValidator()],
+        error_messages={
+            'unique': 'A user with this username already exists.'
         }
     )
 
@@ -22,6 +32,6 @@ class UserCredential(AbstractBaseUser, PermissionsMixin):
     )
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']
 
     objects = UserCredentialManager()

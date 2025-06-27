@@ -1,9 +1,10 @@
 import React from 'react';
-import type { FormField } from '../../../types/Forms';
+import type { FormFieldState } from '../../../types/User';
+import { getFieldDisplayName } from '../../../utils/getFieldDisplayName';
 
 interface InputFieldProps {
-    getInputClassName: (fieldData: FormField) => string;
-    fieldData: FormField;
+    getInputClassName: (fieldData: FormFieldState) => string;
+    fieldData: FormFieldState;
     validateField?: (
         e: React.ChangeEvent<HTMLInputElement> | React.FocusEvent<HTMLInputElement>
     ) => void;
@@ -48,7 +49,7 @@ export const InputField: React.FC<InputFieldProps> = ({
                 htmlFor={fieldName}
                 className={getInputClassName(fieldData)}
             >
-                {`${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}*`}
+                {`${getFieldDisplayName(fieldName)}*`}
             </label>
             {fieldData.error && (
                 <span className='error'>{fieldData.error}</span>

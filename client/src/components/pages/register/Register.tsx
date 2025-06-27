@@ -7,8 +7,8 @@ import { InputField } from '../../reusable/input-field/InputField';
 import { Button } from '../../reusable/button/Button';
 import { PasswordValidator } from './password-validator/PasswordValidator';
 import { useFocusOnInvalidInput } from '../../../hooks/useFocusOnInvalidInput';
-import { useForm } from '../../../hooks/useForm';
-import type { UserFormData } from '../../../types/User';
+import { useRegisterForm } from '../../../hooks/useRegisterForm';
+import type { RegisterFormData } from '../../../types/User';
 
 import styles from './Register.module.scss';
 import { Icon } from '../../reusable/icon/Icon';
@@ -52,19 +52,20 @@ function useActionState<T>(
 }
 
 export const Register: React.FC = () => {
-    const initialFormValues: UserFormData = {
+    const initialFormValues: RegisterFormData = {
         email: { value: '', error: '', valid: false },
+        username: { value: '', error: '', valid: false },
         password: { value: '', error: '', valid: false }
     };
 
     const {
-        userData,
+        registerData,
         validateFields,
         validateField,
         handleFieldChange,
         setServerSideError,
         getInputClassName
-    } = useForm(initialFormValues);
+    } = useRegisterForm(initialFormValues);
 
     const [agree, setAgree] = useState<boolean>(true);
 
@@ -86,16 +87,17 @@ export const Register: React.FC = () => {
         }
 
         const authData = await register({
-            email: userData.email.value,
-            password: userData.password.value
+            email: registerData.email.value,
+            username: registerData.username.value,
+            password: registerData.password.value
         });
 
         if (authData?.access) {
             userLoginHandler(authData);
 
             await login({
-                email: userData.email.value,
-                password: userData.password.value
+                email_or_username: registerData.email.value,
+                password: registerData.password.value
             });
 
             navigate('/my-account/details');
@@ -105,7 +107,7 @@ export const Register: React.FC = () => {
         Object.keys(initialFormValues).forEach((key) => {
             if (authData && typeof authData === 'object') {
                 setServerSideError(
-                    authData as Record<string, string[]>,
+                    authData as unknown as Record<string, string[]>,
                     key
                 );
             }
@@ -138,7 +140,7 @@ export const Register: React.FC = () => {
                         registerAction();
                     }}
                 >
-                    {Object.entries(userData).map(
+                    {Object.entries(registerData).map(
                         ([fieldName, fieldData]) => (
                             <Fragment key={fieldName}>
                                 {fieldData && (
@@ -170,12 +172,19 @@ export const Register: React.FC = () => {
                                             updates.
                                         </p>
                                     )}
+                                {fieldName === 'username' &&
+                                    fieldData && (
+                                        <p>
+                                            Choose a unique username 
+                                            for your account.
+                                        </p>
+                                    )}
                             </Fragment>
                         )
                     )}
 
                     <PasswordValidator
-                        password={userData?.password?.value || ''}
+                        password={registerData?.password?.value || ''}
                     />
 
                     <div className={styles['terms-wrapper']}>

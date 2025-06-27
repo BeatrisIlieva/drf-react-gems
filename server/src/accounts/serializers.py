@@ -5,6 +5,7 @@ from cloudinary.utils import cloudinary_url
 
 from src.accounts.models.user_photo import UserPhoto
 from src.accounts.models.user_profile import UserProfile
+from src.accounts.validators.models import UsernameValidator, EmailOrUsernameValidator
 
 
 UserModel = get_user_model()
@@ -18,12 +19,18 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserModel
-        # the serializer expects to receive json file containing `email` and `password`
-        fields = ['email', 'password']
+        # the serializer expects to receive json file containing `email`, `username` and `password`
+        fields = ['email', 'username', 'password']
 
     def validate_password(self, value):
         # This will raise a ValidationError if the password is too short, common, numeric, etc.
         validate_password(value)
+        return value
+
+    def validate_username(self, value):
+        # Validate username format using custom validator
+        username_validator = UsernameValidator()
+        username_validator(value)
         return value
 
     # the default `create` method does not hash the password
@@ -35,8 +42,14 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 
 class UserLoginRequestSerializer(serializers.Serializer):
-    username = serializers.CharField()
+    email_or_username = serializers.CharField()
     password = serializers.CharField()
+
+    def validate_email_or_username(self, value):
+        # Validate that the value is either a valid email or username
+        email_or_username_validator = EmailOrUsernameValidator()
+        email_or_username_validator(value)
+        return value
 
     # returns `accessToken` and `refreshToken`
 
@@ -60,7 +73,7 @@ class UserLogoutResponseSerializer(serializers.Serializer):
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
-        fields = ['id',  'email']
+        fields = ['id', 'email', 'username']
 
 
 class PhotoSerializer(serializers.ModelSerializer):

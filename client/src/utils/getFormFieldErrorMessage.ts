@@ -10,15 +10,33 @@ const passwordErrorMessage =
     'Sorry, the provided password does not match the required constraints';
 
 const emailErrorMessage = 'Please enter a valid email address';
+const usernameErrorMessage = 'Username must be 3-30 characters long and contain only letters, numbers, and underscores';
 const nameErrorMessage = 'Name must contain only letters and be 2-30 characters long';
 const phoneErrorMessage = 'Phone number must be 9-15 digits long';
+const emailOrUsernameErrorMessage = 'Please enter a valid email address or username';
 
 export const validators: ValidatorType = {
     email: {
         isValid: (value) =>
-            /^[A-Za-z0-9]+@+[a-z]+\.[a-z]{2,4}$/.test(value)
+            /^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i.test(value)
                 ? ''
                 : emailErrorMessage
+    },
+    username: {
+        isValid: (value) =>
+            /^[A-Za-z0-9_]{3,30}$/.test(value)
+                ? ''
+                : usernameErrorMessage
+    },
+    email_or_username: {
+        isValid: (value) => {
+            // Check if it's an email (using improved pattern)
+            const isEmail = /^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i.test(value);
+            // Check if it's a username
+            const isUsername = /^[A-Za-z0-9_]{3,30}$/.test(value);
+            
+            return (isEmail || isUsername) ? '' : emailOrUsernameErrorMessage;
+        }
     },
     password: {
         length: (password) =>
