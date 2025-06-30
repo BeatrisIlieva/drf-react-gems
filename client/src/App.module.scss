@@ -1,7 +1,10 @@
 @use './styles/variables' as vars;
 
-.app {
+body {
     min-height: 100dvh;
+}
+
+.app {
     display: flex;
     flex-direction: column;
 }
