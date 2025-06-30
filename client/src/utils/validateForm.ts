@@ -1,14 +1,12 @@
-import type { UserFormData, LoginFormData, RegisterFormData } from '../types/User';
+import type { FormData } from '../types/User';
 import { getFormFieldErrorMessage } from './getFormFieldErrorMessage';
 
-type AnyFormData = UserFormData | LoginFormData | RegisterFormData;
-
-interface ValidateFormResult<T extends AnyFormData> {
+interface ValidateFormResult<T extends FormData> {
     validatedUserData: T;
     isValid: boolean;
 }
 
-export const validateForm = <T extends AnyFormData>(
+export const validateForm = <T extends FormData>(
     userData: T, 
     updatedUserData: T
 ): ValidateFormResult<T> => {
