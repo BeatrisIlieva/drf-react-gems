@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { FormFieldState } from '../../../types/User';
 import { getFieldDisplayName } from '../../../utils/getFieldDisplayName';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faEye,
+    faEyeSlash
+} from '@fortawesome/free-solid-svg-icons';
+import styles from './InputField.module.scss';
 
 interface InputFieldProps {
     getInputClassName: (fieldData: FormFieldState) => string;
     fieldData: FormFieldState;
     validateField?: (
-        e: React.ChangeEvent<HTMLInputElement> | React.FocusEvent<HTMLInputElement>
+        e:
+            | React.ChangeEvent<HTMLInputElement>
+            | React.FocusEvent<HTMLInputElement>
     ) => void;
     handleFieldChange?: (
         e: React.ChangeEvent<HTMLInputElement>
@@ -25,35 +34,54 @@ export const InputField: React.FC<InputFieldProps> = ({
     fieldName,
     type
 }) => {
-    // Always use handleFieldChange for onChange to validate in real-time while typing
-    // This ensures fields turn green as soon as they're valid
     const onChangeHandler = handleFieldChange || validateField;
-    
-    // On blur, always use validateField to show validation errors
-    // This ensures errors only show when field loses focus
+
     const onBlurHandler = handleBlur || validateField;
 
+    const [isPasswordVisible, setIsPasswordVisible] =
+        useState<boolean>(false);
+
     return (
-        <div className='field'>
-            <input
-                className={getInputClassName(fieldData)}
-                type={type}
-                name={fieldName}
-                id={fieldName}
-                placeholder={fieldName}
-                value={fieldData.value}
-                onChange={onChangeHandler}
-                onBlur={onBlurHandler}
-            />
-            <label
-                htmlFor={fieldName}
-                className={getInputClassName(fieldData)}
-            >
-                {`${getFieldDisplayName(fieldName)}*`}
-            </label>
+        <>
+            <div className='field'>
+                <input
+                    className={getInputClassName(fieldData)}
+                    type={
+                        type === 'password'
+                            ? isPasswordVisible
+                                ? 'text'
+                                : 'password'
+                            : type
+                    }
+                    name={fieldName}
+                    id={fieldName}
+                    placeholder={fieldName}
+                    value={fieldData.value}
+                    onChange={onChangeHandler}
+                    onBlur={onBlurHandler}
+                />
+                <label
+                    htmlFor={fieldName}
+                    className={getInputClassName(fieldData)}
+                >
+                    {`${getFieldDisplayName(fieldName)}*`}
+                </label>
+
+                {type === 'password' && (
+                    <FontAwesomeIcon
+                        icon={
+                            isPasswordVisible ? faEyeSlash : faEye
+                        }
+                        className={styles['eye-icon']}
+                        onClick={() =>
+                            setIsPasswordVisible((prev) => !prev)
+                        }
+                    />
+                )}
+            </div>
             {fieldData.error && (
                 <span className='error'>{fieldData.error}</span>
             )}
-        </div>
+        </>
     );
 };
