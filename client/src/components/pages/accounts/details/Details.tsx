@@ -22,7 +22,7 @@ export const Details: React.FC = () => {
                     isUploading={isUploading}
                 />
             </section>
-            <PersonalInfoForm/>
+            <PersonalInfoForm />
         </section>
     );
 };

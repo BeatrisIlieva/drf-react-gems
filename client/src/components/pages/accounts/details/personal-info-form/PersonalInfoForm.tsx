@@ -193,7 +193,6 @@ export const PersonalInfoForm = (): ReactElement => {
     return (
         <section className={styles['personal-info-form']}>
             <h2>Personal Information</h2>
-            <p>Update your personal details below.</p>
             
             {successMessage && (
                 <div className={styles['success-message']}>
