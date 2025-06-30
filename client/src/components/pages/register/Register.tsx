@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import useUserContext from '../../../contexts/UserContext';
 import { useLogin, useRegister } from '../../../api/authApi';
@@ -7,65 +7,24 @@ import { InputField } from '../../reusable/input-field/InputField';
 import { Button } from '../../reusable/button/Button';
 import { PasswordValidator } from './password-validator/PasswordValidator';
 import { useFocusOnInvalidInput } from '../../../hooks/useFocusOnInvalidInput';
-import { useRegisterForm } from '../../../hooks/useRegisterForm';
-import type { RegisterFormData } from '../../../types/User';
+import { useForm } from '../../../hooks/useForm';
+import type {
+    RegisterFormData,
+    FormSubmissionResult
+} from '../../../types/User';
 
 import styles from './Register.module.scss';
 import { Icon } from '../../reusable/icon/Icon';
 
-// Since useActionState is React 19+ feature, we'll create a simple alternative
-interface ActionState<T> {
-    status: 'idle' | 'pending' | 'success' | 'error';
-    data?: T;
-    error?: Error;
-}
-
-type ActionFunction<T> = () => Promise<T>;
-
-// Simple useActionState alternative
-function useActionState<T>(
-    action: ActionFunction<T>
-): [ActionState<T>, () => Promise<T>, boolean] {
-    const [state, setState] = useState<ActionState<T>>({
-        status: 'idle'
-    });
-
-    const actionFn = async () => {
-        setState({ status: 'pending' });
-        try {
-            const result = await action();
-            setState({ status: 'success', data: result });
-            return result;
-        } catch (error) {
-            const err =
-                error instanceof Error
-                    ? error
-                    : new Error(String(error));
-            setState({ status: 'error', error: err });
-            throw err;
-        }
-    };
-
-    const isPending = state.status === 'pending';
-
-    return [state, actionFn, isPending];
-}
-
 export const Register: React.FC = () => {
-    const initialFormValues: RegisterFormData = {
-        email: { value: '', error: '', valid: false },
-        username: { value: '', error: '', valid: false },
-        password: { value: '', error: '', valid: false }
-    };
-
-    const {
-        registerData,
-        validateFields,
-        validateField,
-        handleFieldChange,
-        setServerSideError,
-        getInputClassName
-    } = useRegisterForm(initialFormValues);
+    const initialFormValues = useMemo<RegisterFormData>(
+        () => ({
+            email: { value: '', error: '', valid: false },
+            username: { value: '', error: '', valid: false },
+            password: { value: '', error: '', valid: false }
+        }),
+        []
+    );
 
     const [agree, setAgree] = useState<boolean>(true);
 
@@ -76,48 +35,69 @@ export const Register: React.FC = () => {
 
     useFocusOnInvalidInput();
 
-    const registerHandler = async () => {
-        const isValid = validateFields();
-
-        if (!isValid) {
-            return {
-                success: false,
-                error: 'Registration failed'
-            };
-        }
-
+    const handleSubmit = async (
+        formData: RegisterFormData
+    ): Promise<FormSubmissionResult> => {
         const authData = await register({
-            email: registerData.email.value,
-            username: registerData.username.value,
-            password: registerData.password.value
+            email: formData.email.value,
+            username: formData.username.value,
+            password: formData.password.value
         });
 
         if (authData?.access) {
             userLoginHandler(authData);
 
             await login({
-                email_or_username: registerData.email.value,
-                password: registerData.password.value
+                email_or_username: formData.email.value,
+                password: formData.password.value
             });
 
             navigate('/my-account/details');
             return { success: true };
         }
 
-        Object.keys(initialFormValues).forEach((key) => {
-            if (authData && typeof authData === 'object') {
-                setServerSideError(
-                    authData as unknown as Record<string, string[]>,
-                    key
-                );
-            }
-        });
+        if (
+            authData &&
+            typeof authData === 'object' &&
+            !authData.access
+        ) {
+            const serverData = authData as unknown as Record<
+                string,
+                string[]
+            >;
+            Object.keys(initialFormValues).forEach((key) => {
+                if (serverData[key]) {
+                    setServerSideError(serverData, key);
+                }
+            });
 
-        return { success: false };
+            return {
+                success: false,
+                error: 'Registration failed',
+                data: authData as unknown as Record<
+                    string,
+                    string[]
+                >
+            };
+        }
+
+        return { success: false, error: 'Registration failed' };
     };
 
-    const [, registerAction, isPending] =
-        useActionState(registerHandler);
+    const formProps = useForm(initialFormValues, {
+        onSubmit: handleSubmit,
+        validateOnSubmit: true
+    });
+
+    const {
+        formData,
+        validateField,
+        handleFieldChange,
+        getInputClassName,
+        submitAction,
+        isSubmitting,
+        setServerSideError
+    } = formProps;
 
     const navigateToLoginHandler = () => {
         navigate('/my-account/login');
@@ -134,13 +114,8 @@ export const Register: React.FC = () => {
 
                 <h2>Create Account</h2>
 
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        registerAction();
-                    }}
-                >
-                    {Object.entries(registerData).map(
+                <form action={submitAction}>
+                    {Object.entries(formData).map(
                         ([fieldName, fieldData]) => (
                             <Fragment key={fieldName}>
                                 {fieldData && (
@@ -175,8 +150,9 @@ export const Register: React.FC = () => {
                                 {fieldName === 'username' &&
                                     fieldData && (
                                         <p>
-                                            Choose a unique username 
-                                            for your account.
+                                            Choose a unique
+                                            username for your
+                                            account.
                                         </p>
                                     )}
                             </Fragment>
@@ -184,7 +160,7 @@ export const Register: React.FC = () => {
                     )}
 
                     <PasswordValidator
-                        password={registerData?.password?.value || ''}
+                        password={formData?.password?.value || ''}
                     />
 
                     <div className={styles['terms-wrapper']}>
@@ -205,7 +181,7 @@ export const Register: React.FC = () => {
                         title={'Register'}
                         color='black'
                         actionType='submit'
-                        pending={isPending}
+                        pending={isSubmitting}
                         callbackHandler={() => {}}
                     />
                 </form>

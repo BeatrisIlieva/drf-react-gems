@@ -12,11 +12,6 @@
         font-weight: 500;
     }
 
-    form p {
-        opacity: 0.6;
-        font-style: italic;
-    }
-
     > p {
         display: flex;
         align-items: center;
@@ -25,8 +20,8 @@
         font-size: 0.9em;
         opacity: 0.8;
         letter-spacing: 0.12em;
-        margin-bottom: 3em;
-        padding-bottom: 3em;
+        margin-bottom: 1em;
+        padding-bottom: 1em;
         border-bottom: 0.1em solid vars.$medium-grey;
         cursor: pointer;
 
@@ -34,6 +29,12 @@
             height: 1.2em;
             width: 1.3em;
         }
+    }
+
+    form p {
+        opacity: 0.6;
+        font-style: italic;
+        margin-top: -1em !important;
     }
 }
 
