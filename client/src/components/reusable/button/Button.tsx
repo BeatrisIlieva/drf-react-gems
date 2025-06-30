@@ -18,12 +18,26 @@ export const Button = ({
     pending = false,
     disabled = false
 }: Props): ReactElement => {
+    const handleClick = () => {
+        // For submit buttons, let the form handle submission naturally
+        if (actionType === 'submit') {
+            // Don't prevent default - let the form action handle it
+            // Only call callback if it's not an empty function
+            if (callbackHandler && callbackHandler.toString() !== '() => {}') {
+                callbackHandler();
+            }
+        } else {
+            // For non-submit buttons, call the callback
+            callbackHandler();
+        }
+    };
+
     return (
         <button
-            onClick={callbackHandler}
+            onClick={handleClick}
             className={`${styles['btn']} ${styles[color]}`}
             type={actionType}
-            disabled={disabled}
+            disabled={disabled || pending}
         >
             {pending ? 'pending...' : title}
         </button>
