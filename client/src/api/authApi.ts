@@ -310,3 +310,52 @@ export const useUpdatePersonalInfo = () => {
         updatePersonalInfo
     };
 };
+
+interface PasswordChangeRequest {
+    current_password: string;
+    new_password: string;
+}
+
+interface PasswordChangeResponse {
+    message?: string;
+    error?: string;
+}
+
+export const useChangePassword = () => {
+    const { patch } = useApi();
+
+    const changePassword = useCallback(
+        async (
+            passwordData: PasswordChangeRequest
+        ): Promise<PasswordChangeResponse | undefined> => {
+            try {
+                const result = await patch(
+                    `${baseUrl}/change-password/`,
+                    {
+                        data: passwordData,
+                        accessRequired: true,
+                        refreshRequired: true
+                    }
+                );
+
+                return (
+                    result || {
+                        message: 'Password changed successfully'
+                    }
+                );
+            } catch (err: any) {
+                return {
+                    error:
+                        err.message ||
+                        'Failed to change password',
+                    ...err.data
+                };
+            }
+        },
+        [patch]
+    );
+
+    return {
+        changePassword
+    };
+};
