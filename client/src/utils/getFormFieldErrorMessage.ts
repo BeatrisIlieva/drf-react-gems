@@ -67,6 +67,42 @@ export const validators: ValidatorType = {
     phoneNumber: {
         isValid: (value) =>
             /^\d{9,15}$/.test(value) ? '' : phoneErrorMessage
+    },
+    currentPassword: {
+        length: (password) =>
+            password.length >= 6 ? '' : passwordErrorMessage,
+
+        upper: (password) =>
+            /[A-Z]/.test(password) ? '' : passwordErrorMessage,
+
+        lower: (password) =>
+            /[a-z]/.test(password) ? '' : passwordErrorMessage,
+
+        number: (password) => (/\d/.test(password) ? '' : passwordErrorMessage),
+
+        noSpaces: (password) =>
+            !/\s/.test(password) ? '' : passwordErrorMessage,
+
+        special: (password) =>
+            /[!#$%]/.test(password) ? '' : passwordErrorMessage
+    },
+    newPassword: {
+        length: (password) =>
+            password.length >= 6 ? '' : passwordErrorMessage,
+
+        upper: (password) =>
+            /[A-Z]/.test(password) ? '' : passwordErrorMessage,
+
+        lower: (password) =>
+            /[a-z]/.test(password) ? '' : passwordErrorMessage,
+
+        number: (password) => (/\d/.test(password) ? '' : passwordErrorMessage),
+
+        noSpaces: (password) =>
+            !/\s/.test(password) ? '' : passwordErrorMessage,
+
+        special: (password) =>
+            /[!#$%]/.test(password) ? '' : passwordErrorMessage,
     }
 };
 

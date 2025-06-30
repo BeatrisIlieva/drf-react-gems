@@ -8,7 +8,9 @@ export const getFieldDisplayName = (fieldName: string): string => {
         firstName: 'First Name',
         lastName: 'Last Name',
         phoneNumber: 'Phone Number',
-        password_confirmation: 'Confirm Password'
+        password_confirmation: 'Confirm Password',
+        currentPassword: 'Current Password',
+        newPassword: 'New Password'
     };
 
     return fieldDisplayNames[fieldName] || 
