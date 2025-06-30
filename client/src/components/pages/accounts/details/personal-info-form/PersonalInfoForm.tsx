@@ -1,69 +1,33 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState, useEffect, useMemo } from 'react';
 import { useForm } from '../../../../../hooks/useForm';
 import { useFocusOnInvalidInput } from '../../../../../hooks/useFocusOnInvalidInput';
-import { useGetPersonalInfo, useUpdatePersonalInfo } from '../../../../../api/authApi';
+import {
+    useGetPersonalInfo,
+    useUpdatePersonalInfo
+} from '../../../../../api/authApi';
 import { InputField } from '../../../../reusable/input-field/InputField';
 import { Button } from '../../../../reusable/button/Button';
-import { keysToSnakeCase } from '../../../../../utils/convertToSnakeCase';
+import { DetailsContainer } from '../details-container/DetailsContainer';
 import { keysToCamelCase } from '../../../../../utils/convertToCamelCase';
 
-import styles from './PersonalInfoForm.module.scss';
 import type { ReactElement } from 'react';
-import type { UserFormData } from '../../../../../types/User';
-
-// Simple useActionState alternative for form submission
-interface ActionState<T> {
-    status: 'idle' | 'pending' | 'success' | 'error';
-    data?: T;
-    error?: Error;
-}
-
-type ActionFunction<T> = () => Promise<T>;
-
-function useActionState<T>(
-    action: ActionFunction<T>
-): [ActionState<T>, () => Promise<T>, boolean] {
-    const [state, setState] = useState<ActionState<T>>({
-        status: 'idle'
-    });
-
-    const actionFn = async () => {
-        setState({ status: 'pending' });
-        try {
-            const result = await action();
-            setState({ status: 'success', data: result });
-            return result;
-        } catch (error) {
-            const err =
-                error instanceof Error
-                    ? error
-                    : new Error(String(error));
-            setState({ status: 'error', error: err });
-            throw err;
-        }
-    };
-
-    const isPending = state.status === 'pending';
-
-    return [state, actionFn, isPending];
-}
+import type {
+    UserFormData,
+    FormSubmissionResult
+} from '../../../../../types/User';
+import styles from './PersonalInfoForm.module.scss';
 
 export const PersonalInfoForm = (): ReactElement => {
-    const initialFormValues: UserFormData = {
-        email: { value: '', error: '', valid: false }, // Required by UserFormData
-        password: { value: '', error: '', valid: false }, // Required by UserFormData
-        firstName: { value: '', error: '', valid: false },
-        lastName: { value: '', error: '', valid: false },
-        phoneNumber: { value: '', error: '', valid: false }
-    };
-
-    const {
-        userData,
-        validateField,
-        handleFieldChange,
-        setServerSideError,
-        getInputClassName
-    } = useForm(initialFormValues);
+    const initialFormValues = useMemo<UserFormData>(
+        () => ({
+            email: { value: '', error: '', valid: false }, // Required by UserFormData
+            password: { value: '', error: '', valid: false }, // Required by UserFormData
+            firstName: { value: '', error: '', valid: false },
+            lastName: { value: '', error: '', valid: false },
+            phoneNumber: { value: '', error: '', valid: false }
+        }),
+        []
+    );
 
     const { getPersonalInfo } = useGetPersonalInfo();
     const { updatePersonalInfo } = useUpdatePersonalInfo();
@@ -71,167 +35,196 @@ export const PersonalInfoForm = (): ReactElement => {
     useFocusOnInvalidInput();
 
     const [loading, setLoading] = useState(true);
-    const [successMessage, setSuccessMessage] = useState<string | null>(null);
-    const [initialData, setInitialData] = useState<Record<string, string>>({});
+    const [initialDataLoaded, setInitialDataLoaded] =
+        useState(false);
+
+    const handleSubmit = async (
+        formData: UserFormData
+    ): Promise<FormSubmissionResult> => {
+        const hasFirstName =
+            formData.firstName?.value?.trim() !== '';
+        const hasLastName =
+            formData.lastName?.value?.trim() !== '';
+        const hasPhoneNumber =
+            formData.phoneNumber?.value?.trim() !== '';
+
+        if (!hasFirstName || !hasLastName || !hasPhoneNumber) {
+            validateFields();
+            return {
+                success: false,
+                error: 'Please fill in all required fields.'
+            };
+        }
+
+        const apiData = {
+            first_name: formData.firstName!.value.trim(),
+            last_name: formData.lastName!.value.trim(),
+            phone_number: formData.phoneNumber!.value.trim()
+        };
+
+        try {
+            const result = await updatePersonalInfo(apiData);
+
+            if (result && !result.error) {
+                return { success: true };
+            }
+
+            return {
+                success: false,
+                error: 'Failed to update personal information'
+            };
+        } catch (error) {
+            console.error('API error:', error);
+            return {
+                success: false,
+                error: 'Failed to update personal information'
+            };
+        }
+    };
+
+    const formProps = useForm(initialFormValues, {
+        onSubmit: handleSubmit,
+        validateOnSubmit: false
+    });
+
+    const {
+        formData,
+        validateField,
+        handleFieldChange,
+        getInputClassName,
+        submitAction,
+        isSubmitting,
+        setServerSideError,
+        updateFieldValue,
+        validateFields,
+        resetValidationStates
+    } = formProps;
 
     // Load existing personal info on component mount
     useEffect(() => {
+        if (initialDataLoaded) return;
+
         const loadPersonalInfo = async () => {
             try {
                 const personalInfo = await getPersonalInfo();
                 if (personalInfo) {
-                    const camelCaseInfo = keysToCamelCase(personalInfo);
-                    setInitialData(camelCaseInfo);
+                    const camelCaseInfo =
+                        keysToCamelCase(personalInfo);
+
+                    // Use updateFieldValue to populate without marking as valid initially
+                    if (camelCaseInfo.firstName) {
+                        updateFieldValue(
+                            'firstName',
+                            camelCaseInfo.firstName,
+                            false
+                        );
+                    }
+                    if (camelCaseInfo.lastName) {
+                        updateFieldValue(
+                            'lastName',
+                            camelCaseInfo.lastName,
+                            false
+                        );
+                    }
+                    if (camelCaseInfo.phoneNumber) {
+                        updateFieldValue(
+                            'phoneNumber',
+                            camelCaseInfo.phoneNumber,
+                            false
+                        );
+                    }
                 }
-            } catch (error) {
-                console.error('Failed to load personal info:', error);
+                setInitialDataLoaded(true);
             } finally {
                 setLoading(false);
             }
         };
 
         loadPersonalInfo();
-    }, [getPersonalInfo]);
+    }, [getPersonalInfo, updateFieldValue, initialDataLoaded]);
 
-    // Update form fields when initial data is loaded
+    // Handle server-side errors after form submission
     useEffect(() => {
-        if (Object.keys(initialData).length > 0) {
-            Object.entries(initialData).forEach(([key, value]) => {
-                if (userData[key] && typeof value === 'string') {
-                    userData[key] = {
-                        value: value,
-                        error: '',
-                        valid: true
-                    };
+        if (
+            formProps.formState &&
+            !formProps.formState.success &&
+            formProps.formState.data
+        ) {
+            const personalInfoFields = [
+                'firstName',
+                'lastName',
+                'phoneNumber'
+            ];
+            personalInfoFields.forEach((key) => {
+                if (
+                    formProps.formState?.data &&
+                    typeof formProps.formState.data === 'object'
+                ) {
+                    setServerSideError(
+                        formProps.formState.data as Record<
+                            string,
+                            string[]
+                        >,
+                        key
+                    );
                 }
             });
         }
-    }, [initialData, userData]);
+    }, [formProps.formState, setServerSideError]);
 
-    const submitHandler = async () => {
-        setSuccessMessage(null);
-        
-        // Only validate the personal info fields (not email/password)
-        const personalInfoData = {
-            firstName: userData.firstName!,
-            lastName: userData.lastName!,
-            phoneNumber: userData.phoneNumber!
-        };
-
-        // Custom validation for personal info fields
-        let isValid = true;
-        const validatedUserData = { ...personalInfoData };
-
-        Object.entries(personalInfoData).forEach(([field, fieldData]) => {
-            if (!fieldData) return;
-            
-            // Skip validation if field is empty (optional fields)
-            if (fieldData.value.trim() === '') {
-                validatedUserData[field as keyof typeof validatedUserData] = {
-                    ...fieldData,
-                    error: '',
-                    valid: true
-                };
-                return;
-            }
-
-            const errorMessage = fieldData.error;
-            if (errorMessage !== '') {
-                isValid = false;
-            }
-
-            validatedUserData[field as keyof typeof validatedUserData] = {
-                ...fieldData,
-                valid: errorMessage === ''
-            };
-        });
-
-        if (!isValid) {
-            return { success: false, error: 'Validation failed' };
+    // Handle successful form submission - reset validation states
+    useEffect(() => {
+        if (
+            formProps.formState &&
+            formProps.formState.success
+        ) {
+            resetValidationStates();
         }
-
-        // Prepare data for API (convert to snake_case and only include non-empty values)
-        const apiData: Record<string, string> = {};
-        Object.entries(validatedUserData).forEach(([key, fieldData]) => {
-            if (fieldData && fieldData.value && fieldData.value.trim() !== '') {
-                apiData[key] = fieldData.value.trim();
-            }
-        });
-
-        const snakeCaseData = keysToSnakeCase(apiData) as Record<string, string>;
-
-        const result = await updatePersonalInfo(snakeCaseData);
-
-        if (result && !result.error) {
-            setSuccessMessage('Personal information updated successfully!');
-            return { success: true };
-        }
-
-        // Handle server-side errors
-        if (result && typeof result === 'object') {
-            const camelCaseErrors = keysToCamelCase(result);
-            Object.keys(personalInfoData).forEach((key) => {
-                setServerSideError(
-                    camelCaseErrors as Record<string, string[]>,
-                    key
-                );
-            });
-        }
-
-        return { success: false };
-    };
-
-    const [, submitAction, isPending] = useActionState(submitHandler);
-
-    if (loading) {
-        return <div className={styles.loading}>Loading personal information...</div>;
-    }
-
-    // Only render the personal info fields (not email/password)
-    const personalInfoFields = ['firstName', 'lastName', 'phoneNumber'];
+    }, [formProps.formState, resetValidationStates]);
 
     return (
-        <section className={styles['personal-info-form']}>
-            <h2>Personal Information</h2>
-            
-            {successMessage && (
-                <div className={styles['success-message']}>
-                    {successMessage}
+        <DetailsContainer>
+            <h3>Personal Information</h3>
+
+            {loading ? (
+                <div className={styles['loading']}>
+                    Loading personal information...
                 </div>
+            ) : (
+                <form action={submitAction}>
+                    {['firstName', 'lastName', 'phoneNumber'].map(
+                        (fieldName) => {
+                            const fieldData = formData[fieldName];
+                            if (!fieldData) return null;
+
+                            return (
+                                <Fragment key={fieldName}>
+                                    <InputField
+                                        getInputClassName={
+                                            getInputClassName
+                                        }
+                                        fieldData={fieldData}
+                                        handleFieldChange={
+                                            handleFieldChange
+                                        }
+                                        validateField={validateField}
+                                        fieldName={fieldName}
+                                        type='text'
+                                    />
+                                </Fragment>
+                            );
+                        }
+                    )}
+
+                    <Button
+                        title='Save'
+                        color='black'
+                        actionType='submit'
+                        pending={isSubmitting}
+                        callbackHandler={() => {}}
+                    />
+                </form>
             )}
-
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    submitAction();
-                }}
-            >
-                {personalInfoFields.map((fieldName) => {
-                    const fieldData = userData[fieldName];
-                    if (!fieldData) return null;
-
-                    return (
-                        <Fragment key={fieldName}>
-                            <InputField
-                                getInputClassName={getInputClassName}
-                                fieldData={fieldData}
-                                handleFieldChange={handleFieldChange}
-                                validateField={validateField}
-                                fieldName={fieldName}
-                                type="text"
-                            />
-                        </Fragment>
-                    );
-                })}
-
-                <Button
-                    title="Save Changes"
-                    color="black"
-                    actionType="submit"
-                    pending={isPending}
-                    callbackHandler={() => {}}
-                />
-            </form>
-        </section>
+        </DetailsContainer>
     );
 };
