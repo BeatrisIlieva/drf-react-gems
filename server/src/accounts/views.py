@@ -19,6 +19,7 @@ from src.accounts.serializers import (
     UserLogoutRequestSerializer,
     UserRegisterSerializer,
     UserProfileSerializer,
+    PasswordChangeSerializer,
 )
 from src.accounts.utils import migrate_guest_data_to_user
 
@@ -208,7 +209,7 @@ class PhotoUploadView(APIView):
 )
 class UserProfileView(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request):
         """
         Get user profile information
@@ -224,16 +225,47 @@ class UserProfileView(APIView):
                 'last_name': '',
                 'phone_number': ''
             }, status=status.HTTP_200_OK)
-    
+
     def patch(self, request):
         """
         Update user profile information
         """
-        serializer = UserProfileSerializer(request.user, data=request.data, partial=True)
-        
+        serializer = UserProfileSerializer(
+            request.user, data=request.data, partial=True)
+
         if serializer.is_valid():
             profile = serializer.save()
             response_serializer = UserProfileSerializer(profile)
             return Response(response_serializer.data, status=status.HTTP_200_OK)
-        
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PasswordChangeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        request=PasswordChangeSerializer,
+        responses={
+            200: {"description": "Password changed successfully"},
+            400: {"description": "Bad request - validation errors"},
+        },
+        description="Change user password"
+    )
+    def patch(self, request):
+        """
+        Change user password
+        """
+        serializer = PasswordChangeSerializer(
+            data=request.data,
+            context={'request': request}
+        )
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {"message": "Password changed successfully"},
+                status=status.HTTP_200_OK
+            )
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -78,10 +78,11 @@ class UserDetailSerializer(serializers.ModelSerializer):
 
 class PhotoSerializer(serializers.ModelSerializer):
     photo_url = serializers.SerializerMethodField()
+
     class Meta:
         model = UserPhoto
-        fields = ['user', 'photo', 'photo_url'] 
-        
+        fields = ['user', 'photo', 'photo_url']
+
     def get_photo_url(self, obj):
         if obj.photo:
             return cloudinary_url(obj.photo.public_id)[0]
@@ -92,20 +93,50 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ['first_name', 'last_name', 'phone_number']
-        
+
     def update(self, instance, validated_data):
         """
         Update user profile fields, creating the profile if it doesn't exist
         """
         # Get the user from the instance (which should be the user object)
         user = instance
-        
+
         # Get or create the user profile
         profile, created = UserProfile.objects.get_or_create(user=user)
-        
+
         # Update the profile with validated data
         for attr, value in validated_data.items():
             setattr(profile, attr, value)
-        
+
         profile.save()
         return profile
+
+
+class PasswordChangeSerializer(serializers.Serializer):
+    current_password = serializers.CharField(
+        write_only=True, trim_whitespace=False)
+    new_password = serializers.CharField(
+        write_only=True, trim_whitespace=False)
+
+    def validate_current_password(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError("Current password is incorrect.")
+        return value
+
+    def validate_new_password(self, value):
+        validate_password(value, user=self.context['request'].user)
+        return value
+
+    def validate(self, attrs):
+        if attrs['current_password'] == attrs['new_password']:
+            raise serializers.ValidationError(
+                {"new_password": "New password must be different from current password."}
+            )
+        return attrs
+
+    def save(self):
+        user = self.context['request'].user
+        user.set_password(self.validated_data['new_password'])
+        user.save()
+        return user
