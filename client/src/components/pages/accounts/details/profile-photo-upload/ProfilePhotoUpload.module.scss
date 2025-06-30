@@ -4,14 +4,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
+    gap: 1em;
 }
 
 .photo-wrapper {
     position: relative;
-    width: 10em;
-    height: 10em;
+    width: 8em;
+    height: 8em;
     border-radius: 50%;
     overflow: hidden;
     cursor: pointer;
