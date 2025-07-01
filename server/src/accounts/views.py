@@ -110,6 +110,9 @@ class UserLoginView(APIView):
                 # the refresh token has a property `access_token`
                 'access': str(refresh.access_token),
                 'message': 'Login successful',
+                'username': user.username,
+                'email': user.email,
+                'id': user.pk,
             },
             status=status.HTTP_200_OK,
         )

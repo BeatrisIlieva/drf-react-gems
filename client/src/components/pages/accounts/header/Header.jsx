@@ -3,6 +3,7 @@ import styles from './Header.module.scss';
 
 export const Header = () => {
     const { username } = useUserContext();
+
     return (
         <header className={styles['accounts-header']}>
             <div className={styles['overlay']}></div>
