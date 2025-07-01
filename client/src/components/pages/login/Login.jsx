@@ -54,6 +54,21 @@ export const Login = () => {
             };
         }
 
+        // Handle server-side field-specific errors
+        if (authData && typeof authData === 'object' && !authData.access) {
+            const hasFieldErrors = handleServerSideErrors(authData);
+            
+            // If no field-specific errors, show general error
+            if (!hasFieldErrors) {
+                setInvalidUsernameOrPassword(true);
+            }
+            
+            return {
+                success: false,
+                error: 'Login failed'
+            };
+        }
+
         return { success: false, error: 'Login failed' };
     };
 
@@ -68,7 +83,8 @@ export const Login = () => {
         handleFieldChange,
         getInputClassName,
         submitAction,
-        isSubmitting
+        isSubmitting,
+        handleServerSideErrors
     } = formProps;
 
     return (

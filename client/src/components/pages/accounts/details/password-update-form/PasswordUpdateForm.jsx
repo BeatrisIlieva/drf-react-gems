@@ -52,6 +52,11 @@ export const PasswordUpdateForm = ({ onSuccess }) => {
                 return { success: true };
             }
 
+            // Handle server-side errors
+            if (result && typeof result === 'object') {
+                handleServerSideErrors(result);
+            }
+
             return {
                 success: false,
                 error:
@@ -77,7 +82,8 @@ export const PasswordUpdateForm = ({ onSuccess }) => {
         handleFieldChange,
         getInputClassName,
         submitAction,
-        isSubmitting
+        isSubmitting,
+        handleServerSideErrors
     } = formProps;
 
     const handleNewPasswordChange = (e) => {

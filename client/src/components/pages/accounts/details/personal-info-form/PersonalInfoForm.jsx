@@ -62,6 +62,11 @@ export const PersonalInfoForm = () => {
                 return { success: true };
             }
 
+            // Handle server-side errors
+            if (result && typeof result === 'object') {
+                handleServerSideErrors(result);
+            }
+
             return {
                 success: false,
                 error: 'Failed to update personal information'
@@ -87,7 +92,7 @@ export const PersonalInfoForm = () => {
         getInputClassName,
         submitAction,
         isSubmitting,
-        setServerSideError,
+        handleServerSideErrors,
         updateFieldValue,
         validateFields,
         resetValidationStates
@@ -143,24 +148,9 @@ export const PersonalInfoForm = () => {
             !formProps.formState.success &&
             formProps.formState.data
         ) {
-            const personalInfoFields = [
-                'firstName',
-                'lastName',
-                'phoneNumber'
-            ];
-            personalInfoFields.forEach((key) => {
-                if (
-                    formProps.formState?.data &&
-                    typeof formProps.formState.data === 'object'
-                ) {
-                    setServerSideError(
-                        formProps.formState.data,
-                        key
-                    );
-                }
-            });
+            handleServerSideErrors(formProps.formState.data);
         }
-    }, [formProps.formState, setServerSideError]);
+    }, [formProps.formState, handleServerSideErrors]);
 
     // Handle successful form submission - reset validation states
     useEffect(() => {

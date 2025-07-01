@@ -55,13 +55,8 @@ export const Register = () => {
             typeof authData === 'object' &&
             !authData.access
         ) {
-            const serverData = authData;
-            Object.keys(initialFormValues).forEach((key) => {
-                if (serverData[key]) {
-                    setServerSideError(serverData, key);
-                }
-            });
-
+            handleServerSideErrors(authData);
+            
             return {
                 success: false,
                 error: 'Registration failed',
@@ -84,7 +79,7 @@ export const Register = () => {
         getInputClassName,
         submitAction,
         isSubmitting,
-        setServerSideError
+        handleServerSideErrors
     } = formProps;
 
     const navigateToLoginHandler = () => {
