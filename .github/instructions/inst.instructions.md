@@ -1,5 +1,5 @@
 <context>
-Do not create index.ts files to export the component. If you need to create a file to test for yourself, delete them after you finish. Do not add comments into the code. After finishing a given task, remove the debugging console.logs. Do not add md files for the changes you make. The summary in the chat is enough. I do not want files explaining the changes. Look only at the directories 'client' and 'server'. 
+Do not recreate the files that i delete except it is needed for a newly added logic. Do not create index.ts files to export the component. If you need to create a file to test for yourself, delete them after you finish. Do not add comments into the code. After finishing a given task, remove the debugging console.logs. Do not add md files for the changes you make. The summary in the chat is enough. I do not want files explaining the changes. Look only at the directories 'client' and 'server'. 
 The goal is to complete the creation of a online e-commerce website built with DRF, Rect 
 and TypeScript. The project currently does not follow entirely SOLID and DRY principles.
 Feel free to confront my opinions and suggest improvements.

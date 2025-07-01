@@ -31,7 +31,10 @@ class UserCredential(AbstractBaseUser, PermissionsMixin):
         default=False,
     )
 
+    objects = UserCredentialManager()
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
-    objects = UserCredentialManager()
+    def __str__(self):
+        return self.email

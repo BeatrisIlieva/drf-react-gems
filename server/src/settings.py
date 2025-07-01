@@ -107,7 +107,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'src.wsgi.application'
 
 AUTHENTICATION_BACKENDS = [
-    'src.accounts.authentication.EmailBackend',
+    'src.accounts.authentication.CustomAuthBackendBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 

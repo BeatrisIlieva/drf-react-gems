@@ -35,6 +35,8 @@ class UserDeleteView(DestroyAPIView):
 
 
 class UserRegisterView(CreateAPIView):
+    # uses signal to create related models
+    # like `UserProfile`, `UserAddress`, `UserPhoto`
     queryset = UserModel.objects.all()
     serializer_class = UserRegisterSerializer
     # because in `settings.py` we defined that by default
