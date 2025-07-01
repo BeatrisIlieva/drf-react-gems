@@ -1,0 +1,99 @@
+import { useEffect, useState } from 'react';
+import styles from './QuantitySelector.module.scss';
+import { Icon } from '../../../../../reusable/icon/Icon';
+import { useUpdateShoppingBag } from '../../../../../../api/shoppingBagApi';
+import { useShoppingBagContext } from '../../../../../../contexts/ShoppingBagContext';
+
+export const QuantitySelector = ({
+    quantity,
+    id,
+    objectId,
+    contentType,
+    availableQuantity
+}) => {
+    const { updateShoppingBag } = useUpdateShoppingBag();
+    const {
+        getShoppingBagItemsHandler,
+        updateShoppingBagCount,
+        updateShoppingBagTotalPrice
+    } = useShoppingBagContext();
+    const [isUpdating, setIsUpdating] = useState(false);
+    const [localQuantity, setLocalQuantity] = useState(quantity);
+
+    const totalAvailableQuantity =
+        typeof availableQuantity === 'string'
+            ? parseInt(availableQuantity, 10) + quantity
+            : availableQuantity + quantity;
+
+    useEffect(() => {
+        setLocalQuantity(quantity);
+    }, [quantity]);
+
+    const handleQuantityChange = async (newQuantity) => {
+        if (newQuantity === localQuantity) return;
+
+        setIsUpdating(true);
+        try {
+            await updateShoppingBag({
+                contentType,
+                objectId,
+                quantity: newQuantity,
+                id
+            });
+            setLocalQuantity(newQuantity);
+
+            getShoppingBagItemsHandler();
+            updateShoppingBagTotalPrice();
+        } catch (error) {
+            console.error('Error updating quantity:', error);
+
+            setLocalQuantity(quantity);
+        } finally {
+            setIsUpdating(false);
+        }
+    };
+
+    const incrementQuantity = () => {
+        handleQuantityChange(localQuantity + 1);
+    };
+
+    const decrementQuantity = () => {
+        if (localQuantity > 1) {
+            handleQuantityChange(localQuantity - 1);
+        } else {
+            handleQuantityChange(0);
+            // For item removal, we use a timeout to ensure the backend operation completes
+            setTimeout(() => {
+                getShoppingBagItemsHandler();
+                updateShoppingBagCount();
+                updateShoppingBagTotalPrice();
+            }, 300);
+        }
+    };
+
+    return (
+        <span className={styles['quantity-selector']}>
+            <button
+                onClick={decrementQuantity}
+                disabled={isUpdating}
+            >
+                <Icon name='minus' />
+            </button>
+            <span>{localQuantity}</span>
+            <button
+                onClick={incrementQuantity}
+                disabled={
+                    isUpdating ||
+                    localQuantity >= totalAvailableQuantity
+                }
+            >
+                <Icon name='plus' />
+            </button>
+            {isUpdating && (
+                <span className={styles['updating-indicator']}>
+                    Updating...
+                </span>
+            )}
+        </span>
+    );
+};

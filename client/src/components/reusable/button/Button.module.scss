@@ -1,0 +1,75 @@
+@use '../../../styles/variables' as vars;
+
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    padding: 0.75rem 2.25rem;
+    border-radius: 0.1rem;
+    flex-grow: 1;
+    font-weight: 500;
+    font-size: 1.1em;
+    transition:
+        opacity 0.3s ease-in-out,
+        background 0.3s ease-in-out,
+        text-shadow 0.6s ease-in-out;
+    text-transform: uppercase;
+    font-size: 0.9em;
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
+    &.black {
+        background: vars.$black;
+        color: vars.$white;
+        border: 0.1rem solid vars.$dark-grey;
+
+        &:hover {
+            opacity: 0.6;
+        }
+    }
+
+    &.grey {
+        background: #aaaaaa;
+        color: vars.$white;
+        border: 0.1rem solid #999999;
+        cursor: not-allowed;
+        opacity: 0.7;
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+
+    &.white {
+        background: vars.$white;
+        color: vars.$black;
+        border: 0.1rem solid vars.$black;
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 0.1em;
+            width: 100%;
+            background-color: vars.$dark-grey;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease-in-out;
+        }
+
+        &:hover {
+            color: vars.$dark-grey;
+
+            &::after {
+                transform: scaleX(1);
+            }
+        }
+    }
+}

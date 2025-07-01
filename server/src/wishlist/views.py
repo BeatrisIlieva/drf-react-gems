@@ -6,7 +6,6 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.views import APIView
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404
-from drf_spectacular.utils import extend_schema
 import uuid
 
 from src.wishlist.models import Wishlist
@@ -17,11 +16,6 @@ class WishlistListView(ListAPIView):
     serializer_class = WishlistSerializer
     permission_classes = [AllowAny]
     
-    @extend_schema(
-        tags=['Wishlist'],
-        summary='List wishlist items',
-        description='Get all wishlist items for authenticated user or guest user via Guest-Id header',
-    )
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
     
@@ -44,16 +38,6 @@ class WishlistCreateView(CreateAPIView):
     serializer_class = WishlistCreateSerializer
     permission_classes = [AllowAny]
     
-    @extend_schema(
-        tags=['Wishlist'],
-        summary='Add item to wishlist',
-        description='Add a product to wishlist for authenticated user or guest user via Guest-Id header',
-        request=WishlistCreateSerializer,
-        responses={
-            201: WishlistSerializer,
-            400: 'Bad Request - Item already in wishlist or invalid data',
-        }
-    )
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -125,15 +109,6 @@ class WishlistDeleteView(DestroyAPIView):
     permission_classes = [AllowAny]
     serializer_class = WishlistDeleteSerializer  # For documentation purposes only
     
-    @extend_schema(
-        tags=['Wishlist'],
-        summary='Remove item from wishlist',
-        description='Remove a specific product from wishlist using content_type and object_id, Guest-Id header for non-authenticated users',
-        responses={
-            204: 'Item removed successfully',
-            404: 'Item not found in wishlist',
-        }
-    )
     def delete(self, request, content_type, object_id, *args, **kwargs):
         # Get user and guest_id
         user = request.user if request.user.is_authenticated else None
@@ -189,14 +164,6 @@ class WishlistDeleteView(DestroyAPIView):
 class WishlistCountView(APIView):
     permission_classes = [AllowAny]
     
-    @extend_schema(
-        tags=['Wishlist'],
-        summary='Get wishlist count',
-        description='Get the number of items in wishlist for authenticated user or guest user via Guest-Id header',
-        responses={
-            200: {'type': 'object', 'properties': {'count': {'type': 'integer'}}},
-        }
-    )
     def get(self, request, *args, **kwargs):
         # Get user and guest_id
         user = request.user if request.user.is_authenticated else None

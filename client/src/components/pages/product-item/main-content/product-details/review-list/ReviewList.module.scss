@@ -1,0 +1,60 @@
+@use '../../../../../../styles/variables' as vars;
+
+.reviews {
+    padding-left: vars.$layout-inline-padding;
+    padding-top: vars.$layout-inline-padding;
+
+    > ul {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 2.5em;
+        justify-content: space-between;
+
+        > li {
+            flex: 0 0 45%;
+        }
+    }
+
+    .wrapper-top {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 0.06em;
+            left: 0;
+            bottom: -1em;
+            background: var(--medium-grey);
+        }
+
+        h3 {
+            margin-bottom: 0.5em;
+            font-size: 1.6em;
+        }
+
+        > div {
+            display: flex;
+            flex-direction: column;
+
+            > div {
+                display: flex;
+                gap: 0.25em;
+                align-items: center;
+                margin-bottom: 0.5em;
+
+                span {
+                    font-size: 2em;
+                    font-weight: 500;
+                    line-height: 1;
+                }
+            }
+
+            p {
+                opacity: 0.5;
+            }
+        }
+    }
+}

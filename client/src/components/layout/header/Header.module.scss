@@ -1,0 +1,34 @@
+@use '../../../styles/variables' as vars;
+@use '../../../styles/animations' as anim;
+
+.sentinel {
+    height: 0.1em;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    padding-inline: vars.$layout-inline-padding;
+    font-size: 0.9em;
+    letter-spacing: 0.1em;
+    padding-block: 1.25em;
+    transition: transform 0.3s ease-in-out;
+    background: vars.$white;
+    @include anim.animate-fade-in(1s);
+
+    &.sticky {
+        border-bottom: 0.1em solid vars.$medium-grey;
+    }
+}
+
+.hidden {
+    transform: translateY(-100%) !important;
+}
+
+.visible {
+    transform: translateY(0) !important;
+}

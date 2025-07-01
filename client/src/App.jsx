@@ -1,35 +1,105 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Route, Routes, Navigate } from 'react-router';
+
+import { ShoppingBagProvider } from './providers/ShoppingBagProvider';
+import { WishlistProvider } from './providers/WishlistProvider';
+import { UserProvider } from './providers/UserProvider';
+import { ProductFiltersProvider } from './providers/ProductFiltersProvider';
+import { ProductListProvider } from './providers/ProductListProvider';
+import { ProductItemProvider } from './providers/ProductItemProvider';
+
+import { AuthGuard } from './guards/AuthGuard';
+
+import { Header } from './components/layout/header/Header';
+import { ScrollToTop } from './components/layout/scroll-to-top/ScrollToTop';
+import { Footer } from './components/layout/footer/Footer';
+import { Home } from './components/pages/home/Home';
+import { ProductList } from './components/pages/product-list/ProductList';
+import { ProductItem } from './components/pages/product-item/ProductItem';
+import { ShoppingBag } from './components/pages/shopping-bag/ShoppingBag';
+import { Register } from './components/pages/register/Register';
+import { Login } from './components/pages/login/Login';
+import { Details } from './components/pages/accounts/details/Details';
+import { Orders } from './components/pages/accounts/orders/Orders';
+import { Accounts } from './components/pages/accounts/Accounts';
+
+import styles from './App.module.scss';
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    return (
+        <div className={styles['app']}>
+            <UserProvider>
+                <WishlistProvider>
+                    <ShoppingBagProvider>
+                        <Header />
+                        <main className={styles['main']}>
+                            <Routes>
+                                <Route
+                                    path='/'
+                                    element={<Home />}
+                                />
+                                <Route
+                                    path='/my-account/register'
+                                    element={<Register />}
+                                />
+                                <Route
+                                    path='/my-account/login'
+                                    element={<Login />}
+                                />
+                                <Route
+                                    path='/products/:categoryName'
+                                    element={
+                                        <ProductFiltersProvider>
+                                            <ProductListProvider>
+                                                <ProductList />
+                                            </ProductListProvider>
+                                        </ProductFiltersProvider>
+                                    }
+                                />
+                                <Route
+                                    path='/products/:categoryName/:productId'
+                                    element={
+                                        <ProductItemProvider>
+                                            <ProductItem />
+                                        </ProductItemProvider>
+                                    }
+                                />
+                                <Route
+                                    path='/user/shopping-bag'
+                                    element={<ShoppingBag />}
+                                />
+                                <Route element={<AuthGuard />}>
+                                    <Route
+                                        path='/my-account'
+                                        element={<Accounts />}
+                                    >
+                                        <Route
+                                            index
+                                            element={
+                                                <Navigate
+                                                    to='details'
+                                                    replace
+                                                />
+                                            }
+                                        />
+                                        <Route
+                                            path='details'
+                                            element={<Details />}
+                                        />
+                                        <Route
+                                            path='orders'
+                                            element={<Orders />}
+                                        />
+                                    </Route>
+                                </Route>
+                            </Routes>
+                        </main>
+                    </ShoppingBagProvider>
+                    <ScrollToTop />
+                    <Footer />
+                </WishlistProvider>
+            </UserProvider>
+        </div>
+    );
 }
 
-export default App
+export default App;

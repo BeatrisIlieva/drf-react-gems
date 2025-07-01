@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model, authenticate
 from rest_framework.generics import CreateAPIView, DestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from drf_spectacular.utils import extend_schema
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -69,16 +69,6 @@ class UserRegisterView(CreateAPIView):
         )
 
 
-@extend_schema(
-    tags=['Authentication'],
-    summary='Login endpoint',
-    description='Authenticate user and get back access and refresh tokens',
-    request=UserLoginRequestSerializer,
-    responses={
-        200: UserLoginResponseSerializer,
-        401: 'Invalid username or password'
-    }
-)
 class UserLoginView(APIView):
     permission_classes = [AllowAny]
 
@@ -125,16 +115,6 @@ class UserLoginView(APIView):
         )
 
 
-@extend_schema(
-    tags=['Authentication'],
-    summary='Logout endpoint',
-    description='Blacklist the refresh token',
-    request=UserLogoutRequestSerializer,
-    responses={
-        200: UserLogoutRequestSerializer,
-        401: 'Invalid or expired token'
-    }
-)
 class UserLogoutView(APIView):
     # upon logout we need to blacklist the token so it can be no longer used
     def post(self, request, *args, **kwargs):
@@ -200,15 +180,6 @@ class PhotoUploadView(APIView):
             return Response({"detail": "Photo not found."}, status=status.HTTP_404_NOT_FOUND)
 
 
-@extend_schema(
-    tags=['User Profile'],
-    summary='User Profile endpoint',
-    description='Get and update user profile information',
-    responses={
-        200: UserProfileSerializer,
-        404: 'Profile not found'
-    }
-)
 class UserProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -246,14 +217,6 @@ class UserProfileView(APIView):
 class PasswordChangeView(APIView):
     permission_classes = [IsAuthenticated]
 
-    @extend_schema(
-        request=PasswordChangeSerializer,
-        responses={
-            200: {"description": "Password changed successfully"},
-            400: {"description": "Bad request - validation errors"},
-        },
-        description="Change user password"
-    )
     def patch(self, request):
         """
         Change user password

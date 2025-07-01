@@ -1,0 +1,14 @@
+@use './styles/variables' as vars;
+
+body {
+    min-height: 100dvh;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+}
+
+.main {
+    flex-grow: 1;
+}

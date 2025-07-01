@@ -1,0 +1,51 @@
+@use '../../../styles/variables' as vars;
+
+.footer {
+    background: vars.$black;
+    color: vars.$white;
+    display: flex;
+    flex-direction: column;
+    padding-block: 2em;
+    align-items: center;
+    justify-content: center;
+
+    h5 {
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 1.25em;
+    }
+
+    a {
+        text-decoration: none;
+        color: var(--white);
+    }
+
+    a,
+    span {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+    }
+
+    .wrapper {
+        display: flex;
+        gap: 1em;
+        margin-bottom: 2em;
+
+        .thumbnail {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            aspect-ratio: 1/1;
+            background-color: var(--dark-grey);
+            width: 2.5em;
+            border-radius: 0.1em;
+        }
+
+        .icon {
+            font-size: 1.8em;
+            justify-self: center;
+            align-self: center;
+        }
+    }
+}

@@ -1,0 +1,35 @@
+@use '../../../../../styles/variables' as vars;
+
+.sort-by {
+    position: relative;
+
+    & > span {
+        cursor: pointer;
+    }
+
+    .menu {
+        position: absolute;
+        z-index: 20;
+        top: 2.5em;
+        right: 0;
+        width: fit-content;
+        background: vars.$white;
+        padding: 1.5em;
+        padding-right: 3.5em;
+        box-shadow: 0 0 0.6em 0 rgb(0, 0, 0, 0.3);
+        white-space: nowrap;
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+        font-weight: 500;
+
+        & button {
+            opacity: 0.7;
+        }
+
+        & button:hover,
+        & button.selected {
+            opacity: 1;
+        }
+    }
+}
