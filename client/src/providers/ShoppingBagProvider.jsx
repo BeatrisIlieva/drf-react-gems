@@ -1,20 +1,13 @@
 import { useCallback, useMemo, useState } from 'react';
-import {
-    useDeleteShoppingBag,
-    useGetShoppingBagCount,
-    useGetShoppingBagItems,
-    useGetShoppingBagTotalPrice
-} from '../api/shoppingBagApi';
+import { useShoppingBag } from '../api/shoppingBagApi';
 import { ShoppingBagContext } from '../contexts/ShoppingBagContext';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../hooks/auth/useAuth';
 
 export const ShoppingBagProvider = ({ children }) => {
-    const { getShoppingBagItems } = useGetShoppingBagItems();
-    const { getShoppingBagCount } = useGetShoppingBagCount();
-    const { getShoppingBagTotalPrice } =
-        useGetShoppingBagTotalPrice();
-    const { deleteShoppingBag } = useDeleteShoppingBag();
+    const { deleteItem, getItems, getCount, getTotalPrice } =
+        useShoppingBag();
+
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
     const [isDeleting, setIsDeleting] = useState(false);
@@ -29,7 +22,7 @@ export const ShoppingBagProvider = ({ children }) => {
     const getShoppingBagItemsHandler = useCallback(async () => {
         setIsLoading(true);
         try {
-            const response = await getShoppingBagItems();
+            const response = await getItems();
             if (response) {
                 setShoppingBagItems(response);
             }
@@ -41,11 +34,11 @@ export const ShoppingBagProvider = ({ children }) => {
         } finally {
             setIsLoading(false);
         }
-    }, [getShoppingBagItems]);
+    }, [getItems]);
 
     const updateShoppingBagCount = useCallback(async () => {
         try {
-            const response = await getShoppingBagCount();
+            const response = await getCount();
             if (response) {
                 setShoppingBagItemsCount(response.count);
             }
@@ -55,11 +48,11 @@ export const ShoppingBagProvider = ({ children }) => {
                 err instanceof Error ? err.message : String(err)
             );
         }
-    }, [getShoppingBagCount]);
+    }, [getCount]);
 
     const updateShoppingBagTotalPrice = useCallback(async () => {
         try {
-            const response = await getShoppingBagTotalPrice();
+            const response = await getTotalPrice();
             if (response) {
                 setShoppingBagTotalPrice(response.totalPrice);
             }
@@ -69,13 +62,13 @@ export const ShoppingBagProvider = ({ children }) => {
                 err instanceof Error ? err.message : String(err)
             );
         }
-    }, [getShoppingBagTotalPrice]);
+    }, [getTotalPrice]);
 
     const deleteShoppingBagHandler = useCallback(
         async (id) => {
             setIsDeleting(true);
             try {
-                await deleteShoppingBag(id);
+                await deleteItem(id);
 
                 // Immediately update local state to reflect the deletion
                 const updatedItems = shoppingBagItems.filter(
@@ -104,22 +97,20 @@ export const ShoppingBagProvider = ({ children }) => {
 
                 // Also fetch the latest data from the server to ensure consistency
                 Promise.all([
-                    getShoppingBagCount().then((response) => {
+                    getCount().then((response) => {
                         if (response) {
                             setShoppingBagItemsCount(
                                 response.count
                             );
                         }
                     }),
-                    getShoppingBagTotalPrice().then(
-                        (response) => {
-                            if (response) {
-                                setShoppingBagTotalPrice(
-                                    response.totalPrice
-                                );
-                            }
+                    getTotalPrice().then((response) => {
+                        if (response) {
+                            setShoppingBagTotalPrice(
+                                response.totalPrice
+                            );
                         }
-                    )
+                    })
                 ]).catch((err) => {
                     console.error(
                         'Error updating shopping bag data after deletion:',
@@ -143,10 +134,10 @@ export const ShoppingBagProvider = ({ children }) => {
             }
         },
         [
-            deleteShoppingBag,
-            getShoppingBagCount,
+            deleteItem,
+            getCount,
             getShoppingBagItemsHandler,
-            getShoppingBagTotalPrice,
+            getTotalPrice,
             shoppingBagItems
         ]
     );
@@ -193,5 +184,3 @@ export const ShoppingBagProvider = ({ children }) => {
         </ShoppingBagContext.Provider>
     );
 };
-
-export default ShoppingBagProvider;

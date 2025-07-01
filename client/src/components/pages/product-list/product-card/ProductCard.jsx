@@ -44,6 +44,7 @@ export const ProductCard = ({
                 await removeFromWishlist(category, id);
             } else {
                 await addToWishlist(category, id);
+                console.log('added')
             }
         }
     }, [

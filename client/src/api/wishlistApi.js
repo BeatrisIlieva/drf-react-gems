@@ -6,11 +6,11 @@ import { useAuth } from '../hooks/auth/useAuth';
 
 const baseUrl = `${HOST}/wishlist`;
 
-export const useWishlistApi = () => {
+export const useWishlist = () => {
     const { get, post, del } = useApi();
     const { isAuthenticated } = useAuth();
 
-    const getWishlist = useCallback(async () => {
+    const getItems = useCallback(async () => {
         try {
             const result = await get(`${baseUrl}/`, {
                 accessRequired: isAuthenticated,
@@ -23,7 +23,7 @@ export const useWishlistApi = () => {
         }
     }, [get, isAuthenticated]);
 
-    const addToWishlist = useCallback(
+    const createItem = useCallback(
         async (data) => {
             try {
                 const result = await post(`${baseUrl}/add/`, {
@@ -40,7 +40,7 @@ export const useWishlistApi = () => {
         [post, isAuthenticated]
     );
 
-    const removeFromWishlist = useCallback(
+    const deleteItem = useCallback(
         async (params) => {
             try {
                 await del(
@@ -62,7 +62,7 @@ export const useWishlistApi = () => {
         [del, isAuthenticated]
     );
 
-    const getWishlistCount = useCallback(async () => {
+    const getCount = useCallback(async () => {
         try {
             const result = await get(`${baseUrl}/count/`, {
                 accessRequired: isAuthenticated,
@@ -79,9 +79,9 @@ export const useWishlistApi = () => {
     }, [get, isAuthenticated]);
 
     return {
-        getWishlist,
-        addToWishlist,
-        removeFromWishlist,
-        getWishlistCount
+        getItems,
+        createItem,
+        deleteItem,
+        getCount
     };
 };

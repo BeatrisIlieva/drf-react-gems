@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import styles from './QuantitySelector.module.scss';
 import { Icon } from '../../../../../reusable/icon/Icon';
-import { useUpdateShoppingBag } from '../../../../../../api/shoppingBagApi';
+
 import { useShoppingBagContext } from '../../../../../../contexts/ShoppingBagContext';
+import { useShoppingBag } from '../../../../../../api/shoppingBagApi';
 
 export const QuantitySelector = ({
     quantity,
@@ -11,7 +12,7 @@ export const QuantitySelector = ({
     contentType,
     availableQuantity
 }) => {
-    const { updateShoppingBag } = useUpdateShoppingBag();
+    const { updateItem } = useShoppingBag();
     const {
         getShoppingBagItemsHandler,
         updateShoppingBagCount,
@@ -34,7 +35,7 @@ export const QuantitySelector = ({
 
         setIsUpdating(true);
         try {
-            await updateShoppingBag({
+            await updateItem({
                 contentType,
                 objectId,
                 quantity: newQuantity,

@@ -3,6 +3,7 @@ import { usePhotoManager } from '../../../../hooks/usePhotoManager';
 import { PersonalInfoForm } from './personal-info-form/PersonalInfoForm';
 import { LoginInformation } from './login-information/LoginInformation';
 import styles from './Details.module.scss';
+import { DeliveryInformation } from './delivery-information/DeliveryInformation';
 
 export const Details = () => {
     const { currentPhoto, isUploading, uploadPhoto } =
@@ -22,6 +23,7 @@ export const Details = () => {
             <h2>Account Details</h2>
             <PersonalInfoForm />
             <LoginInformation />
+            <DeliveryInformation />
         </section>
     );
 };

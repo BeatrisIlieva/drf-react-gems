@@ -12,7 +12,7 @@ export const Buttons = () => {
     const { isAuthenticated } = useAuth();
     const { shoppingBagItemsCount, updateShoppingBagCount } =
         useShoppingBagContext();
-    const { wishlistCount, updateWishlistCount } = useWishlistContext();
+    const { wishlistItemsCount, updateWishlistCount } = useWishlistContext();
 
     useEffect(() => {
         updateShoppingBagCount();
@@ -41,9 +41,9 @@ export const Buttons = () => {
 
             <li>
                 <Icon name={'heart'} />
-                {wishlistCount > 0 && (
+                {wishlistItemsCount > 0 && (
                     <span>
-                        <span>{wishlistCount}</span>
+                        <span>{wishlistItemsCount}</span>
                     </span>
                 )}
             </li>

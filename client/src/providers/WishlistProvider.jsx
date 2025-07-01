@@ -1,107 +1,129 @@
-import { useMemo,  useState, useEffect, useCallback, useContext } from "react";
-import { WishlistContext} from "../contexts/WishlistContext";
-import { useWishlistApi } from "../api/wishlistApi";
-import { UserContext } from "../contexts/UserContext";
-
+import {
+    useMemo,
+    useState,
+    useEffect,
+    useCallback,
+    useContext
+} from 'react';
+import { WishlistContext } from '../contexts/WishlistContext';
+import { UserContext } from '../contexts/UserContext';
+import { useWishlist } from '../api/wishlistApi';
 
 export const WishlistProvider = ({ children }) => {
     const [wishlistItems, setWishlistItems] = useState([]);
+    const [wishlistItemsCount, setWishlistItemsCount] =
+        useState(0);
     const [isLoading, setIsLoading] = useState(false);
-    
-    const { getWishlist, addToWishlist: apiAddToWishlist, removeFromWishlist: apiRemoveFromWishlist } = useWishlistApi();
+
+    const { getItems, createItem, deleteItem, getCount } =
+        useWishlist();
     const { id: userId } = useContext(UserContext);
 
-    const refreshWishlist = useCallback(async () => {
-        setIsLoading(true);
-        try {
-            const response = await getWishlist();
-            if (response && Array.isArray(response)) {
-                setWishlistItems(response);
-            }
-        } catch (error) {
-            console.error('Failed to refresh wishlist:', error);
-        } finally {
-            setIsLoading(false);
-        }
-        // Only include userId as dependency to avoid recreating this function unnecessarily
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userId]);
+    const addToWishlist = useCallback(
+        async (contentType, objectId) => {
+            try {
+                const requestData = {
+                    content_type: contentType,
+                    object_id: objectId
+                };
 
-    const addToWishlist = useCallback(async (contentType, objectId) => {
-        try {
-            const requestData = {
-                content_type: contentType,
-                object_id: objectId
-            };
-
-            const newItem = await apiAddToWishlist(requestData);
-            if (newItem) {
-                setWishlistItems(prev => [...prev, newItem]);
-                return true;
-            }
-            return false;
-        } catch (error) {
-            console.error('Failed to add to wishlist:', error);
-            return false;
-        }
-        // Only include userId as dependency to avoid recreating this function unnecessarily
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userId]);
-
-    const removeFromWishlist = useCallback(async (contentType, objectId) => {
-        try {
-            const success = await apiRemoveFromWishlist({
-                content_type: contentType,
-                object_id: objectId
-            });
-
-            if (success) {
-                setWishlistItems(prev => 
-                    prev.filter(item => 
-                        !(item.content_type === contentType && item.object_id === objectId)
-                    )
+                const newItem = await createItem(requestData);
+                if (newItem) {
+                    setWishlistItems((prev) => [
+                        ...prev,
+                        newItem
+                    ]);
+                    return true;
+                }
+                return false;
+            } catch (error) {
+                console.error(
+                    'Failed to add to wishlist:',
+                    error
                 );
-                return true;
+                return false;
             }
-            return false;
-        } catch (error) {
-            console.error('Failed to remove from wishlist:', error);
-            return false;
-        }
-        // Only include userId as dependency to avoid recreating this function unnecessarily
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userId]);
+        },
+        [userId]
+    );
 
-    const isInWishlist = useCallback((contentType, objectId) => {
-        return wishlistItems.some(item => 
-            item.content_type === contentType && item.object_id === objectId
-        );
-    }, [wishlistItems]);
+    const removeFromWishlist = useCallback(
+        async (contentType, objectId) => {
+            try {
+                const success = await deleteItem({
+                    content_type: contentType,
+                    object_id: objectId
+                });
 
-    const wishlistCount = useMemo(() => wishlistItems.length, [wishlistItems]);
+                if (success) {
+                    setWishlistItems((prev) =>
+                        prev.filter(
+                            (item) =>
+                                !(
+                                    item.content_type ===
+                                        contentType &&
+                                    item.object_id === objectId
+                                )
+                        )
+                    );
+                    return true;
+                }
+                return false;
+            } catch (error) {
+                console.error(
+                    'Failed to remove from wishlist:',
+                    error
+                );
+                return false;
+            }
+        },
+        [userId]
+    );
+
+    const isInWishlist = useCallback(
+        (contentType, objectId) => {
+            return wishlistItems.some(
+                (item) =>
+                    item.content_type === contentType &&
+                    item.object_id === objectId
+            );
+        },
+        [wishlistItems]
+    );
 
     const updateWishlistCount = useCallback(async () => {
-        // Since count is derived from wishlistItems.length, 
-        // we just need to refresh the items
-        await refreshWishlist();
-    }, [refreshWishlist]);
+        try {
+            const response = await getCount();
+            if (response) {
+                setWishlistItemsCount(response.count);
+            }
+        } catch (err) {
+            console.error(
+                'Error updating shopping bag count:',
+                err instanceof Error ? err.message : String(err)
+            );
+        }
+    }, [getCount]);
 
     // Load wishlist on mount and when authentication state changes
     useEffect(() => {
         const loadWishlist = async () => {
             setIsLoading(true);
             try {
-                const response = await getWishlist();
+                const response = await getItems();
                 if (response && Array.isArray(response)) {
                     setWishlistItems(response);
                 }
             } catch (error) {
-                console.error('Failed to refresh wishlist:', error);
+                console.error(
+                    'Failed to refresh wishlist:',
+                    error
+                );
             } finally {
                 setIsLoading(false);
             }
         };
-        
+
         loadWishlist();
         // Only depend on userId (stable) instead of the entire getWishlist function
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -110,15 +132,22 @@ export const WishlistProvider = ({ children }) => {
     const contextValue = useMemo(
         () => ({
             wishlistItems,
-            wishlistCount,
+            wishlistItemsCount,
             isLoading,
             addToWishlist,
             removeFromWishlist,
             isInWishlist,
-            refreshWishlist,
             updateWishlistCount
-        }), 
-        [wishlistItems, wishlistCount, isLoading, addToWishlist, removeFromWishlist, isInWishlist, refreshWishlist, updateWishlistCount]
+        }),
+        [
+            wishlistItems,
+            wishlistItemsCount,
+            isLoading,
+            addToWishlist,
+            removeFromWishlist,
+            isInWishlist,
+            updateWishlistCount
+        ]
     );
 
     return (
@@ -127,5 +156,3 @@ export const WishlistProvider = ({ children }) => {
         </WishlistContext.Provider>
     );
 };
-
-

@@ -1,19 +1,21 @@
 import { useCallback } from 'react';
 import { useApi } from '../hooks/useApi';
-
 import { useShoppingBagContext } from '../contexts/ShoppingBagContext';
-
 import { keysToCamelCase } from '../utils/convertToCamelCase';
 import { useAuth } from '../hooks/auth/useAuth';
 
 const baseUrl = 'http://localhost:8000/shopping-bags/';
 
-export const useCreateShoppingBag = () => {
-    const { post } = useApi();
+export const useShoppingBag = () => {
+    const { get, post, put, del } = useApi();
     const { isAuthenticated } = useAuth();
-    const { updateShoppingBagCount } = useShoppingBagContext();
+    const {
+        updateShoppingBagCount,
+        updateShoppingBagTotalPrice
+    } = useShoppingBagContext();
 
-    const createShoppingBag = useCallback(
+    // Create shopping bag item
+    const createItem = useCallback(
         async ({ contentType, objectId, quantity }) => {
             const data = {
                 content_type: contentType,
@@ -32,7 +34,7 @@ export const useCreateShoppingBag = () => {
                 return keysToCamelCase(response);
             } catch (err) {
                 console.error(
-                    'Error in createShoppingBag:',
+                    'Error in createItem:',
                     err.message
                 );
                 throw err;
@@ -41,22 +43,43 @@ export const useCreateShoppingBag = () => {
         [post, isAuthenticated, updateShoppingBagCount]
     );
 
-    return { createShoppingBag };
-};
+    // Delete shopping bag item
+    const deleteItem = useCallback(
+        async (bagItemId) => {
+            try {
+                await del(`${baseUrl}${bagItemId}/`, {
+                    accessRequired: isAuthenticated,
+                    refreshRequired: isAuthenticated
+                });
 
-export const useUpdateShoppingBag = () => {
-    const { put } = useApi();
-    const { isAuthenticated } = useAuth();
-    const {
-        updateShoppingBagCount,
-        updateShoppingBagTotalPrice
-    } = useShoppingBagContext();
-    const { deleteShoppingBag } = useDeleteShoppingBag();
+                // Update context after successful deletion
+                updateShoppingBagCount();
+                updateShoppingBagTotalPrice();
 
-    const updateShoppingBag = useCallback(
+                return;
+            } catch (err) {
+                console.error(
+                    'Error in deleteItem:',
+                    err instanceof Error
+                        ? err.message
+                        : String(err)
+                );
+                throw err;
+            }
+        },
+        [
+            del,
+            isAuthenticated,
+            updateShoppingBagCount,
+            updateShoppingBagTotalPrice
+        ]
+    );
+
+    // Update shopping bag item
+    const updateItem = useCallback(
         async ({ contentType, objectId, quantity, id }) => {
             if (quantity <= 0) {
-                await deleteShoppingBag(id);
+                await deleteItem(id);
                 return { success: true };
             }
 
@@ -90,7 +113,7 @@ export const useUpdateShoppingBag = () => {
                 }
 
                 console.error(
-                    'Error in updateShoppingBag:',
+                    'Error in updateItem:',
                     err.message
                 );
                 throw err;
@@ -100,51 +123,13 @@ export const useUpdateShoppingBag = () => {
             put,
             isAuthenticated,
             updateShoppingBagCount,
-            deleteShoppingBag,
-            updateShoppingBagTotalPrice
+            updateShoppingBagTotalPrice,
+            deleteItem
         ]
     );
 
-    return { updateShoppingBag };
-};
-
-export const useDeleteShoppingBag = () => {
-    const { del } = useApi();
-    const { isAuthenticated } = useAuth();
-
-    const deleteShoppingBag = useCallback(
-        async (bagItemId) => {
-            try {
-                // DELETE requests typically return null/undefined for successful deletions
-                await del(`${baseUrl}${bagItemId}/`, {
-                    accessRequired: isAuthenticated,
-                    refreshRequired: isAuthenticated
-                });
-
-                // For delete operations, we don't need to return anything
-                // The success is indicated by not throwing an error
-                return;
-            } catch (err) {
-                console.error(
-                    'Error in deleteShoppingBag:',
-                    err instanceof Error
-                        ? err.message
-                        : String(err)
-                );
-                throw err;
-            }
-        },
-        [del, isAuthenticated]
-    );
-
-    return { deleteShoppingBag };
-};
-
-export const useGetShoppingBagItems = () => {
-    const { get } = useApi();
-    const { isAuthenticated } = useAuth();
-
-    const getShoppingBagItems = useCallback(async () => {
+    // Get all shopping bag items
+    const getItems = useCallback(async () => {
         try {
             const response = await get(baseUrl, {
                 accessRequired: isAuthenticated,
@@ -158,16 +143,8 @@ export const useGetShoppingBagItems = () => {
         }
     }, [get, isAuthenticated]);
 
-    return {
-        getShoppingBagItems
-    };
-};
-
-export const useGetShoppingBagCount = () => {
-    const { get } = useApi();
-    const { isAuthenticated } = useAuth();
-
-    const getShoppingBagCount = useCallback(async () => {
+    // Get shopping bag count
+    const getCount = useCallback(async () => {
         try {
             const response = await get(`${baseUrl}count/`, {
                 accessRequired: isAuthenticated,
@@ -181,16 +158,8 @@ export const useGetShoppingBagCount = () => {
         }
     }, [get, isAuthenticated]);
 
-    return {
-        getShoppingBagCount
-    };
-};
-
-export const useGetShoppingBagTotalPrice = () => {
-    const { get } = useApi();
-    const { isAuthenticated } = useAuth();
-
-    const getShoppingBagTotalPrice = useCallback(async () => {
+    // Get shopping bag total price
+    const getTotalPrice = useCallback(async () => {
         try {
             const response = await get(`${baseUrl}total-price/`, {
                 accessRequired: isAuthenticated,
@@ -205,6 +174,11 @@ export const useGetShoppingBagTotalPrice = () => {
     }, [get, isAuthenticated]);
 
     return {
-        getShoppingBagTotalPrice
+        createItem,
+        updateItem,
+        deleteItem,
+        getItems,
+        getCount,
+        getTotalPrice
     };
 };

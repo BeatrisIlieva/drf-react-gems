@@ -7,7 +7,6 @@ export const WishlistContext = createContext({
     addToWishlist: async () => false,
     removeFromWishlist: async () => false,
     isInWishlist: () => false,
-    refreshWishlist: async () => {},
     updateWishlistCount: async () => {}
 });
 

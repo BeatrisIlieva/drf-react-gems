@@ -8,13 +8,13 @@ import {
     useContext
 } from 'react';
 import { ProductItemContext } from '../contexts/ProductItemContext';
-import { useCreateShoppingBag } from '../api/shoppingBagApi';
+import { useShoppingBag } from '../api/shoppingBagApi';
 import { WishlistContext } from '../contexts/WishlistContext';
 
 export const ProductItemProvider = ({ children }) => {
     const { getProductItem } = useProductItem();
     const { categoryName, productId } = useParams();
-    const { createShoppingBag } = useCreateShoppingBag();
+    const { createItem } = useShoppingBag();
     const { addToWishlist, removeFromWishlist, isInWishlist } =
         useContext(WishlistContext);
 
@@ -54,7 +54,7 @@ export const ProductItemProvider = ({ children }) => {
 
         setAddToCartError(null);
         try {
-            await createShoppingBag(selectedInventory);
+            await createItem(selectedInventory);
 
             // Update local inventory data instead of refetching everything
             if (product && selectedInventory) {
@@ -128,7 +128,7 @@ export const ProductItemProvider = ({ children }) => {
         }
     }, [
         selectedSize,
-        createShoppingBag,
+        createItem,
         selectedInventory,
         product,
         getProductItemHandler
