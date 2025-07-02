@@ -4,8 +4,8 @@ import { useApi } from '../../hooks/useApi';
 import { useAuth } from '../../hooks/auth/useAuth';
 import { HOST } from '../../constants/host';
 
-const profileBaseUrl = `${HOST}/accounts/profile`;
-const passwordBaseUrl = `${HOST}/accounts/change-password`;
+const profileBaseUrl = `${HOST}/api/accounts/profile`;
+const passwordBaseUrl = `${HOST}/api/accounts/change-password`;
 
 export const useProfile = () => {
     const profileApi = useBaseApi(profileBaseUrl, { requireAuth: true });

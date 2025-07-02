@@ -4,7 +4,7 @@ import { keysToCamelCase } from '../../utils/convertToCamelCase';
 
 import { HOST } from '../../constants/host';
 
-const baseUrl = `${HOST}/products`;
+const baseUrl = `${HOST}/api/products`;
 
 export const useProductList = () => {
     const { get } = useApi();

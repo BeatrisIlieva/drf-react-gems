@@ -2,6 +2,8 @@ import { useCallback } from 'react';
 import { useApi } from '../../hooks/useApi';
 import { HOST } from '../../constants/host';
 import { useAuth } from '../../hooks/auth/useAuth';
+import { keysToCamelCase } from '../../utils/convertToCamelCase';
+import { keysToSnakeCase } from '../../utils/convertToSnakeCase';
 
 const baseUrl = `${HOST}/api/accounts/address`;
 
@@ -15,7 +17,7 @@ export const useUserAddress = () => {
                 accessRequired: isAuthenticated,
                 refreshRequired: isAuthenticated
             });
-            return result;
+            return result ? keysToCamelCase(result) : undefined;
         } catch {
             return undefined;
         }
@@ -23,12 +25,13 @@ export const useUserAddress = () => {
 
     const updateUserAddress = useCallback(async (addressData) => {
         try {
+            const snakeCaseData = keysToSnakeCase(addressData);
             const result = await patch(`${baseUrl}/`, {
-                data: addressData,
+                data: snakeCaseData,
                 accessRequired: isAuthenticated,
                 refreshRequired: isAuthenticated
             });
-            return result;
+            return result ? keysToCamelCase(result) : undefined;
         } catch {
             return undefined;
         }
@@ -52,7 +55,7 @@ export const useUserAddress = () => {
                 accessRequired: isAuthenticated,
                 refreshRequired: isAuthenticated
             });
-            return result;
+            return result ? keysToCamelCase(result) : [];
         } catch {
             return [];
         }
@@ -65,7 +68,7 @@ export const useUserAddress = () => {
                 accessRequired: isAuthenticated,
                 refreshRequired: isAuthenticated
             });
-            return result;
+            return result ? keysToCamelCase(result) : [];
         } catch {
             return [];
         }
@@ -78,7 +81,7 @@ export const useUserAddress = () => {
                 accessRequired: isAuthenticated,
                 refreshRequired: isAuthenticated
             });
-            return result;
+            return result ? keysToCamelCase(result) : [];
         } catch {
             return [];
         }
@@ -91,7 +94,7 @@ export const useUserAddress = () => {
                 accessRequired: isAuthenticated,
                 refreshRequired: isAuthenticated
             });
-            return result;
+            return result ? keysToCamelCase(result) : [];
         } catch {
             return [];
         }

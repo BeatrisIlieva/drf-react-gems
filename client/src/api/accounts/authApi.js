@@ -6,7 +6,7 @@ import { usePhoto } from './usePhotoApi';
 import { useProfile } from './useProfileApi';
 import { HOST } from '../../constants/host';
 
-const baseUrl = `${HOST}/accounts`;
+const baseUrl = `${HOST}/api/accounts`;
 
 export const useAuthentication = () => {
     const { post, del } = useApi();

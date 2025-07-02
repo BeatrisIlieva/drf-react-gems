@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useBaseApi } from '../../hooks/useBaseApi';
 import { HOST } from '../../constants/host';
 
-const baseUrl = `${HOST}/accounts/photo`;
+const baseUrl = `${HOST}/api/accounts/photo`;
 
 export const usePhoto = () => {
     const { get, patch } = useBaseApi(baseUrl, {

@@ -5,7 +5,7 @@ import { keysToCamelCase } from '../utils/convertToCamelCase';
 import { useAuth } from '../hooks/auth/useAuth';
 import { HOST } from '../constants/host';
 
-const baseUrl = `${HOST}/shopping-bags`;
+const baseUrl = `${HOST}/api/shopping-bags`;
 
 export const useShoppingBag = () => {
     const { get, post, put, del } = useApi();

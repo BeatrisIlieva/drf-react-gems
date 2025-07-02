@@ -1,5 +1,4 @@
-from typing import Collection
-from src.products.models.product import Color, Earwear, Metal, Neckwear, Stone, Wristwear, Fingerwear
+from src.products.models.product import Color, Earwear, Metal, Neckwear, Stone, Wristwear, Fingerwear, Collection
 from src.products.serializers.base import BaseAttributesSerializer, BaseProductItemSerializer, BaseProductListSerializer
 
 

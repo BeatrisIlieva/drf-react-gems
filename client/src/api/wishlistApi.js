@@ -5,7 +5,7 @@ import { HOST } from '../constants/host';
 import { useAuth } from '../hooks/auth/useAuth';
 import { useWishlistContext } from '../contexts/WishlistContext';
 
-const baseUrl = `${HOST}/wishlist`;
+const baseUrl = `${HOST}/api/wishlist`;
 
 export const useWishlist = () => {
     const { get, post, del } = useApi();
