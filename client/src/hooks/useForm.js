@@ -2,6 +2,7 @@ import { useState, useActionState, useCallback } from 'react';
 
 import { validateForm } from '../utils/validateForm';
 import { getFormFieldErrorMessage } from '../utils/getFormFieldErrorMessage';
+import { useFocusOnInvalidInput } from './useFocusOnInvalidInput';
 
 export const useForm = (initialFormValues, options) => {
     const {
@@ -10,11 +11,13 @@ export const useForm = (initialFormValues, options) => {
         onSubmit
     } = options;
 
-    const [formData, setFormData] =
-        useState(initialFormValues);
+    const [formData, setFormData] = useState(initialFormValues);
     const [interactedFields, setInteractedFields] = useState(
         new Set()
     );
+
+    const { formRef, registerInput, focusFirstInvalid } =
+        useFocusOnInvalidInput();
 
     const handleFormSubmission = async () => {
         if (validateOnSubmit) {
@@ -80,6 +83,10 @@ export const useForm = (initialFormValues, options) => {
         );
 
         setFormData(validatedUserData);
+
+        if (!isValid) {
+            focusFirstInvalid(validatedUserData);
+        }
 
         return isValid;
     };
@@ -149,28 +156,37 @@ export const useForm = (initialFormValues, options) => {
 
     const handleServerSideErrors = useCallback(
         (serverResponse) => {
-            if (!serverResponse || typeof serverResponse !== 'object') {
+            if (
+                !serverResponse ||
+                typeof serverResponse !== 'object'
+            ) {
                 return false;
             }
 
             let hasErrors = false;
 
             // Check if server response contains field-specific errors
-            Object.keys(initialFormValues).forEach((fieldName) => {
-                if (serverResponse[fieldName]) {
-                    hasErrors = true;
-                    setFormData((state) => ({
-                        ...state,
-                        [fieldName]: {
-                            ...state[fieldName],
-                            error: Array.isArray(serverResponse[fieldName])
-                                ? serverResponse[fieldName].join(' ')
-                                : serverResponse[fieldName],
-                            valid: false
-                        }
-                    }));
+            Object.keys(initialFormValues).forEach(
+                (fieldName) => {
+                    if (serverResponse[fieldName]) {
+                        hasErrors = true;
+                        setFormData((state) => ({
+                            ...state,
+                            [fieldName]: {
+                                ...state[fieldName],
+                                error: Array.isArray(
+                                    serverResponse[fieldName]
+                                )
+                                    ? serverResponse[
+                                          fieldName
+                                      ].join(' ')
+                                    : serverResponse[fieldName],
+                                valid: false
+                            }
+                        }));
+                    }
                 }
-            });
+            );
 
             // Handle snake_case to camelCase mapping for common field names
             const fieldMapping = {
@@ -182,21 +198,34 @@ export const useForm = (initialFormValues, options) => {
                 phone_number: 'phoneNumber'
             };
 
-            Object.entries(fieldMapping).forEach(([serverFieldName, clientFieldName]) => {
-                if (serverResponse[serverFieldName] && initialFormValues[clientFieldName]) {
-                    hasErrors = true;
-                    setFormData((state) => ({
-                        ...state,
-                        [clientFieldName]: {
-                            ...state[clientFieldName],
-                            error: Array.isArray(serverResponse[serverFieldName])
-                                ? serverResponse[serverFieldName].join(' ')
-                                : serverResponse[serverFieldName],
-                            valid: false
-                        }
-                    }));
+            Object.entries(fieldMapping).forEach(
+                ([serverFieldName, clientFieldName]) => {
+                    if (
+                        serverResponse[serverFieldName] &&
+                        initialFormValues[clientFieldName]
+                    ) {
+                        hasErrors = true;
+                        setFormData((state) => ({
+                            ...state,
+                            [clientFieldName]: {
+                                ...state[clientFieldName],
+                                error: Array.isArray(
+                                    serverResponse[
+                                        serverFieldName
+                                    ]
+                                )
+                                    ? serverResponse[
+                                          serverFieldName
+                                      ].join(' ')
+                                    : serverResponse[
+                                          serverFieldName
+                                      ],
+                                valid: false
+                            }
+                        }));
+                    }
                 }
-            });
+            );
 
             return hasErrors;
         },
@@ -247,6 +276,8 @@ export const useForm = (initialFormValues, options) => {
         formState,
         updateFieldValue,
         interactedFields,
-        resetValidationStates
+        resetValidationStates,
+        formRef,
+        registerInput
     };
 };

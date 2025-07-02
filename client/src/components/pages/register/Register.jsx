@@ -1,7 +1,7 @@
 import { Fragment, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import { useUserContext } from '../../../contexts/UserContext';
-import { useLogin, useRegister } from '../../../api/authApi';
+import { useAuthentication } from '../../../api/accounts/authApi';
 import { AuthLayout } from '../../reusable/auth-layout/AuthLayout';
 import { InputField } from '../../reusable/input-field/InputField';
 import { Button } from '../../reusable/button/Button';
@@ -25,8 +25,7 @@ export const Register = () => {
     const [agree, setAgree] = useState(true);
 
     const { userLoginHandler } = useUserContext();
-    const { register } = useRegister();
-    const { login } = useLogin();
+    const { register, login } = useAuthentication();
     const navigate = useNavigate();
 
     useFocusOnInvalidInput();
@@ -56,7 +55,7 @@ export const Register = () => {
             !authData.access
         ) {
             handleServerSideErrors(authData);
-            
+
             return {
                 success: false,
                 error: 'Registration failed',

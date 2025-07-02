@@ -1,5 +1,5 @@
 import { useUserContext } from '../../../../contexts/UserContext';
-import { useLogout } from '../../../../api/authApi';
+import { useLogout } from '../../../../api/accounts/authApi';
 
 export const Logout = () => {
     const { logout } = useLogout();

@@ -1,45 +1,16 @@
-import { useState, useEffect } from 'react';
-import { useDetail } from '../../../../../api/authApi';
+import { useState } from 'react';
 import { DetailsContainer } from '../details-container/DetailsContainer';
 import { Popup } from '../../../../reusable/popup/Popup';
 import { PasswordUpdateForm } from '../password-update-form/PasswordUpdateForm';
 import { Icon } from '../../../../reusable/icon/Icon';
 import styles from './LoginInformation.module.scss';
+import { useUserContext } from '../../../../../contexts/UserContext';
 
 export const LoginInformation = () => {
-    const [userDetails, setUserDetails] = useState({});
     const [isPasswordPopupOpen, setIsPasswordPopupOpen] =
         useState(false);
-    const [loading, setLoading] = useState(true);
 
-    const { detail } = useDetail();
-
-    useEffect(() => {
-        const loadUserDetails = async () => {
-            try {
-                const userInfo = await detail();
-                if (userInfo) {
-                    setUserDetails({
-                        email: userInfo.email,
-                        username: userInfo.username
-                    });
-                }
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        loadUserDetails();
-    }, [detail]);
-
-    if (loading) {
-        return (
-            <DetailsContainer>
-                <h3>Login Information</h3>
-                <div>Loading...</div>
-            </DetailsContainer>
-        );
-    }
+    const { email, username } = useUserContext();
 
     return (
         <>
@@ -54,8 +25,7 @@ export const LoginInformation = () => {
                                     Email Address
                                 </div>
                                 <div className={styles.value}>
-                                    {userDetails.email ||
-                                        'Not available'}
+                                    {email || 'Not available'}
                                     <Icon
                                         name='lock'
                                         fontSize={0.6}
@@ -63,7 +33,7 @@ export const LoginInformation = () => {
                                 </div>
                             </div>
 
-                            {userDetails.username && (
+                            {username && (
                                 <div
                                     className={
                                         styles['info-group']
@@ -73,7 +43,7 @@ export const LoginInformation = () => {
                                         Username
                                     </div>
                                     <div className={styles.value}>
-                                        {userDetails.username}
+                                        {username}
                                         <Icon
                                             name='lock'
                                             fontSize={0.6}

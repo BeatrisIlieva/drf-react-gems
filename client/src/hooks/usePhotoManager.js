@@ -1,9 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import {
-    useDetail,
-    useGetPhoto,
-    useUploadPhoto
-} from '../api/authApi';
+import { usePhoto } from '../api/accounts/usePhotoApi';
 
 export const usePhotoManager = () => {
     const [currentPhoto, setCurrentPhoto] = useState(null);
@@ -11,9 +7,7 @@ export const usePhotoManager = () => {
     const [isUploading, setIsUploading] = useState(false);
     const [error, setError] = useState(null);
 
-    const { detail } = useDetail();
-    const { upload } = useUploadPhoto();
-    const { getPhoto } = useGetPhoto();
+    const { uploadPhoto: upload, getPhoto } = usePhoto();
 
     const refreshPhoto = useCallback(async () => {
         try {
@@ -62,8 +56,6 @@ export const usePhotoManager = () => {
     useEffect(() => {
         const initializeData = async () => {
             try {
-                // Load user details for authentication validation
-                await detail();
                 // Load current photo
                 await refreshPhoto();
             } catch (err) {
@@ -73,7 +65,7 @@ export const usePhotoManager = () => {
         };
 
         initializeData();
-    }, [detail, refreshPhoto]);
+    }, [refreshPhoto]);
 
     return {
         currentPhoto,

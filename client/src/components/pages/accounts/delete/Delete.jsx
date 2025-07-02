@@ -1,6 +1,5 @@
-
 import { useUserContext } from '../../../../contexts/UserContext';
-import { useDelete } from '../../../../api/authApi';
+import { useDelete } from '../../../../api/accounts/authApi';
 
 export const Delete = () => {
     const { deleteUser } = useDelete();
@@ -11,7 +10,9 @@ export const Delete = () => {
             await deleteUser();
             userLogoutHandler();
         } catch (err) {
-            console.log(err instanceof Error ? err.message : String(err));
+            console.log(
+                err instanceof Error ? err.message : String(err)
+            );
         }
     };
 

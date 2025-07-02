@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
-import { useApi } from '../hooks/useApi';
-import { keysToCamelCase } from '../utils/convertToCamelCase';
+import { useApi } from '../../hooks/useApi';
+import { keysToCamelCase } from '../../utils/convertToCamelCase';
 
-import { HOST } from '../constants/host';
+import { HOST } from '../../constants/host';
 
 const baseUrl = `${HOST}/products`;
 
@@ -19,7 +19,6 @@ export const useProductList = () => {
             metalIds = [],
             collectionIds = []
         }) => {
-
             const params = new URLSearchParams();
 
             if (page) params.append('page', page.toString());
@@ -51,9 +50,8 @@ export const useProductList = () => {
                 : `${baseUrl}/${categoryName}/`;
 
             try {
-                            console.log('before')
                 const response = await get(fullUrl);
-console.log('after')
+
                 return keysToCamelCase(response);
             } catch (err) {
                 if (err instanceof Error) {

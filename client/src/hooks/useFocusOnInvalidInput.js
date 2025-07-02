@@ -1,27 +1,37 @@
-import { useEffect } from 'react';
+import { useRef, useCallback } from 'react';
 
 export function useFocusOnInvalidInput() {
-    useEffect(() => {
-        const handleInvalid = (e) => {
-            e.preventDefault();
+    const formRef = useRef(null);
+    const inputRefs = useRef(new Map());
 
-            const invalidElements =
-                document.querySelectorAll('input:invalid');
-
-            if (invalidElements.length > 0) {
-                const firstInvalid = invalidElements[0];
-                firstInvalid.focus();
-            }
-        };
-
-        document.addEventListener('invalid', handleInvalid, true);
-
-        return () => {
-            document.removeEventListener(
-                'invalid',
-                handleInvalid,
-                true
-            );
-        };
+    const registerInput = useCallback((name, ref) => {
+        if (ref) {
+            inputRefs.current.set(name, ref);
+        } else {
+            inputRefs.current.delete(name);
+        }
     }, []);
+
+    const focusFirstInvalid = useCallback((formData) => {
+        if (!formData) return false;
+
+        for (const [fieldName, fieldValue] of Object.entries(
+            formData
+        )) {
+            if (fieldValue.error) {
+                const inputRef = inputRefs.current.get(fieldName);
+                if (inputRef) {
+                    inputRef.focus();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }, []);
+
+    return {
+        formRef,
+        registerInput,
+        focusFirstInvalid
+    };
 }

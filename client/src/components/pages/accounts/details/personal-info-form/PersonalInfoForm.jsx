@@ -1,10 +1,6 @@
 import { Fragment, useState, useEffect, useMemo } from 'react';
 import { useForm } from '../../../../../hooks/useForm';
-import { useFocusOnInvalidInput } from '../../../../../hooks/useFocusOnInvalidInput';
-import {
-    useGetPersonalInfo,
-    useUpdatePersonalInfo
-} from '../../../../../api/authApi';
+import { useProfile } from '../../../../../api/accounts/useProfileApi';
 import { InputField } from '../../../../reusable/input-field/InputField';
 import { Button } from '../../../../reusable/button/Button';
 import { DetailsContainer } from '../details-container/DetailsContainer';
@@ -15,8 +11,6 @@ import styles from './PersonalInfoForm.module.scss';
 export const PersonalInfoForm = () => {
     const initialFormValues = useMemo(
         () => ({
-            email: { value: '', error: '', valid: false }, // Required by UserFormData
-            password: { value: '', error: '', valid: false }, // Required by UserFormData
             firstName: { value: '', error: '', valid: false },
             lastName: { value: '', error: '', valid: false },
             phoneNumber: { value: '', error: '', valid: false }
@@ -24,16 +18,33 @@ export const PersonalInfoForm = () => {
         []
     );
 
-    const { getPersonalInfo } = useGetPersonalInfo();
-    const { updatePersonalInfo } = useUpdatePersonalInfo();
-
-    useFocusOnInvalidInput();
+    const { getPersonalInfo, updatePersonalInfo } = useProfile();
 
     const [loading, setLoading] = useState(true);
     const [initialDataLoaded, setInitialDataLoaded] =
         useState(false);
 
-    const handleSubmit = async (formData) => {
+    const formProps = useForm(initialFormValues, {
+        onSubmit: handleSubmit,
+        validateOnSubmit: false
+    });
+
+    const {
+        formData,
+        validateField,
+        handleFieldChange,
+        getInputClassName,
+        submitAction,
+        isSubmitting,
+        handleServerSideErrors,
+        updateFieldValue,
+        validateFields,
+        resetValidationStates,
+        formRef,
+        registerInput
+    } = formProps;
+
+    async function handleSubmit(formData) {
         const hasFirstName =
             formData.firstName?.value?.trim() !== '';
         const hasLastName =
@@ -78,25 +89,7 @@ export const PersonalInfoForm = () => {
                 error: 'Failed to update personal information'
             };
         }
-    };
-
-    const formProps = useForm(initialFormValues, {
-        onSubmit: handleSubmit,
-        validateOnSubmit: false
-    });
-
-    const {
-        formData,
-        validateField,
-        handleFieldChange,
-        getInputClassName,
-        submitAction,
-        isSubmitting,
-        handleServerSideErrors,
-        updateFieldValue,
-        validateFields,
-        resetValidationStates
-    } = formProps;
+    }
 
     // Load existing personal info on component mount
     useEffect(() => {
@@ -168,7 +161,7 @@ export const PersonalInfoForm = () => {
                     Loading personal information...
                 </div>
             ) : (
-                <form action={submitAction}>
+                <form ref={formRef} action={submitAction}>
                     {['firstName', 'lastName', 'phoneNumber'].map(
                         (fieldName) => {
                             const fieldData = formData[fieldName];
@@ -189,6 +182,9 @@ export const PersonalInfoForm = () => {
                                         }
                                         fieldName={fieldName}
                                         type='text'
+                                        registerInput={
+                                            registerInput
+                                        }
                                     />
                                 </Fragment>
                             );

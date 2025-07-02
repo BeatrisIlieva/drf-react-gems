@@ -1,5 +1,5 @@
 import { useParams } from 'react-router';
-import { useProductItem } from '../api/productItemApi';
+import { useProductItem } from '../api/products/productItemApi';
 import {
     useCallback,
     useEffect,

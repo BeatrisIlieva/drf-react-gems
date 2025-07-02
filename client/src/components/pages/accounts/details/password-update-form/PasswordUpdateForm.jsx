@@ -1,14 +1,14 @@
-import React, { Fragment, useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { useForm } from '../../../../../hooks/useForm';
 import { useFocusOnInvalidInput } from '../../../../../hooks/useFocusOnInvalidInput';
-import { useChangePassword } from '../../../../../api/authApi';
+import { useProfile } from '../../../../../api/accounts/useProfileApi';
 import { Button } from '../../../../reusable/button/Button';
 import styles from './PasswordUpdateForm.module.scss';
 import { InputField } from '../../../../reusable/input-field/InputField';
 import { PasswordValidator } from '../../../../reusable/password-validator/PasswordValidator';
 
 export const PasswordUpdateForm = ({ onSuccess }) => {
-    const { changePassword } = useChangePassword();
+    const { changePassword } = useProfile();
     const [newPasswordValue, setNewPasswordValue] = useState('');
 
     const initialFormValues = useMemo(

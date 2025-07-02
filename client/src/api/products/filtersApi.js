@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
-import { useApi } from '../hooks/useApi';
-import { keysToCamelCase } from '../utils/convertToCamelCase';
+import { useApi } from '../../hooks/useApi';
+import { keysToCamelCase } from '../../utils/convertToCamelCase';
 
-import { HOST } from '../constants/host';
+import { HOST } from '../../constants/host';
 
 const baseUrl = `${HOST}/products`;
 

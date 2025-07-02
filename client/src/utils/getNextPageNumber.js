@@ -7,7 +7,6 @@ export const getNextPageNumber = (nextUrl) => {
 
         return page ? Number(page) : null;
     } catch (err) {
-        console.log(err);
         return null;
     }
 };

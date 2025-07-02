@@ -3,8 +3,9 @@ import { useApi } from '../hooks/useApi';
 import { useShoppingBagContext } from '../contexts/ShoppingBagContext';
 import { keysToCamelCase } from '../utils/convertToCamelCase';
 import { useAuth } from '../hooks/auth/useAuth';
+import { HOST } from '../constants/host';
 
-const baseUrl = 'http://localhost:8000/shopping-bags/';
+const baseUrl = `${HOST}/shopping-bags`;
 
 export const useShoppingBag = () => {
     const { get, post, put, del } = useApi();
@@ -24,7 +25,7 @@ export const useShoppingBag = () => {
             };
 
             try {
-                const response = await post(baseUrl, {
+                const response = await post(`${baseUrl}/`, {
                     data,
                     accessRequired: isAuthenticated,
                     refreshRequired: isAuthenticated
@@ -131,7 +132,7 @@ export const useShoppingBag = () => {
     // Get all shopping bag items
     const getItems = useCallback(async () => {
         try {
-            const response = await get(baseUrl, {
+            const response = await get(`${baseUrl}/`, {
                 accessRequired: isAuthenticated,
                 refreshRequired: isAuthenticated
             });
@@ -146,7 +147,7 @@ export const useShoppingBag = () => {
     // Get shopping bag count
     const getCount = useCallback(async () => {
         try {
-            const response = await get(`${baseUrl}count/`, {
+            const response = await get(`${baseUrl}/count/`, {
                 accessRequired: isAuthenticated,
                 refreshRequired: isAuthenticated
             });
@@ -161,10 +162,13 @@ export const useShoppingBag = () => {
     // Get shopping bag total price
     const getTotalPrice = useCallback(async () => {
         try {
-            const response = await get(`${baseUrl}total-price/`, {
-                accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated
-            });
+            const response = await get(
+                `${baseUrl}/total-price/`,
+                {
+                    accessRequired: isAuthenticated,
+                    refreshRequired: isAuthenticated
+                }
+            );
 
             return keysToCamelCase(response);
         } catch (err) {

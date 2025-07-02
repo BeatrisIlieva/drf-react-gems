@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import { useForm } from '../../../hooks/useForm';
 import { useFocusOnInvalidInput } from '../../../hooks/useFocusOnInvalidInput';
 import { useUserContext } from '../../../contexts/UserContext';
-import { useLogin } from '../../../api/authApi';
+import { useAuthentication } from '../../../api/accounts/authApi';
 import { InputField } from '../../reusable/input-field/InputField';
 import { Button } from '../../reusable/button/Button';
 import { AuthLayout } from '../../reusable/auth-layout/AuthLayout';
@@ -19,7 +19,7 @@ export const Login = () => {
     };
 
     const { userLoginHandler } = useUserContext();
-    const { login } = useLogin();
+    const { login } = useAuthentication();
     const navigate = useNavigate();
 
     useFocusOnInvalidInput();
@@ -55,14 +55,19 @@ export const Login = () => {
         }
 
         // Handle server-side field-specific errors
-        if (authData && typeof authData === 'object' && !authData.access) {
-            const hasFieldErrors = handleServerSideErrors(authData);
-            
+        if (
+            authData &&
+            typeof authData === 'object' &&
+            !authData.access
+        ) {
+            const hasFieldErrors =
+                handleServerSideErrors(authData);
+
             // If no field-specific errors, show general error
             if (!hasFieldErrors) {
                 setInvalidUsernameOrPassword(true);
             }
-            
+
             return {
                 success: false,
                 error: 'Login failed'
