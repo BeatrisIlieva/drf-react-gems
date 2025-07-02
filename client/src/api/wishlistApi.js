@@ -26,10 +26,9 @@ export const useWishlist = () => {
     }, [get, isAuthenticated]);
 
     const createItem = useCallback(
-        
         async (data) => {
             try {
-                const result = await post(`${baseUrl}/add/`, {
+                const result = await post(`${baseUrl}/`, {
                     data,
                     accessRequired: isAuthenticated,
                     refreshRequired: isAuthenticated

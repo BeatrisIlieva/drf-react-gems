@@ -1,190 +1,74 @@
-from rest_framework import status
-from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView
-from rest_framework.permissions import AllowAny
+from django.contrib.contenttypes.models import ContentType
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
-from rest_framework.views import APIView
-from django.contrib.contenttypes.models import ContentType
-from django.shortcuts import get_object_or_404
-import uuid
+from rest_framework.permissions import AllowAny
 
 from src.wishlist.models import Wishlist
-from src.wishlist.serializers import WishlistSerializer, WishlistCreateSerializer, WishlistDeleteSerializer
+from src.wishlist.serializers import WishlistSerializer
+from src.wishlist.services import WishlistService
 
 
-class WishlistListView(ListAPIView):
+class WishlistViewSet(viewsets.ModelViewSet):
     serializer_class = WishlistSerializer
     permission_classes = [AllowAny]
-    
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
-    
+    http_method_names = ['get', 'post', 'delete']
+
     def get_queryset(self):
-        """Get wishlist items for authenticated user or guest"""
-        if self.request.user.is_authenticated:
-            return Wishlist.objects.filter(user=self.request.user)
-        else:
-            guest_id = self.request.headers.get('Guest-Id')
-            if guest_id:
-                try:
-                    guest_id = uuid.UUID(guest_id)
-                    return Wishlist.objects.filter(guest_id=guest_id, user__isnull=True)
-                except ValueError:
-                    return Wishlist.objects.none()
+        try:
+            user_filters = WishlistService.get_user_identifier(self.request)
+            return Wishlist.objects.filter(**user_filters).select_related(
+                'content_type', 'user'
+            ).prefetch_related('product')
+        except ValidationError:
             return Wishlist.objects.none()
 
-
-class WishlistCreateView(CreateAPIView):
-    serializer_class = WishlistCreateSerializer
-    permission_classes = [AllowAny]
-    
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        
-        content_type = serializer.validated_data['content_type']
-        object_id = serializer.validated_data['object_id']
-        
-        # Get user and guest_id
-        user = request.user if request.user.is_authenticated else None
-        guest_id = request.headers.get('Guest-Id')
-        
-        # Validate guest_id format if provided
-        if guest_id and not user:
-            try:
-                guest_id = uuid.UUID(guest_id)
-            except ValueError:
-                return Response(
-                    {'detail': 'Invalid guest ID format'}, 
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-        
-        # Check if user is authenticated or has valid guest_id
-        if not user and not guest_id:
-            return Response(
-                {'detail': 'User must be authenticated or provide valid Guest-Id header'}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        # Check if item already exists in wishlist
-        if user:
-            existing_item = Wishlist.objects.filter(
-                user=user,
-                content_type=content_type,
-                object_id=object_id
-            ).first()
-        else:
-            existing_item = Wishlist.objects.filter(
-                guest_id=guest_id,
-                user__isnull=True,
-                content_type=content_type,
-                object_id=object_id
-            ).first()
-            
-        if existing_item:
-            return Response(
-                {'detail': 'Item already in wishlist'}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        # Create wishlist item
-        if user:
-            wishlist_item = Wishlist.objects.create(
-                user=user,
-                content_type=content_type,
-                object_id=object_id
-            )
-        else:
-            wishlist_item = Wishlist.objects.create(
-                guest_id=guest_id,
-                content_type=content_type,
-                object_id=object_id
-            )
-        
-        response_serializer = WishlistSerializer(wishlist_item)
-        return Response(response_serializer.data, status=status.HTTP_201_CREATED)
-
-
-class WishlistDeleteView(DestroyAPIView):
-    permission_classes = [AllowAny]
-    serializer_class = WishlistDeleteSerializer  # For documentation purposes only
-    
-    def delete(self, request, content_type, object_id, *args, **kwargs):
-        # Get user and guest_id
-        user = request.user if request.user.is_authenticated else None
-        guest_id = request.headers.get('Guest-Id')
-        
-        # Validate guest_id format if provided
-        if guest_id and not user:
-            try:
-                guest_id = uuid.UUID(guest_id)
-            except ValueError:
-                return Response(
-                    {'detail': 'Invalid guest ID format'}, 
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-        
-        # Check if user is authenticated or has valid guest_id
-        if not user and not guest_id:
-            return Response(
-                {'detail': 'User must be authenticated or provide valid Guest-Id header'}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        # Get content type object
+    def create(self, request, *args, **kwargs):
         try:
-            ct = ContentType.objects.get(model=content_type)
-        except ContentType.DoesNotExist:
-            return Response(
-                {'detail': 'Invalid content type'}, 
-                status=status.HTTP_404_NOT_FOUND
-            )
-        
-        # Find and delete wishlist item
-        if user:
-            wishlist_item = get_object_or_404(
-                Wishlist,
-                user=user,
-                content_type=ct,
-                object_id=object_id
-            )
-        else:
-            wishlist_item = get_object_or_404(
-                Wishlist,
-                guest_id=guest_id,
-                user__isnull=True,
-                content_type=ct,
-                object_id=object_id
-            )
-        
-        wishlist_item.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+            user_filters = WishlistService.get_user_identifier(request)
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
 
+            content_type = serializer.validated_data['content_type']
+            object_id = serializer.validated_data['object_id']
 
-class WishlistCountView(APIView):
-    permission_classes = [AllowAny]
-    
-    def get(self, request, *args, **kwargs):
-        # Get user and guest_id
-        user = request.user if request.user.is_authenticated else None
-        guest_id = request.headers.get('Guest-Id')
-        
-        # Validate guest_id format if provided
-        if guest_id and not user:
+            wishlist_item = WishlistService.create_wishlist_item(
+                user_filters, content_type, object_id
+            )
+
+            response_serializer = self.get_serializer(wishlist_item)
+            return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+
+        except ValidationError as e:
+            return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['delete'], url_path='remove/(?P<content_type_name>[^/.]+)/(?P<object_id>[^/.]+)')
+    def remove_item(self, request, content_type_name=None, object_id=None):
+        try:
+            user_filters = WishlistService.get_user_identifier(request)
+
             try:
-                guest_id = uuid.UUID(guest_id)
-            except ValueError:
+                content_type = ContentType.objects.get(model=content_type_name)
+                object_id = int(object_id)
+            except (ContentType.DoesNotExist, ValueError):
                 return Response(
-                    {'detail': 'Invalid guest ID format'}, 
+                    {'detail': 'Invalid content type or object ID'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
-        
-        # Get count based on user type
-        if user:
-            count = Wishlist.objects.filter(user=user).count()
-        elif guest_id:
-            count = Wishlist.objects.filter(guest_id=guest_id, user__isnull=True).count()
-        else:
-            count = 0
-            
-        return Response({'count': count}, status=status.HTTP_200_OK)
+
+            WishlistService.delete_wishlist_item(
+                user_filters, content_type, object_id)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        except ValidationError as e:
+            return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['get'], url_path='count')
+    def get_wishlist_count(self, request):
+        try:
+            user_filters = WishlistService.get_user_identifier(request)
+            count = Wishlist.objects.filter(**user_filters).count()
+            return Response({'count': count}, status=status.HTTP_200_OK)
+        except ValidationError as e:
+            return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
