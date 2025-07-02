@@ -19,6 +19,17 @@ export const WishlistProvider = ({ children }) => {
         useWishlist();
     const { id: userId } = useContext(UserContext);
 
+    const updateWishlistCount = useCallback(async () => {
+        try {
+            const response = await getCount();
+            if (response) {
+                setWishlistItemsCount(response.count);
+            }
+        } catch (err) {
+            console(err.message);
+        }
+    }, [getCount]);
+
     const addToWishlist = useCallback(
         async (contentType, objectId) => {
             try {
@@ -33,6 +44,8 @@ export const WishlistProvider = ({ children }) => {
                         ...prev,
                         newItem
                     ]);
+                    // Update count after successful addition
+                    updateWishlistCount();
                     return true;
                 }
                 return false;
@@ -44,7 +57,7 @@ export const WishlistProvider = ({ children }) => {
                 return false;
             }
         },
-        [userId]
+        [createItem, updateWishlistCount]
     );
 
     const removeFromWishlist = useCallback(
@@ -66,6 +79,8 @@ export const WishlistProvider = ({ children }) => {
                                 )
                         )
                     );
+                    // Update count after successful removal
+                    updateWishlistCount();
                     return true;
                 }
                 return false;
@@ -77,7 +92,7 @@ export const WishlistProvider = ({ children }) => {
                 return false;
             }
         },
-        [userId]
+        [deleteItem, updateWishlistCount]
     );
 
     const isInWishlist = useCallback(
@@ -91,20 +106,6 @@ export const WishlistProvider = ({ children }) => {
         [wishlistItems]
     );
 
-    const updateWishlistCount = useCallback(async () => {
-        try {
-            const response = await getCount();
-            if (response) {
-                setWishlistItemsCount(response.count);
-            }
-        } catch (err) {
-            console.error(
-                'Error updating shopping bag count:',
-                err instanceof Error ? err.message : String(err)
-            );
-        }
-    }, [getCount]);
-
     // Load wishlist on mount and when authentication state changes
     useEffect(() => {
         const loadWishlist = async () => {
@@ -114,6 +115,8 @@ export const WishlistProvider = ({ children }) => {
                 if (response && Array.isArray(response)) {
                     setWishlistItems(response);
                 }
+                // Also update the count when loading items
+                updateWishlistCount();
             } catch (error) {
                 console.error(
                     'Failed to refresh wishlist:',
@@ -127,7 +130,7 @@ export const WishlistProvider = ({ children }) => {
         loadWishlist();
         // Only depend on userId (stable) instead of the entire getWishlist function
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userId]);
+    }, [userId, updateWishlistCount]);
 
     const contextValue = useMemo(
         () => ({

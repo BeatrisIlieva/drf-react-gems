@@ -35,8 +35,8 @@ export const ProductItemProvider = ({ children }) => {
                 productId
             });
             setProduct(response.product);
-        } catch (error) {
-            console.error('Error fetching product item:', error);
+        } catch (err) {
+            console(err.message);
         } finally {
             setLoading(false);
         }

@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react';
 
 export const WishlistContext = createContext({
     wishlistItems: [],
-    wishlistCount: 0,
+    wishlistItemsCount: 0,
     isLoading: false,
     addToWishlist: async () => false,
     removeFromWishlist: async () => false,

@@ -45,9 +45,8 @@ export const QuantitySelector = ({
 
             getShoppingBagItemsHandler();
             updateShoppingBagTotalPrice();
-        } catch (error) {
-            console.error('Error updating quantity:', error);
-
+        } catch (err) {
+            console(err.message);
             setLocalQuantity(quantity);
         } finally {
             setIsUpdating(false);

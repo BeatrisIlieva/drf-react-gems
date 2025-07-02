@@ -3,12 +3,14 @@ import { useApi } from '../hooks/useApi';
 import { HOST } from '../constants/host';
 
 import { useAuth } from '../hooks/auth/useAuth';
+import { useWishlistContext } from '../contexts/WishlistContext';
 
 const baseUrl = `${HOST}/wishlist`;
 
 export const useWishlist = () => {
     const { get, post, del } = useApi();
     const { isAuthenticated } = useAuth();
+    const {updateWishlistCount} = useWishlistContext();
 
     const getItems = useCallback(async () => {
         try {
@@ -24,6 +26,7 @@ export const useWishlist = () => {
     }, [get, isAuthenticated]);
 
     const createItem = useCallback(
+        
         async (data) => {
             try {
                 const result = await post(`${baseUrl}/add/`, {
@@ -31,13 +34,14 @@ export const useWishlist = () => {
                     accessRequired: isAuthenticated,
                     refreshRequired: isAuthenticated
                 });
+                updateWishlistCount();
                 return result;
             } catch (error) {
                 console.error('Error adding to wishlist:', error);
                 return undefined;
             }
         },
-        [post, isAuthenticated]
+        [post, isAuthenticated, updateWishlistCount]
     );
 
     const deleteItem = useCallback(
@@ -50,6 +54,7 @@ export const useWishlist = () => {
                         refreshRequired: isAuthenticated
                     }
                 );
+                updateWishlistCount();
                 return true;
             } catch (error) {
                 console.error(
@@ -59,7 +64,7 @@ export const useWishlist = () => {
                 return false;
             }
         },
-        [del, isAuthenticated]
+        [del, isAuthenticated, updateWishlistCount]
     );
 
     const getCount = useCallback(async () => {
@@ -68,13 +73,13 @@ export const useWishlist = () => {
                 accessRequired: isAuthenticated,
                 refreshRequired: isAuthenticated
             });
-            return result?.count || 0;
+            return result;
         } catch (error) {
             console.error(
                 'Error fetching wishlist count:',
                 error
             );
-            return 0;
+            return { count: 0 };
         }
     }, [get, isAuthenticated]);
 
