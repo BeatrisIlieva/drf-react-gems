@@ -1,6 +1,6 @@
 from django.core.validators import EmailValidator
 from src.shopping_bags.models import ShoppingBag
-from src.wishlist.models import Wishlist
+from src.wishlists.models import Wishlist
 from src.accounts.validators.models import UsernameValidator, EmailOrUsernameValidator
 import re
 

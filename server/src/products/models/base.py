@@ -1,6 +1,7 @@
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 
+
 from src.products.models.inventory import Inventory
 from src.products.models.review import Review
 

@@ -1,6 +1,8 @@
-from src.products.serializers.product import EarwearItemSerializer, FingerwearItemSerializer, NeckwearItemSerializer, NeckwearListSerializer, EarwearListSerializer, WristwearItemSerializer, WristwearListSerializer, FingerwearListSerializer
+from typing import Collection
+from src.products.models.product import Color, Metal, Stone
+from src.products.serializers.product import CollectionSerializer, ColorSerializer, EarwearItemSerializer, FingerwearItemSerializer, MetalSerializer, NeckwearItemSerializer, NeckwearListSerializer, EarwearListSerializer, StoneSerializer, WristwearItemSerializer, WristwearListSerializer, FingerwearListSerializer
 from src.products.models import Earwear, Neckwear, Wristwear, Fingerwear
-from src.products.views.base import BaseProductItemView, BaseProductListView
+from src.products.views.base import BaseAttributeView, BaseProductItemView, BaseProductListView
 
 
 class EarwearListView(BaseProductListView):
@@ -41,3 +43,23 @@ class WristwearItemView(BaseProductItemView):
 class FingerwearItemView(BaseProductItemView):
     model = Fingerwear
     serializer_class = FingerwearItemSerializer
+
+
+class CollectionRetrieveView(BaseAttributeView):
+    model = Collection
+    serializer_class = CollectionSerializer
+
+
+class ColorRetrieveView(BaseAttributeView):
+    model = Color
+    serializer_class = ColorSerializer
+
+
+class MetalRetrieveView(BaseAttributeView):
+    model = Metal
+    serializer_class = MetalSerializer
+
+
+class StoneRetrieveView(BaseAttributeView):
+    model = Stone
+    serializer_class = StoneSerializer

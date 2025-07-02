@@ -1,6 +1,5 @@
 from django.db.models import Avg
 from rest_framework import serializers
-from django.db.models import Q, Case, When, Value, IntegerField
 
 
 from src.products.serializers.inventory import InventorySerializer
@@ -47,7 +46,8 @@ class BaseProductListSerializer(serializers.ModelSerializer):
 class AverageRatingField(serializers.Field):
     def to_representation(self, value):
         # avg = value.review.aggregate(avg=Avg('rating'))['avg'] or 0
-        avg = value.review.filter(approved=True).aggregate(avg=Avg('rating'))['avg'] or 0
+        avg = value.review.filter(approved=True).aggregate(
+            avg=Avg('rating'))['avg'] or 0
         return round(avg, 2)
 
 
@@ -119,3 +119,10 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
             Wristwear, current_product_type == Wristwear))
 
         return related_products[:6]
+
+
+class BaseAttributesSerializer(serializers.ModelSerializer):
+    count = serializers.IntegerField()
+
+    class Meta:
+        fields = ['id', 'name', 'count']

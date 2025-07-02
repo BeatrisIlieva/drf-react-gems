@@ -8,15 +8,17 @@ from django.db.models import (
     When,
     Min,
     Max,
-    Avg
+    Avg,
+    Count
 )
+
 
 class BaseProductManager(models.Manager):
     def get_product_item(self, item_id):
         return self.get(pk=item_id)
-    
+
     def get_product_list(self, filters, ordering):
-        qs = self.filter(filters) 
+        qs = self.filter(filters)
 
         raw_products = self._get_raw_products(qs, ordering)
 
@@ -66,4 +68,29 @@ class BaseProductManager(models.Manager):
                 f'{ordering_criteria}',
                 'id',
             )
+        )
+
+
+class BaseAttributesManager(models.Manager):
+    def get_attributes_count(self, filters, category):
+        qs = self.get_queryset()
+
+        return (
+            qs
+            .prefetch_related(
+                category
+            )
+            .filter(
+                filters,
+            )
+            .values(
+                'id',
+                'name'
+            )
+            .annotate(
+                count=Count(
+                    category,
+                )
+            )
+            .filter(count__gt=0)
         )

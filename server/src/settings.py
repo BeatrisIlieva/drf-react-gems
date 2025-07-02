@@ -29,10 +29,10 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 
 PROJECT_APPS = [
     'src.accounts',
+    'src.common',
     'src.products',
-    'src.addresses',
     'src.shopping_bags',
-    'src.wishlist',
+    'src.wishlists',
 ]
 
 INSTALLED_APPS = [

@@ -51,3 +51,18 @@ class BaseProductItemView(RetrieveAPIView, BaseProductView):
         return Response({
             'product': serializer.data,
         })
+
+
+class BaseAttributeView(FilterMixin, RetrieveAPIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        category = self.request.query_params.get('category')[:-1]
+        filters = self._get_filters_for_attributes(category)
+        data = self.model.objects.get_attributes_count(filters, category)
+
+        serializer = self.get_serializer(data, many=True)
+
+        return Response({
+            'results': serializer.data,
+        })

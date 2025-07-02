@@ -1,5 +1,6 @@
-from src.products.models.product import Earwear, Neckwear, Wristwear, Fingerwear
-from src.products.serializers.base import BaseProductItemSerializer, BaseProductListSerializer
+from typing import Collection
+from src.products.models.product import Color, Earwear, Metal, Neckwear, Stone, Wristwear, Fingerwear
+from src.products.serializers.base import BaseAttributesSerializer, BaseProductItemSerializer, BaseProductListSerializer
 
 
 class EarwearListSerializer(BaseProductListSerializer):
@@ -40,3 +41,23 @@ class WristwearItemSerializer(BaseProductItemSerializer):
 class FingerwearItemSerializer(BaseProductItemSerializer):
     class Meta(BaseProductItemSerializer.Meta):
         model = Fingerwear
+
+
+class CollectionSerializer(BaseAttributesSerializer):
+    class Meta(BaseAttributesSerializer.Meta):
+        model = Collection
+
+
+class ColorSerializer(BaseAttributesSerializer):
+    class Meta(BaseAttributesSerializer.Meta):
+        model = Color
+
+
+class MetalSerializer(BaseAttributesSerializer):
+    class Meta(BaseAttributesSerializer.Meta):
+        model = Metal
+
+
+class StoneSerializer(BaseAttributesSerializer):
+    class Meta(BaseAttributesSerializer.Meta):
+        model = Stone

@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from src.products.views.attributtes import CollectionRetrieveView, ColorRetrieveView, MetalRetrieveView, StoneRetrieveView
+from src.products.views.product import CollectionRetrieveView, ColorRetrieveView, MetalRetrieveView, StoneRetrieveView
 from src.products.views.product import (
     EarwearItemView,
     EarwearListView,
