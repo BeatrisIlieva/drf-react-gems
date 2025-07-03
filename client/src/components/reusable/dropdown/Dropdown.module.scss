@@ -1,0 +1,106 @@
+@use '../../../styles/variables' as vars;
+
+.dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75em;
+    padding-top: 1em;
+    border: 0.08em solid vars.$medium-grey;
+    border-radius: 0.1em;
+    background: vars.$white;
+    cursor: pointer;
+    transition: border-color 0.3s ease-in-out;
+    font-size: 1.1em;
+    position: relative;
+    min-height: 3.5em;
+    box-sizing: border-box;
+
+    button: {
+        align-self: center;
+    }
+
+    &.open:not(.valid):not(.invalid) {
+        border-color: vars.$blue;
+    }
+
+    &.valid {
+        border-color: vars.$green !important;
+    }
+
+    &.invalid {
+        border-color: vars.$red !important;
+    }
+
+    // When dropdown is open and valid, keep green border
+    &.open.valid {
+        border-color: vars.$green !important;
+    }
+
+    // When dropdown is open and invalid, keep red border
+    &.open.invalid {
+        border-color: vars.$red;
+    }
+
+    .value {
+        flex: 1;
+        text-align: left;
+        color: vars.$black;
+    }
+
+    span:last-child {
+        color: vars.$dark-grey;
+        transition: transform 0.3s ease;
+    }
+}
+
+.menu {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: vars.$white;
+    border: 0.08em solid vars.$medium-grey;
+    border-radius: 0.1em;
+    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-height: 12rem;
+    overflow-y: auto;
+
+    &.dropDown {
+        top: 100%;
+        // margin-top: 0.125em;
+    }
+
+    &.dropUp {
+        bottom: 100%;
+        margin-bottom: 0.125em;
+    }
+
+    .option {
+        padding: 0.75em;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        border-bottom: 0.06em solid vars.$light-grey;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &:hover {
+            background-color: vars.$light-grey;
+        }
+
+        &.selected {
+            background-color: vars.$blue;
+            color: vars.$white;
+        }
+    }
+
+    .loading,
+    .noOptions {
+        padding: 0.75em;
+        text-align: center;
+        color: vars.$dark-grey;
+        font-style: italic;
+    }
+}
