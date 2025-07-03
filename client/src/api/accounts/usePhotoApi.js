@@ -1,30 +1,59 @@
 import { useCallback } from 'react';
-import { useBaseApi } from '../../hooks/useBaseApi';
+import { useApi } from '../../hooks/useApi';
+import { useAuth } from '../../hooks/auth/useAuth';
 import { HOST } from '../../constants/host';
+import { keysToCamelCase } from '../../utils/convertToCamelCase';
 
 const baseUrl = `${HOST}/api/accounts/photo`;
 
 export const usePhoto = () => {
-    const { get, patch } = useBaseApi(baseUrl, {
-        requireAuth: true
-    });
+    const { get, patch } = useApi();
+    const { isAuthenticated } = useAuth();
 
     const getPhoto = useCallback(async () => {
-        return await get();
-    }, [get]);
+        try {
+            const response = await get(`${baseUrl}/`, {
+                accessRequired: isAuthenticated,
+                refreshRequired: isAuthenticated
+            });
+
+            return keysToCamelCase(response);
+        } catch (error) {
+            console.error(error);
+        }
+    }, [get, isAuthenticated]);
 
     const uploadPhoto = useCallback(
         async (photoData) => {
-            return await patch('', photoData, {
-                contentType: 'multipart/form-data'
-            });
+            try {
+                const response = await patch(`${baseUrl}/`, {
+                    data: photoData,
+                    accessRequired: isAuthenticated,
+                    refreshRequired: isAuthenticated,
+                    contentType: 'multipart/form-data'
+                });
+
+                return keysToCamelCase(response);
+            } catch (error) {
+                console.error(error);
+            }
         },
-        [patch]
+        [patch, isAuthenticated]
     );
 
     const deletePhoto = useCallback(async () => {
-        return await patch('', { photo: null });
-    }, [patch]);
+        try {
+            const response = await patch(`${baseUrl}/`, {
+                data: { photo: null },
+                accessRequired: isAuthenticated,
+                refreshRequired: isAuthenticated
+            });
+
+            return keysToCamelCase(response);
+        } catch (error) {
+            console.error(error);
+        }
+    }, [patch, isAuthenticated]);
 
     return {
         getPhoto,

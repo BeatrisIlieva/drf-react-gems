@@ -48,16 +48,10 @@ export const useFilters = () => {
 
             try {
                 const response = await get(fullUrl);
+
                 return keysToCamelCase(response);
-            } catch (err) {
-                if (err instanceof Error) {
-                    console.error(
-                        'Error in getFilters:',
-                        err.message
-                    );
-                    throw err;
-                }
-                throw new Error('Unknown error in getFilters');
+            } catch (error) {
+                console.error(error);
             }
         },
         [get]

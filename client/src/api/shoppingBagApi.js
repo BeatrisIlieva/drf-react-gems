@@ -23,7 +23,6 @@ export const useShoppingBag = () => {
                 object_id: objectId,
                 quantity: quantity
             };
-
             try {
                 const response = await post(`${baseUrl}/`, {
                     data,
@@ -33,12 +32,8 @@ export const useShoppingBag = () => {
                 updateShoppingBagCount();
 
                 return keysToCamelCase(response);
-            } catch (err) {
-                console.error(
-                    'Error in createItem:',
-                    err.message
-                );
-                throw err;
+            } catch (error) {
+                console.error(error);
             }
         },
         [post, isAuthenticated, updateShoppingBagCount]
@@ -48,24 +43,17 @@ export const useShoppingBag = () => {
     const deleteItem = useCallback(
         async (bagItemId) => {
             try {
-                await del(`${baseUrl}${bagItemId}/`, {
+                const response = del(`${baseUrl}/${bagItemId}/`, {
                     accessRequired: isAuthenticated,
                     refreshRequired: isAuthenticated
                 });
 
-                // Update context after successful deletion
                 updateShoppingBagCount();
                 updateShoppingBagTotalPrice();
 
-                return;
-            } catch (err) {
-                console.error(
-                    'Error in deleteItem:',
-                    err instanceof Error
-                        ? err.message
-                        : String(err)
-                );
-                throw err;
+                return keysToCamelCase(response);
+            } catch (error) {
+                console.error(error);
             }
         },
         [
@@ -91,33 +79,18 @@ export const useShoppingBag = () => {
             };
 
             try {
-                const response = await put(`${baseUrl}${id}/`, {
+                const response = await put(`${baseUrl}/${id}/`, {
                     data,
                     accessRequired: isAuthenticated,
                     refreshRequired: isAuthenticated
                 });
 
-                // Update both count and total price when bag is updated
                 updateShoppingBagCount();
                 updateShoppingBagTotalPrice();
 
                 return keysToCamelCase(response);
-            } catch (err) {
-                if (
-                    err.response?.data?.detail?.includes(
-                        'Not enough quantity in inventory'
-                    )
-                ) {
-                    throw new Error(
-                        "Sorry, we don't have enough items in stock."
-                    );
-                }
-
-                console.error(
-                    'Error in updateItem:',
-                    err.message
-                );
-                throw err;
+            } catch (error) {
+                console.error(error);
             }
         },
         [
@@ -138,9 +111,8 @@ export const useShoppingBag = () => {
             });
 
             return keysToCamelCase(response);
-        } catch (err) {
-            console.log(err.message);
-            return undefined;
+        } catch (error) {
+            console.error(error);
         }
     }, [get, isAuthenticated]);
 
@@ -153,9 +125,8 @@ export const useShoppingBag = () => {
             });
 
             return keysToCamelCase(response);
-        } catch (err) {
-            console.log(err.message);
-            return undefined;
+        } catch (error) {
+            console.error(error);
         }
     }, [get, isAuthenticated]);
 
@@ -171,9 +142,8 @@ export const useShoppingBag = () => {
             );
 
             return keysToCamelCase(response);
-        } catch (err) {
-            console.log(err.message);
-            return undefined;
+        } catch (error) {
+            console.error(error);
         }
     }, [get, isAuthenticated]);
 

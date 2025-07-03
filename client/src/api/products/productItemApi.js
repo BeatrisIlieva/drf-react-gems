@@ -17,15 +17,8 @@ export const useProductItem = () => {
                 const response = await get(fullUrl);
 
                 return keysToCamelCase(response);
-            } catch (err) {
-                if (err instanceof Error) {
-                    console.error(
-                        'Error in getProducts:',
-                        err.message
-                    );
-                    throw err;
-                }
-                throw new Error('Unknown error in getProducts');
+            } catch (error) {
+                console.error(error);
             }
         },
         [get]

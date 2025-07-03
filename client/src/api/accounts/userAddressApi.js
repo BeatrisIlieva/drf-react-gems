@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { useApi } from '../../hooks/useApi';
 import { HOST } from '../../constants/host';
-import { useAuth } from '../../hooks/auth/useAuth';
 import { keysToCamelCase } from '../../utils/convertToCamelCase';
 import { keysToSnakeCase } from '../../utils/convertToSnakeCase';
+import { useAuth } from '../../hooks/auth/useAuth';
 
 const baseUrl = `${HOST}/api/accounts/address`;
 
@@ -13,92 +13,110 @@ export const useUserAddress = () => {
 
     const getUserAddress = useCallback(async () => {
         try {
-            const result = await get(`${baseUrl}/`, {
+            const response = await get(`${baseUrl}/`, {
                 accessRequired: isAuthenticated,
                 refreshRequired: isAuthenticated
             });
-            return result ? keysToCamelCase(result) : undefined;
-        } catch {
-            return undefined;
+
+            return keysToCamelCase(response);
+        } catch (error) {
+            console.error(error);
         }
     }, [get, isAuthenticated]);
 
-    const updateUserAddress = useCallback(async (addressData) => {
-        try {
-            const snakeCaseData = keysToSnakeCase(addressData);
-            const result = await patch(`${baseUrl}/`, {
-                data: snakeCaseData,
-                accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated
-            });
-            return result ? keysToCamelCase(result) : undefined;
-        } catch {
-            return undefined;
-        }
-    }, [patch, isAuthenticated]);
+    const updateUserAddress = useCallback(
+        async (addressData) => {
+            try {
+                const response = await patch(`${baseUrl}/`, {
+                    data: keysToSnakeCase(addressData),
+                    accessRequired: isAuthenticated,
+                    refreshRequired: isAuthenticated
+                });
+                return keysToCamelCase(response);
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        [patch, isAuthenticated]
+    );
 
     const deleteUserAddress = useCallback(async () => {
         try {
-            await del(`${baseUrl}/`, {
+            const response = await del(`${baseUrl}/`, {
                 accessRequired: isAuthenticated,
                 refreshRequired: isAuthenticated
             });
-            return true;
-        } catch {
-            return false;
+            return keysToCamelCase(response);
+        } catch (error) {
+            console.error(error);
         }
     }, [del, isAuthenticated]);
 
     const getStates = useCallback(async () => {
         try {
-            const result = await get(`${baseUrl}/states/`, {
+            const response = await get(`${baseUrl}/states/`, {
                 accessRequired: isAuthenticated,
                 refreshRequired: isAuthenticated
             });
-            return result ? keysToCamelCase(result) : [];
-        } catch {
-            return [];
+            return keysToCamelCase(response);
+        } catch (error) {
+            console.error(error);
         }
     }, [get, isAuthenticated]);
 
-    const getCities = useCallback(async (stateId) => {
-        try {
-            const url = stateId ? `${baseUrl}/cities/?state_id=${stateId}` : `${baseUrl}/cities/`;
-            const result = await get(url, {
-                accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated
-            });
-            return result ? keysToCamelCase(result) : [];
-        } catch {
-            return [];
-        }
-    }, [get, isAuthenticated]);
+    const getCities = useCallback(
+        async (stateId) => {
+            try {
+                const url = stateId
+                    ? `${baseUrl}/cities/?state_id=${stateId}`
+                    : `${baseUrl}/cities/`;
+                const response = await get(url, {
+                    accessRequired: isAuthenticated,
+                    refreshRequired: isAuthenticated
+                });
+                return keysToCamelCase(response);
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        [get, isAuthenticated]
+    );
 
-    const getZipCodes = useCallback(async (cityId) => {
-        try {
-            const url = cityId ? `${baseUrl}/zip-codes/?city_id=${cityId}` : `${baseUrl}/zip-codes/`;
-            const result = await get(url, {
-                accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated
-            });
-            return result ? keysToCamelCase(result) : [];
-        } catch {
-            return [];
-        }
-    }, [get, isAuthenticated]);
+    const getZipCodes = useCallback(
+        async (cityId) => {
+            try {
+                const url = cityId
+                    ? `${baseUrl}/zip-codes/?city_id=${cityId}`
+                    : `${baseUrl}/zip-codes/`;
+                const response = await get(url, {
+                    accessRequired: isAuthenticated,
+                    refreshRequired: isAuthenticated
+                });
+                return keysToCamelCase(response);
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        [get, isAuthenticated]
+    );
 
-    const getStreetAddresses = useCallback(async (zipCodeId) => {
-        try {
-            const url = zipCodeId ? `${baseUrl}/street-addresses/?zip_code_id=${zipCodeId}` : `${baseUrl}/street-addresses/`;
-            const result = await get(url, {
-                accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated
-            });
-            return result ? keysToCamelCase(result) : [];
-        } catch {
-            return [];
-        }
-    }, [get, isAuthenticated]);
+    const getStreetAddresses = useCallback(
+        async (zipCodeId) => {
+            try {
+                const url = zipCodeId
+                    ? `${baseUrl}/street-addresses/?zip_code_id=${zipCodeId}`
+                    : `${baseUrl}/street-addresses/`;
+                const response = await get(url, {
+                    accessRequired: isAuthenticated,
+                    refreshRequired: isAuthenticated
+                });
+                return keysToCamelCase(response);
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        [get, isAuthenticated]
+    );
 
     return {
         getUserAddress,
@@ -107,6 +125,6 @@ export const useUserAddress = () => {
         getStates,
         getCities,
         getZipCodes,
-        getStreetAddresses,
+        getStreetAddresses
     };
 };

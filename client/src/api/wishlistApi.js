@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useApi } from '../hooks/useApi';
+import { keysToCamelCase } from '../utils/convertToCamelCase';
 import { HOST } from '../constants/host';
 
 import { useAuth } from '../hooks/auth/useAuth';
@@ -10,34 +11,32 @@ const baseUrl = `${HOST}/api/wishlist`;
 export const useWishlist = () => {
     const { get, post, del } = useApi();
     const { isAuthenticated } = useAuth();
-    const {updateWishlistCount} = useWishlistContext();
+    const { updateWishlistCount } = useWishlistContext();
 
     const getItems = useCallback(async () => {
         try {
-            const result = await get(`${baseUrl}/`, {
+            const response = await get(`${baseUrl}/`, {
                 accessRequired: isAuthenticated,
                 refreshRequired: isAuthenticated
             });
-            return result;
+            return keysToCamelCase(response);
         } catch (error) {
-            console.error('Error fetching wishlist:', error);
-            return undefined;
+            console.error(error);
         }
     }, [get, isAuthenticated]);
 
     const createItem = useCallback(
         async (data) => {
             try {
-                const result = await post(`${baseUrl}/`, {
+                const response = await post(`${baseUrl}/`, {
                     data,
                     accessRequired: isAuthenticated,
                     refreshRequired: isAuthenticated
                 });
                 updateWishlistCount();
-                return result;
+                return keysToCamelCase(response);
             } catch (error) {
-                console.error('Error adding to wishlist:', error);
-                return undefined;
+                console.error(error);
             }
         },
         [post, isAuthenticated, updateWishlistCount]
@@ -54,13 +53,10 @@ export const useWishlist = () => {
                     }
                 );
                 updateWishlistCount();
+
                 return true;
             } catch (error) {
-                console.error(
-                    'Error removing from wishlist:',
-                    error
-                );
-                return false;
+                console.error(error);
             }
         },
         [del, isAuthenticated, updateWishlistCount]
@@ -68,17 +64,13 @@ export const useWishlist = () => {
 
     const getCount = useCallback(async () => {
         try {
-            const result = await get(`${baseUrl}/count/`, {
+            const response = await get(`${baseUrl}/count/`, {
                 accessRequired: isAuthenticated,
                 refreshRequired: isAuthenticated
             });
-            return result;
+            return keysToCamelCase(response);
         } catch (error) {
-            console.error(
-                'Error fetching wishlist count:',
-                error
-            );
-            return { count: 0 };
+            console.error(error);
         }
     }, [get, isAuthenticated]);
 
