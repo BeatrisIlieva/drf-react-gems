@@ -6,45 +6,50 @@ import { FormFieldRenderer } from '../../../../common/FormFieldRenderer';
 import { Button } from '../../../../reusable/button/Button';
 import { DetailsContainer } from '../details-container/DetailsContainer';
 import { FORM_CONFIGS } from '../../../../../config/formFieldConfigs';
-import { 
-    createApiDataFromForm
-} from '../../../../../utils/formHelpers';
+import { createApiDataFromForm } from '../../../../../utils/formHelpers';
 
 import styles from './PersonalInfoForm.module.scss';
 
 export const PersonalInfoForm = () => {
-    const { fieldConfig, initialValues } = FORM_CONFIGS.personalInfo;
+    const { fieldConfig, initialValues } =
+        FORM_CONFIGS.personalInfo;
     const { getPersonalInfo, updatePersonalInfo } = useProfile();
 
-    const handleSubmit = useCallback(async (formData) => {
-        const apiData = createApiDataFromForm(formData, fieldConfig);
+    const handleSubmit = useCallback(
+        async (formData) => {
+            const apiData = createApiDataFromForm(
+                formData,
+                fieldConfig
+            );
 
-        try {
-            const result = await updatePersonalInfo(apiData);
+            try {
+                const result = await updatePersonalInfo(apiData);
 
-            if (result && !result.error) {
-                return { success: true };
-            }
+                if (result && !result.error) {
+                    return { success: true };
+                }
 
-            if (result && typeof result === 'object') {
-                // handleServerSideErrors will be called by useForm automatically
+                if (result && typeof result === 'object') {
+                    // handleServerSideErrors will be called by useForm automatically
+                    return {
+                        success: false,
+                        data: result
+                    };
+                }
+
                 return {
                     success: false,
-                    data: result
+                    error: 'Failed to update personal information'
+                };
+            } catch {
+                return {
+                    success: false,
+                    error: 'Failed to update personal information'
                 };
             }
-
-            return {
-                success: false,
-                error: 'Failed to update personal information'
-            };
-        } catch {
-            return {
-                success: false,
-                error: 'Failed to update personal information'
-            };
-        }
-    }, [fieldConfig, updatePersonalInfo]);
+        },
+        [fieldConfig, updatePersonalInfo]
+    );
 
     const formProps = useForm(initialValues, {
         onSubmit: handleSubmit,
@@ -65,8 +70,8 @@ export const PersonalInfoForm = () => {
     } = formProps;
 
     const { loading } = useFormDataLoader(
-        getPersonalInfo, 
-        updateFieldValue, 
+        getPersonalInfo,
+        updateFieldValue,
         fieldConfig
     );
 
@@ -80,9 +85,7 @@ export const PersonalInfoForm = () => {
     const fieldNames = Object.keys(fieldConfig);
 
     return (
-        <DetailsContainer>
-            <h3>Personal Information</h3>
-
+        <DetailsContainer title='Personal Information'>
             {loading ? (
                 <div className={styles['loading']}>
                     Loading personal information...

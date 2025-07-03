@@ -24,11 +24,17 @@ const personalInfoFields = [
 
 const deliveryAddressFields = [
     {
-        name: 'state',
-        apiKey: 'state',
+        name: 'streetAddress',
+        apiKey: 'street_address',
         required: true,
-        label: 'State',
+        label: 'Street Address (No PO/APO/FPO)',
         type: 'select'
+    },
+    {
+        name: 'apartment',
+        apiKey: 'apartment',
+        required: false,
+        label: 'Apartment/Suite/Floor (Optional)'
     },
     {
         name: 'city',
@@ -38,24 +44,18 @@ const deliveryAddressFields = [
         type: 'select'
     },
     {
+        name: 'state',
+        apiKey: 'state',
+        required: true,
+        label: 'State',
+        type: 'select'
+    },
+    {
         name: 'zipCode',
         apiKey: 'zip_code',
         required: true,
         label: 'ZIP Code',
         type: 'select'
-    },
-    {
-        name: 'streetAddress',
-        apiKey: 'street_address',
-        required: true,
-        label: 'Street Address',
-        type: 'select'
-    },
-    {
-        name: 'apartment',
-        apiKey: 'apartment',
-        required: false,
-        label: 'Apartment/Unit'
     }
 ];
 

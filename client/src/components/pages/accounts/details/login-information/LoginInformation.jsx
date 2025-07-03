@@ -14,9 +14,7 @@ export const LoginInformation = () => {
 
     return (
         <>
-            <DetailsContainer>
-                <h3>Login Information</h3>
-
+            <DetailsContainer title='Login Information'>
                 <div className={styles['login-information']}>
                     <div className={styles['user-info']}>
                         <div className={styles['column']}>

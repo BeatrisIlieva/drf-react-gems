@@ -17,6 +17,7 @@ export const ProductListProvider = ({ children }) => {
     const [count, setCount] = useState(0);
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     const [ordering, setOrdering] = useState(null);
 
     const loadMoreDisabled = useMemo(
@@ -42,6 +43,7 @@ export const ProductListProvider = ({ children }) => {
             shouldResetOrdering = false
         }) => {
             setLoading(true);
+            setError(null);
 
             try {
                 const response = await getProductList({
@@ -72,8 +74,11 @@ export const ProductListProvider = ({ children }) => {
                 if (shouldResetOrdering) {
                     resetOrdering();
                 }
-            } catch (error) {
-                console.error(error);
+            } catch (err) {
+                setError(err.message || 'Failed to load products');
+                if (!shouldUpdateProducts) {
+                    setProducts([]);
+                }
             } finally {
                 setLoading(false);
             }
@@ -166,6 +171,7 @@ export const ProductListProvider = ({ children }) => {
         () => ({
             products,
             loading,
+            error,
             loadMoreHandler,
             loadMoreDisabled,
             updateOrdering,
@@ -176,6 +182,7 @@ export const ProductListProvider = ({ children }) => {
         [
             products,
             loading,
+            error,
             loadMoreHandler,
             loadMoreDisabled,
             updateOrdering,

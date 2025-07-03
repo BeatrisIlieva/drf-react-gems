@@ -4,6 +4,7 @@ export const ProductListContext = createContext({
     count: 0,
     ordering: null,
     loading: false,
+    error: null,
     loadMoreDisabled: false,
     products: [],
     loadMoreHandler: () => null,

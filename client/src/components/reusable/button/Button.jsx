@@ -1,3 +1,4 @@
+import { Icon } from '../icon/Icon';
 import styles from './Button.module.scss';
 
 export const Button = ({
@@ -32,7 +33,15 @@ export const Button = ({
             type={actionType}
             disabled={disabled || pending}
         >
-            {pending ? 'pending...' : title}
+            {pending ? (
+                <span className={styles['ellipsis']}>
+                    <Icon name='ellipsis' fontSize={0.8} />
+                    <Icon name='ellipsis' fontSize={0.8} />
+                    <Icon name='ellipsis' fontSize={0.8} />
+                </span>
+            ) : (
+                title
+            )}
         </button>
     );
 };

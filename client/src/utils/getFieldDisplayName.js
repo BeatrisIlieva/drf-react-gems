@@ -6,7 +6,8 @@ export const getFieldDisplayName = (fieldName) => {
         phoneNumber: 'Phone Number',
         password_confirmation: 'Confirm Password',
         currentPassword: 'Current Password',
-        newPassword: 'New Password'
+        newPassword: 'New Password',
+        apartment: 'Apartment/Suite/Floor (Optional)'
     };
 
     return (

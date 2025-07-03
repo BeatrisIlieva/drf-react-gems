@@ -72,4 +72,10 @@
             }
         }
     }
+
+    .ellipsis {
+        display: flex;
+        gap: 0.2em;
+        justify-self: center;        
+    }
 }

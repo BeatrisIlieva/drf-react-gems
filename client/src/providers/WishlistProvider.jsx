@@ -68,14 +68,16 @@ export const WishlistProvider = ({ children }) => {
                     object_id: objectId
                 });
 
+                console.log(success)
+
                 if (success) {
                     setWishlistItems((prev) =>
                         prev.filter(
                             (item) =>
                                 !(
-                                    item.content_type ===
+                                    item.contentType ===
                                         contentType &&
-                                    item.object_id === objectId
+                                    item.objectId === objectId
                                 )
                         )
                     );
@@ -96,11 +98,13 @@ export const WishlistProvider = ({ children }) => {
     );
 
     const isInWishlist = useCallback(
+        
         (contentType, objectId) => {
+            console.log(wishlistItems)
             return wishlistItems.some(
                 (item) =>
-                    item.content_type === contentType &&
-                    item.object_id === objectId
+                    item.contentType === contentType &&
+                    item.objectId === objectId
             );
         },
         [wishlistItems]

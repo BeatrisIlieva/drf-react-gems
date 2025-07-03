@@ -16,7 +16,8 @@ export const InputField = ({
     handleBlur,
     fieldName,
     type,
-    registerInput
+    registerInput,
+    required
 }) => {
     const onChangeHandler = handleFieldChange || validateField;
 
@@ -55,14 +56,16 @@ export const InputField = ({
                 value={fieldData.value}
                 onChange={onChangeHandler}
                 onBlur={onBlurHandler}
+                required={required}
             />
             <label
                 htmlFor={fieldName}
                 className={getInputClassName(fieldData)}
             >
-                {`${getFieldDisplayName(fieldName)}*`}
+                {fieldName === 'apartment'
+                    ? getFieldDisplayName(fieldName)
+                    : `${getFieldDisplayName(fieldName)}*`}
             </label>
-
             {type === 'password' && (
                 <FontAwesomeIcon
                     icon={isPasswordVisible ? faEyeSlash : faEye}

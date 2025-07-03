@@ -13,8 +13,6 @@ export const PasswordUpdateForm = ({ onSuccess }) => {
 
     const initialFormValues = useMemo(
         () => ({
-            email: { value: '', error: '', valid: false },
-            password: { value: '', error: '', valid: false },
             currentPassword: {
                 value: '',
                 error: '',
@@ -73,7 +71,7 @@ export const PasswordUpdateForm = ({ onSuccess }) => {
 
     const formProps = useForm(initialFormValues, {
         onSubmit: handleSubmit,
-        validateOnSubmit: false
+        validateOnSubmit: true
     });
 
     const {

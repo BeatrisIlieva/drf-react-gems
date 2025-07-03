@@ -11,7 +11,7 @@ export const ChevronToggle = ({ onToggle, isOpen }) => {
             }`}
         >
             <Icon
-                name={isOpen ? 'arrowUp' : 'arrowDown'}
+                name={'arrowDown'}
                 isSubtle={true}
                 fontSize={0.6}
             />

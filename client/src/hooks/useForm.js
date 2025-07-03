@@ -1,14 +1,14 @@
 import { useState, useActionState, useCallback } from 'react';
 
-import { validateForm } from '../utils/validateForm';
 import { getFormFieldErrorMessage } from '../utils/getFormFieldErrorMessage';
 import { useFocusOnInvalidInput } from './useFocusOnInvalidInput';
 
-export const useForm = (initialFormValues, options) => {
+export const useForm = (initialFormValues, options = {}) => {
     const {
         validateOnSubmit = true,
         resetOnSuccess = false,
-        onSubmit
+        onSubmit,
+        customValidation
     } = options;
 
     const [formData, setFormData] = useState(initialFormValues);
@@ -50,18 +50,24 @@ export const useForm = (initialFormValues, options) => {
 
     // Helper function to update field values (e.g., when loading from server)
     const updateFieldValue = useCallback(
-        (fieldName, value, markAsInteracted) => {
+        (
+            fieldName,
+            value,
+            markAsInteracted,
+            preserveError = false
+        ) => {
+            const error = customValidation
+                ? customValidation(fieldName, value)
+                : getFormFieldErrorMessage(fieldName, value);
+
             setFormData((state) => ({
                 ...state,
                 [fieldName]: {
                     value,
-                    error: '',
-                    valid: markAsInteracted
-                        ? getFormFieldErrorMessage(
-                              fieldName,
-                              value
-                          ) === ''
-                        : false
+                    error: preserveError
+                        ? state[fieldName]?.error || ''
+                        : '',
+                    valid: markAsInteracted ? error === '' : false
                 }
             }));
 
@@ -71,30 +77,49 @@ export const useForm = (initialFormValues, options) => {
                 );
             }
         },
-        []
+        [customValidation]
     );
 
-    const validateFields = () => {
+    const validateFields = useCallback(() => {
         const updatedFormData = { ...formData };
+        let isValid = true;
 
-        const { validatedUserData, isValid } = validateForm(
-            formData,
-            updatedFormData
-        );
+        Object.entries(formData).forEach(([field, fieldData]) => {
+            if (!fieldData) return;
 
-        setFormData(validatedUserData);
+            const errorMessage = customValidation
+                ? customValidation(field, fieldData.value)
+                : getFormFieldErrorMessage(
+                      field,
+                      fieldData.value
+                  );
+
+            if (errorMessage !== '') {
+                isValid = false;
+            }
+
+            updatedFormData[field] = {
+                ...fieldData,
+                error: errorMessage,
+                valid: errorMessage === ''
+            };
+        });
+
+        setFormData(updatedFormData);
 
         if (!isValid) {
-            focusFirstInvalid(validatedUserData);
+            focusFirstInvalid(updatedFormData);
         }
 
         return isValid;
-    };
+    }, [formData, customValidation, focusFirstInvalid]);
 
     // This function validates a field on blur and marks it as interacted
     const validateField = (e) => {
         const { name, value } = e.target;
-        const error = getFormFieldErrorMessage(name, value);
+        const error = customValidation
+            ? customValidation(name, value)
+            : getFormFieldErrorMessage(name, value);
         const valid = error === '';
 
         // Mark field as interacted when validation occurs (on blur)
@@ -114,7 +139,9 @@ export const useForm = (initialFormValues, options) => {
     // Shows valid state in real-time when field passes validation
     const handleFieldChange = (e) => {
         const { name, value } = e.target;
-        const error = getFormFieldErrorMessage(name, value);
+        const error = customValidation
+            ? customValidation(name, value)
+            : getFormFieldErrorMessage(name, value);
         const isFieldValid = error === '';
         const hasInteracted = interactedFields.has(name);
 
@@ -123,14 +150,16 @@ export const useForm = (initialFormValues, options) => {
         // 2. Field has value and is valid (real-time validation feedback)
         const shouldShowValid =
             (hasInteracted && isFieldValid) ||
-            (value.trim() !== '' && isFieldValid);
+            (String(value).trim() !== '' && isFieldValid);
 
-        // Update the field in real-time
+        // Only update the specific field that changed, preserve other fields' states
         setFormData((state) => ({
             ...state,
             [name]: {
                 value,
-                error: '', // Don't show error while typing
+                error: isFieldValid
+                    ? ''
+                    : state[name]?.error || '',
                 valid: shouldShowValid
             }
         }));

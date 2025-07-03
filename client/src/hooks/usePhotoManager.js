@@ -15,8 +15,8 @@ export const usePhotoManager = () => {
             setError(null);
 
             const response = await getPhoto();
-            if (response?.photo_url) {
-                setCurrentPhoto(response.photo_url);
+            if (response?.photoUrl) {
+                setCurrentPhoto(response.photoUrl);
             }
         } catch (err) {
             setError('Failed to load profile photo');
