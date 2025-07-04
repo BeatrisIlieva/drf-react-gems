@@ -40,10 +40,6 @@ class Command(BaseCommand):
             self.stdout.write(
                 self.style.SUCCESS('🏠 Step 4/4: Creating addresses...')
             )
-            call_command('create_addresses')
-            self.stdout.write(
-                self.style.SUCCESS('✅ Addresses created successfully!')
-            )
 
             self.stdout.write(
                 self.style.SUCCESS(

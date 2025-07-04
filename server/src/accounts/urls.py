@@ -14,10 +14,6 @@ from src.accounts.views import (
 
 from src.accounts.views.user_address import (
     UserAddressView,
-    StateListView,
-    CityListView,
-    ZipCodeListView,
-    StreetAddressListView
 )
 
 urlpatterns = [
@@ -29,10 +25,6 @@ urlpatterns = [
     path('photo/', PhotoUploadView.as_view(), name='photo'),
     path('change-password/', PasswordChangeView.as_view(), name='change-password'),
     path('token/refresh/', TokenRefreshView.as_view(), name='refresh-token'),
-    
+
     path('address/', UserAddressView.as_view(), name='user-address'),
-    path('address/states/', StateListView.as_view(), name='states-list'),
-    path('address/cities/', CityListView.as_view(), name='cities-list'),
-    path('address/zip-codes/', ZipCodeListView.as_view(), name='zip-codes-list'),
-    path('address/street-addresses/', StreetAddressListView.as_view(), name='street-addresses-list'),
 ]

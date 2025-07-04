@@ -6,16 +6,12 @@ from src.accounts.validators.models import (
     OnlyDigitsValidator,
     NameValidator
 )
+from src.accounts.constants import UserFieldLengths
 
 UserModel = get_user_model()
 
 
 class UserProfile(models.Model):
-    FIRST_NAME_MAX_LENGTH = 30
-    LAST_NAME_MAX_LENGTH = 30
-    PHONE_NUMBER_MAX_LENGTH = 15
-    PHONE_NUMBER_MIN_LENGTH = 9
-
     user = models.OneToOneField(
         to=UserModel,
         on_delete=models.CASCADE,
@@ -23,8 +19,9 @@ class UserProfile(models.Model):
     )
 
     first_name = models.CharField(
-        max_length=FIRST_NAME_MAX_LENGTH,
+        max_length=UserFieldLengths.FIRST_NAME_MAX,
         validators=[
+            MinLengthValidator(UserFieldLengths.FIRST_NAME_MIN),
             NameValidator(),
         ],
         null=True,
@@ -32,8 +29,9 @@ class UserProfile(models.Model):
     )
 
     last_name = models.CharField(
-        max_length=LAST_NAME_MAX_LENGTH,
+        max_length=UserFieldLengths.LAST_NAME_MAX,
         validators=[
+            MinLengthValidator(UserFieldLengths.LAST_NAME_MIN),
             NameValidator(),
         ],
         null=True,
@@ -41,9 +39,9 @@ class UserProfile(models.Model):
     )
 
     phone_number = models.CharField(
-        max_length=PHONE_NUMBER_MAX_LENGTH,
+        max_length=UserFieldLengths.PHONE_NUMBER_MAX,
         validators=[
-            MinLengthValidator(PHONE_NUMBER_MIN_LENGTH),
+            MinLengthValidator(UserFieldLengths.PHONE_NUMBER_MIN),
             OnlyDigitsValidator(),
         ],
         null=True,

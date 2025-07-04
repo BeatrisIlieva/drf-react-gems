@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth import get_user_model
 
+from src.accounts.models.user_profile import UserProfile
 from src.accounts.forms import UserCredentialCreationForm
 
 
@@ -44,3 +45,8 @@ class UserCredentialAdmin(UserAdmin):
             'fields': ('email', 'username', 'password1', 'password2'),
         }),
     )
+
+
+@admin.register(UserProfile)
+class UserprofileAdmin(admin.ModelAdmin):
+    pass
