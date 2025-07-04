@@ -21,7 +21,7 @@ export const ShoppingBagItem = ({
 
     return (
         <li className={styles['shopping-bag-item']}>
-            <span>
+            <span className={styles['thumbnail']}>
                 <img
                     src={productInfo.firstImage}
                     alt={productInfo.collection}

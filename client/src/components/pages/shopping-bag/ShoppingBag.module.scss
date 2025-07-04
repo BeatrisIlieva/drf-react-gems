@@ -1,33 +1,32 @@
 @use '../../../styles/animations' as anim;
+@use '../../../styles/variables' as vars;
 
 .shopping-bag {
     display: flex;
-    gap: 3em;
+    flex-direction: column;
     justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 2em;
-    margin-bottom: 6em;
+    padding: vars.$layout-inline-padding
+        calc(vars.$layout-inline-padding) * 3;
     @include anim.animate-fade-in(1s);
 
     h2 {
-        flex: 0 0 100%;
         text-align: center;
         text-transform: uppercase;
         font-weight: 500;
     }
-}
 
-.wrapper-left {
-    flex: 0 0 41%;
-}
+    .wrapper {
+        display: flex;
+        gap: 3em;
 
-.wrapper-right {
-    flex: 0 0 22%;
-    display: flex;
-    flex-direction: column;
+        .wrapper-left {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5em;
+        }
 
-    button {
-        margin-top: 1.25em;
-        flex-grow: 0;
+        & > section {
+            margin-top: 3.5em;
+        }
     }
 }

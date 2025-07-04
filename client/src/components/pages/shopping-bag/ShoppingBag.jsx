@@ -1,4 +1,4 @@
-import { useEffect,  } from 'react';
+import { useEffect } from 'react';
 import styles from './ShoppingBag.module.scss';
 import { Delivery } from '../../reusable/delivery/Delivery';
 import { OrderSummary } from '../../reusable/order-summary/OrderSummary';
@@ -43,14 +43,13 @@ export const ShoppingBag = () => {
             {isEmpty ? (
                 <EmptyList title='shopping bag' />
             ) : (
-                <>
+                <div className={styles['wrapper']}>
                     <div className={styles['wrapper-left']}>
-                        <Delivery fontSize={'large'} />
+                        <Delivery fontSize={1.4} />
                         <ShoppingBagList />
                     </div>
 
-                    <div className={styles['wrapper-right']}>
-                        <OrderSummary />
+                    <OrderSummary>
                         <Button
                             title={'Continue Checkout'}
                             color={'black'}
@@ -58,11 +57,12 @@ export const ShoppingBag = () => {
                             callbackHandler={
                                 continueCheckoutHandler
                             }
+                            buttonGrow='1'
                         />
 
                         <ComplimentaryShipping />
-                    </div>
-                </>
+                    </OrderSummary>
+                </div>
             )}
         </section>
     );
