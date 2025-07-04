@@ -1,8 +1,15 @@
-import { useCallback, useMemo, useState } from 'react';
+import {
+    useCallback,
+    useMemo,
+    useState,
+    useEffect,
+    useRef
+} from 'react';
 import { useShoppingBag } from '../api/shoppingBagApi';
 import { ShoppingBagContext } from '../contexts/ShoppingBagContext';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../hooks/auth/useAuth';
+import usePersistedState from '../hooks/usePersistedState';
 
 export const ShoppingBagProvider = ({ children }) => {
     const { deleteItem, getItems, getCount, getTotalPrice } =
@@ -12,42 +19,77 @@ export const ShoppingBagProvider = ({ children }) => {
     const navigate = useNavigate();
     const [isDeleting, setIsDeleting] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const hasInitialized = useRef(false);
 
     const [shoppingBagItemsCount, setShoppingBagItemsCount] =
-        useState(0);
+        usePersistedState('shopping-bag-count', 0);
     const [shoppingBagTotalPrice, setShoppingBagTotalPrice] =
-        useState(0);
-    const [shoppingBagItems, setShoppingBagItems] = useState([]);
+        usePersistedState('shopping-bag-total-price', 0);
+    const [shoppingBagItems, setShoppingBagItems] =
+        usePersistedState('shopping-bag-items', []);
 
     const getShoppingBagItemsHandler = useCallback(async () => {
+        if (!isAuthenticated) return;
+
         setIsLoading(true);
         try {
             const response = await getItems();
             setShoppingBagItems(response);
         } catch (err) {
-            console(err.message);
+            console.error(err.message);
         } finally {
             setIsLoading(false);
         }
-    }, [getItems]);
+    }, [getItems, isAuthenticated, setShoppingBagItems]);
 
     const updateShoppingBagCount = useCallback(async () => {
+        if (!isAuthenticated) return;
+
         try {
             const response = await getCount();
             setShoppingBagItemsCount(response.count);
         } catch (err) {
-            console(err.message);
+            console.error(err.message);
         }
-    }, [getCount]);
+    }, [getCount, isAuthenticated, setShoppingBagItemsCount]);
 
     const updateShoppingBagTotalPrice = useCallback(async () => {
+        if (!isAuthenticated) return;
+
         try {
             const response = await getTotalPrice();
             setShoppingBagTotalPrice(response.totalPrice);
         } catch (err) {
-            console(err.message);
+            console.error(err.message);
         }
-    }, [getTotalPrice]);
+    }, [
+        getTotalPrice,
+        isAuthenticated,
+        setShoppingBagTotalPrice
+    ]);
+
+    useEffect(() => {
+        if (isAuthenticated && !hasInitialized.current) {
+            hasInitialized.current = true;
+            getShoppingBagItemsHandler();
+            updateShoppingBagCount();
+            updateShoppingBagTotalPrice();
+        } else if (!isAuthenticated) {
+            hasInitialized.current = false;
+            setShoppingBagItems([]);
+            setShoppingBagItemsCount(0);
+            setShoppingBagTotalPrice(0);
+            setIsLoading(false);
+        }
+    }, [
+        isAuthenticated,
+        getShoppingBagItemsHandler,
+        updateShoppingBagCount,
+        updateShoppingBagTotalPrice,
+        setShoppingBagItems,
+        setShoppingBagItemsCount,
+        setShoppingBagTotalPrice
+    ]);
 
     const deleteShoppingBagHandler = useCallback(
         async (id) => {
@@ -55,18 +97,15 @@ export const ShoppingBagProvider = ({ children }) => {
             try {
                 await deleteItem(id);
 
-                // Immediately update local state to reflect the deletion
                 const updatedItems = shoppingBagItems.filter(
                     (item) => item.id !== id
                 );
                 setShoppingBagItems(updatedItems);
 
-                // Optimistically update the count
                 setShoppingBagItemsCount((prev) =>
                     Math.max(0, prev - 1)
                 );
 
-                // Calculate and update the total price optimistically
                 const deletedItem = shoppingBagItems.find(
                     (item) => item.id === id
                 );
@@ -92,7 +131,14 @@ export const ShoppingBagProvider = ({ children }) => {
                 setIsDeleting(false);
             }
         },
-        [deleteItem, getShoppingBagItemsHandler, shoppingBagItems]
+        [
+            deleteItem,
+            getShoppingBagItemsHandler,
+            shoppingBagItems,
+            setShoppingBagItems,
+            setShoppingBagItemsCount,
+            setShoppingBagTotalPrice
+        ]
     );
 
     const continueCheckoutHandler = useCallback(() => {
@@ -101,7 +147,7 @@ export const ShoppingBagProvider = ({ children }) => {
             return;
         }
 
-        navigate('/checkout');
+        navigate('/user/checkout');
     }, [isAuthenticated, navigate]);
 
     const contextValue = useMemo(
