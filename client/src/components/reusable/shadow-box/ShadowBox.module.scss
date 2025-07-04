@@ -1,0 +1,20 @@
+@use '../../../styles/variables' as vars;
+
+.shadow-box {
+    padding: 2em;
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.1);
+    background: vars.$white;
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    h3 {
+        text-transform: uppercase;
+        margin-bottom: 1.5em;
+        padding-bottom: 1em;
+        border-bottom: 0.06em solid vars.$light-grey;
+        font-size: 1.2em;
+        font-weight: 500;
+    }
+}

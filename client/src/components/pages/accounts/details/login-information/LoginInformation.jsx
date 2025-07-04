@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DetailsContainer } from '../details-container/DetailsContainer';
+import { ShadowBox } from '../../../../reusable/shadow-box/ShadowBox';
 import { Popup } from '../../../../reusable/popup/Popup';
 import { PasswordUpdateForm } from '../password-update-form/PasswordUpdateForm';
 import { Icon } from '../../../../reusable/icon/Icon';
@@ -14,7 +14,7 @@ export const LoginInformation = () => {
 
     return (
         <>
-            <DetailsContainer title='Login Information'>
+            <ShadowBox title='Login Information'>
                 <div className={styles['login-information']}>
                     <div className={styles['user-info']}>
                         <div className={styles['column']}>
@@ -73,7 +73,7 @@ export const LoginInformation = () => {
                         </div>
                     </div>
                 </div>
-            </DetailsContainer>
+            </ShadowBox>
 
             <Popup
                 isOpen={isPasswordPopupOpen}
