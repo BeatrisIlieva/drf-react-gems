@@ -1,0 +1,26 @@
+@use '../../../styles/variables' as vars;
+
+.shopping-bag-summary-list {
+    & > p:first-child {
+        margin-bottom: 0.75em;
+    }
+
+    ul {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .loading {
+        padding: 2rem;
+        text-align: center;
+        color: vars.$dark-grey;
+        font-style: italic;
+    }
+
+    .empty {
+        padding: 2rem;
+        text-align: center;
+        color: vars.$dark-grey;
+        font-style: italic;
+    }
+}
