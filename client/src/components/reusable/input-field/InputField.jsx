@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { getFieldDisplayName } from '../../../utils/getFieldDisplayName';
+import { getDefaultMaxLength } from '../../../utils/formHelpers';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -17,11 +18,18 @@ export const InputField = ({
     fieldName,
     type,
     registerInput,
-    required
+    required,
+    fieldConfig
 }) => {
     const onChangeHandler = handleFieldChange || validateField;
 
     const onBlurHandler = handleBlur || validateField;
+
+    const fieldType = type || fieldConfig?.[fieldName]?.type || 'text';
+    
+    const maxLength = fieldData?.maxLength || 
+        fieldConfig?.[fieldName]?.maxLength || 
+        getDefaultMaxLength(fieldName, fieldType);
 
     const [isPasswordVisible, setIsPasswordVisible] =
         useState(false);
@@ -44,11 +52,11 @@ export const InputField = ({
                 ref={inputRef}
                 className={getInputClassName(fieldData)}
                 type={
-                    type === 'password'
+                    fieldType === 'password'
                         ? isPasswordVisible
                             ? 'text'
                             : 'password'
-                        : type
+                        : fieldType
                 }
                 name={fieldName}
                 id={fieldName}
@@ -57,6 +65,7 @@ export const InputField = ({
                 onChange={onChangeHandler}
                 onBlur={onBlurHandler}
                 required={required}
+                maxLength={maxLength}
             />
             <label
                 htmlFor={fieldName}
@@ -66,7 +75,7 @@ export const InputField = ({
                     ? getFieldDisplayName(fieldName)
                     : `${getFieldDisplayName(fieldName)}*`}
             </label>
-            {type === 'password' && (
+            {fieldType === 'password' && (
                 <FontAwesomeIcon
                     icon={isPasswordVisible ? faEyeSlash : faEye}
                     className={styles['eye-icon']}
