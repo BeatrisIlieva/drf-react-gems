@@ -1,8 +1,9 @@
+import { FIELD_LENGTHS } from '../../../constants/fieldLengths';
 import styles from './PasswordValidator.module.scss';
 
 export const PasswordValidator = ({ password }) => {
     const validations = {
-        length: password.length >= 6,
+        length: password.length >= FIELD_LENGTHS.PASSWORD_MIN,
         upper: /[A-Z]/.test(password),
         lower: /[a-z]/.test(password),
         number: /\d/.test(password),
@@ -12,7 +13,7 @@ export const PasswordValidator = ({ password }) => {
 
     const criteria = [
         {
-            label: 'Must be at least 6 characters in length',
+            label: `Must be at least ${FIELD_LENGTHS.PASSWORD_MIN} characters in length`,
             key: 'length'
         },
         {
