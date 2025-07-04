@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Icon } from '../icon/Icon';
 import styles from './Button.module.scss';
 
@@ -7,13 +8,26 @@ export const Button = ({
     color,
     actionType = 'button',
     pending = false,
-    disabled = false
+    success = false,
+    disabled = false,
+    buttonGrow = '0',
+    width = 'auto'
 }) => {
+    const [showSuccess, setShowSuccess] = useState(false);
+
+    useEffect(() => {
+        if (success && !pending) {
+            setShowSuccess(true);
+            const timer = setTimeout(() => {
+                setShowSuccess(false);
+            }, 2000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [success, pending]);
+
     const handleClick = () => {
-        // For submit buttons, let the form handle submission naturally
         if (actionType === 'submit') {
-            // Don't prevent default - let the form action handle it
-            // Only call callback if it's not an empty function
             if (
                 callbackHandler &&
                 callbackHandler.toString() !== '() => {}'
@@ -21,27 +35,45 @@ export const Button = ({
                 callbackHandler();
             }
         } else {
-            // For non-submit buttons, call the callback
             callbackHandler();
+        }
+    };
+
+    const getButtonContent = () => {
+        if (pending) {
+            return (
+                <span className={styles['button-content']} key="pending">
+                    <Icon name='ellipsis' fontSize={1.2} />
+                </span>
+            );
+        } else if (showSuccess) {
+            return (
+                <span className={styles['button-content']} key="success">
+                    <Icon name='check' fontSize={1.2} />
+                </span>
+            );
+        } else {
+            return (
+                <span className={styles['button-content']} key="title">
+                    {title}
+                </span>
+            );
         }
     };
 
     return (
         <button
             onClick={handleClick}
-            className={`${styles['btn']} ${styles[color]}`}
+            className={`${styles['btn']} ${styles[color]} ${
+                pending ? styles['pending'] : ''
+            } ${showSuccess ? styles['success'] : ''}`}
             type={actionType}
             disabled={disabled || pending}
+            style={{ flexGrow: buttonGrow, width: width !== 'auto' ? `${width}em` : 'auto' }}
         >
-            {pending ? (
-                <span className={styles['ellipsis']}>
-                    <Icon name='ellipsis' fontSize={0.8} />
-                    <Icon name='ellipsis' fontSize={0.8} />
-                    <Icon name='ellipsis' fontSize={0.8} />
-                </span>
-            ) : (
-                title
-            )}
+            <div className={styles['content-wrapper']}>
+                {getButtonContent()}
+            </div>
         </button>
     );
 };
