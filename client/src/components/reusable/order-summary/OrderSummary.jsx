@@ -2,12 +2,15 @@ import styles from './OrderSummary.module.scss';
 import { useShoppingBagContext } from '../../../contexts/ShoppingBagContext';
 import { getTextRows } from './utils';
 import { FlexTextRow } from '../flex-text-row/FlexTextRow';
-import { Skeleton } from './skeleton/Skeleton';
 import { useMemo } from 'react';
+import { ShadowBox } from '../shadow-box/ShadowBox';
 
-export const OrderSummary = () => {
-    const { shoppingBagTotalPrice, isLoading } =
-        useShoppingBagContext();
+export const OrderSummary = ({
+    children,
+    order = 2,
+    separate = false
+}) => {
+    const { shoppingBagTotalPrice } = useShoppingBagContext();
 
     const textRows = useMemo(
         () => getTextRows(shoppingBagTotalPrice),
@@ -16,19 +19,22 @@ export const OrderSummary = () => {
 
     return (
         <section className={styles['order-summary']}>
-            {isLoading ? (
-                <Skeleton />
-            ) : (
-                <>
-                    <h3>Order Summary</h3>
-
-                    <div>
-                        {textRows.map((row, index) => (
-                            <FlexTextRow key={index} {...row} />
-                        ))}
+            <ShadowBox title='Order Summary'>
+                <div>
+                    {textRows.map((row, index) => (
+                        <FlexTextRow key={index} {...row} />
+                    ))}
+                </div>
+                {!separate && (
+                    <div
+                        className={styles['children']}
+                        style={{ order: order }}
+                    >
+                        {children}
                     </div>
-                </>
-            )}
+                )}
+            </ShadowBox>
+            {separate && <ShadowBox>{children}</ShadowBox>}
         </section>
     );
 };
