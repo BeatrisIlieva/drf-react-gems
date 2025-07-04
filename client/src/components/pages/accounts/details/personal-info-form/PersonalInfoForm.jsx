@@ -4,7 +4,7 @@ import { useProfile } from '../../../../../api/accounts/useProfileApi';
 import { useFormDataLoader } from '../../../../../hooks/useFormDataLoader';
 import { FormFieldRenderer } from '../../../../common/FormFieldRenderer';
 import { Button } from '../../../../reusable/button/Button';
-import { DetailsContainer } from '../details-container/DetailsContainer';
+import { ShadowBox } from '../../../../reusable/shadow-box/ShadowBox';
 import { FORM_CONFIGS } from '../../../../../config/formFieldConfigs';
 import { createApiDataFromForm } from '../../../../../utils/formHelpers';
 
@@ -30,17 +30,11 @@ export const PersonalInfoForm = () => {
                 }
 
                 if (result && typeof result === 'object') {
-                    // handleServerSideErrors will be called by useForm automatically
                     return {
                         success: false,
                         data: result
                     };
                 }
-
-                return {
-                    success: false,
-                    error: 'Failed to update personal information'
-                };
             } catch {
                 return {
                     success: false,
@@ -85,13 +79,17 @@ export const PersonalInfoForm = () => {
     const fieldNames = Object.keys(fieldConfig);
 
     return (
-        <DetailsContainer title='Personal Information'>
+        <ShadowBox title='Personal Information'>
             {loading ? (
                 <div className={styles['loading']}>
                     Loading personal information...
                 </div>
             ) : (
-                <form ref={formRef} action={submitAction}>
+                <form
+                    ref={formRef}
+                    action={submitAction}
+                    className={styles['personal-info-form']}
+                >
                     <FormFieldRenderer
                         fieldNames={fieldNames}
                         formData={formData}
@@ -107,10 +105,13 @@ export const PersonalInfoForm = () => {
                         color='black'
                         actionType='submit'
                         pending={isSubmitting}
+                        success={formProps.formState?.success}
                         callbackHandler={() => {}}
+                        buttonGrow='0'
+                        width='5'
                     />
                 </form>
             )}
-        </DetailsContainer>
+        </ShadowBox>
     );
 };

@@ -1,75 +1,61 @@
-import { Fragment, useMemo, useState } from 'react';
+import {
+    Fragment,
+    useCallback,
+    useState,
+    useEffect
+} from 'react';
 import { useForm } from '../../../../../hooks/useForm';
-import { useFocusOnInvalidInput } from '../../../../../hooks/useFocusOnInvalidInput';
 import { useProfile } from '../../../../../api/accounts/useProfileApi';
 import { Button } from '../../../../reusable/button/Button';
-import styles from './PasswordUpdateForm.module.scss';
 import { InputField } from '../../../../reusable/input-field/InputField';
 import { PasswordValidator } from '../../../../reusable/password-validator/PasswordValidator';
+import { FORM_CONFIGS } from '../../../../../config/formFieldConfigs';
+import { createApiDataFromForm } from '../../../../../utils/formHelpers';
+import styles from './PasswordUpdateForm.module.scss';
 
 export const PasswordUpdateForm = ({ onSuccess }) => {
+    const { fieldConfig, initialValues } =
+        FORM_CONFIGS.passwordUpdate;
     const { changePassword } = useProfile();
     const [newPasswordValue, setNewPasswordValue] = useState('');
 
-    const initialFormValues = useMemo(
-        () => ({
-            currentPassword: {
-                value: '',
-                error: '',
-                valid: false
-            },
-            newPassword: { value: '', error: '', valid: false }
-        }),
-        []
+    const handleSubmit = useCallback(
+        async (formData) => {
+            const apiData = createApiDataFromForm(
+                formData,
+                fieldConfig
+            );
+
+            try {
+                const result = await changePassword(apiData);
+
+                if (result && !result.error) {
+                    onSuccess();
+                    return { success: true };
+                }
+
+                if (result && typeof result === 'object') {
+                    return {
+                        success: false,
+                        data: result
+                    };
+                }
+
+                return {
+                    success: false,
+                    error: 'Failed to update password'
+                };
+            } catch {
+                return {
+                    success: false,
+                    error: 'Failed to update password'
+                };
+            }
+        },
+        [fieldConfig, changePassword, onSuccess]
     );
 
-    useFocusOnInvalidInput();
-
-    const handleSubmit = async (formData) => {
-        const currentPassword =
-            formData.currentPassword?.value?.trim();
-        const newPassword = formData.newPassword?.value?.trim();
-
-        if (!currentPassword || !newPassword) {
-            return {
-                success: false,
-                error: 'Both current and new passwords are required'
-            };
-        }
-
-        const apiData = {
-            current_password: currentPassword,
-            new_password: newPassword
-        };
-
-        try {
-            const result = await changePassword(apiData);
-
-            if (result && !result.error) {
-                onSuccess();
-                return { success: true };
-            }
-
-            // Handle server-side errors
-            if (result && typeof result === 'object') {
-                handleServerSideErrors(result);
-            }
-
-            return {
-                success: false,
-                error:
-                    result?.error || 'Failed to update password',
-                data: result
-            };
-        } catch {
-            return {
-                success: false,
-                error: 'Failed to update password'
-            };
-        }
-    };
-
-    const formProps = useForm(initialFormValues, {
+    const formProps = useForm(initialValues, {
         onSubmit: handleSubmit,
         validateOnSubmit: true
     });
@@ -81,7 +67,9 @@ export const PasswordUpdateForm = ({ onSuccess }) => {
         getInputClassName,
         submitAction,
         isSubmitting,
-        handleServerSideErrors
+        resetValidationStates,
+        formRef,
+        registerInput
     } = formProps;
 
     const handleNewPasswordChange = (e) => {
@@ -89,11 +77,17 @@ export const PasswordUpdateForm = ({ onSuccess }) => {
         handleFieldChange(e);
     };
 
+    useEffect(() => {
+        if (formProps.formState && formProps.formState.success) {
+            resetValidationStates();
+        }
+    }, [formProps.formState, resetValidationStates]);
+
     return (
         <section className={styles['password-update-form']}>
             <h2>Change Password</h2>
 
-            <form action={submitAction}>
+            <form ref={formRef} action={submitAction}>
                 <Fragment>
                     <InputField
                         getInputClassName={getInputClassName}
@@ -102,6 +96,8 @@ export const PasswordUpdateForm = ({ onSuccess }) => {
                         validateField={validateField}
                         fieldName='currentPassword'
                         type='password'
+                        registerInput={registerInput}
+                        fieldConfig={fieldConfig}
                     />
                 </Fragment>
 
@@ -115,6 +111,8 @@ export const PasswordUpdateForm = ({ onSuccess }) => {
                         validateField={validateField}
                         fieldName='newPassword'
                         type='password'
+                        registerInput={registerInput}
+                        fieldConfig={fieldConfig}
                     />
                 </Fragment>
 
@@ -126,6 +124,7 @@ export const PasswordUpdateForm = ({ onSuccess }) => {
                         color='black'
                         actionType='submit'
                         pending={isSubmitting}
+                        success={formProps.formState?.success}
                         callbackHandler={() => {}}
                     />
                     <Button
