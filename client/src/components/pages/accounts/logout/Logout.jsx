@@ -1,8 +1,11 @@
 import { useUserContext } from '../../../../contexts/UserContext';
-import { useLogout } from '../../../../api/accounts/authApi';
+import { useAuthentication } from '../../../../api/accounts/authApi';
+
+import styles from './Logout.module.scss';
+import { Icon } from '../../../reusable/icon/Icon';
 
 export const Logout = () => {
-    const { logout } = useLogout();
+    const { logout } = useAuthentication();
     const { userLogoutHandler } = useUserContext();
 
     const logoutHandler = async () => {
@@ -16,5 +19,17 @@ export const Logout = () => {
         }
     };
 
-    return <button onClick={logoutHandler}>Sign out</button>;
+    return (
+        <button
+            onClick={logoutHandler}
+            className={styles['sign-out']}
+        >
+            <Icon
+                name='sign-out'
+                fontSize={0.75}
+                isSubtle={true}
+            />
+            <span>Sign Out</span>
+        </button>
+    );
 };

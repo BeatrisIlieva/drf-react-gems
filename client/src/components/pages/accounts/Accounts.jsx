@@ -4,13 +4,17 @@ import { navLinks } from '../../../constants/accountsNavLinksData';
 import { Header } from './header/Header';
 
 import styles from './Accounts.module.scss';
+import { Logout } from './logout/Logout';
 
 export const Accounts = () => {
     return (
         <section className={styles['accounts']}>
             <Header />
             <div className={styles['wrapper']}>
-                <Nav links={navLinks} />
+                <div>
+                    <Nav links={navLinks} />
+                    <Logout />
+                </div>
                 <Outlet />
             </div>
         </section>
