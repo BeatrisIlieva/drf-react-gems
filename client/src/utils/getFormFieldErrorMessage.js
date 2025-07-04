@@ -1,14 +1,10 @@
-const passwordErrorMessage =
-    'Sorry, the provided password does not match the required constraints';
-
-const emailErrorMessage = 'Please enter a valid email address';
-const usernameErrorMessage =
-    'Username must be 3-30 characters long and contain only letters, numbers, and underscores';
-const nameErrorMessage =
-    'Name must contain only letters and be 2-30 characters long';
-const phoneErrorMessage = 'Phone number must be 9-15 digits long';
-const emailOrUsernameErrorMessage =
-    'Please enter a valid email address or username';
+import { FIELD_LENGTHS } from '../constants/fieldLengths';
+import { PAYMENT_CONSTANTS } from '../constants/paymentConstants';
+import {
+    AUTH_ERROR_MESSAGES,
+    PERSONAL_INFO_ERROR_MESSAGES,
+    ADDRESS_ERROR_MESSAGES
+} from '../constants/errorMessages';
 
 export const validators = {
     email: {
@@ -17,13 +13,15 @@ export const validators = {
                 value
             )
                 ? ''
-                : emailErrorMessage
+                : AUTH_ERROR_MESSAGES.EMAIL
     },
     username: {
         isValid: (value) =>
-            /^[A-Za-z0-9_]{3,30}$/.test(value)
+            new RegExp(
+                `^[A-Za-z0-9_]{${FIELD_LENGTHS.USERNAME_MIN},${FIELD_LENGTHS.USERNAME_MAX}}$`
+            ).test(value)
                 ? ''
-                : usernameErrorMessage
+                : AUTH_ERROR_MESSAGES.USERNAME
     },
     email_or_username: {
         isValid: (value) => {
@@ -31,81 +29,293 @@ export const validators = {
                 /^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i.test(
                     value
                 );
-            const isUsername = /^[A-Za-z0-9_]{3,30}$/.test(value);
+            const isUsername = new RegExp(
+                `^[A-Za-z0-9_]{${FIELD_LENGTHS.USERNAME_MIN},${FIELD_LENGTHS.USERNAME_MAX}}$`
+            ).test(value);
 
             return isEmail || isUsername
                 ? ''
-                : emailOrUsernameErrorMessage;
+                : AUTH_ERROR_MESSAGES.EMAIL_OR_USERNAME;
         }
     },
     password: {
         length: (password) =>
-            password.length >= 6 ? '' : passwordErrorMessage,
+            password.length >= FIELD_LENGTHS.PASSWORD_MIN
+                ? ''
+                : AUTH_ERROR_MESSAGES.PASSWORD,
 
         upper: (password) =>
-            /[A-Z]/.test(password) ? '' : passwordErrorMessage,
+            /[A-Z]/.test(password)
+                ? ''
+                : AUTH_ERROR_MESSAGES.PASSWORD,
 
         lower: (password) =>
-            /[a-z]/.test(password) ? '' : passwordErrorMessage,
+            /[a-z]/.test(password)
+                ? ''
+                : AUTH_ERROR_MESSAGES.PASSWORD,
 
         number: (password) =>
-            /\d/.test(password) ? '' : passwordErrorMessage,
+            /\d/.test(password)
+                ? ''
+                : AUTH_ERROR_MESSAGES.PASSWORD,
 
         noSpaces: (password) =>
-            !/\s/.test(password) ? '' : passwordErrorMessage,
+            !/\s/.test(password)
+                ? ''
+                : AUTH_ERROR_MESSAGES.PASSWORD,
 
         special: (password) =>
-            /[!#$%]/.test(password) ? '' : passwordErrorMessage
+            /[!#$%]/.test(password)
+                ? ''
+                : AUTH_ERROR_MESSAGES.PASSWORD
     },
     firstName: {
         isValid: (value) =>
-            /^[A-Za-z]{2,30}$/.test(value) ? '' : nameErrorMessage
+            new RegExp(
+                `^[A-Za-z]{${FIELD_LENGTHS.FIRST_NAME_MIN},${FIELD_LENGTHS.FIRST_NAME_MAX}}$`
+            ).test(value)
+                ? ''
+                : PERSONAL_INFO_ERROR_MESSAGES.NAME
     },
     lastName: {
         isValid: (value) =>
-            /^[A-Za-z]{2,30}$/.test(value) ? '' : nameErrorMessage
+            new RegExp(
+                `^[A-Za-z]{${FIELD_LENGTHS.LAST_NAME_MIN},${FIELD_LENGTHS.LAST_NAME_MAX}}$`
+            ).test(value)
+                ? ''
+                : PERSONAL_INFO_ERROR_MESSAGES.NAME
     },
     phoneNumber: {
         isValid: (value) =>
-            /^\d{9,15}$/.test(value) ? '' : phoneErrorMessage
+            new RegExp(
+                `^\\d{${FIELD_LENGTHS.PHONE_NUMBER_MIN},${FIELD_LENGTHS.PHONE_NUMBER_MAX}}$`
+            ).test(value)
+                ? ''
+                : PERSONAL_INFO_ERROR_MESSAGES.PHONE
     },
     currentPassword: {
         length: (password) =>
-            password.length >= 6 ? '' : passwordErrorMessage,
+            password.length >= FIELD_LENGTHS.PASSWORD_MIN
+                ? ''
+                : AUTH_ERROR_MESSAGES.PASSWORD,
 
         upper: (password) =>
-            /[A-Z]/.test(password) ? '' : passwordErrorMessage,
+            /[A-Z]/.test(password)
+                ? ''
+                : AUTH_ERROR_MESSAGES.PASSWORD,
 
         lower: (password) =>
-            /[a-z]/.test(password) ? '' : passwordErrorMessage,
+            /[a-z]/.test(password)
+                ? ''
+                : AUTH_ERROR_MESSAGES.PASSWORD,
 
         number: (password) =>
-            /\d/.test(password) ? '' : passwordErrorMessage,
+            /\d/.test(password)
+                ? ''
+                : AUTH_ERROR_MESSAGES.PASSWORD,
 
         noSpaces: (password) =>
-            !/\s/.test(password) ? '' : passwordErrorMessage,
+            !/\s/.test(password)
+                ? ''
+                : AUTH_ERROR_MESSAGES.PASSWORD,
 
         special: (password) =>
-            /[!#$%]/.test(password) ? '' : passwordErrorMessage
+            /[!#$%]/.test(password)
+                ? ''
+                : AUTH_ERROR_MESSAGES.PASSWORD
     },
     newPassword: {
         length: (password) =>
-            password.length >= 6 ? '' : passwordErrorMessage,
+            password.length >= FIELD_LENGTHS.PASSWORD_MIN
+                ? ''
+                : AUTH_ERROR_MESSAGES.PASSWORD,
 
         upper: (password) =>
-            /[A-Z]/.test(password) ? '' : passwordErrorMessage,
+            /[A-Z]/.test(password)
+                ? ''
+                : AUTH_ERROR_MESSAGES.PASSWORD,
 
         lower: (password) =>
-            /[a-z]/.test(password) ? '' : passwordErrorMessage,
+            /[a-z]/.test(password)
+                ? ''
+                : AUTH_ERROR_MESSAGES.PASSWORD,
 
         number: (password) =>
-            /\d/.test(password) ? '' : passwordErrorMessage,
+            /\d/.test(password)
+                ? ''
+                : AUTH_ERROR_MESSAGES.PASSWORD,
 
         noSpaces: (password) =>
-            !/\s/.test(password) ? '' : passwordErrorMessage,
+            !/\s/.test(password)
+                ? ''
+                : AUTH_ERROR_MESSAGES.PASSWORD,
 
         special: (password) =>
-            /[!#$%]/.test(password) ? '' : passwordErrorMessage
+            /[!#$%]/.test(password)
+                ? ''
+                : AUTH_ERROR_MESSAGES.PASSWORD
+    },
+    country: {
+        isValid: (value) => {
+            if (value.length < FIELD_LENGTHS.COUNTRY_MIN)
+                return ADDRESS_ERROR_MESSAGES.COUNTRY_TOO_SHORT;
+            if (value.length > FIELD_LENGTHS.COUNTRY_MAX)
+                return ADDRESS_ERROR_MESSAGES.COUNTRY_TOO_LONG;
+            if (!/^[A-Za-z\s]+$/.test(value))
+                return ADDRESS_ERROR_MESSAGES.COUNTRY_INVALID_CHARS;
+            return '';
+        }
+    },
+    city: {
+        isValid: (value) => {
+            if (value.length < FIELD_LENGTHS.CITY_MIN)
+                return ADDRESS_ERROR_MESSAGES.CITY_TOO_SHORT;
+            if (value.length > FIELD_LENGTHS.CITY_MAX)
+                return ADDRESS_ERROR_MESSAGES.CITY_TOO_LONG;
+            if (!/^[A-Za-z\s]+$/.test(value))
+                return ADDRESS_ERROR_MESSAGES.CITY_INVALID_CHARS;
+            return '';
+        }
+    },
+    zipCode: {
+        isValid: (value) => {
+            if (value.length < FIELD_LENGTHS.ZIP_CODE_MIN)
+                return ADDRESS_ERROR_MESSAGES.ZIP_CODE_TOO_SHORT;
+            if (value.length > FIELD_LENGTHS.ZIP_CODE_MAX)
+                return ADDRESS_ERROR_MESSAGES.ZIP_CODE_TOO_LONG;
+            return '';
+        }
+    },
+    streetAddress: {
+        isValid: (value) => {
+            if (value.length < FIELD_LENGTHS.STREET_ADDRESS_MIN)
+                return ADDRESS_ERROR_MESSAGES.STREET_ADDRESS_TOO_SHORT;
+            if (value.length > FIELD_LENGTHS.STREET_ADDRESS_MAX)
+                return ADDRESS_ERROR_MESSAGES.STREET_ADDRESS_TOO_LONG;
+            return '';
+        }
+    },
+    apartment: {
+        isValid: (value) => {
+            if (
+                value &&
+                value.length > FIELD_LENGTHS.APARTMENT_MAX
+            )
+                return ADDRESS_ERROR_MESSAGES.APARTMENT_TOO_LONG;
+            return '';
+        }
+    },
+
+    // Payment validators
+    cardNumber: {
+        isValid: (value) => {
+            if (!value || value.length === 0) return '';
+
+            // Remove spaces for validation
+            const cleanValue = value.replace(/\s/g, '');
+
+            // Check if it's numeric and exactly 16 digits
+            if (!/^\d{16}$/.test(cleanValue)) {
+                return PAYMENT_CONSTANTS.ERRORS.CARD_NUMBER;
+            }
+
+            // Check for valid card prefixes (Visa or Mastercard)
+            const isVisa = /^4/.test(cleanValue);
+            const isMastercard =
+                /^(5[1-5]|222[1-9]|22[3-9][0-9]|2[3-6][0-9][0-9]|27[0-1][0-9]|2720)/.test(
+                    cleanValue
+                );
+
+            if (!isVisa && !isMastercard) {
+                return PAYMENT_CONSTANTS.ERRORS.CARD_NUMBER;
+            }
+
+            return '';
+        }
+    },
+
+    cardHolderName: {
+        isValid: (value) => {
+            if (!value || value.length === 0) return '';
+
+            if (
+                value.length < FIELD_LENGTHS.CARD_HOLDER_NAME_MIN
+            ) {
+                return PAYMENT_CONSTANTS.ERRORS.CARD_HOLDER;
+            }
+
+            if (
+                value.length > FIELD_LENGTHS.CARD_HOLDER_NAME_MAX
+            ) {
+                return PAYMENT_CONSTANTS.ERRORS.CARD_HOLDER;
+            }
+
+            if (
+                !new RegExp(
+                    PAYMENT_CONSTANTS.CARD_HOLDER_PATTERN
+                ).test(value)
+            ) {
+                return PAYMENT_CONSTANTS.ERRORS.CARD_HOLDER;
+            }
+
+            return '';
+        }
+    },
+
+    expiryDate: {
+        isValid: (value) => {
+            if (!value || value.length === 0) return '';
+
+            // Check format (MM/YY)
+            if (
+                !new RegExp(
+                    PAYMENT_CONSTANTS.EXPIRY_DATE_PATTERN
+                ).test(value)
+            ) {
+                return PAYMENT_CONSTANTS.ERRORS.EXPIRY_DATE;
+            }
+
+            // Extract month and year
+            const [month, year] = value.split('/');
+            const monthNum = parseInt(month, 10);
+            const yearNum = parseInt(`20${year}`, 10); // Convert YY to 20YY
+
+            // Check if date is in the past
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear();
+            const currentMonth = currentDate.getMonth() + 1; // getMonth() is 0-indexed
+
+            if (
+                yearNum < currentYear ||
+                (yearNum === currentYear &&
+                    monthNum < currentMonth)
+            ) {
+                return PAYMENT_CONSTANTS.ERRORS.EXPIRED_CARD;
+            }
+
+            // Check if year is too far in the future (max 15 years)
+            if (yearNum > currentYear + 15) {
+                return PAYMENT_CONSTANTS.ERRORS.EXPIRY_DATE;
+            }
+
+            return '';
+        }
+    },
+
+    cvv: {
+        isValid: (value) => {
+            if (!value || value.length === 0) return '';
+
+            if (
+                !new RegExp(PAYMENT_CONSTANTS.CVV_PATTERN).test(
+                    value
+                )
+            ) {
+                return PAYMENT_CONSTANTS.ERRORS.CVV;
+            }
+
+            return '';
+        }
     }
 };
 
