@@ -4,22 +4,23 @@ from django.contrib.auth.base_user import AbstractBaseUser
 
 from src.accounts.managers import UserCredentialManager
 from src.accounts.validators.models import UsernameValidator
+from src.accounts.constants import UserFieldLengths, UserErrorMessages
 
 
 class UserCredential(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         unique=True,
         error_messages={
-            'unique': 'A user with this email already exists.'
+            'unique': UserErrorMessages.EMAIL_UNIQUE,
         }
     )
 
     username = models.CharField(
-        max_length=150,
+        max_length=UserFieldLengths.USERNAME_MAX,
         unique=True,
         validators=[UsernameValidator()],
         error_messages={
-            'unique': 'A user with this username already exists.'
+            'unique': UserErrorMessages.USERNAME_UNIQUE,
         }
     )
 
