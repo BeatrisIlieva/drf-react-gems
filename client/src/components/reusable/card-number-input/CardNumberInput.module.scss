@@ -1,0 +1,58 @@
+@use '../../../styles/variables' as vars;
+
+.card-number-field {
+    position: relative;
+    
+    .card-icon {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 2em;
+        color: vars.$dark-grey;
+        pointer-events: none;
+    }
+    
+    input {
+        padding-right: 3.5rem; // Make room for the card icon
+        
+        &:not(:placeholder-shown) {
+            ~ label {
+                top: 0.3em;
+                font-size: 0.7em;
+            }
+        }
+        
+        &.valid {
+            border-color: vars.$green !important;
+            
+            ~ label {
+                color: vars.$green !important;
+            }
+        }
+        
+        &.invalid {
+            border-color: vars.$red;
+            
+            ~ label {
+                color: vars.$red;
+            }
+        }
+        
+        &:focus:not(.valid) {
+            border-color: vars.$blue;
+            
+            ~ label {
+                color: vars.$blue;
+            }
+        }
+    }
+    
+    label {
+        position: absolute;
+        top: 1.25em;
+        left: 1rem;
+        transition: color 0.3s ease-in-out, top 0.3s ease-in-out;
+        pointer-events: none;
+    }
+}

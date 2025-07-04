@@ -1,0 +1,66 @@
+@use '../../../styles/variables' as vars;
+
+.payment-fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+    
+    .payment-legend {
+        display: flex;
+        align-items: center;
+        font-size: 1em;
+        font-weight: 700;
+        width: 100%;
+        font-variant-caps: normal;
+        margin-bottom: 1.5rem;
+
+        & > span:nth-child(1) {
+            margin-right: auto;
+        }
+
+        .card-icons {
+            font-size: 2.6em;
+            
+            svg {
+                margin-left: 0.2em;
+                
+                &:first-child {
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+
+    .payment-form {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        column-gap: 1em;
+
+        & .field:nth-child(1),
+        & .field:nth-child(2),
+        & .field:nth-child(5) {
+            flex: 1 1 100%;
+        }
+
+        & .field:nth-child(3),
+        & .field:nth-child(4) {
+            flex: 1 1 45%;
+        }
+
+        .expired-card-error {
+            flex: 1 1 100%;
+            
+            .expired-card-error-message {
+                color: vars.$red;
+                margin: 0.5em 0 0.1em 0;
+                display: block;
+                font-size: 0.9em;
+            }
+        }
+
+        button {
+            flex: 1 1 100%;
+        }
+    }
+}
