@@ -6,31 +6,40 @@ export default function usePersistedState(
 ) {
     const [state, setState] = useState(() => {
         const persistedState = localStorage.getItem(stateKey);
-        if (!persistedState) {
+        if (!persistedState || persistedState === 'undefined') {
             return typeof initialState === 'function'
                 ? initialState()
                 : initialState;
         }
 
-        const persistedStateData = JSON.parse(persistedState);
-
-        return persistedStateData;
+        try {
+            const persistedStateData = JSON.parse(persistedState);
+            return persistedStateData;
+        } catch {
+            // If JSON parsing fails, remove the invalid data and use initial state
+            localStorage.removeItem(stateKey);
+            return typeof initialState === 'function'
+                ? initialState()
+                : initialState;
+        }
     });
 
     const setPersistedState = useCallback(
         (input) => {
-            const data =
-                typeof input === 'function'
-                    ? input(state)
-                    : input;
+            setState((prevState) => {
+                const data =
+                    typeof input === 'function'
+                        ? input(prevState)
+                        : input;
 
-            const persistedData = JSON.stringify(data);
+                const persistedData = JSON.stringify(data);
 
-            localStorage.setItem(stateKey, persistedData);
+                localStorage.setItem(stateKey, persistedData);
 
-            setState(data);
+                return data;
+            });
         },
-        [state, stateKey]
+        [stateKey]
     );
 
     return [state, setPersistedState];
