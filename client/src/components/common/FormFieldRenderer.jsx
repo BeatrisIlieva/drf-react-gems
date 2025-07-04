@@ -26,6 +26,7 @@ export const FormFieldRenderer = ({
                     fieldName={fieldName}
                     type={config.type || 'text'}
                     registerInput={registerInput}
+                    fieldConfig={fieldConfig}
                 />
             </Fragment>
         );
