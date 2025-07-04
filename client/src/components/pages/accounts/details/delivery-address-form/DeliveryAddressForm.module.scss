@@ -1,63 +1,17 @@
 @use '../../../../../styles/variables' as vars;
 
-.delivery-header {
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-    margin-bottom: 1.5em;
-    padding-bottom: 0.75em;
-    border-bottom: 0.06em solid vars.$light-grey;
-
-    h4 {
-        font-size: 0.9em;
-        font-weight: 500;
-        letter-spacing: 0.05em;
-        margin: 0;
-    }
-}
-
 form.delivery-form {
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 1em;
 
     div:nth-of-type(1),
     div:nth-of-type(2),
     div:nth-of-type(3),
-    div:nth-of-type(4),
-    div:nth-of-type(5),
-    div:nth-of-type(6) {
+    div:nth-of-type(4) {
         flex: 1 1 45%;
     }
 
-    .country-field {
-        position: relative;
-        display: flex;
-        align-items: center;
-
-        .country-input {
-            padding: 0.75em;
-            padding-top: 1em;
-            padding-right: 2.5em;
-            border: 0.08em solid vars.$medium-grey;
-            border-radius: 0.1em;
-            background: vars.$lightest-grey;
-            cursor: auto;
-            width: 100%;
-            color: vars.$dark-grey;
-        }
-
-        span:last-child {
-            position: absolute;
-            right: 0.75em;
-            color: vars.$dark-grey;
-        }
+    div:nth-of-type(5) {
+        flex: 1 1 100%;
     }
-}
-
-.loading {
-    text-align: center;
-    padding: 2rem;
-    font-size: 1.1rem;
-    color: vars.$dark-grey;
 }

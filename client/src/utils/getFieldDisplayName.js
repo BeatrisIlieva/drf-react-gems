@@ -7,7 +7,11 @@ export const getFieldDisplayName = (fieldName) => {
         password_confirmation: 'Confirm Password',
         currentPassword: 'Current Password',
         newPassword: 'New Password',
-        apartment: 'Apartment/Suite/Floor (Optional)'
+        apartment: 'Apartment/Suite',
+        cardNumber: 'Card Number',
+        cardHolderName: 'Name on card',
+        expiryDate: 'MM/YY',
+        cvv: 'CVV'
     };
 
     return (
