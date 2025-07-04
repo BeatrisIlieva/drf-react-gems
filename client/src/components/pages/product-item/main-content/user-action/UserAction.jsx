@@ -83,6 +83,7 @@ export const UserAction = () => {
                     callbackHandler={createShoppingBagHandler}
                     actionType={'button'}
                     disabled={isSoldOut}
+                    buttonGrow='1'
                 />
                 <Button
                     title={<Icon name={'heart'} />}
