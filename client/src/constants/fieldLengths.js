@@ -1,0 +1,40 @@
+export const FIELD_LENGTHS = {
+    FIRST_NAME_MAX: 30,
+    FIRST_NAME_MIN: 2,
+    
+    LAST_NAME_MAX: 30,
+    LAST_NAME_MIN: 2,
+    
+    PHONE_NUMBER_MAX: 15,
+    PHONE_NUMBER_MIN: 9,
+    
+    USERNAME_MAX: 150,
+    USERNAME_MIN: 3,
+    
+    EMAIL_MAX: 254,
+    
+    PASSWORD_MAX: 128,
+    PASSWORD_MIN: 6,
+    
+    COUNTRY_MAX: 100,
+    COUNTRY_MIN: 2,
+    
+    CITY_MAX: 100,
+    CITY_MIN: 2,
+    
+    ZIP_CODE_MAX: 10,
+    ZIP_CODE_MIN: 3,
+    
+    STREET_ADDRESS_MAX: 100,
+    STREET_ADDRESS_MIN: 2,
+    
+    APARTMENT_MAX: 20,
+    
+    // Payment field lengths
+    CARD_NUMBER_MAX: 19, // 16 digits + 3 spaces
+    CARD_HOLDER_NAME_MAX: 50,
+    CARD_HOLDER_NAME_MIN: 2,
+    EXPIRY_DATE_MAX: 5, // MM/YY format
+    CVV_MAX: 3,
+    CVV_MIN: 3
+};
