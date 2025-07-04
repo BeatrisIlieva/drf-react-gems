@@ -1,4 +1,4 @@
-import { Fragment, useState, useMemo } from 'react';
+import { Fragment, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { useUserContext } from '../../../contexts/UserContext';
 import { useAuthentication } from '../../../api/accounts/authApi';
@@ -6,67 +6,63 @@ import { AuthLayout } from '../../reusable/auth-layout/AuthLayout';
 import { InputField } from '../../reusable/input-field/InputField';
 import { Button } from '../../reusable/button/Button';
 import { PasswordValidator } from '../../reusable/password-validator/PasswordValidator';
-import { useFocusOnInvalidInput } from '../../../hooks/useFocusOnInvalidInput';
 import { useForm } from '../../../hooks/useForm';
+import { FORM_CONFIGS } from '../../../config/formFieldConfigs';
+import { createApiDataFromForm } from '../../../utils/formHelpers';
 
 import styles from './Register.module.scss';
 import { Icon } from '../../reusable/icon/Icon';
 
 export const Register = () => {
-    const initialFormValues = useMemo(
-        () => ({
-            email: { value: '', error: '', valid: false },
-            username: { value: '', error: '', valid: false },
-            password: { value: '', error: '', valid: false }
-        }),
-        []
-    );
-
+    const { fieldConfig, initialValues } = FORM_CONFIGS.register;
     const [agree, setAgree] = useState(true);
 
     const { userLoginHandler } = useUserContext();
     const { register, login } = useAuthentication();
     const navigate = useNavigate();
 
-    useFocusOnInvalidInput();
+    const handleSubmit = useCallback(
+        async (formData) => {
+            const apiData = createApiDataFromForm(
+                formData,
+                fieldConfig
+            );
 
-    const handleSubmit = async (formData) => {
-        const authData = await register({
-            email: formData.email.value,
-            username: formData.username.value,
-            password: formData.password.value
-        });
+            const authData = await register(apiData);
 
-        if (authData?.access) {
-            userLoginHandler(authData);
+            if (authData?.access) {
+                userLoginHandler(authData);
 
-            await login({
-                email_or_username: formData.email.value,
-                password: formData.password.value
-            });
+                await login({
+                    email_or_username: formData.email.value,
+                    password: formData.password.value
+                });
 
-            navigate('/my-account/details');
-            return { success: true };
-        }
+                navigate('/my-account/details');
+                return { success: true };
+            }
 
-        if (
-            authData &&
-            typeof authData === 'object' &&
-            !authData.access
-        ) {
-            handleServerSideErrors(authData);
+            if (
+                authData &&
+                typeof authData === 'object' &&
+                !authData.access
+            ) {
+                return {
+                    success: false,
+                    error: 'Registration failed',
+                    data: authData
+                };
+            }
 
             return {
                 success: false,
-                error: 'Registration failed',
-                data: authData
+                error: 'Registration failed'
             };
-        }
+        },
+        [fieldConfig, register, userLoginHandler, login, navigate]
+    );
 
-        return { success: false, error: 'Registration failed' };
-    };
-
-    const formProps = useForm(initialFormValues, {
+    const formProps = useForm(initialValues, {
         onSubmit: handleSubmit,
         validateOnSubmit: true
     });
@@ -77,8 +73,7 @@ export const Register = () => {
         handleFieldChange,
         getInputClassName,
         submitAction,
-        isSubmitting,
-        handleServerSideErrors
+        isSubmitting
     } = formProps;
 
     const navigateToLoginHandler = () => {
@@ -113,12 +108,7 @@ export const Register = () => {
                                             validateField
                                         }
                                         fieldName={fieldName}
-                                        type={
-                                            fieldName ===
-                                            'password'
-                                                ? 'password'
-                                                : 'text'
-                                        }
+                                        fieldConfig={fieldConfig}
                                     />
                                 )}
                                 {fieldName === 'email' &&
@@ -164,6 +154,7 @@ export const Register = () => {
                         color='black'
                         actionType='submit'
                         pending={isSubmitting}
+                        success={formProps.formState?.success}
                         callbackHandler={() => {}}
                     />
                 </form>

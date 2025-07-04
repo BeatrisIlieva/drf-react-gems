@@ -1,83 +1,72 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { useForm } from '../../../hooks/useForm';
-import { useFocusOnInvalidInput } from '../../../hooks/useFocusOnInvalidInput';
 import { useUserContext } from '../../../contexts/UserContext';
 import { useAuthentication } from '../../../api/accounts/authApi';
 import { InputField } from '../../reusable/input-field/InputField';
 import { Button } from '../../reusable/button/Button';
 import { AuthLayout } from '../../reusable/auth-layout/AuthLayout';
+import { FORM_CONFIGS } from '../../../config/formFieldConfigs';
+import { createApiDataFromForm } from '../../../utils/formHelpers';
 
 import styles from './Login.module.scss';
 
 import { Footer } from './footer/Footer';
 
 export const Login = () => {
-    const initialFormValues = {
-        email_or_username: { value: '', error: '', valid: false },
-        password: { value: '', error: '', valid: false }
-    };
-
+    const { fieldConfig, initialValues } = FORM_CONFIGS.login;
     const { userLoginHandler } = useUserContext();
     const { login } = useAuthentication();
     const navigate = useNavigate();
 
-    useFocusOnInvalidInput();
+    const [invalidCredentials, setInvalidCredentials] =
+        useState(false);
 
-    const [
-        invalidUsernameOrPassword,
-        setInvalidUsernameOrPassword
-    ] = useState(false);
+    const handleSubmit = useCallback(
+        async (formData) => {
+            setInvalidCredentials(false);
 
-    const handleSubmit = async (formData) => {
-        setInvalidUsernameOrPassword(false);
+            const apiData = createApiDataFromForm(
+                formData,
+                fieldConfig
+            );
 
-        const authData = await login({
-            email_or_username: formData.email_or_username.value,
-            password: formData.password.value
-        });
+            const authData = await login(apiData);
 
-        if (authData?.access) {
-            userLoginHandler(authData);
-            navigate('/my-account/details');
-            return { success: true };
-        }
-
-        if (
-            authData === undefined ||
-            authData === 'Invalid username or password'
-        ) {
-            setInvalidUsernameOrPassword(true);
-            return {
-                success: false,
-                error: 'Invalid username or password'
-            };
-        }
-
-        // Handle server-side field-specific errors
-        if (
-            authData &&
-            typeof authData === 'object' &&
-            !authData.access
-        ) {
-            const hasFieldErrors =
-                handleServerSideErrors(authData);
-
-            // If no field-specific errors, show general error
-            if (!hasFieldErrors) {
-                setInvalidUsernameOrPassword(true);
+            if (authData?.access) {
+                userLoginHandler(authData);
+                navigate('/my-account/details');
+                return { success: true };
             }
 
-            return {
-                success: false,
-                error: 'Login failed'
-            };
-        }
+            if (
+                authData === undefined ||
+                authData === 'Invalid username or password'
+            ) {
+                setInvalidCredentials(true);
+                return {
+                    success: false,
+                    error: 'Invalid username or password'
+                };
+            }
 
-        return { success: false, error: 'Login failed' };
-    };
+            if (
+                authData &&
+                typeof authData === 'object' &&
+                !authData.access
+            ) {
+                return {
+                    success: false,
+                    data: authData
+                };
+            }
 
-    const formProps = useForm(initialFormValues, {
+            return { success: false, error: 'Login failed' };
+        },
+        [fieldConfig, login, userLoginHandler, navigate]
+    );
+
+    const formProps = useForm(initialValues, {
         onSubmit: handleSubmit,
         validateOnSubmit: true
     });
@@ -88,8 +77,7 @@ export const Login = () => {
         handleFieldChange,
         getInputClassName,
         submitAction,
-        isSubmitting,
-        handleServerSideErrors
+        isSubmitting
     } = formProps;
 
     return (
@@ -97,7 +85,7 @@ export const Login = () => {
             <section className={styles['login']}>
                 <h2>Welcome Back</h2>
                 <p>Please sign in to access your account.</p>
-                {invalidUsernameOrPassword && (
+                {invalidCredentials && (
                     <div
                         className={
                             styles['invalid-username-password']
@@ -128,12 +116,7 @@ export const Login = () => {
                                             validateField
                                         }
                                         fieldName={fieldName}
-                                        type={
-                                            fieldName ===
-                                            'password'
-                                                ? 'password'
-                                                : 'text'
-                                        }
+                                        fieldConfig={fieldConfig}
                                     />
                                 )}
                             </Fragment>
@@ -145,6 +128,7 @@ export const Login = () => {
                         color='black'
                         actionType='submit'
                         pending={isSubmitting}
+                        success={formProps.formState?.success}
                         callbackHandler={() => {}}
                     />
                 </form>
