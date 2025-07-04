@@ -21,6 +21,10 @@ export const useProfile = () => {
             return keysToCamelCase(response);
         } catch (error) {
             console.error(error);
+            return {
+                error: error.message || 'Failed to get personal information',
+                ...error.data
+            };
         }
     }, [get, isAuthenticated]);
 
@@ -39,6 +43,10 @@ export const useProfile = () => {
                 return keysToCamelCase(response);
             } catch (error) {
                 console.error(error);
+                return {
+                    error: error.message || 'Failed to update personal information',
+                    ...error.data
+                };
             }
         },
         [patch, isAuthenticated]

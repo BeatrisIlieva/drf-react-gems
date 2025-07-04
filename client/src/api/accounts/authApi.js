@@ -23,7 +23,10 @@ export const useAuthentication = () => {
                 return response;
             } catch (error) {
                 console.error(error);
-                return error.data;
+                return {
+                    error: error.message || 'Registration failed',
+                    ...error.data
+                };
             }
         },
         [post]
@@ -38,6 +41,10 @@ export const useAuthentication = () => {
                 return response;
             } catch (error) {
                 console.error(error);
+                return {
+                    error: error.message || 'Login failed',
+                    ...error.data
+                };
             }
         },
         [post]
