@@ -23,6 +23,8 @@ import { Orders } from './components/pages/accounts/orders/Orders';
 import { Accounts } from './components/pages/accounts/Accounts';
 
 import styles from './App.module.scss';
+import { Checkout } from './components/pages/checkout/Checkout';
+import { Payment } from './components/pages/payment/Payment';
 
 function App() {
     return (
@@ -90,6 +92,14 @@ function App() {
                                             element={<Orders />}
                                         />
                                     </Route>
+                                    <Route
+                                        path='/user/checkout'
+                                        element={<Checkout />}
+                                    />
+                                    <Route
+                                        path='/user/payment'
+                                        element={<Payment />}
+                                    />
                                 </Route>
                             </Routes>
                         </main>

@@ -1,0 +1,20 @@
+@use '../../../styles/variables' as vars;
+
+.checkout {
+    display: flex;
+    gap: 2em;
+    padding: vars.$layout-inline-padding
+        vars.$layout-inline-padding-desktop;
+    background: vars.$lightest-grey;
+
+    .wrapper-left {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        gap: 2em;
+    }
+
+    .checkout-button-container {
+        display: flex;
+    }
+}
