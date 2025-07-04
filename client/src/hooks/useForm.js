@@ -32,6 +32,12 @@ export const useForm = (initialFormValues, options = {}) => {
 
         if (onSubmit) {
             const result = await onSubmit(formData);
+
+            // Handle server-side errors if they exist
+            if (!result.success && result.data) {
+                handleServerSideErrors(result.data);
+            }
+
             if (result.success && resetOnSuccess) {
                 resetForm();
             }
@@ -165,23 +171,23 @@ export const useForm = (initialFormValues, options = {}) => {
         }));
     };
 
-    const setServerSideError = useCallback(
-        (serverData, field) => {
-            if (serverData[field]) {
-                setFormData((state) => ({
-                    ...state,
-                    [field]: {
-                        ...state[field],
-                        error: Array.isArray(serverData[field])
-                            ? serverData[field].join(' ')
-                            : serverData[field],
-                        valid: false
-                    }
-                }));
-            }
-        },
-        []
-    );
+    // const setServerSideError = useCallback(
+    //     (serverData, field) => {
+    //         if (serverData[field]) {
+    //             setFormData((state) => ({
+    //                 ...state,
+    //                 [field]: {
+    //                     ...state[field],
+    //                     error: Array.isArray(serverData[field])
+    //                         ? serverData[field].join(' ')
+    //                         : serverData[field],
+    //                     valid: false
+    //                 }
+    //             }));
+    //         }
+    //     },
+    //     []
+    // );
 
     const handleServerSideErrors = useCallback(
         (serverResponse) => {
@@ -193,26 +199,23 @@ export const useForm = (initialFormValues, options = {}) => {
             }
 
             let hasErrors = false;
+            let updatedFormData = {};
 
             // Check if server response contains field-specific errors
             Object.keys(initialFormValues).forEach(
                 (fieldName) => {
                     if (serverResponse[fieldName]) {
                         hasErrors = true;
-                        setFormData((state) => ({
-                            ...state,
-                            [fieldName]: {
-                                ...state[fieldName],
-                                error: Array.isArray(
-                                    serverResponse[fieldName]
-                                )
-                                    ? serverResponse[
-                                          fieldName
-                                      ].join(' ')
-                                    : serverResponse[fieldName],
-                                valid: false
-                            }
-                        }));
+                        updatedFormData[fieldName] = {
+                            error: Array.isArray(
+                                serverResponse[fieldName]
+                            )
+                                ? serverResponse[fieldName].join(
+                                      ' '
+                                  )
+                                : serverResponse[fieldName],
+                            valid: false
+                        };
                     }
                 }
             );
@@ -234,31 +237,47 @@ export const useForm = (initialFormValues, options = {}) => {
                         initialFormValues[clientFieldName]
                     ) {
                         hasErrors = true;
-                        setFormData((state) => ({
-                            ...state,
-                            [clientFieldName]: {
-                                ...state[clientFieldName],
-                                error: Array.isArray(
-                                    serverResponse[
-                                        serverFieldName
-                                    ]
-                                )
-                                    ? serverResponse[
-                                          serverFieldName
-                                      ].join(' ')
-                                    : serverResponse[
-                                          serverFieldName
-                                      ],
-                                valid: false
-                            }
-                        }));
+                        updatedFormData[clientFieldName] = {
+                            error: Array.isArray(
+                                serverResponse[serverFieldName]
+                            )
+                                ? serverResponse[
+                                      serverFieldName
+                                  ].join(' ')
+                                : serverResponse[serverFieldName],
+                            valid: false
+                        };
                     }
                 }
             );
 
+            // Update form data with server errors
+            if (hasErrors) {
+                setFormData((state) => {
+                    const newState = { ...state };
+                    Object.keys(updatedFormData).forEach(
+                        (fieldName) => {
+                            if (newState[fieldName]) {
+                                newState[fieldName] = {
+                                    ...newState[fieldName],
+                                    ...updatedFormData[fieldName]
+                                };
+                            }
+                        }
+                    );
+
+                    // Focus first invalid field after state update
+                    setTimeout(() => {
+                        focusFirstInvalid(newState);
+                    }, 0);
+
+                    return newState;
+                });
+            }
+
             return hasErrors;
         },
-        [initialFormValues]
+        [initialFormValues, focusFirstInvalid]
     );
 
     // Updated to prioritize valid state over error state
@@ -295,7 +314,7 @@ export const useForm = (initialFormValues, options = {}) => {
         validateFields,
         validateField,
         handleFieldChange,
-        setServerSideError,
+        // setServerSideError,
         handleServerSideErrors,
         getInputClassName,
         setFormData,
