@@ -8,7 +8,10 @@ export const Delivery = ({ fontSize }) => {
 
     return (
         <p
-            className={`${styles['delivery']} ${styles[fontSize]}`}
+            className={styles['delivery']}
+            style={{
+                fontSize: fontSize ? `${fontSize}em` : '1em'
+            }}
         >
             <TruckIcon />
             <span>Delivery</span>

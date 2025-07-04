@@ -3,10 +3,6 @@
     align-items: center;
     gap: 0.25em;
 
-    &.large {
-        font-size: 1.4em;
-    }
-
     span {
         &:nth-of-type(2) {
             opacity: 0.6;
