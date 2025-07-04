@@ -1,105 +1,229 @@
-import { createFormFieldConfig, getInitialFormValues } from '../utils/formHelpers';
+import {
+    createFormFieldConfig,
+    getInitialFormValues
+} from '../utils/formHelpers';
+import { FIELD_LENGTHS } from '../constants/fieldLengths';
 
 const personalInfoFields = [
     {
         name: 'firstName',
         apiKey: 'first_name',
         required: true,
-        label: 'First Name'
+        label: 'First Name',
+        maxLength: FIELD_LENGTHS.FIRST_NAME_MAX
     },
     {
-        name: 'lastName', 
+        name: 'lastName',
         apiKey: 'last_name',
         required: true,
-        label: 'Last Name'
+        label: 'Last Name',
+        maxLength: FIELD_LENGTHS.LAST_NAME_MAX
     },
     {
         name: 'phoneNumber',
-        apiKey: 'phone_number', 
+        apiKey: 'phone_number',
         required: true,
         label: 'Phone Number',
-        type: 'tel'
+        type: 'tel',
+        maxLength: FIELD_LENGTHS.PHONE_NUMBER_MAX
+    }
+];
+
+const passwordUpdateFields = [
+    {
+        name: 'currentPassword',
+        apiKey: 'current_password',
+        required: true,
+        label: 'Current Password',
+        type: 'password',
+        maxLength: FIELD_LENGTHS.PASSWORD_MAX
+    },
+    {
+        name: 'newPassword',
+        apiKey: 'new_password',
+        required: true,
+        label: 'New Password',
+        type: 'password',
+        maxLength: FIELD_LENGTHS.PASSWORD_MAX
+    }
+];
+
+const loginFields = [
+    {
+        name: 'email_or_username',
+        apiKey: 'email_or_username',
+        required: true,
+        label: 'Email or Username',
+        maxLength: FIELD_LENGTHS.EMAIL_MAX
+    },
+    {
+        name: 'password',
+        apiKey: 'password',
+        required: true,
+        label: 'Password',
+        type: 'password',
+        maxLength: FIELD_LENGTHS.PASSWORD_MAX
+    }
+];
+
+const registerFields = [
+    {
+        name: 'email',
+        apiKey: 'email',
+        required: true,
+        label: 'Email',
+        type: 'email',
+        maxLength: FIELD_LENGTHS.EMAIL_MAX
+    },
+    {
+        name: 'username',
+        apiKey: 'username',
+        required: true,
+        label: 'Username',
+        maxLength: FIELD_LENGTHS.USERNAME_MAX
+    },
+    {
+        name: 'password',
+        apiKey: 'password',
+        required: true,
+        label: 'Password',
+        type: 'password',
+        maxLength: FIELD_LENGTHS.PASSWORD_MAX
     }
 ];
 
 const deliveryAddressFields = [
     {
-        name: 'streetAddress',
-        apiKey: 'street_address',
+        name: 'country',
+        apiKey: 'country',
         required: true,
-        label: 'Street Address (No PO/APO/FPO)',
-        type: 'select'
-    },
-    {
-        name: 'apartment',
-        apiKey: 'apartment',
-        required: false,
-        label: 'Apartment/Suite/Floor (Optional)'
+        label: 'Country',
+        maxLength: FIELD_LENGTHS.COUNTRY_MAX
     },
     {
         name: 'city',
         apiKey: 'city',
         required: true,
         label: 'City',
-        type: 'select'
-    },
-    {
-        name: 'state',
-        apiKey: 'state',
-        required: true,
-        label: 'State',
-        type: 'select'
+        maxLength: FIELD_LENGTHS.CITY_MAX
     },
     {
         name: 'zipCode',
         apiKey: 'zip_code',
         required: true,
         label: 'ZIP Code',
-        type: 'select'
+        maxLength: FIELD_LENGTHS.ZIP_CODE_MAX
+    },
+    {
+        name: 'streetAddress',
+        apiKey: 'street_address',
+        required: true,
+        label: 'Street Address',
+        maxLength: FIELD_LENGTHS.STREET_ADDRESS_MAX
+    },
+    {
+        name: 'apartment',
+        apiKey: 'apartment',
+        required: false,
+        label: 'Apartment (Optional)',
+        maxLength: FIELD_LENGTHS.APARTMENT_MAX
     }
 ];
 
-const paymentCardFields = [
+const paymentFields = [
     {
         name: 'cardNumber',
         apiKey: 'card_number',
         required: true,
-        label: 'Card Number'
-    },
-    {
-        name: 'expiryDate',
-        apiKey: 'expiry_date',
-        required: true,
-        label: 'Expiry Date'
-    },
-    {
-        name: 'cvv',
-        apiKey: 'cvv',
-        required: true,
-        label: 'CVV'
+        label: 'Card Number',
+        type: 'text',
+        maxLength: FIELD_LENGTHS.CARD_NUMBER_MAX
     },
     {
         name: 'cardHolderName',
         apiKey: 'card_holder_name',
         required: true,
-        label: 'Cardholder Name'
+        label: 'Name on card',
+        type: 'text',
+        maxLength: FIELD_LENGTHS.CARD_HOLDER_NAME_MAX
+    },
+    {
+        name: 'expiryDate',
+        apiKey: 'expiry_date',
+        required: true,
+        label: 'MM/YY',
+        type: 'text',
+        maxLength: FIELD_LENGTHS.EXPIRY_DATE_MAX
+    },
+    {
+        name: 'cvv',
+        apiKey: 'cvv',
+        required: true,
+        label: 'CVV',
+        type: 'text',
+        maxLength: FIELD_LENGTHS.CVV_MAX
     }
 ];
 
 export const FORM_CONFIGS = {
     personalInfo: {
         fieldConfig: createFormFieldConfig(personalInfoFields),
-        initialValues: getInitialFormValues(personalInfoFields.map(f => f.name)),
+        get initialValues() {
+            return getInitialFormValues(
+                personalInfoFields.map((f) => f.name),
+                this.fieldConfig
+            );
+        },
         title: 'Personal Information'
+    },
+    passwordUpdate: {
+        fieldConfig: createFormFieldConfig(passwordUpdateFields),
+        get initialValues() {
+            return getInitialFormValues(
+                passwordUpdateFields.map((f) => f.name),
+                this.fieldConfig
+            );
+        },
+        title: 'Change Password'
+    },
+    login: {
+        fieldConfig: createFormFieldConfig(loginFields),
+        get initialValues() {
+            return getInitialFormValues(
+                loginFields.map((f) => f.name),
+                this.fieldConfig
+            );
+        },
+        title: 'Login'
+    },
+    register: {
+        fieldConfig: createFormFieldConfig(registerFields),
+        get initialValues() {
+            return getInitialFormValues(
+                registerFields.map((f) => f.name),
+                this.fieldConfig
+            );
+        },
+        title: 'Register'
     },
     deliveryAddress: {
         fieldConfig: createFormFieldConfig(deliveryAddressFields),
-        initialValues: getInitialFormValues(deliveryAddressFields.map(f => f.name)),
+        get initialValues() {
+            return getInitialFormValues(
+                deliveryAddressFields.map((f) => f.name),
+                this.fieldConfig
+            );
+        },
         title: 'Delivery Information'
     },
-    paymentCard: {
-        fieldConfig: createFormFieldConfig(paymentCardFields),
-        initialValues: getInitialFormValues(paymentCardFields.map(f => f.name)),
-        title: 'Payment Information'
+    payment: {
+        fieldConfig: createFormFieldConfig(paymentFields),
+        get initialValues() {
+            return getInitialFormValues(
+                paymentFields.map((f) => f.name),
+                this.fieldConfig
+            );
+        },
+        title: 'Payment'
     }
 };
