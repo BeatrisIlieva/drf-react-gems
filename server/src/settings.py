@@ -33,6 +33,7 @@ PROJECT_APPS = [
     'src.products',
     'src.shopping_bags',
     'src.wishlists',
+    'src.orders',
 ]
 
 INSTALLED_APPS = [
@@ -114,7 +115,7 @@ AUTHENTICATION_BACKENDS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'django_react_ts_gems_db',
+        'NAME': 'django_react_gems_db',
         'USER': 'postgres',
         'PASSWORD': 'S@3ana3a',
         'HOST': '127.0.0.1',

@@ -8,7 +8,6 @@ UserModel = get_user_model()
 
 
 class ShoppingBag(models.Model):
-    QUANTITY_MIN_VALUE = 1
 
     class Meta:
         unique_together = ('user', 'content_type', 'object_id')
