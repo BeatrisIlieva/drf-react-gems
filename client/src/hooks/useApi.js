@@ -105,6 +105,7 @@ export const useApi = () => {
                     await authRefresh();
                 }
 
+                // Create error with additional context
                 const error = new Error(
                     json?.message ||
                         json?.error ||
@@ -112,6 +113,7 @@ export const useApi = () => {
                 );
                 error.status = response.status;
                 error.data = json;
+                error.url = url;
                 throw error;
             }
 

@@ -1,0 +1,95 @@
+@use '../../../styles/variables' as vars;
+
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .rate-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        h5 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: vars.$black;
+        }
+
+        .required-note {
+            margin: 0;
+            font-size: 0.8rem;
+            color: vars.$dark-grey;
+            font-style: italic;
+        }
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        textarea {
+            width: 100%;
+            min-height: 4rem;
+            padding: 0.75rem;
+            border: 1px solid vars.$medium-grey;
+            border-radius: 0.25rem;
+            font-family: inherit;
+            font-size: 0.9rem;
+            resize: vertical;
+            background: vars.$white;
+            
+            &:focus {
+                outline: none;
+                border-color: vars.$gold;
+            }
+            
+            &:disabled {
+                background: vars.$light-grey;
+                cursor: not-allowed;
+            }
+        }
+
+        .error-message {
+            color: vars.$red;
+            font-size: 0.875rem;
+            margin: 0;
+            background-color: rgba(216, 35, 37, 0.1);
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            border: 1px solid vars.$red;
+        }
+
+        .success-message {
+            color: vars.$green;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.75rem;
+            
+            @media (max-width: 480px) {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    }
+
+    .auth-message {
+        color: vars.$dark-grey;
+        font-style: italic;
+        margin: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .review-form {
+        .rate-header {
+            align-items: center;
+            text-align: center;
+        }
+    }
+}

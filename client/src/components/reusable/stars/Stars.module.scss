@@ -17,5 +17,24 @@
         .empty {
             color: vars.$medium-grey;
         }
+
+        .interactive-empty {
+            color: vars.$medium-grey;
+        }
+
+        .hover-gold {
+            color: vars.$gold;
+        }
+    }
+
+    &.interactive {
+        li {
+            cursor: pointer;
+            transition: color 0.2s ease;
+
+            &:hover .interactive-empty {
+                color: vars.$gold;
+            }
+        }
     }
 }
