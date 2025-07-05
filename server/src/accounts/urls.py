@@ -12,9 +12,6 @@ from src.accounts.views import (
     PasswordChangeView
 )
 
-from src.accounts.views.user_address import (
-    UserAddressView,
-)
 
 urlpatterns = [
     path('register/', UserRegisterView.as_view(), name='register'),
@@ -25,6 +22,4 @@ urlpatterns = [
     path('photo/', PhotoUploadView.as_view(), name='photo'),
     path('change-password/', PasswordChangeView.as_view(), name='change-password'),
     path('token/refresh/', TokenRefreshView.as_view(), name='refresh-token'),
-
-    path('address/', UserAddressView.as_view(), name='user-address'),
 ]

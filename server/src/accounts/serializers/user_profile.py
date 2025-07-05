@@ -5,7 +5,16 @@ from rest_framework import serializers
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ['first_name', 'last_name', 'phone_number']
+        fields = [
+            'first_name',
+            'last_name',
+            'phone_number',
+            'apartment',
+            'country',
+            'city',
+            'street_address',
+            'zip_code',
+        ]
 
     def update(self, instance, validated_data):
         user = instance
