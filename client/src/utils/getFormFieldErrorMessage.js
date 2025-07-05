@@ -211,22 +211,12 @@ export const validators = {
         isValid: (value) => {
             if (!value || value.length === 0) return '';
 
-            // Remove spaces for validation
-            const cleanValue = value.replace(/\s/g, '');
+            // Use our payment validation patterns for spaced format
+            const isValid = Object.values(
+                PAYMENT_CONSTANTS.CARD_PATTERNS
+            ).some((pattern) => new RegExp(pattern).test(value));
 
-            // Check if it's numeric and exactly 16 digits
-            if (!/^\d{16}$/.test(cleanValue)) {
-                return PAYMENT_CONSTANTS.ERRORS.CARD_NUMBER;
-            }
-
-            // Check for valid card prefixes (Visa or Mastercard)
-            const isVisa = /^4/.test(cleanValue);
-            const isMastercard =
-                /^(5[1-5]|222[1-9]|22[3-9][0-9]|2[3-6][0-9][0-9]|27[0-1][0-9]|2720)/.test(
-                    cleanValue
-                );
-
-            if (!isVisa && !isMastercard) {
+            if (!isValid) {
                 return PAYMENT_CONSTANTS.ERRORS.CARD_NUMBER;
             }
 
@@ -321,8 +311,12 @@ export const validators = {
 
 export const getFormFieldErrorMessage = (field, value) => {
     const emptyErrorMessage = 'This field is required';
+    const optionalFields = ['apartment'];
 
     if (value === '') {
+        if (optionalFields.includes(field)) {
+            return '';
+        }
         return emptyErrorMessage;
     }
 
