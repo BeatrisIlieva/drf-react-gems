@@ -1,6 +1,9 @@
 import { useEffect, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCcVisa, faCcMastercard } from '@fortawesome/free-brands-svg-icons';
+import {
+    faCcVisa,
+    faCcMastercard
+} from '@fortawesome/free-brands-svg-icons';
 import { useForm } from '../../../hooks/useForm';
 import { useShoppingBagContext } from '../../../contexts/ShoppingBagContext';
 import { Button } from '../../reusable/button/Button';
@@ -10,33 +13,61 @@ import { CardNumberInput } from '../../reusable/card-number-input/CardNumberInpu
 import { FORM_CONFIGS } from '../../../config/formFieldConfigs';
 import { createApiDataFromForm } from '../../../utils/formHelpers';
 import { formatPrice } from '../../../utils/formatPrice';
+import {
+    formatCardNumber,
+    formatExpiryDate,
+    formatCvv
+} from '../../../utils/paymentValidation';
 
 import styles from './Payment.module.scss';
-
+import { OrderSummary } from '../../reusable/order-summary/OrderSummary';
+import { useOrder } from '../../../api/orderApi';
+import { PaddedContainer } from '../../reusable/padded-container/PaddedContainer';
+import { ProductsSummaryList } from '../../reusable/products-summary-list/ProductsSummaryList';
+import { Delivery } from '../../reusable/delivery/Delivery';
 export const Payment = () => {
     const { fieldConfig, initialValues } = FORM_CONFIGS.payment;
-    const { shoppingBagTotalPrice } = useShoppingBagContext();
+    const {
+        shoppingBagTotalPrice,
+        refreshShoppingBag,
+        shoppingBagItems
+    } = useShoppingBagContext();
+    const { createOrderFromBag } = useOrder();
 
     const handleSubmit = useCallback(
         async (formData) => {
-            const apiData = createApiDataFromForm(formData, fieldConfig);
+            const apiData = createApiDataFromForm(
+                formData,
+                fieldConfig
+            );
 
             try {
-                // Here you would call your payment API
-                console.log('Processing payment with data:', apiData);
-                
-                // Simulate API call
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                
-                return { success: true };
-            } catch {
+                const result = await createOrderFromBag(apiData);
+
+                if (result && !result.error) {
+                    await refreshShoppingBag();
+                    return {
+                        success: true,
+                        data: result
+                    };
+                }
+
+                if (result && typeof result === 'object') {
+                    return {
+                        success: false,
+                        data: result
+                    };
+                }
+            } catch (error) {
                 return {
                     success: false,
-                    error: 'Payment processing failed'
+                    error:
+                        error.response?.data ||
+                        'Failed to process payment'
                 };
             }
         },
-        [fieldConfig]
+        [fieldConfig, createOrderFromBag, refreshShoppingBag]
     );
 
     const formProps = useForm(initialValues, {
@@ -56,6 +87,29 @@ export const Payment = () => {
         registerInput
     } = formProps;
 
+    const handleFormattedFieldChange = useCallback(
+        (fieldName, value) => {
+            let formattedValue = value;
+
+            switch (fieldName) {
+                case 'cardNumber':
+                    formattedValue = formatCardNumber(value);
+                    break;
+                case 'expiryDate':
+                    formattedValue = formatExpiryDate(value);
+                    break;
+                case 'cvv':
+                    formattedValue = formatCvv(value);
+                    break;
+                default:
+                    break;
+            }
+
+            handleFieldChange(fieldName, formattedValue);
+        },
+        [handleFieldChange]
+    );
+
     // Handle successful form submission - reset validation states
     useEffect(() => {
         if (formProps.formState && formProps.formState.success) {
@@ -66,7 +120,7 @@ export const Payment = () => {
     const renderField = (fieldName) => {
         const fieldData = formData[fieldName];
         const config = fieldConfig[fieldName] || {};
-        
+
         if (!fieldData) return null;
 
         if (fieldName === 'cardNumber') {
@@ -75,7 +129,7 @@ export const Payment = () => {
                     key={fieldName}
                     fieldName={fieldName}
                     fieldData={fieldData}
-                    handleFieldChange={handleFieldChange}
+                    handleFieldChange={handleFormattedFieldChange}
                     validateField={validateField}
                     registerInput={registerInput}
                     fieldConfig={fieldConfig}
@@ -89,7 +143,7 @@ export const Payment = () => {
                 key={fieldName}
                 getInputClassName={getInputClassName}
                 fieldData={fieldData}
-                handleFieldChange={handleFieldChange}
+                handleFieldChange={handleFormattedFieldChange}
                 validateField={validateField}
                 fieldName={fieldName}
                 type={config.type || 'text'}
@@ -100,34 +154,70 @@ export const Payment = () => {
     };
 
     return (
-        <ShadowBox title="Payment">
-            <fieldset className={styles['payment-fieldset']}>
-                <legend className={styles['payment-legend']}>
-                    <span>Card Details</span>
-                    <span className={styles['card-icons']}>
-                        <FontAwesomeIcon icon={faCcMastercard} />
-                        <FontAwesomeIcon icon={faCcVisa} />
-                    </span>
-                </legend>
-                
-                <form
-                    ref={formRef}
-                    action={submitAction}
-                    className={styles['payment-form']}
-                >
-                    {Object.keys(fieldConfig).map(fieldName => renderField(fieldName))}
+        <PaddedContainer backgroundColor='lightest-grey'>
+            <section className={styles['checkout']}>
+                <div className={styles['wrapper-left']}>
+                    <ShadowBox title='Payment'>
+                        <fieldset
+                            className={styles['payment-fieldset']}
+                        >
+                            <legend
+                                className={
+                                    styles['payment-legend']
+                                }
+                            >
+                                <span>Card Details</span>
+                                <span
+                                    className={
+                                        styles['card-icons']
+                                    }
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faCcMastercard}
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={faCcVisa}
+                                    />
+                                </span>
+                            </legend>
 
-                    <Button
-                        title={`Place Order ${formatPrice(shoppingBagTotalPrice || 3800)}`}
-                        color='black'
-                        actionType='submit'
-                        pending={isSubmitting}
-                        success={formProps.formState?.success}
-                        callbackHandler={() => {}}
-                        buttonGrow='1'
-                    />
-                </form>
-            </fieldset>
-        </ShadowBox>
+                            <form
+                                ref={formRef}
+                                action={submitAction}
+                                className={styles['payment-form']}
+                            >
+                                {Object.keys(fieldConfig).map(
+                                    (fieldName) =>
+                                        renderField(fieldName)
+                                )}
+
+                                <Button
+                                    title={`Place Order ${formatPrice(
+                                        shoppingBagTotalPrice
+                                    )}`}
+                                    color='black'
+                                    actionType='submit'
+                                    pending={isSubmitting}
+                                    success={
+                                        formProps.formState
+                                            ?.success
+                                    }
+                                    callbackHandler={() => {}}
+                                    buttonGrow='1'
+                                />
+                            </form>
+                        </fieldset>
+                    </ShadowBox>
+                </div>
+
+                <OrderSummary>
+                    <ProductsSummaryList
+                        products={shoppingBagItems}
+                    >
+                        <Delivery fontSize={1} />
+                    </ProductsSummaryList>
+                </OrderSummary>
+            </section>
+        </PaddedContainer>
     );
 };
