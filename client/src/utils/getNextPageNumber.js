@@ -6,7 +6,7 @@ export const getNextPageNumber = (nextUrl) => {
         const page = url.searchParams.get('page');
 
         return page ? Number(page) : null;
-    } catch (err) {
+    } catch {
         return null;
     }
 };
