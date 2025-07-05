@@ -10,7 +10,8 @@ export const ShoppingBagContext = createContext({
     isDeleting: false,
     isLoading: false,
     updateShoppingBagTotalPrice: () => null,
-    continueCheckoutHandler: () => null
+    continueCheckoutHandler: () => null,
+    refreshShoppingBag: () => null
 });
 
 export const useShoppingBagContext = () => {

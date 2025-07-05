@@ -29,14 +29,14 @@ export const useShoppingBag = () => {
                     accessRequired: isAuthenticated,
                     refreshRequired: isAuthenticated
                 });
-                updateShoppingBagCount();
+                // updateShoppingBagCount();
 
                 return keysToCamelCase(response);
             } catch (error) {
                 console.error(error);
             }
         },
-        [post, isAuthenticated, updateShoppingBagCount]
+        [post, isAuthenticated]
     );
 
     // Delete shopping bag item

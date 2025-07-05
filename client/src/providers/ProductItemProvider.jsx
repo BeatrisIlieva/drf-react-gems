@@ -10,6 +10,7 @@ import {
 import { ProductItemContext } from '../contexts/ProductItemContext';
 import { useShoppingBag } from '../api/shoppingBagApi';
 import { WishlistContext } from '../contexts/WishlistContext';
+import { useShoppingBagContext } from '../contexts/ShoppingBagContext';
 
 export const ProductItemProvider = ({ children }) => {
     const { getProductItem } = useProductItem();
@@ -17,6 +18,7 @@ export const ProductItemProvider = ({ children }) => {
     const { createItem } = useShoppingBag();
     const { addToWishlist, removeFromWishlist, isInWishlist } =
         useContext(WishlistContext);
+    const {updateShoppingBagCount} = useShoppingBagContext()
 
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState(null);
@@ -93,6 +95,10 @@ export const ProductItemProvider = ({ children }) => {
             // Reset selected size after successful add to bag
             setSelectedSize(null);
             setSelectedInventory(null);
+            updateShoppingBagCount();
+            console.log(
+                'Item added to shopping bag successfully'
+            );
         } catch (error) {
             console.error(
                 'Error adding item to shopping bag:',

@@ -1,12 +1,9 @@
 @use '../../../styles/animations' as anim;
-@use '../../../styles/variables' as vars;
 
 .shopping-bag {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: vars.$layout-inline-padding
-        calc(vars.$layout-inline-padding) * 3;
     @include anim.animate-fade-in(1s);
 
     h2 {

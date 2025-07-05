@@ -7,6 +7,7 @@ import { useShoppingBagContext } from '../../../contexts/ShoppingBagContext';
 import { EmptyList } from '../../reusable/empty-list/EmptyList';
 import { Button } from '../../reusable/button/Button';
 import { ComplimentaryShipping } from '../../reusable/complimentary-shipping/ComplimentaryShipping';
+import { PaddedContainer } from '../../reusable/padded-container/PaddedContainer';
 
 export const ShoppingBag = () => {
     const {
@@ -37,33 +38,35 @@ export const ShoppingBag = () => {
     ]);
 
     return (
-        <section className={styles['shopping-bag']}>
-            <h2>Shopping Bag</h2>
+        <PaddedContainer backgroundColor='white'>
+            <section className={styles['shopping-bag']}>
+                <h2>Shopping Bag</h2>
 
-            {isEmpty ? (
-                <EmptyList title='shopping bag' />
-            ) : (
-                <div className={styles['wrapper']}>
-                    <div className={styles['wrapper-left']}>
-                        <Delivery fontSize={1.4} />
-                        <ShoppingBagList />
+                {isEmpty ? (
+                    <EmptyList title='shopping bag' />
+                ) : (
+                    <div className={styles['wrapper']}>
+                        <div className={styles['wrapper-left']}>
+                            <Delivery fontSize={1.4} />
+                            <ShoppingBagList />
+                        </div>
+
+                        <OrderSummary>
+                            <Button
+                                title={'Continue Checkout'}
+                                color={'black'}
+                                actionType={'button'}
+                                callbackHandler={
+                                    continueCheckoutHandler
+                                }
+                                buttonGrow='1'
+                            />
+
+                            <ComplimentaryShipping />
+                        </OrderSummary>
                     </div>
-
-                    <OrderSummary>
-                        <Button
-                            title={'Continue Checkout'}
-                            color={'black'}
-                            actionType={'button'}
-                            callbackHandler={
-                                continueCheckoutHandler
-                            }
-                            buttonGrow='1'
-                        />
-
-                        <ComplimentaryShipping />
-                    </OrderSummary>
-                </div>
-            )}
-        </section>
+                )}
+            </section>
+        </PaddedContainer>
     );
 };

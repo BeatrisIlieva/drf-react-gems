@@ -8,14 +8,13 @@ import {
 import { useShoppingBag } from '../api/shoppingBagApi';
 import { ShoppingBagContext } from '../contexts/ShoppingBagContext';
 import { useNavigate } from 'react-router';
-import { useAuth } from '../hooks/auth/useAuth';
+
 import usePersistedState from '../hooks/usePersistedState';
 
 export const ShoppingBagProvider = ({ children }) => {
     const { deleteItem, getItems, getCount, getTotalPrice } =
         useShoppingBag();
 
-    const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
     const [isDeleting, setIsDeleting] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -29,8 +28,6 @@ export const ShoppingBagProvider = ({ children }) => {
         usePersistedState('shopping-bag-items', []);
 
     const getShoppingBagItemsHandler = useCallback(async () => {
-        if (!isAuthenticated) return;
-
         setIsLoading(true);
         try {
             const response = await getItems();
@@ -40,41 +37,33 @@ export const ShoppingBagProvider = ({ children }) => {
         } finally {
             setIsLoading(false);
         }
-    }, [getItems, isAuthenticated, setShoppingBagItems]);
+    }, [getItems, setShoppingBagItems]);
 
     const updateShoppingBagCount = useCallback(async () => {
-        if (!isAuthenticated) return;
-
         try {
             const response = await getCount();
             setShoppingBagItemsCount(response.count);
         } catch (err) {
             console.error(err.message);
         }
-    }, [getCount, isAuthenticated, setShoppingBagItemsCount]);
+    }, [getCount, setShoppingBagItemsCount]);
 
     const updateShoppingBagTotalPrice = useCallback(async () => {
-        if (!isAuthenticated) return;
-
         try {
             const response = await getTotalPrice();
             setShoppingBagTotalPrice(response.totalPrice);
         } catch (err) {
             console.error(err.message);
         }
-    }, [
-        getTotalPrice,
-        isAuthenticated,
-        setShoppingBagTotalPrice
-    ]);
+    }, [getTotalPrice, setShoppingBagTotalPrice]);
 
     useEffect(() => {
-        if (isAuthenticated && !hasInitialized.current) {
+        if (!hasInitialized.current) {
             hasInitialized.current = true;
             getShoppingBagItemsHandler();
             updateShoppingBagCount();
             updateShoppingBagTotalPrice();
-        } else if (!isAuthenticated) {
+        } else {
             hasInitialized.current = false;
             setShoppingBagItems([]);
             setShoppingBagItemsCount(0);
@@ -82,7 +71,6 @@ export const ShoppingBagProvider = ({ children }) => {
             setIsLoading(false);
         }
     }, [
-        isAuthenticated,
         getShoppingBagItemsHandler,
         updateShoppingBagCount,
         updateShoppingBagTotalPrice,
@@ -142,13 +130,18 @@ export const ShoppingBagProvider = ({ children }) => {
     );
 
     const continueCheckoutHandler = useCallback(() => {
-        if (!isAuthenticated) {
-            navigate('/my-account/login');
-            return;
-        }
-
         navigate('/user/checkout');
-    }, [isAuthenticated, navigate]);
+    }, [navigate]);
+
+    const refreshShoppingBag = useCallback(async () => {
+        await getShoppingBagItemsHandler();
+        await updateShoppingBagCount();
+        await updateShoppingBagTotalPrice();
+    }, [
+        getShoppingBagItemsHandler,
+        updateShoppingBagCount,
+        updateShoppingBagTotalPrice
+    ]);
 
     const contextValue = useMemo(
         () => ({
@@ -161,7 +154,8 @@ export const ShoppingBagProvider = ({ children }) => {
             isDeleting,
             isLoading,
             updateShoppingBagTotalPrice,
-            continueCheckoutHandler
+            continueCheckoutHandler,
+            refreshShoppingBag
         }),
         [
             continueCheckoutHandler,
@@ -173,7 +167,8 @@ export const ShoppingBagProvider = ({ children }) => {
             shoppingBagItemsCount,
             shoppingBagTotalPrice,
             updateShoppingBagCount,
-            updateShoppingBagTotalPrice
+            updateShoppingBagTotalPrice,
+            refreshShoppingBag
         ]
     );
 

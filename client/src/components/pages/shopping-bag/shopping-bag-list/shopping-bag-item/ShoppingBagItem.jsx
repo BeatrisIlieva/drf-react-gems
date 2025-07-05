@@ -6,7 +6,7 @@ import { formatPrice } from '../../../../../utils/formatPrice';
 
 export const ShoppingBagItem = ({
     quantity,
-    totalPricePerProduct,
+    totalPrice,
     productInfo,
     id,
     contentType,
@@ -16,7 +16,7 @@ export const ShoppingBagItem = ({
         useShoppingBagContext();
 
     const formattedTotalPricePerProduct = formatPrice(
-        totalPricePerProduct.toString()
+        totalPrice.toString()
     );
 
     return (
