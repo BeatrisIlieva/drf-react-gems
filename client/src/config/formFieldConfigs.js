@@ -4,31 +4,6 @@ import {
 } from '../utils/formHelpers';
 import { FIELD_LENGTHS } from '../constants/fieldLengths';
 
-const personalInfoFields = [
-    {
-        name: 'firstName',
-        apiKey: 'first_name',
-        required: true,
-        label: 'First Name',
-        maxLength: FIELD_LENGTHS.FIRST_NAME_MAX
-    },
-    {
-        name: 'lastName',
-        apiKey: 'last_name',
-        required: true,
-        label: 'Last Name',
-        maxLength: FIELD_LENGTHS.LAST_NAME_MAX
-    },
-    {
-        name: 'phoneNumber',
-        apiKey: 'phone_number',
-        required: true,
-        label: 'Phone Number',
-        type: 'tel',
-        maxLength: FIELD_LENGTHS.PHONE_NUMBER_MAX
-    }
-];
-
 const passwordUpdateFields = [
     {
         name: 'currentPassword',
@@ -93,6 +68,28 @@ const registerFields = [
 ];
 
 const deliveryAddressFields = [
+    {
+        name: 'firstName',
+        apiKey: 'first_name',
+        required: true,
+        label: 'First Name',
+        maxLength: FIELD_LENGTHS.FIRST_NAME_MAX
+    },
+    {
+        name: 'lastName',
+        apiKey: 'last_name',
+        required: true,
+        label: 'Last Name',
+        maxLength: FIELD_LENGTHS.LAST_NAME_MAX
+    },
+    {
+        name: 'phoneNumber',
+        apiKey: 'phone_number',
+        required: true,
+        label: 'Phone Number',
+        type: 'tel',
+        maxLength: FIELD_LENGTHS.PHONE_NUMBER_MAX
+    },
     {
         name: 'country',
         apiKey: 'country',
@@ -166,16 +163,6 @@ const paymentFields = [
 ];
 
 export const FORM_CONFIGS = {
-    personalInfo: {
-        fieldConfig: createFormFieldConfig(personalInfoFields),
-        get initialValues() {
-            return getInitialFormValues(
-                personalInfoFields.map((f) => f.name),
-                this.fieldConfig
-            );
-        },
-        title: 'Personal Information'
-    },
     passwordUpdate: {
         fieldConfig: createFormFieldConfig(passwordUpdateFields),
         get initialValues() {
