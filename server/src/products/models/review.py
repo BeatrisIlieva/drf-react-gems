@@ -21,7 +21,8 @@ class Review(models.Model):
     )
 
     comment = models.TextField(
-        blank=True,
+        blank=False,
+        help_text='Review comment is required.',
     )
 
     approved = models.BooleanField(

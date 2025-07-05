@@ -1,4 +1,5 @@
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
 from src.products.views.product import CollectionRetrieveView, ColorRetrieveView, MetalRetrieveView, StoneRetrieveView
 from src.products.views.product import (
@@ -11,9 +12,14 @@ from src.products.views.product import (
     WristwearItemView,
     WristwearListView
 )
+from src.products.views.review import ReviewViewSet
+
+router = DefaultRouter()
+router.register(r'reviews', ReviewViewSet, basename='review')
 
 
 urlpatterns = [
+    path('', include(router.urls)),
     path('earwears/', include([
         path('', EarwearListView.as_view(), name='earwear-list'),
         path('<int:pk>/', EarwearItemView.as_view(), name='earwear-item'),
