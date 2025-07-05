@@ -20,7 +20,7 @@ export const OrderSummary = ({
     return (
         <section className={styles['order-summary']}>
             <ShadowBox title='Order Summary'>
-                <div>
+                <div className={styles['price-info']}>
                     {textRows.map((row, index) => (
                         <FlexTextRow key={index} {...row} />
                     ))}

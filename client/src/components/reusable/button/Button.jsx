@@ -26,35 +26,46 @@ export const Button = ({
         }
     }, [success, pending]);
 
-    const handleClick = () => {
+    const handleClick = (e) => {
         if (actionType === 'submit') {
+            // For submit buttons, let the form handle the submission
+            // Don't call the callbackHandler as it would interfere with form onSubmit
+            return;
+        } else {
             if (
                 callbackHandler &&
-                callbackHandler.toString() !== '() => {}'
+                typeof callbackHandler === 'function'
             ) {
-                callbackHandler();
+                callbackHandler(e);
             }
-        } else {
-            callbackHandler();
         }
     };
 
     const getButtonContent = () => {
         if (pending) {
             return (
-                <span className={styles['button-content']} key="pending">
+                <span
+                    className={styles['button-content']}
+                    key='pending'
+                >
                     <Icon name='ellipsis' fontSize={1.2} />
                 </span>
             );
         } else if (showSuccess) {
             return (
-                <span className={styles['button-content']} key="success">
+                <span
+                    className={styles['button-content']}
+                    key='success'
+                >
                     <Icon name='check' fontSize={1.2} />
                 </span>
             );
         } else {
             return (
-                <span className={styles['button-content']} key="title">
+                <span
+                    className={styles['button-content']}
+                    key='title'
+                >
                     {title}
                 </span>
             );
@@ -69,7 +80,10 @@ export const Button = ({
             } ${showSuccess ? styles['success'] : ''}`}
             type={actionType}
             disabled={disabled || pending}
-            style={{ flexGrow: buttonGrow, width: width !== 'auto' ? `${width}em` : 'auto' }}
+            style={{
+                flexGrow: buttonGrow,
+                width: width !== 'auto' ? `${width}em` : 'auto'
+            }}
         >
             <div className={styles['content-wrapper']}>
                 {getButtonContent()}

@@ -4,9 +4,9 @@
     display: flex;
     flex-direction: column;
     position: sticky;
-    top: 2em;
+    top: vars.$layout-inline-padding;
     height: 100%;
-    flex: 0 0 32%;
+    flex: 0 0 36%;
     gap: 1.25em;
 
     h3 {
@@ -14,19 +14,23 @@
     }
 
     & button:not(:only-child):first-of-type {
-        margin-bottom: 1.25em;
+        margin-block: 1.25em;
     }
 
-    div:nth-of-type(1) {
+    div.price-info {
         display: flex;
         flex-direction: column;
         gap: 0.75em;
 
-        p:nth-last-of-type(2) {
+        p:nth-of-type(2) {
             margin-bottom: 1em;
             padding-bottom: 1em;
             border-bottom: 0.1em solid vars.$medium-grey;
         }
+    }
+
+    div.price-info ~ div.children {
+        margin-top: 2em;
     }
 
     .children {

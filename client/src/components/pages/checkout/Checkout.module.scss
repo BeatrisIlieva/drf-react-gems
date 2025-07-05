@@ -3,9 +3,6 @@
 .checkout {
     display: flex;
     gap: 2em;
-    padding: vars.$layout-inline-padding
-        vars.$layout-inline-padding-desktop;
-    background: vars.$lightest-grey;
 
     .wrapper-left {
         display: flex;

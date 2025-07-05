@@ -1,7 +1,7 @@
 .flex-text-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    gap: 1em;
 }
 
 .highlighted {
@@ -10,6 +10,7 @@
 
 .subtle {
     opacity: 0.6;
+    font-size: 0.9em;
 }
 
 .increased-font-size {
