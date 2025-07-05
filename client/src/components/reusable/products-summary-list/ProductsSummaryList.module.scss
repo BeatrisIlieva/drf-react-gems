@@ -1,0 +1,15 @@
+@use '../../../styles/variables' as vars;
+
+.products-summary-list {
+    display: grid;
+    gap: 1em;
+
+    .wrapper {
+        display: flex;
+        gap: 4em;
+
+        li {
+            flex: 1 1 50%;
+        }
+    }
+}
