@@ -1,6 +1,5 @@
 import { ProfilePhotoUpload } from './profile-photo-upload/ProfilePhotoUpload';
 import { usePhotoManager } from '../../../../hooks/usePhotoManager';
-import { PersonalInfoForm } from './personal-info-form/PersonalInfoForm';
 import { DeliveryAddressForm } from './delivery-address-form/DeliveryAddressForm';
 import { LoginInformation } from './login-information/LoginInformation';
 import styles from './Details.module.scss';
@@ -21,7 +20,6 @@ export const Details = () => {
                 />
             </section>
             <h2>Account Details</h2>
-            <PersonalInfoForm />
             <LoginInformation />
             <DeliveryAddressForm />
         </section>

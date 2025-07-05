@@ -1,6 +1,5 @@
 import { useEffect, useCallback } from 'react';
 import { useForm } from '../../../../../hooks/useForm';
-import { useUserAddress } from '../../../../../api/accounts/userAddressApi';
 import { useFormDataLoader } from '../../../../../hooks/useFormDataLoader';
 import { FormFieldRenderer } from '../../../../common/FormFieldRenderer';
 import { Button } from '../../../../reusable/button/Button';
@@ -9,6 +8,7 @@ import { FORM_CONFIGS } from '../../../../../config/formFieldConfigs';
 import { createApiDataFromForm } from '../../../../../utils/formHelpers';
 
 import styles from './DeliveryAddressForm.module.scss';
+import { useProfile } from '../../../../../api/accounts/useProfileApi';
 
 export const DeliveryAddressForm = ({
     buttonTitle = 'Save',
@@ -19,8 +19,7 @@ export const DeliveryAddressForm = ({
 }) => {
     const { fieldConfig, initialValues } =
         FORM_CONFIGS.deliveryAddress;
-    const { getUserAddress, updateUserAddress } =
-        useUserAddress();
+    const { getPersonalInfo, updatePersonalInfo } = useProfile();
 
     const handleSubmit = useCallback(
         async (formData) => {
@@ -30,7 +29,7 @@ export const DeliveryAddressForm = ({
             );
 
             try {
-                const result = await updateUserAddress(apiData);
+                const result = await updatePersonalInfo(apiData);
 
                 if (result && !result.error) {
                     return { success: true };
@@ -49,7 +48,7 @@ export const DeliveryAddressForm = ({
                 };
             }
         },
-        [fieldConfig, updateUserAddress]
+        [fieldConfig, updatePersonalInfo]
     );
 
     const formProps = useForm(initialValues, {
@@ -71,7 +70,7 @@ export const DeliveryAddressForm = ({
     } = formProps;
 
     const { loading } = useFormDataLoader(
-        getUserAddress,
+        getPersonalInfo,
         updateFieldValue,
         fieldConfig
     );
@@ -84,9 +83,12 @@ export const DeliveryAddressForm = ({
 
     useEffect(() => {
         if (onFormReady) {
-            onFormReady({ submitAction });
+            onFormReady({
+                submitAction,
+                formState: formProps.formState
+            });
         }
-    }, [submitAction, onFormReady]);
+    }, [submitAction, formProps.formState, onFormReady]);
 
     const fieldNames = Object.keys(fieldConfig);
 

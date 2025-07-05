@@ -19,12 +19,12 @@ import { ShoppingBag } from './components/pages/shopping-bag/ShoppingBag';
 import { Register } from './components/pages/register/Register';
 import { Login } from './components/pages/login/Login';
 import { Details } from './components/pages/accounts/details/Details';
-import { Orders } from './components/pages/accounts/orders/Orders';
 import { Accounts } from './components/pages/accounts/Accounts';
 
 import styles from './App.module.scss';
 import { Checkout } from './components/pages/checkout/Checkout';
 import { Payment } from './components/pages/payment/Payment';
+import { OrderHistory } from './components/pages/accounts/order-history/OrderHistory';
 
 function App() {
     return (
@@ -89,7 +89,7 @@ function App() {
                                         />
                                         <Route
                                             path='orders'
-                                            element={<Orders />}
+                                            element={<OrderHistory />}
                                         />
                                     </Route>
                                     <Route
