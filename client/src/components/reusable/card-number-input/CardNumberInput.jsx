@@ -183,7 +183,6 @@ export const CardNumberInput = ({
                 value={fieldData.value}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                required={required}
                 maxLength={maxLength}
             />
             <label
