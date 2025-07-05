@@ -1,0 +1,14 @@
+@use '../../../styles/variables' as vars;
+
+.padded-container {
+    padding: vars.$layout-inline-padding
+        vars.$layout-inline-padding-desktop;
+}
+
+.padded-container--white {
+    background-color: vars.$white;
+}
+
+.padded-container--lightest-grey {
+    background-color: vars.$lightest-grey;
+}
