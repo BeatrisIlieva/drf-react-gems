@@ -38,7 +38,7 @@ class UserRegisterView(CreateAPIView):
         # Generate tokens for the newly created user
         refresh = RefreshToken.for_user(user)
 
-        guest_id = request.headers.get('guest_id')
+        guest_id = request.headers.get('Guest-Id')
         migrate_guest_data_to_user(user, guest_id)
 
         return Response(
@@ -83,7 +83,7 @@ class UserLoginView(APIView):
                 status=status.HTTP_401_UNAUTHORIZED,
             )
 
-        guest_id = request.headers.get('guest_id')
+        guest_id = request.headers.get('Guest-Id')
         migrate_guest_data_to_user(user, guest_id)
 
         # if the user credentials are valid we issue both `access token` and `refresh token`

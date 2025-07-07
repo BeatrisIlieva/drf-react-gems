@@ -20,7 +20,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
             user_filters = WishlistService.get_user_identifier(self.request)
             return Wishlist.objects.filter(**user_filters).select_related(
                 'content_type', 'user'
-            ).prefetch_related('product')
+            )
         except ValidationError:
             return Wishlist.objects.none()
 

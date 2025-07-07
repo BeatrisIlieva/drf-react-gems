@@ -2,9 +2,10 @@ from rest_framework import serializers
 from django.contrib.contenttypes.models import ContentType
 
 from src.wishlists.models import Wishlist
+from src.products.serializers.base import ProductListDataMixin
 
 
-class WishlistSerializer(serializers.ModelSerializer):
+class WishlistSerializer(serializers.ModelSerializer, ProductListDataMixin):
     content_type = serializers.SlugRelatedField(
         slug_field='model',
         queryset=ContentType.objects.all()
@@ -32,15 +33,24 @@ class WishlistSerializer(serializers.ModelSerializer):
         ]
         
     def get_product_info(self, obj):
-        if obj.product:
-            return {
-                'id': obj.product.id,
-                'first_image': obj.product.first_image,
-                'second_image': obj.product.second_image,
-                'collection': obj.product.collection.name,
-                'color': obj.product.color.name,
-                'metal': obj.product.metal.name,
-                'stone': obj.product.stone.name,
-                'product_type': obj.content_type.model,
-            }
-        return None
+        """
+        Returns product data in the same format as product list views
+        """
+        product_obj = obj.product
+        
+        # If the wishlist item is an inventory item, get the actual product
+        if hasattr(product_obj, 'product') and hasattr(product_obj, 'size'):
+            # This is an inventory item, get the actual product
+            actual_product = product_obj.product
+            product_data = self.get_product_list_data(actual_product)
+            
+            # Add inventory-specific data
+            if product_data:
+                product_data['size'] = product_obj.size.name
+                product_data['price'] = product_obj.price
+                product_data['available_quantity'] = product_obj.quantity
+                
+            return product_data
+        else:
+            # This is a direct product
+            return self.get_product_list_data(product_obj)

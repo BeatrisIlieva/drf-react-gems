@@ -7,6 +7,49 @@ from src.products.serializers.review import ReviewSerializer
 from src.products.models.product import Earwear, Neckwear, Fingerwear, Wristwear
 
 
+class ProductListDataMixin:
+    """Mixin to provide consistent product list data serialization"""
+    
+    @staticmethod
+    def get_product_list_data(product):
+        """
+        Returns product data in the same format as BaseProductListSerializer
+        """
+        if not product:
+            return None
+            
+        # Calculate average rating
+        avg_rating = product.review.filter(approved=True).aggregate(
+            avg=Avg('rating')
+        )['avg'] or 0
+        
+        # Calculate price range from inventory
+        inventory_items = product.inventory.all()
+        if inventory_items:
+            prices = [item.price for item in inventory_items]
+            min_price = min(prices)
+            max_price = max(prices)
+        else:
+            min_price = max_price = 0
+            
+        # Check if sold out
+        is_sold_out = not inventory_items.filter(quantity__gt=0).exists()
+        
+        return {
+            'id': product.id,
+            'first_image': product.first_image,
+            'second_image': product.second_image,
+            'collection__name': product.collection.name,
+            'color__name': product.color.name,
+            'stone__name': product.stone.name,
+            'metal__name': product.metal.name,
+            'is_sold_out': is_sold_out,
+            'average_rating': round(avg_rating, 2),
+            'min_price': min_price,
+            'max_price': max_price,
+        }
+
+
 class BaseProductListSerializer(serializers.ModelSerializer):
     average_rating = serializers.DecimalField(
         max_digits=7,

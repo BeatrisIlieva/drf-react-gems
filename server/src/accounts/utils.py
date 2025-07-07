@@ -46,6 +46,7 @@ def migrate_guest_wishlist_to_user(user, guest_id):
         print(f"Migrated {migrated_count} wishlist items to user {user.email}")
 
 
+
 def migrate_guest_data_to_user(user, guest_id):
     """Migrate all guest data (shopping bag and wishlist) to authenticated user"""
     if guest_id:
