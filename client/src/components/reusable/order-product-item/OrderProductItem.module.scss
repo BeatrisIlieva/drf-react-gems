@@ -3,11 +3,9 @@
 .order-product-item {
     display: flex;
     flex-direction: column;
-    // flex: 1 1 30%;
     gap: 1.5rem;
     padding: 1rem;
     border: 1px solid vars.$light-grey;
-    border-radius: 0.5rem;
     background: vars.$white;
 
     .product-details {

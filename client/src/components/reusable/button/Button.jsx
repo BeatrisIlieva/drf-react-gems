@@ -11,7 +11,8 @@ export const Button = ({
     success = false,
     disabled = false,
     buttonGrow = '0',
-    width = 'auto'
+    width = 'auto',
+    className = ''
 }) => {
     const [showSuccess, setShowSuccess] = useState(false);
 
@@ -77,7 +78,7 @@ export const Button = ({
             onClick={handleClick}
             className={`${styles['btn']} ${styles[color]} ${
                 pending ? styles['pending'] : ''
-            } ${showSuccess ? styles['success'] : ''}`}
+            } ${showSuccess ? styles['success'] : ''} ${className}`.trim()}
             type={actionType}
             disabled={disabled || pending}
             style={{
