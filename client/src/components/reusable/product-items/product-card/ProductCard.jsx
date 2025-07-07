@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
-import styles from './ProductCard.module.scss';
-import { Icon } from '../../../reusable/icon/Icon';
-import { ToggleImageButtons } from './toggle-image-buttons/ToggleImageButtons';
-import { InventoryState } from './inventory-state/InventoryState';
 import { useCategoryName } from '../../../../hooks/products/useCategoryName';
-import { StyledTextBlock } from '../../../reusable/styled-text-block/StyledTextBlock';
 import { formatPrice } from '../../../../utils/formatPrice';
-import { Stars } from '../../../reusable/stars/Stars';
 import { useNavigate } from 'react-router';
 import { useWishlistContext } from '../../../../contexts/WishlistContext';
+import styles from './ProductCard.module.scss';
+import { Icon } from '../../icon/Icon';
+import { InventoryState } from './inventory-state/InventoryState';
+import { ToggleImageButtons } from './toggle-image-buttons/ToggleImageButtons';
+import { StyledTextBlock } from '../../styled-text-block/StyledTextBlock';
+import { Stars } from '../../stars/Stars';
 
 export const ProductCard = ({
     id,
@@ -21,49 +21,31 @@ export const ProductCard = ({
     metalName,
     minPrice,
     maxPrice,
-    averageRating
+    averageRating,
+    categoryName
 }) => {
     const [selectedImageIndex, setSelectedImageIndex] =
         useState(0);
-    const { categoryNameCapitalizedSingular, categoryName } =
-        useCategoryName();
+    const {
+        categoryNameCapitalizedSingular,
+        categoryName: categoryFromUrl
+    } = useCategoryName();
     const formattedMinPrice = formatPrice(minPrice);
     const formattedMaxPrice = formatPrice(maxPrice);
     const navigate = useNavigate();
-    const { addToWishlist, removeFromWishlist, isInWishlist } =
+    const { isInWishlist, handleWishlistToggle } =
         useWishlistContext();
-
-    const handleWishlistToggle = useCallback(async () => {
-        const category = categoryName?.slice(
-            0,
-            categoryName?.length - 1
-        );
-
-        if (category && id) {
-            if (isInWishlist(category, id)) {
-                await removeFromWishlist(category, id);
-            } else {
-                await addToWishlist(category, id);
-            }
-        }
-    }, [
-        addToWishlist,
-        removeFromWishlist,
-        isInWishlist,
-        categoryName,
-        id
-    ]);
-
-    const category = categoryName?.slice(
+    const categoryParam = categoryFromUrl || categoryName;
+    const category = categoryParam?.slice(
         0,
-        categoryName?.length - 1
+        categoryParam?.length - 1
     );
-    const isItemInWishlist =
-        category && id ? isInWishlist(category, id) : false;
+    
+    const isItemInWishlist = isInWishlist(category, id);
 
     const navigateToProductItem = useCallback(() => {
-        navigate(`/products/${categoryName}/${id}`);
-    }, [categoryName, id, navigate]);
+        navigate(`/products/${categoryParam}/${id}`);
+    }, [categoryParam, id, navigate]);
 
     useEffect(() => {
         setSelectedImageIndex(0);
@@ -73,7 +55,9 @@ export const ProductCard = ({
         <article className={styles['product-card']}>
             <div className={styles['wrapper']}>
                 <button
-                    onClick={handleWishlistToggle}
+                    onClick={() =>
+                        handleWishlistToggle(`${category}s`, id)
+                    }
                     className={styles['wishlist-button']}
                     aria-label={
                         isItemInWishlist
