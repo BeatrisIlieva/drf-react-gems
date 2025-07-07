@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router';
 import usePersistedState from '../hooks/usePersistedState';
 
 export const ShoppingBagProvider = ({ children }) => {
-    const { deleteItem, getItems, getCount, getTotalPrice } =
+    const { deleteItem, getItems, getCount, getTotalPrice, createItem } =
         useShoppingBag();
 
     const navigate = useNavigate();
@@ -32,8 +32,8 @@ export const ShoppingBagProvider = ({ children }) => {
         try {
             const response = await getItems();
             setShoppingBagItems(response);
-        } catch (err) {
-            console.error(err.message);
+        } catch {
+            // Handle error silently
         } finally {
             setIsLoading(false);
         }
@@ -43,17 +43,20 @@ export const ShoppingBagProvider = ({ children }) => {
         try {
             const response = await getCount();
             setShoppingBagItemsCount(response.count);
-        } catch (err) {
-            console.error(err.message);
+        } catch {
+            // Handle error silently
         }
     }, [getCount, setShoppingBagItemsCount]);
 
     const updateShoppingBagTotalPrice = useCallback(async () => {
         try {
             const response = await getTotalPrice();
-            setShoppingBagTotalPrice(response.totalPrice);
-        } catch (err) {
-            console.error(err.message);
+            const price = typeof response.totalPrice === 'string' 
+                ? parseFloat(response.totalPrice) 
+                : response.totalPrice;
+            setShoppingBagTotalPrice(isNaN(price) ? 0 : price);
+        } catch {
+            // Handle error silently
         }
     }, [getTotalPrice, setShoppingBagTotalPrice]);
 
@@ -70,64 +73,72 @@ export const ShoppingBagProvider = ({ children }) => {
             setShoppingBagTotalPrice(0);
             setIsLoading(false);
         }
-    }, [
-        getShoppingBagItemsHandler,
-        updateShoppingBagCount,
-        updateShoppingBagTotalPrice,
-        setShoppingBagItems,
-        setShoppingBagItemsCount,
-        setShoppingBagTotalPrice
-    ]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const deleteShoppingBagHandler = useCallback(
         async (id) => {
             setIsDeleting(true);
+            
+            const deletedItem = shoppingBagItems.find(
+                (item) => item.id === id
+            );
+            
+            if (!deletedItem) {
+                setIsDeleting(false);
+                return;
+            }
+            
             try {
                 await deleteItem(id);
-
+                
                 const updatedItems = shoppingBagItems.filter(
                     (item) => item.id !== id
                 );
                 setShoppingBagItems(updatedItems);
-
-                setShoppingBagItemsCount((prev) =>
-                    Math.max(0, prev - 1)
-                );
-
-                const deletedItem = shoppingBagItems.find(
-                    (item) => item.id === id
-                );
-                if (deletedItem) {
-                    setShoppingBagTotalPrice((prev) =>
-                        Math.max(
-                            0,
-                            prev -
-                                deletedItem.totalPricePerProduct
-                        )
-                    );
-                }
-            } catch (error) {
-                console.error(
-                    'Error deleting shopping bag item:',
-                    error instanceof Error
-                        ? error.message
-                        : String(error)
-                );
-
-                getShoppingBagItemsHandler();
+                
+                const newCount = Math.max(0, shoppingBagItemsCount - deletedItem.quantity);
+                setShoppingBagItemsCount(newCount);
+                
+                setShoppingBagTotalPrice((prev) => {
+                    const currentPrice = typeof prev === 'string' ? parseFloat(prev) : prev;
+                    const itemPrice = typeof deletedItem.totalPrice === 'string' 
+                        ? parseFloat(deletedItem.totalPrice) 
+                        : deletedItem.totalPrice;
+                    const newPrice = currentPrice - itemPrice;
+                    return Math.max(0, isNaN(newPrice) ? 0 : newPrice);
+                });
+                
+            } catch {
+                await getShoppingBagItemsHandler();
+                await updateShoppingBagCount();
+                await updateShoppingBagTotalPrice();
             } finally {
                 setIsDeleting(false);
             }
         },
         [
             deleteItem,
-            getShoppingBagItemsHandler,
             shoppingBagItems,
+            shoppingBagItemsCount,
             setShoppingBagItems,
             setShoppingBagItemsCount,
-            setShoppingBagTotalPrice
+            setShoppingBagTotalPrice,
+            getShoppingBagItemsHandler,
+            updateShoppingBagCount,
+            updateShoppingBagTotalPrice
         ]
     );
+
+    const createShoppingBagItemHandler = useCallback(async (inventory) => {
+        try {
+            await createItem(inventory);
+            await updateShoppingBagCount();
+            return { success: true };
+        } catch (error) {
+            return { success: false, error };
+        }
+    }, [createItem, updateShoppingBagCount]);
 
     const continueCheckoutHandler = useCallback(() => {
         navigate('/user/checkout');
@@ -155,10 +166,12 @@ export const ShoppingBagProvider = ({ children }) => {
             isLoading,
             updateShoppingBagTotalPrice,
             continueCheckoutHandler,
-            refreshShoppingBag
+            refreshShoppingBag,
+            createShoppingBagItemHandler
         }),
         [
             continueCheckoutHandler,
+            createShoppingBagItemHandler,
             deleteShoppingBagHandler,
             getShoppingBagItemsHandler,
             isDeleting,

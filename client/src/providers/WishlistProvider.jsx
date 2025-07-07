@@ -26,7 +26,7 @@ export const WishlistProvider = ({ children }) => {
                 setWishlistItemsCount(response.count);
             }
         } catch (err) {
-            console(err.message);
+            console.error(err.message);
         }
     }, [getCount]);
 
@@ -40,12 +40,18 @@ export const WishlistProvider = ({ children }) => {
 
                 const newItem = await createItem(requestData);
                 if (newItem) {
+                    const transformedItem = {
+                        ...newItem.productInfo,
+                        contentType: newItem.contentType,
+                        objectId: newItem.objectId,
+                        wishlistId: newItem.id,
+                        categoryName: `${newItem.contentType}s`
+                    };
                     setWishlistItems((prev) => [
                         ...prev,
-                        newItem
+                        transformedItem
                     ]);
-                    // Update count after successful addition
-                    updateWishlistCount();
+                    setWishlistItemsCount((prev) => prev + 1);
                     return true;
                 }
                 return false;
@@ -57,7 +63,7 @@ export const WishlistProvider = ({ children }) => {
                 return false;
             }
         },
-        [createItem, updateWishlistCount]
+        [createItem]
     );
 
     const removeFromWishlist = useCallback(
@@ -67,8 +73,6 @@ export const WishlistProvider = ({ children }) => {
                     content_type: contentType,
                     object_id: objectId
                 });
-
-                console.log(success)
 
                 if (success) {
                     setWishlistItems((prev) =>
@@ -81,8 +85,9 @@ export const WishlistProvider = ({ children }) => {
                                 )
                         )
                     );
-                    // Update count after successful removal
-                    updateWishlistCount();
+                    setWishlistItemsCount((prev) =>
+                        Math.max(0, prev - 1)
+                    );
                     return true;
                 }
                 return false;
@@ -94,47 +99,110 @@ export const WishlistProvider = ({ children }) => {
                 return false;
             }
         },
-        [deleteItem, updateWishlistCount]
+        [deleteItem]
     );
 
     const isInWishlist = useCallback(
-        
         (contentType, objectId) => {
-            console.log(wishlistItems)
+            if (!contentType || !objectId) return false;
+            
+            // Standardize contentType format for comparison (handle singular/plural)
+            const standardizedContentType = contentType.endsWith('s') 
+                ? contentType.slice(0, -1) 
+                : contentType;
+            
             return wishlistItems.some(
-                (item) =>
-                    item.contentType === contentType &&
-                    item.objectId === objectId
+                (item) => {
+                    // Standardize item's contentType
+                    const itemContentType = item.contentType?.endsWith('s')
+                        ? item.contentType.slice(0, -1)
+                        : item.contentType;
+                    
+                    // Convert all ID values to strings for comparison
+                    const objectIdStr = String(objectId);
+                    
+                    // Match using different possible ID fields
+                    const idMatches = 
+                        String(item.objectId) === objectIdStr || 
+                        String(item.productId) === objectIdStr ||
+                        String(item.id) === objectIdStr;
+                    
+                    // Check if category field exists and match it
+                    let categoryMatches = false;
+                    if (item.category) {
+                        const itemCategory = typeof item.category === 'string' 
+                            ? item.category.toLowerCase() 
+                            : item.category.name?.toLowerCase();
+                        
+                        categoryMatches = itemCategory === standardizedContentType;
+                    }
+                    
+                    // Match using different possible contentType fields
+                    const contentTypeMatches =
+                        itemContentType === standardizedContentType || categoryMatches;
+                    
+                    return contentTypeMatches && idMatches;
+                }
             );
         },
         [wishlistItems]
     );
 
-    // Load wishlist on mount and when authentication state changes
+    const handleWishlistToggle = useCallback(
+        async (categoryName, id) => {
+            const category = categoryName?.slice(
+                0,
+                categoryName?.length - 1
+            );
+
+            if (category && id) {
+                if (isInWishlist(category, id)) {
+                    await removeFromWishlist(category, id);
+                } else {
+                    await addToWishlist(category, id);
+                }
+            }
+        },
+        [addToWishlist, removeFromWishlist, isInWishlist]
+    );
+
     useEffect(() => {
         const loadWishlist = async () => {
             setIsLoading(true);
             try {
                 const response = await getItems();
                 if (response && Array.isArray(response)) {
-                    setWishlistItems(response);
+                    const transformedItems = response.map(
+                        (item) => ({
+                            ...item.productInfo,
+                            contentType: item.contentType,
+                            objectId: item.objectId,
+                            wishlistId: item.id,
+                            categoryName: `${item.contentType}s`
+                        })
+                    );
+                    setWishlistItems(transformedItems);
+                    setWishlistItemsCount(
+                        transformedItems.length
+                    );
+                } else {
+                    setWishlistItems([]);
+                    setWishlistItemsCount(0);
                 }
-                // Also update the count when loading items
-                updateWishlistCount();
             } catch (error) {
                 console.error(
                     'Failed to refresh wishlist:',
                     error
                 );
+                setWishlistItems([]);
+                setWishlistItemsCount(0);
             } finally {
                 setIsLoading(false);
             }
         };
 
         loadWishlist();
-        // Only depend on userId (stable) instead of the entire getWishlist function
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userId, updateWishlistCount]);
+    }, [userId, getItems]);
 
     const contextValue = useMemo(
         () => ({
@@ -144,7 +212,8 @@ export const WishlistProvider = ({ children }) => {
             addToWishlist,
             removeFromWishlist,
             isInWishlist,
-            updateWishlistCount
+            updateWishlistCount,
+            handleWishlistToggle
         }),
         [
             wishlistItems,
@@ -153,7 +222,8 @@ export const WishlistProvider = ({ children }) => {
             addToWishlist,
             removeFromWishlist,
             isInWishlist,
-            updateWishlistCount
+            updateWishlistCount,
+            handleWishlistToggle
         ]
     );
 

@@ -12,12 +12,14 @@ export const Buttons = () => {
     const { isAuthenticated } = useAuth();
     const { shoppingBagItemsCount, updateShoppingBagCount } =
         useShoppingBagContext();
-    const { wishlistItemsCount, updateWishlistCount } = useWishlistContext();
+    const { wishlistItemsCount, updateWishlistCount } =
+        useWishlistContext();
 
     useEffect(() => {
         updateShoppingBagCount();
         updateWishlistCount();
-    }, [updateShoppingBagCount, updateWishlistCount]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <ul className={styles['buttons']}>
@@ -40,12 +42,14 @@ export const Buttons = () => {
             </li>
 
             <li>
-                <Icon name={'heart'} />
-                {wishlistItemsCount > 0 && (
-                    <span>
-                        <span>{wishlistItemsCount}</span>
-                    </span>
-                )}
+                <Link to='/user/wishlist'>
+                    <Icon name={'heart'} />
+                    {wishlistItemsCount > 0 && (
+                        <span>
+                            <span>{wishlistItemsCount}</span>
+                        </span>
+                    )}
+                </Link>
             </li>
             <li>
                 <Link to='/user/shopping-bag'>

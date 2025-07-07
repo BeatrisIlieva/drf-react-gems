@@ -45,6 +45,7 @@ export const QuantitySelector = ({
 
             getShoppingBagItemsHandler();
             updateShoppingBagTotalPrice();
+            updateShoppingBagCount();
         } catch (err) {
             console(err.message);
             setLocalQuantity(quantity);
@@ -62,12 +63,11 @@ export const QuantitySelector = ({
             handleQuantityChange(localQuantity - 1);
         } else {
             handleQuantityChange(0);
-            // For item removal, we use a timeout to ensure the backend operation completes
             setTimeout(() => {
                 getShoppingBagItemsHandler();
                 updateShoppingBagCount();
                 updateShoppingBagTotalPrice();
-            }, 300);
+            }, 100);
         }
     };
 

@@ -1,24 +1,17 @@
 import { useParams } from 'react-router';
 import { useProductItem } from '../api/products/productItemApi';
-import {
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-    useContext
-} from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ProductItemContext } from '../contexts/ProductItemContext';
-import { useShoppingBag } from '../api/shoppingBagApi';
-import { WishlistContext } from '../contexts/WishlistContext';
 import { useShoppingBagContext } from '../contexts/ShoppingBagContext';
 
 export const ProductItemProvider = ({ children }) => {
     const { getProductItem } = useProductItem();
     const { categoryName, productId } = useParams();
-    const { createItem } = useShoppingBag();
-    const { addToWishlist, removeFromWishlist, isInWishlist } =
-        useContext(WishlistContext);
-    const {updateShoppingBagCount} = useShoppingBagContext()
+    const {
+        createShoppingBagItemHandler,
+        getShoppingBagItemsHandler,
+        shoppingBagItemsCount
+    } = useShoppingBagContext();
 
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState(null);
@@ -27,26 +20,48 @@ export const ProductItemProvider = ({ children }) => {
         useState(null);
     const [selectedInventory, setSelectedInventory] =
         useState(null);
-    const [addToCartError, setAddToCartError] = useState(null);
 
-    const getProductItemHandler = useCallback(async () => {
-        setLoading(true);
-        try {
-            const response = await getProductItem({
-                categoryName,
-                productId
-            });
-            setProduct(response.product);
-        } catch (err) {
-            console(err.message);
-        } finally {
-            setLoading(false);
-        }
-    }, [categoryName, productId, getProductItem]);
+    const [isMiniBagPopupOpen, setIsMiniBagPopupOpen] =
+        useState(false);
 
     useEffect(() => {
-        getProductItemHandler();
-    }, [categoryName, productId, getProductItemHandler]);
+        const loadProduct = async () => {
+            setLoading(true);
+            try {
+                const response = await getProductItem({
+                    categoryName,
+                    productId
+                });
+                setProduct(response.product);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadProduct();
+    }, [categoryName, productId, getProductItem]);
+
+    const toggleMiniBagPopupOpen = useCallback(() => {
+        if (isMiniBagPopupOpen) {
+            // When closing the popup, refresh the product data to update inventory
+            const refreshProduct = async () => {
+                try {
+                    const response = await getProductItem({
+                        categoryName,
+                        productId
+                    });
+                    setProduct(response.product);
+                } catch {
+                    // Silently handle errors
+                }
+            };
+            refreshProduct();
+            setIsMiniBagPopupOpen(false);
+        } else {
+            getShoppingBagItemsHandler();
+            setIsMiniBagPopupOpen(true);
+        }
+    }, [isMiniBagPopupOpen, getProductItem, categoryName, productId, getShoppingBagItemsHandler]);
 
     const createShoppingBagHandler = useCallback(async () => {
         if (selectedSize === null) {
@@ -54,28 +69,23 @@ export const ProductItemProvider = ({ children }) => {
             return;
         }
 
-        setAddToCartError(null);
         try {
-            await createItem(selectedInventory);
+            await createShoppingBagItemHandler(selectedInventory);
 
-            // Update local inventory data instead of refetching everything
             if (product && selectedInventory) {
                 setProduct((prevProduct) => {
                     if (!prevProduct) return null;
 
-                    // Create a deep copy of the product to avoid mutating state directly
                     const updatedProduct = {
                         ...prevProduct,
                         inventory: prevProduct.inventory.map(
                             (item) => {
-                                // If this is the added item, decrement its quantity
                                 if (
                                     item.id ===
                                     selectedInventory.objectId
                                 ) {
                                     return {
                                         ...item,
-                                        // Ensure we never remove the item, just set quantity to 0
                                         quantity: Math.max(
                                             0,
                                             item.quantity -
@@ -92,76 +102,19 @@ export const ProductItemProvider = ({ children }) => {
                 });
             }
 
-            // Reset selected size after successful add to bag
             setSelectedSize(null);
             setSelectedInventory(null);
-            updateShoppingBagCount();
-            console.log(
-                'Item added to shopping bag successfully'
-            );
-        } catch (error) {
-            console.error(
-                'Error adding item to shopping bag:',
-                error
-            );
-
-            // Detect inventory-related errors
-            const errorMessage =
-                error instanceof Error
-                    ? error.message
-                    : String(error);
-            const isInventoryError =
-                errorMessage.includes('inventory') ||
-                errorMessage.includes('sold out') ||
-                errorMessage.includes('stock') ||
-                errorMessage.includes('quantity');
-
-            if (isInventoryError) {
-                // If this was an inventory error, refresh the product data
-                await getProductItemHandler();
-                setAddToCartError(
-                    'This item is no longer available. The product information has been updated.'
-                );
-            } else {
-                setAddToCartError(
-                    "We couldn't add this item to your bag. Please try again later."
-                );
-            }
-
-            setTimeout(() => {
-                setAddToCartError(null);
-            }, 1000);
+            getShoppingBagItemsHandler();
+            setIsMiniBagPopupOpen(true);
+        } catch {
+            // No error message shown to user
         }
     }, [
         selectedSize,
-        createItem,
         selectedInventory,
+        createShoppingBagItemHandler,
         product,
-        getProductItemHandler
-    ]);
-
-    const addToWishlistHandler = useCallback(async () => {
-        if (!product || !categoryName) return;
-
-        const contentType = categoryName.slice(0, -1); // Remove 's' to make it singular
-        const objectId = product.id;
-
-        const isCurrentlyInWishlist = isInWishlist(
-            contentType,
-            objectId
-        );
-
-        if (isCurrentlyInWishlist) {
-            await removeFromWishlist(contentType, objectId);
-        } else {
-            await addToWishlist(contentType, objectId);
-        }
-    }, [
-        product,
-        categoryName,
-        isInWishlist,
-        addToWishlist,
-        removeFromWishlist
+        getShoppingBagItemsHandler
     ]);
 
     const updateSelectedInventoryHandler = (
@@ -200,7 +153,6 @@ export const ProductItemProvider = ({ children }) => {
         [selectedSize]
     );
 
-    // Compute whether the product is completely sold out (all sizes have quantity 0)
     const isSoldOut = useMemo(() => {
         if (
             !product ||
@@ -235,10 +187,10 @@ export const ProductItemProvider = ({ children }) => {
             selectedSize,
             setSelectedSizeHandler,
             createShoppingBagHandler,
-            addToWishlistHandler,
             notSelectedSizeError,
-            addToCartError,
-            isSoldOut
+            isSoldOut,
+            isMiniBagPopupOpen,
+            toggleMiniBagPopupOpen
         }),
         [
             product,
@@ -246,12 +198,32 @@ export const ProductItemProvider = ({ children }) => {
             selectedSize,
             createShoppingBagHandler,
             setSelectedSizeHandler,
-            addToWishlistHandler,
             notSelectedSizeError,
-            addToCartError,
-            isSoldOut
+            isSoldOut,
+            isMiniBagPopupOpen,
+            toggleMiniBagPopupOpen
         ]
     );
+
+    // Automatically close the mini shopping bag popup when it becomes empty
+    useEffect(() => {
+        if (isMiniBagPopupOpen && shoppingBagItemsCount === 0) {
+            // Only refresh product if we're closing due to empty bag
+            const refreshProduct = async () => {
+                try {
+                    const response = await getProductItem({
+                        categoryName,
+                        productId
+                    });
+                    setProduct(response.product);
+                } catch {
+                    // Silently handle errors
+                }
+            };
+            refreshProduct();
+            setIsMiniBagPopupOpen(false);
+        }
+    }, [shoppingBagItemsCount, isMiniBagPopupOpen, getProductItem, categoryName, productId]);
 
     return (
         <ProductItemContext.Provider value={contextValue}>

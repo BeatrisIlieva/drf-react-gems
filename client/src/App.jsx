@@ -25,6 +25,7 @@ import styles from './App.module.scss';
 import { Checkout } from './components/pages/checkout/Checkout';
 import { Payment } from './components/pages/payment/Payment';
 import { OrderHistory } from './components/pages/accounts/order-history/OrderHistory';
+import { Wishlist } from './components/pages/wishlist/Wishlist';
 
 function App() {
     return (
@@ -69,6 +70,10 @@ function App() {
                                     path='/user/shopping-bag'
                                     element={<ShoppingBag />}
                                 />
+                                <Route
+                                    path='/user/wishlist'
+                                    element={<Wishlist />}
+                                />
                                 <Route element={<AuthGuard />}>
                                     <Route
                                         path='/my-account'
@@ -89,7 +94,9 @@ function App() {
                                         />
                                         <Route
                                             path='orders'
-                                            element={<OrderHistory />}
+                                            element={
+                                                <OrderHistory />
+                                            }
                                         />
                                     </Route>
                                     <Route

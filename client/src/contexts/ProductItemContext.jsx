@@ -17,10 +17,11 @@ export const ProductItemContext = createContext({
     selectedSize: null,
     setSelectedSizeHandler: () => null,
     createShoppingBagHandler: async () => {},
-    addToWishlistHandler: () => null,
     notSelectedSizeError: null,
     addToCartError: null,
-    isSoldOut: false
+    isSoldOut: false,
+    isMiniBagPopupOpen: false,
+    toggleMiniBagPopupOpen: () => {}
 });
 
 export const useProductItemContext = () => {

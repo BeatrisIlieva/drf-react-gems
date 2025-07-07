@@ -8,7 +8,7 @@ import { HomeLink } from './home-link/HomeLink';
 import { useSentinel } from '../../../hooks/useSentinel';
 import { useProductFiltersContext } from '../../../contexts/ProductFiltersContext';
 import { Skeleton } from './skeleton/Skeleton';
-import { Items } from './items/Items';
+import { ProductItems } from '../../reusable/product-items/ProductItems';
 import { FilterList } from './filter-list/FilterList';
 import { Nav } from './nav/Nav';
 
@@ -81,7 +81,7 @@ export const ProductList = () => {
                     (!products || products.length === 0) ? (
                         <Skeleton />
                     ) : (
-                        <Items />
+                        <ProductItems products={products} />
                     )}
                 </div>
             </div>

@@ -8,13 +8,12 @@ import { EmptyList } from '../../reusable/empty-list/EmptyList';
 import { Button } from '../../reusable/button/Button';
 import { ComplimentaryShipping } from '../../reusable/complimentary-shipping/ComplimentaryShipping';
 import { PaddedContainer } from '../../reusable/padded-container/PaddedContainer';
+import { LoadingSpinner } from '../accounts/details/loading-spinner/LoadingSpinner';
 
 export const ShoppingBag = () => {
     const {
         shoppingBagItems,
         getShoppingBagItemsHandler,
-        updateShoppingBagCount,
-        updateShoppingBagTotalPrice,
         continueCheckoutHandler
     } = useShoppingBagContext();
 
@@ -24,18 +23,10 @@ export const ShoppingBag = () => {
     // Initial data load
     useEffect(() => {
         getShoppingBagItemsHandler();
-    }, [getShoppingBagItemsHandler]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    // Ensure count and price are always in sync with items
-    useEffect(() => {
-        // Update both count and total price when items change
-        updateShoppingBagCount();
-        updateShoppingBagTotalPrice();
-    }, [
-        shoppingBagItems.length,
-        updateShoppingBagCount,
-        updateShoppingBagTotalPrice
-    ]);
+    // Remove the conflicting useEffect that was overriding optimistic updates
 
     return (
         <PaddedContainer backgroundColor='white'>

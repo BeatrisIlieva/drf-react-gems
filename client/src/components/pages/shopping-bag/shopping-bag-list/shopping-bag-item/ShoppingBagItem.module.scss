@@ -52,6 +52,15 @@
                 font-size: 0.9em;
                 opacity: 0.6;
                 text-decoration: underline;
+
+                &.in-wishlist {
+                    opacity: 0.7;
+                    text-decoration: none;
+                    font-style: italic;
+                    cursor: not-allowed;
+                    color: vars.$dark-grey;
+                    font-weight: 500;
+                }
             }
         }
     }

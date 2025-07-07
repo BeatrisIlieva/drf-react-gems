@@ -4,14 +4,12 @@ import { keysToCamelCase } from '../utils/convertToCamelCase';
 import { HOST } from '../constants/host';
 
 import { useAuth } from '../hooks/auth/useAuth';
-import { useWishlistContext } from '../contexts/WishlistContext';
 
 const baseUrl = `${HOST}/api/wishlist`;
 
 export const useWishlist = () => {
     const { get, post, del } = useApi();
     const { isAuthenticated } = useAuth();
-    const { updateWishlistCount } = useWishlistContext();
 
     const getItems = useCallback(async () => {
         try {
@@ -33,13 +31,12 @@ export const useWishlist = () => {
                     accessRequired: isAuthenticated,
                     refreshRequired: isAuthenticated
                 });
-                updateWishlistCount();
                 return keysToCamelCase(response);
             } catch (error) {
                 console.error(error);
             }
         },
-        [post, isAuthenticated, updateWishlistCount]
+        [post, isAuthenticated]
     );
 
     const deleteItem = useCallback(
@@ -52,14 +49,13 @@ export const useWishlist = () => {
                         refreshRequired: isAuthenticated
                     }
                 );
-                updateWishlistCount();
 
                 return true;
             } catch (error) {
                 console.error(error);
             }
         },
-        [del, isAuthenticated, updateWishlistCount]
+        [del, isAuthenticated]
     );
 
     const getCount = useCallback(async () => {

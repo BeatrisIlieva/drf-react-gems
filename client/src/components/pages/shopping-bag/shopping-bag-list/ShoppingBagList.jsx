@@ -18,11 +18,8 @@ export const ShoppingBagList = () => {
         getShoppingBagItemsHandler();
         updateShoppingBagCount();
         updateShoppingBagTotalPrice();
-    }, [
-        updateShoppingBagCount,
-        updateShoppingBagTotalPrice,
-        getShoppingBagItemsHandler
-    ]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     if (
         isLoading &&

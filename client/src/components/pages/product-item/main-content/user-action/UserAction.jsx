@@ -8,9 +8,19 @@ import { Button } from '../../../../reusable/button/Button';
 import { Icon } from '../../../../reusable/icon/Icon';
 import { useProductItemContext } from '../../../../../contexts/ProductItemContext';
 import { ComplimentaryShipping } from '../../../../reusable/complimentary-shipping/ComplimentaryShipping';
+import { useWishlistContext } from '../../../../../contexts/WishlistContext';
+import { Popup } from '../../../../reusable/popup/Popup';
+import { useShoppingBagContext } from '../../../../../contexts/ShoppingBagContext';
+import { ShoppingBagItem } from '../../../shopping-bag/shopping-bag-list/shopping-bag-item/ShoppingBagItem';
+import { useNavigate } from 'react-router';
+
 
 export const UserAction = () => {
-    const { categoryNameCapitalizedSingular } = useCategoryName();
+    const { categoryNameCapitalizedSingular, categoryName } =
+        useCategoryName();
+    const { isInWishlist, handleWishlistToggle } =
+        useWishlistContext();
+        const navigate = useNavigate()
     const {
         collectionName,
         colorName,
@@ -18,15 +28,28 @@ export const UserAction = () => {
         metalName,
         inventory,
         createShoppingBagHandler,
-        addToWishlistHandler,
         notSelectedSizeError,
-        addToCartError,
-        isSoldOut
+        isSoldOut,
+        isAddingToBag,
+        productId,
+        toggleMiniBagPopupOpen,
+        isMiniBagPopupOpen,
+        selectedSize
     } = useProductItemContext();
 
+    const { shoppingBagItems, shoppingBagItemsCount, shoppingBagTotalPrice } =
+        useShoppingBagContext();
+
+    // Get the selected inventory item and its price
+    const selectedInventoryItem = selectedSize 
+        ? inventory.find(item => item.size.id === selectedSize) 
+        : null;
+    
+    // Calculate price display based on selection
     const prices = inventory.map((item) =>
         parseFloat(item.price)
     );
+    
     const formattedMinPrice = formatPrice(
         Math.min(...prices).toString()
     );
@@ -34,8 +57,28 @@ export const UserAction = () => {
         Math.max(...prices).toString()
     );
 
+    const category = categoryName?.slice(
+        0,
+        categoryName?.length - 1
+    );
+    const isItemInWishlist = isInWishlist(category, productId);
+
+    const navigateToCheckout = () => {
+        navigate(`/user/checkout`);
+    }
+
+        const navigateToShoppingBag = () => {
+        navigate(`/user/shopping-bag`);
+    }
+
     return (
-        <section className={styles['user-action']}>
+        <section
+            className={`${styles['user-action']} ${
+                isAddingToBag
+                    ? 'animate-fade-out duration-300ms'
+                    : 'animate-fade-in duration-500ms'
+            }`}
+        >
             <h1>
                 <span>{collectionName}</span>
                 <span>{categoryNameCapitalizedSingular}</span>
@@ -44,16 +87,22 @@ export const UserAction = () => {
                 text={`${colorName} ${stoneName} set in ${metalName}`}
                 isSubtle={true}
             />
-            <p>
-                <span>{formattedMinPrice}</span>
-                <span>-</span>
-                <span>{formattedMaxPrice}</span>
+            <p className={`${styles['price-display']} ${selectedInventoryItem ? styles['selected-price'] : ''} ${isAddingToBag ? 'animate-pulse' : ''}`}>
+                {selectedInventoryItem ? (
+                    <span>{formatPrice(selectedInventoryItem.price)}</span>
+                ) : (
+                    <>
+                        <span>{formattedMinPrice}</span>
+                        <span>-</span>
+                        <span>{formattedMaxPrice}</span>
+                    </>
+                )}
             </p>
             <RelatedProducts />
             <p
                 className={`${
                     notSelectedSizeError ? styles['error'] : ''
-                }`.trim()}
+                } ${isAddingToBag ? 'animate-pulse' : ''}`.trim()}
             >
                 Size:
             </p>
@@ -68,31 +117,72 @@ export const UserAction = () => {
                 Please select a size.
             </p>
 
-            {addToCartError && (
-                <div className={styles['error-alert']}>
-                    <p className={styles['error']}>
-                        {addToCartError}
-                    </p>
-                </div>
-            )}
-
             <div className={styles['buttons-wrapper']}>
                 <Button
-                    title={isSoldOut ? 'Sold Out' : 'Add to Bag'}
+                    title={
+                        isAddingToBag
+                            ? 'Adding...'
+                            : isSoldOut
+                            ? 'Sold Out'
+                            : 'Add to Bag'
+                    }
                     color={isSoldOut ? 'grey' : 'black'}
                     callbackHandler={createShoppingBagHandler}
                     actionType={'button'}
-                    disabled={isSoldOut}
+                    disabled={isSoldOut || isAddingToBag}
                     buttonGrow='1'
+                    className={
+                        isAddingToBag ? 'animate-pulse' : ''
+                    }
                 />
                 <Button
-                    title={<Icon name={'heart'} />}
+                    title={
+                        <Icon
+                            name={
+                                isItemInWishlist
+                                    ? 'heart-filled'
+                                    : 'heart'
+                            }
+                        />
+                    }
                     color={'black'}
                     actionType={'button'}
-                    callbackHandler={addToWishlistHandler}
+                    callbackHandler={() =>
+                        handleWishlistToggle(
+                            // Ensure we're using the correct format consistently
+                            category + 's',
+                            productId
+                        )
+                    }
                 />
             </div>
             <ComplimentaryShipping />
+            <Popup
+                isOpen={isMiniBagPopupOpen}
+                onClose={toggleMiniBagPopupOpen}
+            >
+                <div className={styles['mini-bag-header']}>
+                    <h3>Your Bag</h3>
+                    <span>{shoppingBagItemsCount} {shoppingBagItemsCount > 1 ? 'items' : 'item'}</span>
+                </div>
+
+                <ul className={styles['shopping-bag-list']}>
+                    {shoppingBagItems.map((item) => (
+                        <ShoppingBagItem
+                            key={item.id}
+                            {...item}
+                        />
+                    ))}
+                </ul>
+                    <div className={styles['total-price-wrapper']}>
+                        <span>Total</span>
+                        <span>{formatPrice(shoppingBagTotalPrice)}</span>
+                    </div>
+                <div className={styles['mini-bag-buttons-wrapper']}>
+                    <Button title='View Bag' color='white' buttonGrow='1' callbackHandler={navigateToShoppingBag}/>
+                    <Button title='Continue Checkout' color='black' buttonGrow='1' callbackHandler={navigateToCheckout}/>
+                </div>
+            </Popup>
         </section>
     );
 };
