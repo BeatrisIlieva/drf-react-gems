@@ -5,20 +5,25 @@ import { useReview } from '../../../api/reviewApi';
 import { useAuth } from '../../../hooks/auth/useAuth';
 import styles from './ReviewForm.module.scss';
 
-export const ReviewForm = ({ 
-    productId, 
-    contentType, 
+export const ReviewForm = ({
+    productId,
+    contentType,
     onReviewSubmitted = null,
-    existingReview = null 
+    existingReview = null
 }) => {
-    const [rating, setRating] = useState(existingReview?.rating || 0);
-    const [comment, setComment] = useState(existingReview?.comment || '');
+    const [rating, setRating] = useState(
+        existingReview?.rating || 0
+    );
+    const [comment, setComment] = useState(
+        existingReview?.comment || ''
+    );
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
 
-    const { createReview, updateReview, deleteReview } = useReview();
+    const { createReview, updateReview, deleteReview } =
+        useReview();
     const { isAuthenticated } = useAuth();
 
     useEffect(() => {
@@ -33,11 +38,6 @@ export const ReviewForm = ({
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        if (!isAuthenticated) {
-            setError('You must be logged in to submit a review');
-            return;
-        }
 
         // Clear any previous success messages when attempting to submit
         setSuccess(false);
@@ -65,7 +65,10 @@ export const ReviewForm = ({
 
             let result;
             if (existingReview) {
-                result = await updateReview(existingReview.id, reviewData);
+                result = await updateReview(
+                    existingReview.id,
+                    reviewData
+                );
             } else {
                 result = await createReview(reviewData);
             }
@@ -99,7 +102,10 @@ export const ReviewForm = ({
     const handleCommentChange = (e) => {
         setComment(e.target.value);
         // Clear validation error when user types a comment
-        if (e.target.value.trim() && error === 'Please write a comment') {
+        if (
+            e.target.value.trim() &&
+            error === 'Please write a comment'
+        ) {
             setError(null);
         }
     };
@@ -109,17 +115,13 @@ export const ReviewForm = ({
             return;
         }
 
-        if (!window.confirm('Are you sure you want to delete this review?')) {
-            return;
-        }
-
         setIsDeleting(true);
         setError(null);
 
         try {
             await deleteReview(existingReview.id);
             setSuccess(true);
-            
+
             if (onReviewSubmitted) {
                 onReviewSubmitted(null);
             }
@@ -132,22 +134,15 @@ export const ReviewForm = ({
         }
     };
 
-    if (!isAuthenticated) {
-        return (
-            <div className={styles['review-form']}>
-                <p className={styles['auth-message']}>
-                    Please log in to leave a review
-                </p>
-            </div>
-        );
-    }
-
     return (
         <div className={styles['review-form']}>
             <div className={styles['rate-header']}>
-                <h5>{existingReview ? 'Update your review' : 'Rate this product'}</h5>
-                <p className={styles['required-note']}>* Rating and comment are required</p>
-                <Stars 
+                <h5>
+                    {existingReview
+                        ? 'Update your review'
+                        : 'Rate this product'}
+                </h5>
+                <Stars
                     rating={rating}
                     interactive={true}
                     onRatingChange={handleRatingChange}
@@ -158,39 +153,34 @@ export const ReviewForm = ({
                 <textarea
                     value={comment}
                     onChange={handleCommentChange}
-                    placeholder="Leave a review... *"
+                    placeholder='Leave a review... *'
                     disabled={isSubmitting}
                 />
-                
+
                 {error && (
                     <div className={styles['error-message']}>
                         {error}
                     </div>
                 )}
-                
-                {success && (
-                    <div className={styles['success-message']}>
-                        Review {existingReview ? (isDeleting ? 'deleted' : 'updated') : 'submitted'} successfully!
-                    </div>
-                )}
 
                 <div className={styles['button-group']}>
-                    <Button 
-                        type="submit"
-                        title={isSubmitting ? 'Submitting...' : (existingReview ? 'Update' : 'Submit')} 
-                        color="white"
+                    <Button
+                        type='submit'
+                        title='Save'
+                        color='white'
                         disabled={isSubmitting || isDeleting}
-                        actionType="submit"
+                        actionType='submit'
+                        success={success}
                     />
-                    
+
                     {existingReview && (
-                        <Button 
-                            type="button"
-                            title={isDeleting ? 'Deleting...' : 'Delete'} 
-                            color="red"
+                        <Button
+                            type='button'
+                            title='Delete'
+                            color='red'
                             disabled={isSubmitting || isDeleting}
                             callbackHandler={handleDelete}
-                            actionType="button"
+                            actionType='button'
                         />
                     )}
                 </div>
