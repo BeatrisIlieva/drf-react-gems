@@ -10,7 +10,7 @@
     .links {
         display: flex;
         gap: 0.5em;
-        margin-bottom: 4em;
+        margin-bottom: 2em;
 
         > * {
             @include anim.staggered-slide-in(10, 0.1s, 0.6s);
