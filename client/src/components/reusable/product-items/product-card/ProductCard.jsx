@@ -9,6 +9,7 @@ import { InventoryState } from './inventory-state/InventoryState';
 import { ToggleImageButtons } from './toggle-image-buttons/ToggleImageButtons';
 import { StyledTextBlock } from '../../styled-text-block/StyledTextBlock';
 import { Stars } from '../../stars/Stars';
+import { ProductItems } from '../ProductItems';
 
 export const ProductCard = ({
     id,
@@ -26,21 +27,20 @@ export const ProductCard = ({
 }) => {
     const [selectedImageIndex, setSelectedImageIndex] =
         useState(0);
-    const {
-        categoryNameCapitalizedSingular,
-        categoryName: categoryFromUrl
-    } = useCategoryName();
+    const { categoryName: categoryFromUrl } = useCategoryName();
     const formattedMinPrice = formatPrice(minPrice);
     const formattedMaxPrice = formatPrice(maxPrice);
     const navigate = useNavigate();
     const { isInWishlist, handleWishlistToggle } =
         useWishlistContext();
-    const categoryParam = categoryFromUrl || categoryName;
+    const categoryParam = categoryFromUrl
+        ? categoryFromUrl
+        : categoryName;
     const category = categoryParam?.slice(
         0,
         categoryParam?.length - 1
     );
-    
+
     const isItemInWishlist = isInWishlist(category, id);
 
     const navigateToProductItem = useCallback(() => {
@@ -50,6 +50,10 @@ export const ProductCard = ({
     useEffect(() => {
         setSelectedImageIndex(0);
     }, [categoryName]);
+
+    const capitalizedCategoryName =
+        categoryParam.charAt(0).toUpperCase() +
+        categoryParam.slice(1, categoryParam.length - 1);
 
     return (
         <article className={styles['product-card']}>
@@ -106,7 +110,7 @@ export const ProductCard = ({
             </div>
             <div className={styles['product-info']}>
                 <StyledTextBlock
-                    text={`${collectionName} ${categoryNameCapitalizedSingular}`}
+                    text={`${collectionName} ${capitalizedCategoryName}`}
                 />
                 <StyledTextBlock
                     text={`${formattedMinPrice} - ${formattedMaxPrice}`}
