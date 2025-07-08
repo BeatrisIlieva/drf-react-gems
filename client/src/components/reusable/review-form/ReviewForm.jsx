@@ -4,6 +4,9 @@ import { Button } from '../button/Button';
 import { useReview } from '../../../api/reviewApi';
 import { useAuth } from '../../../hooks/auth/useAuth';
 import styles from './ReviewForm.module.scss';
+import { Deletion } from '../deletion/Deletion';
+import { Popup } from '../popup/Popup';
+import { DeleteButton } from '../delete-button/DeleteButton';
 
 export const ReviewForm = ({
     productId,
@@ -21,6 +24,9 @@ export const ReviewForm = ({
     const [isDeleting, setIsDeleting] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
+
+    const [isDeleteReviewPopupOpen, setIsDeleteReviewPopupOpen] =
+        useState(false);
 
     const { createReview, updateReview, deleteReview } =
         useReview();
@@ -117,10 +123,10 @@ export const ReviewForm = ({
 
         setIsDeleting(true);
         setError(null);
+        setIsDeleteReviewPopupOpen(false);
 
         try {
             await deleteReview(existingReview.id);
-            setSuccess(true);
 
             if (onReviewSubmitted) {
                 onReviewSubmitted(null);
@@ -135,35 +141,35 @@ export const ReviewForm = ({
     };
 
     return (
-        <div className={styles['review-form']}>
-            <div className={styles['rate-header']}>
-                <h5>
-                    {existingReview
-                        ? 'Update your review'
-                        : 'Rate this product'}
-                </h5>
-                <Stars
-                    rating={rating}
-                    interactive={true}
-                    onRatingChange={handleRatingChange}
-                />
-            </div>
+        <>
+            <div className={styles['review-form']}>
+                <div className={styles['rate-header']}>
+                    <h5>
+                        {existingReview
+                            ? 'Update your review'
+                            : 'Rate this product'}
+                    </h5>
+                    <Stars
+                        rating={rating}
+                        interactive={true}
+                        onRatingChange={handleRatingChange}
+                    />
+                </div>
 
-            <form onSubmit={handleSubmit}>
-                <textarea
-                    value={comment}
-                    onChange={handleCommentChange}
-                    placeholder='Leave a review... *'
-                    disabled={isSubmitting}
-                />
+                <form onSubmit={handleSubmit}>
+                    <textarea
+                        value={comment}
+                        onChange={handleCommentChange}
+                        placeholder='Leave a review... *'
+                        disabled={isSubmitting}
+                    />
 
-                {error && (
-                    <div className={styles['error-message']}>
-                        {error}
-                    </div>
-                )}
+                    {error && (
+                        <div className={styles['error-message']}>
+                            {error}
+                        </div>
+                    )}
 
-                <div className={styles['button-group']}>
                     <Button
                         type='submit'
                         title='Save'
@@ -172,19 +178,28 @@ export const ReviewForm = ({
                         actionType='submit'
                         success={success}
                     />
-
-                    {existingReview && (
-                        <Button
-                            type='button'
-                            title='Delete'
-                            color='red'
-                            disabled={isSubmitting || isDeleting}
-                            callbackHandler={handleDelete}
-                            actionType='button'
-                        />
-                    )}
-                </div>
-            </form>
-        </div>
+                </form>
+                {existingReview && (
+                    <DeleteButton
+                        entityName='review'
+                        callbackHandler={() =>
+                            setIsDeleteReviewPopupOpen(true)
+                        }
+                    />
+                )}
+            </div>
+            <Popup
+                isOpen={isDeleteReviewPopupOpen}
+                onClose={() => setIsDeleteReviewPopupOpen(false)}
+            >
+                <Deletion
+                    entityName='review'
+                    onProceed={handleDelete}
+                    onCancel={() =>
+                        setIsDeleteReviewPopupOpen(false)
+                    }
+                />
+            </Popup>
+        </>
     );
 };
