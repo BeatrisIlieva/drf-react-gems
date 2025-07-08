@@ -11,7 +11,6 @@ class UserPhoto(models.Model):
         'image',
         null=True,
         blank=False,
-        default='image/upload/v1750959197/user-1699635_1280_z3dgxn.png'
     )
 
     user = models.OneToOneField(
