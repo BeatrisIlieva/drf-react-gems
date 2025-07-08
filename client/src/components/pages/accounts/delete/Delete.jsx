@@ -10,7 +10,7 @@ export const Delete = () => {
             await deleteUser();
             userLogoutHandler();
         } catch (err) {
-            console.log(
+            console.error(
                 err instanceof Error ? err.message : String(err)
             );
         }
