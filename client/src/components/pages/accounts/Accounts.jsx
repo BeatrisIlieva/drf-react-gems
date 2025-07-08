@@ -11,15 +11,15 @@ export const Accounts = () => {
     return (
         <section className={styles['accounts']}>
             <Header />
-            <PaddedContainer>
-                <div className={styles['wrapper']}>
-                    <div>
+            <div className={styles['wrapper']}>
+                <PaddedContainer>
+                    <div className={styles['nav-wrapper']}>
                         <Nav links={navLinks} />
                         <Logout />
                     </div>
-                    <Outlet />
-                </div>
-            </PaddedContainer>
+                </PaddedContainer>
+                <Outlet />
+            </div>
         </section>
     );
 };
