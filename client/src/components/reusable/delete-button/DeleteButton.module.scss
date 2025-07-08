@@ -1,0 +1,17 @@
+@use '../../../styles/variables' as vars;
+
+.delete-button {
+    text-decoration: underline;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: color 0.2s ease;
+    text-underline-offset: 0.2em;
+    font-size: 0.9em;
+    opacity: 0.8;
+    margin-top: auto;
+
+    &:hover {
+        color: vars.$dark-grey;
+    }
+}
