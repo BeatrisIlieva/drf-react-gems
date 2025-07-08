@@ -43,21 +43,32 @@ export const OrderHistory = () => {
     }, [getOrders]);
 
     return (
-        <PaddedContainer>
+        <>
             {loading ? (
-                <LoadingSpinner minHeight="60vh" />
+                <LoadingSpinner minHeight='60vh' />
             ) : (
                 <>
                     {orders.length > 0 ? (
-                        <section className={styles['order-history']}>
-                            <h2>Order History</h2>
+                        <PaddedContainer>
+                            <section
+                                className={
+                                    styles['order-history']
+                                }
+                            >
+                                <h2>Order History</h2>
 
-                                <div className={styles['order-list']}>
+                                <div
+                                    className={
+                                        styles['order-list']
+                                    }
+                                >
                                     {orders.map((order) => (
                                         <div
                                             key={order.orderGroup}
                                             className={
-                                                styles['order-item']
+                                                styles[
+                                                    'order-item'
+                                                ]
                                             }
                                         >
                                             <ul
@@ -70,7 +81,9 @@ export const OrderHistory = () => {
                                                 <li
                                                     key={`order-id-${order.orderGroup}`}
                                                 >
-                                                    <span>Order ID</span>
+                                                    <span>
+                                                        Order ID
+                                                    </span>
                                                     <span>
                                                         {`#${formatShortOrderId(
                                                             order.orderGroup
@@ -81,7 +94,8 @@ export const OrderHistory = () => {
                                                     key={`order-value-${order.orderGroup}`}
                                                 >
                                                     <span>
-                                                        Order Value
+                                                        Order
+                                                        Value
                                                     </span>
                                                     <span>
                                                         {formatPrice(
@@ -105,7 +119,8 @@ export const OrderHistory = () => {
                                                     key={`order-status-${order.orderGroup}`}
                                                 >
                                                     <span>
-                                                        Order Status
+                                                        Order
+                                                        Status
                                                     </span>
                                                     <span>
                                                         {order.status ===
@@ -125,7 +140,8 @@ export const OrderHistory = () => {
                                                     }
                                                 >
                                                     <h3>
-                                                        Products in this
+                                                        Products
+                                                        in this
                                                         order
                                                     </h3>
                                                     <div
@@ -155,11 +171,12 @@ export const OrderHistory = () => {
                                     ))}
                                 </div>
                             </section>
+                        </PaddedContainer>
                     ) : (
                         <EmptyList title='Order History' />
                     )}
                 </>
             )}
-        </PaddedContainer>
+        </>
     );
 };
