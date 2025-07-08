@@ -5,14 +5,14 @@
     color: vars.$white;
     display: flex;
     flex-direction: column;
-    padding-block: 2em;
+    padding-block: 1em;
     align-items: center;
     justify-content: center;
 
     h5 {
         text-transform: uppercase;
         font-weight: 600;
-        margin-bottom: 1.25em;
+        margin-bottom: 1em;
     }
 
     a {
@@ -24,13 +24,12 @@
     span {
         display: flex;
         align-items: center;
-        gap: 0.5em;
     }
 
     .wrapper {
         display: flex;
-        gap: 1em;
-        margin-bottom: 2em;
+        gap: 0.5em;
+        margin-bottom: 1em;
 
         .thumbnail {
             display: flex;
@@ -43,7 +42,7 @@
         }
 
         .icon {
-            font-size: 1.8em;
+            font-size: 1.6em;
             justify-self: center;
             align-self: center;
         }
