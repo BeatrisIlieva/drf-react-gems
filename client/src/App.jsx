@@ -26,6 +26,7 @@ import { Checkout } from './components/pages/checkout/Checkout';
 import { Payment } from './components/pages/payment/Payment';
 import { OrderHistory } from './components/pages/accounts/order-history/OrderHistory';
 import { Wishlist } from './components/pages/wishlist/Wishlist';
+import { OrderConfirmation } from './components/pages/order-confirmation/OrderConfirmation';
 
 function App() {
     return (
@@ -106,6 +107,12 @@ function App() {
                                     <Route
                                         path='/user/payment'
                                         element={<Payment />}
+                                    />
+                                    <Route
+                                        path='/user/order-confirmation'
+                                        element={
+                                            <OrderConfirmation />
+                                        }
                                     />
                                 </Route>
                             </Routes>
