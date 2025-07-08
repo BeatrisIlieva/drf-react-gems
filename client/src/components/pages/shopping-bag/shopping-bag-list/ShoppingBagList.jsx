@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useShoppingBagContext } from '../../../../contexts/ShoppingBagContext';
 import styles from './ShoppingBagList.module.scss';
 import { ShoppingBagItem } from './shopping-bag-item/ShoppingBagItem';
@@ -8,23 +7,10 @@ import { ShadowBox } from '../../../reusable/shadow-box/ShadowBox';
 export const ShoppingBagList = () => {
     const {
         shoppingBagItems,
-        getShoppingBagItemsHandler,
-        updateShoppingBagCount,
-        updateShoppingBagTotalPrice,
-        isLoading
+        loading
     } = useShoppingBagContext();
 
-    useEffect(() => {
-        getShoppingBagItemsHandler();
-        updateShoppingBagCount();
-        updateShoppingBagTotalPrice();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    if (
-        isLoading &&
-        (!shoppingBagItems || shoppingBagItems.length === 0)
-    ) {
+    if (loading && (!shoppingBagItems || shoppingBagItems.length === 0)) {
         return <Skeleton />;
     }
 

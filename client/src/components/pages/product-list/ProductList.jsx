@@ -7,10 +7,10 @@ import { HomeLink } from './home-link/HomeLink';
 
 import { useSentinel } from '../../../hooks/useSentinel';
 import { useProductFiltersContext } from '../../../contexts/ProductFiltersContext';
-import { Skeleton } from './skeleton/Skeleton';
 import { ProductItems } from '../../reusable/product-items/ProductItems';
 import { FilterList } from './filter-list/FilterList';
 import { Nav } from './nav/Nav';
+import { LoadingSpinner } from '../../common/loading-spinner/LoadingSpinner';
 
 const SCROLL_OFFSET = 10;
 
@@ -55,36 +55,47 @@ export const ProductList = () => {
     }, [handleScroll]);
 
     return (
-        <section className={styles['product-list']}>
-            <div
-                ref={sentinelRef}
-                className={styles['sentinel']}
-            />
+        <>
+            {loading ? (
+                <LoadingSpinner minHeight="70vh" />
+            ) : (
+                <section className={styles['product-list']}>
+                    <div
+                        ref={sentinelRef}
+                        className={styles['sentinel']}
+                    />
 
-            <HomeLink />
+                    <HomeLink />
 
-            <header className={isSticky ? styles['sticky'] : ''}>
-                <Nav />
-            </header>
+                    <header
+                        className={
+                            isSticky ? styles['sticky'] : ''
+                        }
+                    >
+                        <Nav />
+                    </header>
 
-            <div
-                className={`${styles['wrapper-products']} ${
-                    displayFilters
-                        ? styles['with-gap']
-                        : styles['no-gap']
-                }`}
-            >
-                <FilterList />
+                    <div
+                        className={`${
+                            styles['wrapper-products']
+                        } ${
+                            displayFilters
+                                ? styles['with-gap']
+                                : styles['no-gap']
+                        }`}
+                    >
+                        <FilterList />
 
-                <div className={styles['wrapper-inner']}>
-                    {loading &&
-                    (!products || products.length === 0) ? (
-                        <Skeleton />
-                    ) : (
-                        <ProductItems products={products} />
-                    )}
-                </div>
-            </div>
-        </section>
+                        <div className={styles['wrapper-inner']}>
+                            {products.length > 0 && (
+                                <ProductItems
+                                    products={products}
+                                />
+                            )}
+                        </div>
+                    </div>
+                </section>
+            )}
+        </>
     );
 };

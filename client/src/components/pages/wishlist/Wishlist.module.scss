@@ -1,0 +1,13 @@
+@use '../../../styles/variables' as vars;
+
+.wishlist {
+    padding-inline: vars.$layout-inline-padding;
+    margin-block: 2em;
+
+    h2 {
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: 500;
+        margin-bottom: 2em;
+    }
+}

@@ -1,7 +1,7 @@
 import { useEffect, useCallback } from 'react';
 import { useForm } from '../../../../../hooks/useForm';
 import { useFormDataLoader } from '../../../../../hooks/useFormDataLoader';
-import { FormFieldRenderer } from '../../../../common/FormFieldRenderer';
+import { FormFieldRenderer } from '../../../../reusable/form-field-renderer/FormFieldRenderer';
 import { Button } from '../../../../reusable/button/Button';
 import { ShadowBox } from '../../../../reusable/shadow-box/ShadowBox';
 import { FORM_CONFIGS } from '../../../../../config/formFieldConfigs';

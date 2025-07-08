@@ -1,6 +1,7 @@
 @use '../../../../styles/variables' as vars;
 
 .order-history {
+    margin-top: -5em;
     h2 {
         text-transform: uppercase;
         font-size: 1.5em;
@@ -8,6 +9,11 @@
         text-align: center;
         margin-top: 1em;
         margin-bottom: 1.5em;
+    }
+
+    & > p {
+        text-align: center;
+        opacity: 0.8;
     }
 }
 

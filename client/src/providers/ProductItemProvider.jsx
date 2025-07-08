@@ -9,7 +9,7 @@ export const ProductItemProvider = ({ children }) => {
     const { categoryName, productId } = useParams();
     const {
         createShoppingBagItemHandler,
-        getShoppingBagItemsHandler,
+        refreshShoppingBag,
         shoppingBagItemsCount
     } = useShoppingBagContext();
 
@@ -43,7 +43,6 @@ export const ProductItemProvider = ({ children }) => {
 
     const toggleMiniBagPopupOpen = useCallback(() => {
         if (isMiniBagPopupOpen) {
-            // When closing the popup, refresh the product data to update inventory
             const refreshProduct = async () => {
                 try {
                     const response = await getProductItem({
@@ -58,10 +57,10 @@ export const ProductItemProvider = ({ children }) => {
             refreshProduct();
             setIsMiniBagPopupOpen(false);
         } else {
-            getShoppingBagItemsHandler();
+            refreshShoppingBag();
             setIsMiniBagPopupOpen(true);
         }
-    }, [isMiniBagPopupOpen, getProductItem, categoryName, productId, getShoppingBagItemsHandler]);
+    }, [isMiniBagPopupOpen, getProductItem, categoryName, productId, refreshShoppingBag]);
 
     const createShoppingBagHandler = useCallback(async () => {
         if (selectedSize === null) {
@@ -104,7 +103,7 @@ export const ProductItemProvider = ({ children }) => {
 
             setSelectedSize(null);
             setSelectedInventory(null);
-            getShoppingBagItemsHandler();
+            refreshShoppingBag();
             setIsMiniBagPopupOpen(true);
         } catch {
             // No error message shown to user
@@ -114,7 +113,7 @@ export const ProductItemProvider = ({ children }) => {
         selectedInventory,
         createShoppingBagItemHandler,
         product,
-        getShoppingBagItemsHandler
+        refreshShoppingBag
     ]);
 
     const updateSelectedInventoryHandler = (
