@@ -2,7 +2,6 @@ import { icons } from './icons';
 import styles from './Icon.module.scss';
 
 export const Icon = ({ name, fontSize, isSubtle }) => {
-    console.log(name);
     return (
         <span
             className={styles['icon']}
