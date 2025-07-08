@@ -6,28 +6,14 @@ import { Link } from 'react-router';
 import { useShoppingBagContext } from '../../../../contexts/ShoppingBagContext';
 import { useWishlistContext } from '../../../../contexts/WishlistContext';
 import { useAuth } from '../../../../hooks/auth/useAuth';
-import { useEffect } from 'react';
 
 export const Buttons = () => {
     const { isAuthenticated } = useAuth();
-    const { shoppingBagItemsCount, updateShoppingBagCount } =
-        useShoppingBagContext();
-    const { wishlistItemsCount, updateWishlistCount } =
-        useWishlistContext();
-
-    useEffect(() => {
-        updateShoppingBagCount();
-        updateWishlistCount();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const { shoppingBagItemsCount } = useShoppingBagContext();
+    const { wishlistItemsCount } = useWishlistContext();
 
     return (
         <ul className={styles['buttons']}>
-            <li>
-                <Icon name={'search'} fontSize={0.7} />
-                <span>Search</span>
-            </li>
-
             <li>
                 <Link
                     to={
@@ -37,7 +23,7 @@ export const Buttons = () => {
                     }
                 >
                     <Icon name={'user'} fontSize={1} />
-                    <span>1</span>
+                    {isAuthenticated && <span></span>}
                 </Link>
             </li>
 

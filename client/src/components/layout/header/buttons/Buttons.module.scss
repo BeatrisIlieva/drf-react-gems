@@ -16,27 +16,9 @@
             color: vars.$black;
         }
 
-        &:nth-child(1) {
-            margin-right: 0.95em;
-            display: flex;
-            align-items: flex-start;
-
-            & span {
-                text-transform: uppercase;
-                opacity: 0.6;
-                font-weight: 500;
-                transition: opacity 0.3s ease-in-out;
-                color: vars.$black;
-
-                &:hover {
-                    opacity: 1;
-                }
-            }
-        }
-
+        &:nth-child(1),
         &:nth-child(2),
-        &:nth-child(3),
-        &:nth-child(4) {
+        &:nth-child(3) {
             position: relative;
 
             & span:nth-child(2),
@@ -47,7 +29,7 @@
             }
         }
 
-        &:nth-child(2) span:nth-child(2) {
+        &:nth-child(1) span:nth-child(2) {
             top: -0.15rem;
             right: 0;
             width: 0.33rem;
@@ -59,8 +41,8 @@
             justify-content: center;
         }
 
-        &:nth-child(3) span:nth-child(2),
-        &:nth-child(4) span:nth-child(2) {
+        &:nth-child(2) span:nth-child(2),
+        &:nth-child(3) span:nth-child(2) {
             border-radius: 3.125rem;
             color: vars.$white;
             height: 0.75rem;
@@ -70,11 +52,11 @@
             font-size: 0.6em;
         }
 
-        &:nth-child(3) span:nth-child(2) {
+        &:nth-child(2) span:nth-child(2) {
             top: 0.75rem;
         }
 
-        &:nth-child(4) span:nth-child(2) {
+        &:nth-child(3) span:nth-child(2) {
             top: 0.85rem;
         }
     }
