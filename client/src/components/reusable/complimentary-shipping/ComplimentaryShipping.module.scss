@@ -1,6 +1,16 @@
-.complimentary-shipping span {
-    opacity: 0.7;
-    text-decoration: underline;
-    text-underline-offset: 0.1em;
-    font-size: 0.9em;
+.complimentary-shipping {
+    span {
+        opacity: 0.7;
+        text-decoration: underline;
+        text-underline-offset: 0.1em;
+        font-size: 0.9em;
+    }
+}
+
+.content {
+    margin: auto 5em;
+
+    p {
+        font-weight: 300;
+    }
 }
