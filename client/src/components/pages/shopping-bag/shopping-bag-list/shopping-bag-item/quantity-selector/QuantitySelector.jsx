@@ -13,11 +13,7 @@ export const QuantitySelector = ({
     availableQuantity
 }) => {
     const { updateItem } = useShoppingBag();
-    const {
-        getShoppingBagItemsHandler,
-        updateShoppingBagCount,
-        updateShoppingBagTotalPrice
-    } = useShoppingBagContext();
+    const { refreshShoppingBag } = useShoppingBagContext();
     const [isUpdating, setIsUpdating] = useState(false);
     const [localQuantity, setLocalQuantity] = useState(quantity);
 
@@ -43,9 +39,7 @@ export const QuantitySelector = ({
             });
             setLocalQuantity(newQuantity);
 
-            getShoppingBagItemsHandler();
-            updateShoppingBagTotalPrice();
-            updateShoppingBagCount();
+            refreshShoppingBag();
         } catch (err) {
             console(err.message);
             setLocalQuantity(quantity);
@@ -64,9 +58,7 @@ export const QuantitySelector = ({
         } else {
             handleQuantityChange(0);
             setTimeout(() => {
-                getShoppingBagItemsHandler();
-                updateShoppingBagCount();
-                updateShoppingBagTotalPrice();
+                refreshShoppingBag();
             }, 100);
         }
     };

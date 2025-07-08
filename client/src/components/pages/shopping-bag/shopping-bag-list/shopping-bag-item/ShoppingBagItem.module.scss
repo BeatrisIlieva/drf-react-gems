@@ -5,6 +5,10 @@
     justify-content: space-between;
     gap: 1em;
 
+    .thumbnail {
+        cursor: pointer;
+    }
+
     > span,
     > span:nth-child(2) > span:nth-child(1),
     > span:nth-child(3),

@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import styles from './ShoppingBagItem.module.scss';
 
 import { useShoppingBagContext } from '../../../../../contexts/ShoppingBagContext';
 import { useWishlistContext } from '../../../../../contexts/WishlistContext';
 import { QuantitySelector } from './quantity-selector/QuantitySelector';
 import { formatPrice } from '../../../../../utils/formatPrice';
+import { useNavigate } from 'react-router';
 
 export const ShoppingBagItem = ({
     quantity,
@@ -17,8 +18,10 @@ export const ShoppingBagItem = ({
     const { deleteShoppingBagHandler, isDeleting } =
         useShoppingBagContext();
     const { addToWishlist, isInWishlist } = useWishlistContext();
-    const [isMovingToWishlist, setIsMovingToWishlist] = useState(false);
-    
+    const [isMovingToWishlist, setIsMovingToWishlist] =
+        useState(false);
+    const navigate = useNavigate();
+
     // Check if item is already in wishlist
     const category = productInfo.category?.toLowerCase();
     const productId = productInfo.productId;
@@ -29,13 +32,16 @@ export const ShoppingBagItem = ({
 
     const moveToWishListHandler = async () => {
         // Prevent multiple clicks or if already in wishlist
-        if (isMovingToWishlist || isDeleting || isItemInWishlist) return;
-        
+        if (isMovingToWishlist || isDeleting || isItemInWishlist)
+            return;
+
         setIsMovingToWishlist(true);
         try {
             // Ensure we're passing the correct category format (without trailing 's')
-            const categoryValue = category.endsWith('s') ? category.slice(0, -1) : category;
-            
+            const categoryValue = category.endsWith('s')
+                ? category.slice(0, -1)
+                : category;
+
             const success = await addToWishlist(
                 categoryValue,
                 productId
@@ -44,15 +50,29 @@ export const ShoppingBagItem = ({
                 await deleteShoppingBagHandler(id);
             }
         } catch (error) {
-            console.error('Error moving item to wishlist:', error);
+            console.error(
+                'Error moving item to wishlist:',
+                error
+            );
         } finally {
             setIsMovingToWishlist(false);
         }
     };
 
+    const navigateToProductItem = useCallback(() => {
+        navigate(
+            `/products/${
+                productInfo.category.toLowerCase() + 's'
+            }/${productInfo.productId}`
+        );
+    }, [navigate, productInfo.category, productInfo.productId]);
+
     return (
         <li className={styles['shopping-bag-item']}>
-            <span className={styles['thumbnail']}>
+            <span
+                className={styles['thumbnail']}
+                onClick={navigateToProductItem}
+            >
                 <img
                     src={productInfo.firstImage}
                     alt={productInfo.collection}
@@ -75,20 +95,24 @@ export const ShoppingBagItem = ({
                 <span>
                     <button
                         onClick={moveToWishListHandler}
-                        disabled={isDeleting || isMovingToWishlist || isItemInWishlist}
+                        disabled={
+                            isDeleting ||
+                            isMovingToWishlist ||
+                            isItemInWishlist
+                        }
                         className={
-                            isItemInWishlist 
-                                ? styles['in-wishlist'] 
-                                : (isDeleting || isMovingToWishlist) 
-                                    ? styles['removing'] 
-                                    : ''
+                            isItemInWishlist
+                                ? styles['in-wishlist']
+                                : isDeleting || isMovingToWishlist
+                                ? styles['removing']
+                                : ''
                         }
                     >
-                        {isMovingToWishlist 
-                            ? 'Moving...' 
-                            : isItemInWishlist 
-                                ? 'In Wishlist' 
-                                : 'Move to Wish List'}
+                        {isMovingToWishlist
+                            ? 'Moving...'
+                            : isItemInWishlist
+                            ? 'In Wishlist'
+                            : 'Move to Wish List'}
                     </button>
                     <button
                         onClick={() => {
