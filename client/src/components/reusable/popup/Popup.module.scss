@@ -55,6 +55,8 @@
     flex: 1;
     overflow-y: auto;
     padding: 1.5em;
+    display: flex;
+    flex-direction: column;
 
     &::-webkit-scrollbar {
         width: 0.375em;
