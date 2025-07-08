@@ -43,10 +43,14 @@ export const usePhoto = () => {
 
     const deletePhoto = useCallback(async () => {
         try {
+            const formData = new FormData();
+            formData.append('photo', '');
+
             const response = await patch(`${baseUrl}/`, {
-                data: { photo: null },
+                data: formData,
                 accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated
+                refreshRequired: isAuthenticated,
+                contentType: 'multipart/form-data'
             });
 
             return keysToCamelCase(response);

@@ -7,7 +7,23 @@ export const usePhotoManager = () => {
     const [isUploading, setIsUploading] = useState(false);
     const [error, setError] = useState(null);
 
-    const { uploadPhoto: upload, getPhoto } = usePhoto();
+    const { uploadPhoto, getPhoto, deletePhoto } = usePhoto();
+
+    const deletePhotoHandler = useCallback(async () => {
+        try {
+            setIsLoading(true);
+            setError(null);
+
+            await deletePhoto();
+
+            setCurrentPhoto(null);
+        } catch (err) {
+            setError('Failed to delete profile photo');
+            console.error('Error deleting photo:', err);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [deletePhoto]);
 
     const refreshPhoto = useCallback(async () => {
         try {
@@ -26,7 +42,7 @@ export const usePhotoManager = () => {
         }
     }, [getPhoto]);
 
-    const uploadPhoto = useCallback(
+    const uploadPhotoHandler = useCallback(
         async (file) => {
             try {
                 setIsUploading(true);
@@ -35,9 +51,9 @@ export const usePhotoManager = () => {
                 const formData = new FormData();
                 formData.append('photo', file);
 
-                const response = await upload(formData);
-                if (response?.url) {
-                    setCurrentPhoto(response.url);
+                const response = await uploadPhoto(formData);
+                if (response?.photoUrl) {
+                    setCurrentPhoto(response.photoUrl);
                 } else {
                     throw new Error(
                         'Upload failed - no URL returned'
@@ -50,7 +66,7 @@ export const usePhotoManager = () => {
                 setIsUploading(false);
             }
         },
-        [upload]
+        [uploadPhoto]
     );
 
     useEffect(() => {
@@ -72,7 +88,7 @@ export const usePhotoManager = () => {
         isLoading,
         isUploading,
         error,
-        uploadPhoto,
-        refreshPhoto
+        uploadPhotoHandler,
+        deletePhotoHandler
     };
 };

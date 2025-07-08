@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Icon } from '../../../../reusable/icon/Icon';
 import styles from './ProfilePhotoUpload.module.scss';
 
@@ -7,7 +7,7 @@ export const ProfilePhotoUpload = ({
     onPhotoUpdate,
     isUploading = false
 }) => {
-    const [preview, setPreview] =useState(null);
+    const [preview, setPreview] = useState(null);
     const [dragOver, setDragOver] = useState(false);
     const fileInputRef = useRef(null);
 
@@ -68,16 +68,18 @@ export const ProfilePhotoUpload = ({
                 onDragLeave={handleDragLeave}
                 onClick={handleClick}
             >
-                {hasPhoto ? (
+                {currentPhoto ? (
                     <img
                         src={displayPhoto}
                         alt='Profile'
                         className={styles['profile-photo']}
                     />
                 ) : (
-                    <div className={styles['placeholder']}>
-                        <Icon name='user' fontSize={32} />
-                    </div>
+                    <img
+                        src='https://res.cloudinary.com/dpgvbozrb/image/upload/v1750959197/user-1699635_1280_z3dgxn.png'
+                        alt='Profile'
+                        className={styles['profile-photo']}
+                    />
                 )}
 
                 <div

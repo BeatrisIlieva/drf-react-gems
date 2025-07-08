@@ -8,9 +8,7 @@ import { UserContext } from '../contexts/UserContext';
 export const useApi = () => {
     const { access, refresh } = useContext(UserContext);
     const { authRefresh } = useAuthRefresh();
-        const { getGuestData } = useGuest();
-
-    const guestId = useMemo(() => getGuestData(), [getGuestData]);
+    const { getGuestData } = useGuest();
 
     const request = useCallback(
         async (
@@ -31,9 +29,9 @@ export const useApi = () => {
             };
 
             // Get guest ID dynamically to ensure we have the latest value
-            // const currentGuestId = getGuestData();
-            if (guestId) {
-                options.headers['Guest-Id'] = guestId;
+            const currentGuestId = getGuestData();
+            if (currentGuestId) {
+                options.headers['Guest-Id'] = currentGuestId;
             }
 
             if (accessRequired) {
@@ -96,18 +94,89 @@ export const useApi = () => {
             }
 
             if (!response.ok) {
-                // For 401 errors, check if we have a JSON response with error details
-                if (response.status === 401 && json) {
-                    if (
-                        json?.error ===
-                        'Invalid username or password'
-                    ) {
+                if (response.status === 401) {
+                    if (json?.error === 'Invalid username or password') {
                         return 'Invalid username or password';
                     }
-                    await authRefresh();
+                    
+                    try {
+                        await authRefresh();
+                        
+                        // Wait a small amount for localStorage to be updated
+                        await new Promise(resolve => setTimeout(resolve, 50));
+                        
+                        const newGuestId = getGuestData();
+                        const retryOptions = {
+                            method: options.method,
+                            headers: {
+                                'Content-Type': options.headers['Content-Type']
+                            }
+                        };
+                        
+                        // Get fresh auth data after refresh
+                        const authDataString = localStorage.getItem('auth');
+                        if (authDataString) {
+                            try {
+                                const authData = JSON.parse(authDataString);
+                                if (authData.access) {
+                                    retryOptions.headers.Authorization = `Bearer ${authData.access}`;
+                                }
+                            } catch (e) {
+                                console.error('Failed to parse auth data:', e);
+                            }
+                        }
+                        
+                        if (newGuestId) {
+                            retryOptions.headers['Guest-Id'] = newGuestId;
+                        }
+                        
+                        // Include body if it was in original request
+                        if (options.body) {
+                            retryOptions.body = options.body;
+                        }
+                        
+                        const retryResponse = await fetch(url, retryOptions);
+                        
+                        let retryJson = null;
+                        const retryContentType = retryResponse.headers.get('content-type');
+                        const retryHasContent = retryResponse.status !== 204 && 
+                                               retryResponse.status !== 205 && 
+                                               retryContentType && 
+                                               retryContentType.includes('application/json');
+                        
+                        if (retryHasContent) {
+                            const retryResponseText = await retryResponse.text();
+                            if (retryResponseText && retryResponseText.trim()) {
+                                try {
+                                    retryJson = JSON.parse(retryResponseText);
+                                } catch {
+                                    console.warn('Failed to parse retry JSON response:', retryResponseText);
+                                    retryJson = null;
+                                }
+                            }
+                        }
+                        
+                        if (!retryResponse.ok) {
+                            console.error('Retry failed with status:', retryResponse.status);
+                            const retryError = new Error(
+                                retryJson?.message || 
+                                retryJson?.error || 
+                                `HTTP ${retryResponse.status}: ${retryResponse.statusText}`
+                            );
+                            retryError.status = retryResponse.status;
+                            retryError.data = retryJson;
+                            retryError.url = url;
+                            throw retryError;
+                        }
+                        
+                        return retryJson;
+                        
+                    } catch (refreshError) {
+                        console.error('Token refresh failed:', refreshError);
+                        throw refreshError;
+                    }
                 }
 
-                // Create error with additional context
                 const error = new Error(
                     json?.message ||
                         json?.error ||
@@ -121,8 +190,7 @@ export const useApi = () => {
 
             return json;
         },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [access, refresh, authRefresh]
+        [access, refresh, authRefresh, getGuestData]
     );
 
     return useMemo(
