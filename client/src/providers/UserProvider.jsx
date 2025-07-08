@@ -16,6 +16,8 @@ export const UserProvider = ({ children }) => {
         clearGuestData();
     };
 
+    
+
     return (
         <UserContext.Provider
             value={{

@@ -1,17 +1,30 @@
 import { useWishlistContext } from '../../../contexts/WishlistContext';
+import { LoadingSpinner } from '../../common/loading-spinner/LoadingSpinner';
+import { EmptyList } from '../../reusable/empty-list/EmptyList';
 import { ProductItems } from '../../reusable/product-items/ProductItems';
-import { Skeleton } from '../product-list/skeleton/Skeleton';
+
+import styles from './Wishlist.module.scss';
 
 export const Wishlist = () => {
-    const { wishlistItems, isLoading } = useWishlistContext();
+    const { wishlistItems, loading } = useWishlistContext();
 
     return (
         <>
-            {isLoading &&
-            (!wishlistItems || wishlistItems.length === 0) ? (
-                <Skeleton />
+            {loading ? (
+                <LoadingSpinner minHeight='60vh' />
             ) : (
-                <ProductItems products={wishlistItems} />
+                <>
+                    {wishlistItems.length > 0 ? (
+                        <section className={styles['wishlist']}>
+                            <h2>Your Wishlist</h2>
+                            <ProductItems
+                                products={wishlistItems}
+                            />
+                        </section>
+                    ) : (
+                        <EmptyList title='Wishlist' />
+                    )}
+                </>
             )}
         </>
     );

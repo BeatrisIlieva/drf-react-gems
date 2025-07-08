@@ -43,20 +43,14 @@ class WishlistService:
 
     @staticmethod
     def get_wishlist_item(user_filters: Dict[str, Any], content_type: ContentType, object_id: int):
-        print(f"DEBUG: Looking for wishlist item with filters: {user_filters}, content_type: {content_type}, object_id: {object_id}")
         try:
             item = Wishlist.objects.get(
                 content_type=content_type,
                 object_id=object_id,
                 **user_filters
             )
-            print(f"DEBUG: Found wishlist item: {item.id}")
             return item
         except Wishlist.DoesNotExist:
-            print(f"DEBUG: Wishlist item not found")
-            # Let's see what items exist for this content_type and object_id
-            all_items = Wishlist.objects.filter(content_type=content_type, object_id=object_id)
-            print(f"DEBUG: All items for this content_type/object_id: {[(item.id, item.user, item.guest_id) for item in all_items]}")
             raise NotFound('Wishlist item not found')
 
     @staticmethod
