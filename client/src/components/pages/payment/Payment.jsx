@@ -25,6 +25,8 @@ import { useOrder } from '../../../api/orderApi';
 import { PaddedContainer } from '../../reusable/padded-container/PaddedContainer';
 import { ProductsSummaryList } from '../../reusable/products-summary-list/ProductsSummaryList';
 import { Delivery } from '../../reusable/delivery/Delivery';
+import { useNavigate } from 'react-router';
+import { ShippingInformation } from './shipping-information/ShippingInformation';
 export const Payment = () => {
     const { fieldConfig, initialValues } = FORM_CONFIGS.payment;
     const {
@@ -33,6 +35,8 @@ export const Payment = () => {
         shoppingBagItems
     } = useShoppingBagContext();
     const { createOrderFromBag } = useOrder();
+
+    const navigate = useNavigate();
 
     const handleSubmit = useCallback(
         async (formData) => {
@@ -46,6 +50,7 @@ export const Payment = () => {
 
                 if (result && !result.error) {
                     await refreshShoppingBag();
+                    navigate('/user/order-confirmation');
                     return {
                         success: true,
                         data: result
@@ -157,6 +162,7 @@ export const Payment = () => {
         <PaddedContainer backgroundColor='lightest-grey'>
             <section className={styles['checkout']}>
                 <div className={styles['wrapper-left']}>
+                    <ShippingInformation />
                     <ShadowBox title='Payment'>
                         <fieldset
                             className={styles['payment-fieldset']}
