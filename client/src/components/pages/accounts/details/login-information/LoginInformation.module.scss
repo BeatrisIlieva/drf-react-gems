@@ -41,12 +41,12 @@
     .change-password-link {
         text-decoration: underline;
         cursor: pointer;
-        font-size: 0.9em;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         transition: color 0.2s ease;
-        font-weight: 500;
         text-underline-offset: 0.2em;
+        font-size: 0.9em;
+        font-weight: 500;
 
         &:hover {
             color: vars.$dark-grey;

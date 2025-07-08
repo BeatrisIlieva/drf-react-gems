@@ -5,10 +5,27 @@ import { PasswordUpdateForm } from '../password-update-form/PasswordUpdateForm';
 import { Icon } from '../../../../reusable/icon/Icon';
 import styles from './LoginInformation.module.scss';
 import { useUserContext } from '../../../../../contexts/UserContext';
+import { Deletion } from '../../../../reusable/deletion/Deletion';
+import { useAuthentication } from '../../../../../api/accounts/authApi';
+import { DeleteButton } from '../../../../reusable/delete-button/DeleteButton';
 
 export const LoginInformation = () => {
     const [isPasswordPopupOpen, setIsPasswordPopupOpen] =
         useState(false);
+
+    const [
+        isDeleteAccountPopupOpen,
+        setIsDeleteAccountPopupOpen
+    ] = useState(false);
+
+    const { userLogoutHandler } = useUserContext();
+    const { deleteUser } = useAuthentication();
+
+    const deleteHandler = async () => {
+        await deleteUser();
+        setIsDeleteAccountPopupOpen(false);
+        userLogoutHandler();
+    };
 
     const { email, username } = useUserContext();
 
@@ -19,10 +36,10 @@ export const LoginInformation = () => {
                     <div className={styles['user-info']}>
                         <div className={styles['column']}>
                             <div className={styles['info-group']}>
-                                <div className={styles.label}>
+                                <div className={styles['label']}>
                                     Email Address
                                 </div>
-                                <div className={styles.value}>
+                                <div className={styles['value']}>
                                     {email || 'Not available'}
                                     <Icon
                                         name='lock'
@@ -37,10 +54,18 @@ export const LoginInformation = () => {
                                         styles['info-group']
                                     }
                                 >
-                                    <div className={styles.label}>
+                                    <div
+                                        className={
+                                            styles['label']
+                                        }
+                                    >
                                         Username
                                     </div>
-                                    <div className={styles.value}>
+                                    <div
+                                        className={
+                                            styles['value']
+                                        }
+                                    >
                                         {username}
                                         <Icon
                                             name='lock'
@@ -52,14 +77,6 @@ export const LoginInformation = () => {
                         </div>
 
                         <div className={styles['column']}>
-                            <div className={styles['info-group']}>
-                                <div className={styles.label}>
-                                    Password
-                                </div>
-                                <div className={styles.value}>
-                                    ••••••••
-                                </div>
-                            </div>
                             <button
                                 className={
                                     styles['change-password-link']
@@ -70,6 +87,14 @@ export const LoginInformation = () => {
                             >
                                 Change Password
                             </button>
+                            <DeleteButton
+                                callbackHandler={() =>
+                                    setIsDeleteAccountPopupOpen(
+                                        true
+                                    )
+                                }
+                                entityName='account'
+                            />
                         </div>
                     </div>
                 </div>
@@ -82,6 +107,18 @@ export const LoginInformation = () => {
                 <PasswordUpdateForm
                     onSuccess={() =>
                         setIsPasswordPopupOpen(false)
+                    }
+                />
+            </Popup>
+            <Popup
+                isOpen={isDeleteAccountPopupOpen}
+                onClose={() => setIsDeleteAccountPopupOpen(false)}
+            >
+                <Deletion
+                    entityName='account'
+                    onProceed={deleteHandler}
+                    onCancel={() =>
+                        setIsDeleteAccountPopupOpen(false)
                     }
                 />
             </Popup>
