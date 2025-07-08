@@ -1,16 +1,14 @@
 @import url('https://fonts.cdnfonts.com/css/tisa-sans-pro');
 
 html {
-    font:
-        14px / 1.5 'Tisa Sans Pro',
-        sans-serif;
+    font: 13px / 1.5 'Tisa Sans Pro', sans-serif;
     letter-spacing: 0.08em;
     color: var(--black);
 }
 
-@media (min-width: 1500px) {
+@media (min-width: 1400px) {
     html {
-        font-size: 16px;
+        font-size: 14px;
     }
 }
 
