@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ReviewForm } from '../review-form/ReviewForm';
 import { useReview } from '../../../api/reviewApi';
 import { useAuth } from '../../../hooks/auth/useAuth';
 import styles from './OrderProductItem.module.scss';
+import { useNavigate } from 'react-router';
 
 export const OrderProductItem = ({ product }) => {
     const [existingReview, setExistingReview] = useState(null);
     const [isLoadingReview, setIsLoadingReview] = useState(false);
     const { getUserReview } = useReview();
     const { isAuthenticated } = useAuth();
+    const navigate = useNavigate();
 
     const productInfo = product.productInfo;
     const contentType = product.productContentType || product.product_content_type;
@@ -43,10 +45,18 @@ export const OrderProductItem = ({ product }) => {
         setExistingReview(newReview);
     };
 
+        const navigateToProductItem = useCallback(() => {
+            navigate(
+                `/products/${
+                    productInfo.category.toLowerCase() + 's'
+                }/${productInfo.productId}`
+            );
+        }, [navigate, productInfo.category, productInfo.productId]);
+
     return (
         <div className={styles['order-product-item']}>
             <div className={styles['product-details']}>
-                <div className={styles['thumbnail']}>
+                <div className={styles['thumbnail']} onClick={navigateToProductItem}>
                     <img
                         src={productInfo.firstImage}
                         alt={`${productInfo.collection} ${productInfo.category}`}
