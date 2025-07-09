@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    @include anim.animate-fade-in(1s);
+    @include anim.animate-fade-in(1.5s);
 
     h2 {
         text-align: center;

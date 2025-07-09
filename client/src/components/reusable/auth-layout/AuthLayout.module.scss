@@ -10,7 +10,7 @@
 
 .thumbnail {
     flex: 0 0 50%;
-    @include anim.animate-fade-in(1s);
+    @include anim.animate-fade-in(1.5s);
 }
 
 .form {

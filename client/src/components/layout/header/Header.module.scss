@@ -18,7 +18,7 @@
     padding-block: 1.25em;
     transition: transform 0.3s ease-in-out;
     background: vars.$white;
-    @include anim.animate-fade-in(1s);
+    @include anim.animate-fade-in(1.5s);
 
     .checkout {
         display: flex;

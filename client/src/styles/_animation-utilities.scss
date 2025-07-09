@@ -9,7 +9,7 @@
 }
 
 .animate-fade-in-slow {
-    @include anim.animate-fade-in(2s);
+    @include anim.animate-fade-in(1.5s);
 }
 
 .animate-fade-out {
