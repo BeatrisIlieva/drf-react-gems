@@ -1,8 +1,10 @@
 @use '../../../styles/variables' as vars;
+@use '../../../styles/animations' as anim;
 
 .accounts {
     display: flex;
     flex-direction: column;
+    @include anim.animate-fade-in(1.2s);
 
     .wrapper {
         display: flex;

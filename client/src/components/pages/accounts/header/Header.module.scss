@@ -1,8 +1,10 @@
 @use '../../../../styles/variables' as vars;
+@use '../../../../styles/animations' as anim;
 
 .accounts-header {
     flex-grow: 0;
     position: relative;
+    @include anim.animate-fade-in(1.2s);
 
     .overlay {
         position: absolute;
@@ -24,11 +26,12 @@
         font-weight: 500;
         letter-spacing: 0.1em;
         text-wrap: nowrap;
+        margin-bottom: 0.5em;
     }
 
     .thumbnail {
         display: flex;
-        height: 38dvh;
+        height: 36dvh;
 
         img {
             width: 100%;

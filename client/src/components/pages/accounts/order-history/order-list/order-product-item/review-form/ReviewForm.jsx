@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Stars } from '../stars/Stars';
-import { Button } from '../button/Button';
-import { useReview } from '../../../api/reviewApi';
-import { useAuth } from '../../../hooks/auth/useAuth';
+import { Stars } from '../../../../../../reusable/stars/Stars';
+import { Button } from '../../../../../../reusable/button/Button';
+import { useReview } from '../../../../../../../api/reviewApi';
+import { useAuth } from '../../../../../../../hooks/auth/useAuth';
 import styles from './ReviewForm.module.scss';
-import { Deletion } from '../deletion/Deletion';
-import { Popup } from '../popup/Popup';
-import { DeleteButton } from '../delete-button/DeleteButton';
+import { Deletion } from '../../../../../../reusable/deletion/Deletion';
+import { Popup } from '../../../../../../reusable/popup/Popup';
+import { DeleteButton } from '../../../../../../reusable/delete-button/DeleteButton';
 
 export const ReviewForm = ({
     productId,
