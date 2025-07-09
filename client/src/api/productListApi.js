@@ -1,8 +1,8 @@
-import { useCallback } from 'react';
-import { useApi } from '../hooks/useApi';
-import { keysToCamelCase } from '../utils/convertToCamelCase';
+import { useCallback } from "react";
+import { useApi } from "../hooks/useApi";
+import { keysToCamelCase } from "../utils/convertToCamelCase";
 
-import { HOST } from '../constants/host';
+import { HOST } from "../constants/host";
 
 const baseUrl = `${HOST}/api/products`;
 
@@ -17,30 +17,30 @@ export const useProductList = () => {
             colorIds = [],
             stoneIds = [],
             metalIds = [],
-            collectionIds = []
+            collectionIds = [],
         }) => {
             const params = new URLSearchParams();
 
-            if (page) params.append('page', page.toString());
-            if (ordering) params.append('ordering', ordering);
+            if (page) params.append("page", page.toString());
+            if (ordering) params.append("ordering", ordering);
             if (colorIds) {
                 colorIds.forEach((id) =>
-                    params.append('colors', id.toString())
+                    params.append("colors", id.toString()),
                 );
             }
             if (stoneIds) {
                 stoneIds.forEach((id) =>
-                    params.append('stones', id.toString())
+                    params.append("stones", id.toString()),
                 );
             }
             if (metalIds) {
                 metalIds.forEach((id) =>
-                    params.append('metals', id.toString())
+                    params.append("metals", id.toString()),
                 );
             }
             if (collectionIds) {
                 collectionIds.forEach((id) =>
-                    params.append('collections', id.toString())
+                    params.append("collections", id.toString()),
                 );
             }
 
@@ -57,7 +57,7 @@ export const useProductList = () => {
                 console.error(error);
             }
         },
-        [get]
+        [get],
     );
 
     return { getProductList };

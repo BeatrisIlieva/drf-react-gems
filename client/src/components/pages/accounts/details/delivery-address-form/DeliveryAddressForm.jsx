@@ -1,32 +1,28 @@
-import { useEffect, useCallback } from 'react';
-import { useForm } from '../../../../../hooks/useForm';
-import { useFormDataLoader } from '../../../../../hooks/useFormDataLoader';
-import { FormFieldRenderer } from '../../../../reusable/form-field-renderer/FormFieldRenderer';
-import { Button } from '../../../../reusable/button/Button';
-import { ShadowBox } from '../../../../reusable/shadow-box/ShadowBox';
-import { FORM_CONFIGS } from '../../../../../config/formFieldConfigs';
-import { createApiDataFromForm } from '../../../../../utils/formHelpers';
+import { useEffect, useCallback } from "react";
+import { useForm } from "../../../../../hooks/useForm";
+import { useFormDataLoader } from "../../../../../hooks/useFormDataLoader";
+import { FormFieldRenderer } from "../../../../reusable/form-field-renderer/FormFieldRenderer";
+import { Button } from "../../../../reusable/button/Button";
+import { ShadowBox } from "../../../../reusable/shadow-box/ShadowBox";
+import { FORM_CONFIGS } from "../../../../../config/formFieldConfigs";
+import { createApiDataFromForm } from "../../../../../utils/formHelpers";
 
-import styles from './DeliveryAddressForm.module.scss';
-import { useProfile } from '../../../../../api/useProfileApi';
+import styles from "./DeliveryAddressForm.module.scss";
+import { useProfile } from "../../../../../api/useProfileApi";
 
 export const DeliveryAddressForm = ({
-    buttonTitle = 'Save',
-    buttonGrow = '0',
+    buttonTitle = "Save",
+    buttonGrow = "0",
     showButton = true,
     onSubmit: externalOnSubmit,
-    onFormReady
+    onFormReady,
 }) => {
-    const { fieldConfig, initialValues } =
-        FORM_CONFIGS.deliveryAddress;
+    const { fieldConfig, initialValues } = FORM_CONFIGS.deliveryAddress;
     const { getPersonalInfo, updatePersonalInfo } = useProfile();
 
     const handleSubmit = useCallback(
         async (formData) => {
-            const apiData = createApiDataFromForm(
-                formData,
-                fieldConfig
-            );
+            const apiData = createApiDataFromForm(formData, fieldConfig);
 
             try {
                 const result = await updatePersonalInfo(apiData);
@@ -35,25 +31,25 @@ export const DeliveryAddressForm = ({
                     return { success: true };
                 }
 
-                if (result && typeof result === 'object') {
+                if (result && typeof result === "object") {
                     return {
                         success: false,
-                        data: result
+                        data: result,
                     };
                 }
             } catch {
                 return {
                     success: false,
-                    error: 'Failed to update delivery information'
+                    error: "Failed to update delivery information",
                 };
             }
         },
-        [fieldConfig, updatePersonalInfo]
+        [fieldConfig, updatePersonalInfo],
     );
 
     const formProps = useForm(initialValues, {
         onSubmit: externalOnSubmit || handleSubmit,
-        validateOnSubmit: true
+        validateOnSubmit: true,
     });
 
     const {
@@ -66,13 +62,13 @@ export const DeliveryAddressForm = ({
         updateFieldValue,
         resetValidationStates,
         formRef,
-        registerInput
+        registerInput,
     } = formProps;
 
     const { loading } = useFormDataLoader(
         getPersonalInfo,
         updateFieldValue,
-        fieldConfig
+        fieldConfig,
     );
 
     useEffect(() => {
@@ -85,7 +81,7 @@ export const DeliveryAddressForm = ({
         if (onFormReady) {
             onFormReady({
                 submitAction,
-                formState: formProps.formState
+                formState: formProps.formState,
             });
         }
     }, [submitAction, formProps.formState, onFormReady]);
@@ -93,16 +89,16 @@ export const DeliveryAddressForm = ({
     const fieldNames = Object.keys(fieldConfig);
 
     return (
-        <ShadowBox title='Delivery Information'>
+        <ShadowBox title="Delivery Information">
             {loading ? (
-                <div className={styles['loading']}>
+                <div className={styles["loading"]}>
                     Loading delivery information...
                 </div>
             ) : (
                 <form
                     ref={formRef}
                     action={submitAction}
-                    className={styles['delivery-form']}
+                    className={styles["delivery-form"]}
                 >
                     <FormFieldRenderer
                         fieldNames={fieldNames}
@@ -117,13 +113,13 @@ export const DeliveryAddressForm = ({
                     {showButton && (
                         <Button
                             title={buttonTitle}
-                            color='black'
-                            actionType='submit'
+                            color="black"
+                            actionType="submit"
                             pending={isSubmitting}
                             success={formProps.formState?.success}
                             callbackHandler={() => {}}
                             buttonGrow={buttonGrow}
-                            width='5'
+                            width="5"
                         />
                     )}
                 </form>

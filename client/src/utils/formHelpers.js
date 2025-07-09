@@ -4,28 +4,24 @@ export const createFormFieldConfig = (fields) => {
             name: field.name,
             apiKey: field.apiKey || field.name,
             required: field.required !== false,
-            type: field.type || 'text',
+            type: field.type || "text",
             label: field.label,
             validation: field.validation || [],
             maxLength:
-                field.maxLength ||
-                getDefaultMaxLength(field.name, field.type)
+                field.maxLength || getDefaultMaxLength(field.name, field.type),
         };
         return config;
     }, {});
 };
 
-export const getInitialFormValues = (
-    fieldNames,
-    fieldConfig = {}
-) => {
+export const getInitialFormValues = (fieldNames, fieldConfig = {}) => {
     return fieldNames.reduce((values, fieldName) => {
         const config = fieldConfig[fieldName] || {};
         values[fieldName] = {
-            value: '',
-            error: '',
+            value: "",
+            error: "",
             valid: false,
-            maxLength: config.maxLength
+            maxLength: config.maxLength,
         };
         return values;
     }, {});
@@ -61,12 +57,12 @@ export const getDefaultMaxLength = (fieldName, fieldType) => {
         zipCode: 10,
         cardNumber: 19,
         cardHolderName: 50,
-        cvv: 4
+        cvv: 4,
     };
 
-    if (fieldType === 'password') return 128;
-    if (fieldType === 'email') return 254;
-    if (fieldType === 'tel') return 15;
+    if (fieldType === "password") return 128;
+    if (fieldType === "email") return 254;
+    if (fieldType === "tel") return 15;
 
     return defaultLengths[fieldName] || 100;
 };

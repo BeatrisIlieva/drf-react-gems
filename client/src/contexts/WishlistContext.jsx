@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext } from "react";
 
 export const WishlistContext = createContext({
     wishlistItems: [],
@@ -8,7 +8,7 @@ export const WishlistContext = createContext({
     removeFromWishlist: async () => false,
     isInWishlist: () => false,
     handleWishlistToggle: () => null,
-    refreshWishlist: async () => null
+    refreshWishlist: async () => null,
 });
 
 export const useWishlistContext = () => {

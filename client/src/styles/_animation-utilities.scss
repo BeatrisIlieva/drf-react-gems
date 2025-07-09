@@ -1,4 +1,4 @@
-@use './animations' as anim;
+@use "./animations" as anim;
 
 .animate-fade-in {
     @include anim.animate-fade-in();

@@ -1,14 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
-import styles from './FilterItem.module.scss';
-import { Icon } from '../../../../reusable/icon/Icon';
-import { ChevronToggle } from '../../../../reusable/chevron-toggle/ChevronToggle';
-import { useCategoryName } from '../../../../../hooks/useCategoryName';
-import { useProductFiltersContext } from '../../../../../contexts/ProductFiltersContext';
+import styles from "./FilterItem.module.scss";
+import { Icon } from "../../../../reusable/icon/Icon";
+import { ChevronToggle } from "../../../../reusable/chevron-toggle/ChevronToggle";
+import { useCategoryName } from "../../../../../hooks/useCategoryName";
+import { useProductFiltersContext } from "../../../../../contexts/ProductFiltersContext";
 
 export const FilterItem = ({ label, data }) => {
-    const { filterToggleFunctions, filtersMapper } =
-        useProductFiltersContext();
+    const { filterToggleFunctions, filtersMapper } = useProductFiltersContext();
 
     const { categoryName } = useCategoryName();
 
@@ -39,8 +38,8 @@ export const FilterItem = ({ label, data }) => {
     };
 
     return (
-        <li className={styles['filter-item']}>
-            <div className={styles['label-wrapper']}>
+        <li className={styles["filter-item"]}>
+            <div className={styles["label-wrapper"]}>
                 <h6 onClick={toggleDisplayFilter}>{label}</h6>
 
                 <ChevronToggle
@@ -50,14 +49,13 @@ export const FilterItem = ({ label, data }) => {
             </div>
             <ul
                 ref={contentRef}
-                className={styles['list']}
+                className={styles["list"]}
                 style={{
                     maxHeight: height,
                     opacity: displayFilter ? 1 : 0,
-                    overflow: 'hidden',
-                    transition:
-                        'max-height 0.3s ease, opacity 0.3s ease',
-                    marginTop: displayFilter ? '1em' : '0'
+                    overflow: "hidden",
+                    transition: "max-height 0.3s ease, opacity 0.3s ease",
+                    marginTop: displayFilter ? "1em" : "0",
                 }}
             >
                 {data.map((item) => (
@@ -65,62 +63,45 @@ export const FilterItem = ({ label, data }) => {
                         key={item.id}
                         className={`${
                             filtersMapper[label].includes(item.id)
-                                ? styles['selected']
-                                : ''
+                                ? styles["selected"]
+                                : ""
                         }`.trim()}
                     >
                         <button
-                            disabled={filtersMapper[
-                                label
-                            ].includes(item.id)}
-                            className={styles['add-filter']}
+                            disabled={filtersMapper[label].includes(item.id)}
+                            className={styles["add-filter"]}
                             onClick={() => clickHandler(item.id)}
                         >
                             {item.hex && (
                                 <span
-                                    className={`${
-                                        styles['visualization']
-                                    } ${
-                                        item.label === 'White'
-                                            ? styles['white']
-                                            : ''
+                                    className={`${styles["visualization"]} ${
+                                        item.label === "White"
+                                            ? styles["white"]
+                                            : ""
                                     }`.trim()}
                                     style={{
-                                        backgroundColor: item.hex
+                                        backgroundColor: item.hex,
                                     }}
                                 ></span>
                             )}
                             {item.image && (
-                                <span
-                                    className={
-                                        styles['visualization']
-                                    }
-                                >
-                                    <img
-                                        src={item.image}
-                                        alt={item.label}
-                                    />
+                                <span className={styles["visualization"]}>
+                                    <img src={item.image} alt={item.label} />
                                 </span>
                             )}
                             <span>{item.label}</span>
-                            <span className={styles['count']}>
+                            <span className={styles["count"]}>
                                 ({item.count})
                             </span>
                         </button>
 
-                        {filtersMapper[label].includes(
-                            item.id
-                        ) && (
+                        {filtersMapper[label].includes(item.id) && (
                             <div
-                                className={
-                                    styles['remove-filter']
-                                }
-                                onClick={() =>
-                                    clickHandler(item.id)
-                                }
+                                className={styles["remove-filter"]}
+                                onClick={() => clickHandler(item.id)}
                             >
                                 <Icon
-                                    name={'xMark'}
+                                    name={"xMark"}
                                     isSubtle={true}
                                     fontSize={0.7}
                                 />

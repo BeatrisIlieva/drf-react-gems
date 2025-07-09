@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext } from "react";
 
 export const ProductListContext = createContext({
     count: 0,
@@ -8,7 +8,7 @@ export const ProductListContext = createContext({
     loadMoreDisabled: false,
     products: [],
     loadMoreHandler: () => null,
-    updateOrdering: () => null
+    updateOrdering: () => null,
 });
 
 export const useProductListContext = () => {

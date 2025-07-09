@@ -1,4 +1,4 @@
-@use '../../../../../styles/variables' as vars;
+@use "../../../../../styles/variables" as vars;
 
 .photo-upload-container {
     display: flex;
@@ -120,7 +120,6 @@
     color: vars.$medium-grey;
 }
 
-// Responsive design
 @media (max-width: 768px) {
     .photo-wrapper {
         width: 6rem;

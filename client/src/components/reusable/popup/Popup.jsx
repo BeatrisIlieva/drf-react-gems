@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
-import { createPortal } from 'react-dom';
-import { Icon } from '../icon/Icon';
-import styles from './Popup.module.scss';
+import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
+import { Icon } from "../icon/Icon";
+import styles from "./Popup.module.scss";
 
 export const Popup = ({ isOpen, onClose, children }) => {
     const popupRef = useRef(null);
@@ -9,39 +9,27 @@ export const Popup = ({ isOpen, onClose, children }) => {
 
     useEffect(() => {
         const handleEscapeKey = (event) => {
-            if (event.key === 'Escape') {
+            if (event.key === "Escape") {
                 onClose();
             }
         };
 
         const handleClickOutside = (event) => {
-            if (
-                overlayRef.current &&
-                event.target === overlayRef.current
-            ) {
+            if (overlayRef.current && event.target === overlayRef.current) {
                 onClose();
             }
         };
 
         if (isOpen) {
-            document.addEventListener('keydown', handleEscapeKey);
-            document.addEventListener(
-                'mousedown',
-                handleClickOutside
-            );
-            document.body.style.overflow = 'hidden';
+            document.addEventListener("keydown", handleEscapeKey);
+            document.addEventListener("mousedown", handleClickOutside);
+            document.body.style.overflow = "hidden";
         }
 
         return () => {
-            document.removeEventListener(
-                'keydown',
-                handleEscapeKey
-            );
-            document.removeEventListener(
-                'mousedown',
-                handleClickOutside
-            );
-            document.body.style.overflow = 'unset';
+            document.removeEventListener("keydown", handleEscapeKey);
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.body.style.overflow = "unset";
         };
     }, [isOpen, onClose]);
 
@@ -50,18 +38,18 @@ export const Popup = ({ isOpen, onClose, children }) => {
     }
 
     return createPortal(
-        <div className={styles['overlay']} ref={overlayRef}>
-            <div className={styles['popup']} ref={popupRef}>
+        <div className={styles["overlay"]} ref={overlayRef}>
+            <div className={styles["popup"]} ref={popupRef}>
                 <button
-                    className={styles['close-button']}
+                    className={styles["close-button"]}
                     onClick={onClose}
-                    aria-label='Close popup'
+                    aria-label="Close popup"
                 >
-                    <Icon name='xMark' fontSize={0.9} />
+                    <Icon name="xMark" fontSize={0.9} />
                 </button>
-                <div className={styles['content']}>{children}</div>
+                <div className={styles["content"]}>{children}</div>
             </div>
         </div>,
-        document.body
+        document.body,
     );
 };

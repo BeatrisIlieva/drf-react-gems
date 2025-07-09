@@ -1,8 +1,8 @@
-import { useCallback } from 'react';
-import { useNavigate } from 'react-router';
-import { useApi } from '../hooks/useApi';
-import { useAuth } from '../hooks/useAuth';
-import { HOST } from '../constants/host';
+import { useCallback } from "react";
+import { useNavigate } from "react-router";
+import { useApi } from "../hooks/useApi";
+import { useAuth } from "../hooks/useAuth";
+import { HOST } from "../constants/host";
 
 const baseUrl = `${HOST}/api/accounts`;
 
@@ -14,49 +14,46 @@ export const useAuthentication = () => {
     const register = useCallback(
         async (userData) => {
             try {
-                const response = await post(
-                    `${baseUrl}/register/`,
-                    {
-                        data: userData
-                    }
-                );
+                const response = await post(`${baseUrl}/register/`, {
+                    data: userData,
+                });
                 return response;
             } catch (error) {
                 console.error(error);
                 return {
-                    error: error.message || 'Registration failed',
-                    ...error.data
+                    error: error.message || "Registration failed",
+                    ...error.data,
                 };
             }
         },
-        [post]
+        [post],
     );
 
     const login = useCallback(
         async (userData) => {
             try {
                 const response = await post(`${baseUrl}/login/`, {
-                    data: userData
+                    data: userData,
                 });
                 return response;
             } catch (error) {
                 console.error(error);
                 return {
-                    error: error.message || 'Login failed',
-                    ...error.data
+                    error: error.message || "Login failed",
+                    ...error.data,
                 };
             }
         },
-        [post]
+        [post],
     );
 
     const logout = useCallback(async () => {
         try {
             await post(`${baseUrl}/logout/`, {
                 accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated
+                refreshRequired: isAuthenticated,
             });
-            navigate('/my-account/register');
+            navigate("/my-account/register");
         } catch (error) {
             console.error(error);
         }
@@ -66,7 +63,7 @@ export const useAuthentication = () => {
         try {
             const response = await del(`${baseUrl}/delete/`, {
                 accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated
+                refreshRequired: isAuthenticated,
             });
             return response;
         } catch (error) {
@@ -78,6 +75,6 @@ export const useAuthentication = () => {
         register,
         login,
         logout,
-        deleteUser
+        deleteUser,
     };
 };

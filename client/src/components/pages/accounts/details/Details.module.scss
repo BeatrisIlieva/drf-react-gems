@@ -1,12 +1,12 @@
-@use '../../../../styles/variables' as vars;
-@use '../../../../styles/animations' as anim;
+@use "../../../../styles/variables" as vars;
+@use "../../../../styles/animations" as anim;
 
 .details {
     display: flex;
     flex-direction: column;
     gap: 2em;
     margin-top: -5em;
-        @include anim.animate-fade-in(1.2s);
+    @include anim.animate-fade-in(1.2s);
 
     .photo {
         padding: 1em;

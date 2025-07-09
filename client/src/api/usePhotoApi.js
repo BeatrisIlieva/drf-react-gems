@@ -1,8 +1,8 @@
-import { useCallback } from 'react';
-import { useApi } from '../hooks/useApi';
-import { useAuth } from '../hooks/useAuth';
-import { HOST } from '../constants/host';
-import { keysToCamelCase } from '../utils/convertToCamelCase';
+import { useCallback } from "react";
+import { useApi } from "../hooks/useApi";
+import { useAuth } from "../hooks/useAuth";
+import { HOST } from "../constants/host";
+import { keysToCamelCase } from "../utils/convertToCamelCase";
 
 const baseUrl = `${HOST}/api/accounts/photo`;
 
@@ -14,7 +14,7 @@ export const usePhoto = () => {
         try {
             const response = await get(`${baseUrl}/`, {
                 accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated
+                refreshRequired: isAuthenticated,
             });
 
             return keysToCamelCase(response);
@@ -30,7 +30,7 @@ export const usePhoto = () => {
                     data: photoData,
                     accessRequired: isAuthenticated,
                     refreshRequired: isAuthenticated,
-                    contentType: 'multipart/form-data'
+                    contentType: "multipart/form-data",
                 });
 
                 return keysToCamelCase(response);
@@ -38,19 +38,19 @@ export const usePhoto = () => {
                 console.error(error);
             }
         },
-        [patch, isAuthenticated]
+        [patch, isAuthenticated],
     );
 
     const deletePhoto = useCallback(async () => {
         try {
             const formData = new FormData();
-            formData.append('photo', '');
+            formData.append("photo", "");
 
             const response = await patch(`${baseUrl}/`, {
                 data: formData,
                 accessRequired: isAuthenticated,
                 refreshRequired: isAuthenticated,
-                contentType: 'multipart/form-data'
+                contentType: "multipart/form-data",
             });
 
             return keysToCamelCase(response);
@@ -62,6 +62,6 @@ export const usePhoto = () => {
     return {
         getPhoto,
         uploadPhoto,
-        deletePhoto
+        deletePhoto,
     };
 };

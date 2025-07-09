@@ -1,13 +1,10 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState } from "react";
 
-export default function usePersistedState(
-    stateKey,
-    initialState
-) {
+export default function usePersistedState(stateKey, initialState) {
     const [state, setState] = useState(() => {
         const persistedState = localStorage.getItem(stateKey);
-        if (!persistedState || persistedState === 'undefined') {
-            return typeof initialState === 'function'
+        if (!persistedState || persistedState === "undefined") {
+            return typeof initialState === "function"
                 ? initialState()
                 : initialState;
         }
@@ -16,9 +13,8 @@ export default function usePersistedState(
             const persistedStateData = JSON.parse(persistedState);
             return persistedStateData;
         } catch {
-            // If JSON parsing fails, remove the invalid data and use initial state
             localStorage.removeItem(stateKey);
-            return typeof initialState === 'function'
+            return typeof initialState === "function"
                 ? initialState()
                 : initialState;
         }
@@ -28,9 +24,7 @@ export default function usePersistedState(
         (input) => {
             setState((prevState) => {
                 const data =
-                    typeof input === 'function'
-                        ? input(prevState)
-                        : input;
+                    typeof input === "function" ? input(prevState) : input;
 
                 const persistedData = JSON.stringify(data);
 
@@ -39,7 +33,7 @@ export default function usePersistedState(
                 return data;
             });
         },
-        [stateKey]
+        [stateKey],
     );
 
     return [state, setPersistedState];

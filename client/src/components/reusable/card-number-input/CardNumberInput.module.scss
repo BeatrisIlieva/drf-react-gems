@@ -1,4 +1,4 @@
-@use '../../../styles/variables' as vars;
+@use "../../../styles/variables" as vars;
 
 .card-number-field {
     position: relative;
@@ -52,7 +52,9 @@
         position: absolute;
         top: 1.25em;
         left: 1rem;
-        transition: color 0.3s ease-in-out, top 0.3s ease-in-out;
+        transition:
+            color 0.3s ease-in-out,
+            top 0.3s ease-in-out;
         pointer-events: none;
     }
 }

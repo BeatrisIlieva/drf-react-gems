@@ -1,11 +1,11 @@
-import { useProductListContext } from '../../../../../contexts/ProductListContext';
-import { useToggleDisplayModal } from '../../../../../hooks/useToggleDisplayModal';
+import { useProductListContext } from "../../../../../contexts/ProductListContext";
+import { useToggleDisplayModal } from "../../../../../hooks/useToggleDisplayModal";
 
-import { ChevronToggle } from '../../../../reusable/chevron-toggle/ChevronToggle';
+import { ChevronToggle } from "../../../../reusable/chevron-toggle/ChevronToggle";
 
-import { SORT_OPTIONS } from '../../../../../constants/sortOptions';
+import { SORT_OPTIONS } from "../../../../../constants/sortOptions";
 
-import styles from './SortBy.module.scss';
+import styles from "./SortBy.module.scss";
 
 export const SortBy = () => {
     const { displayModal, containerRef, toggleDisplayModal } =
@@ -18,19 +18,19 @@ export const SortBy = () => {
     };
 
     const selectedLabel = SORT_OPTIONS.find(
-        (option) => option.value === ordering
+        (option) => option.value === ordering,
     )?.label;
 
     return (
-        <li className={styles['sort-by']} ref={containerRef}>
+        <li className={styles["sort-by"]} ref={containerRef}>
             <span
                 onClick={toggleDisplayModal}
-                role='button'
-                aria-haspopup='true'
+                role="button"
+                aria-haspopup="true"
                 aria-expanded={displayModal}
-                aria-controls='sort-options'
+                aria-controls="sort-options"
             >
-                {ordering ? selectedLabel : 'sort by'}
+                {ordering ? selectedLabel : "sort by"}
             </span>
             <ChevronToggle
                 onToggle={toggleDisplayModal}
@@ -38,18 +38,11 @@ export const SortBy = () => {
             />
 
             {displayModal && (
-                <span
-                    className={styles['menu']}
-                    id='sort-options'
-                    role='menu'
-                >
+                <span className={styles["menu"]} id="sort-options" role="menu">
                     {SORT_OPTIONS.map(({ value, label }) => (
                         <button
                             key={value}
-                            className={`${
-                                ordering === value &&
-                                styles['selected']
-                            }`}
+                            className={`${ordering === value && styles["selected"]}`}
                             onClick={() => clickHandler(value)}
                         >
                             {label}

@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { ProductListContext } from '../contexts/ProductListContext';
-import { useProductList } from '../api/productListApi';
-import { useCategoryName } from '../hooks/useCategoryName';
-import { usePagination } from '../hooks/usePagination';
+import { ProductListContext } from "../contexts/ProductListContext";
+import { useProductList } from "../api/productListApi";
+import { useCategoryName } from "../hooks/useCategoryName";
+import { usePagination } from "../hooks/usePagination";
 
-import { useProductFiltersContext } from '../contexts/ProductFiltersContext';
+import { useProductFiltersContext } from "../contexts/ProductFiltersContext";
 
 export const ProductListProvider = ({ children }) => {
     const { categoryName } = useCategoryName();
@@ -20,10 +20,7 @@ export const ProductListProvider = ({ children }) => {
     const [error, setError] = useState(null);
     const [ordering, setOrdering] = useState(null);
 
-    const loadMoreDisabled = useMemo(
-        () => nextPage === null,
-        [nextPage]
-    );
+    const loadMoreDisabled = useMemo(() => nextPage === null, [nextPage]);
 
     const resetOrdering = useCallback(() => {
         setOrdering(null);
@@ -40,7 +37,7 @@ export const ProductListProvider = ({ children }) => {
             ordering,
             shouldUpdateProducts = false,
             shouldSetProductsCount = false,
-            shouldResetOrdering = false
+            shouldResetOrdering = false,
         }) => {
             setLoading(true);
             setError(null);
@@ -53,7 +50,7 @@ export const ProductListProvider = ({ children }) => {
                     stoneIds,
                     metalIds,
                     collectionIds,
-                    ordering
+                    ordering,
                 });
 
                 updatePage(response.next);
@@ -63,10 +60,7 @@ export const ProductListProvider = ({ children }) => {
                 }
 
                 if (shouldUpdateProducts) {
-                    setProducts((prev) => [
-                        ...prev,
-                        ...response.results
-                    ]);
+                    setProducts((prev) => [...prev, ...response.results]);
                 } else {
                     setProducts(response.results);
                 }
@@ -75,7 +69,7 @@ export const ProductListProvider = ({ children }) => {
                     resetOrdering();
                 }
             } catch (err) {
-                setError(err.message || 'Failed to load products');
+                setError(err.message || "Failed to load products");
                 if (!shouldUpdateProducts) {
                     setProducts([]);
                 }
@@ -83,7 +77,7 @@ export const ProductListProvider = ({ children }) => {
                 setLoading(false);
             }
         },
-        [getProductList, updatePage, resetOrdering]
+        [getProductList, updatePage, resetOrdering],
     );
 
     const updateOrdering = useCallback(
@@ -96,7 +90,7 @@ export const ProductListProvider = ({ children }) => {
                 stoneIds,
                 metalIds,
                 collectionIds,
-                ordering: criteria
+                ordering: criteria,
             });
         },
         [
@@ -106,8 +100,8 @@ export const ProductListProvider = ({ children }) => {
             metalIds,
             collectionIds,
             fetchProducts,
-            setOrdering
-        ]
+            setOrdering,
+        ],
     );
 
     const loadMoreHandler = useCallback(async () => {
@@ -121,7 +115,7 @@ export const ProductListProvider = ({ children }) => {
             metalIds,
             collectionIds,
             ordering,
-            shouldUpdateProducts: true
+            shouldUpdateProducts: true,
         });
     }, [
         nextPage,
@@ -133,14 +127,14 @@ export const ProductListProvider = ({ children }) => {
         ordering,
         fetchProducts,
         loading,
-        loadMoreDisabled
+        loadMoreDisabled,
     ]);
 
     useEffect(() => {
         setProducts([]);
         fetchProducts({
             categoryName,
-            shouldResetOrdering: true
+            shouldResetOrdering: true,
         });
     }, [categoryName, fetchProducts]);
 
@@ -154,7 +148,7 @@ export const ProductListProvider = ({ children }) => {
             stoneIds,
             metalIds,
             collectionIds,
-            ordering
+            ordering,
         });
     }, [
         colorIds,
@@ -164,7 +158,7 @@ export const ProductListProvider = ({ children }) => {
         categoryName,
         fetchProducts,
         ordering,
-        updatePage
+        updatePage,
     ]);
 
     const contextValue = useMemo(
@@ -177,7 +171,7 @@ export const ProductListProvider = ({ children }) => {
             updateOrdering,
             ordering,
             fetchProducts,
-            count
+            count,
         }),
         [
             products,
@@ -188,8 +182,8 @@ export const ProductListProvider = ({ children }) => {
             updateOrdering,
             ordering,
             fetchProducts,
-            count
-        ]
+            count,
+        ],
     );
 
     return (

@@ -61,29 +61,17 @@
     }
 }
 
-@mixin animate-fade-in(
-    $duration: 1.6s,
-    $delay: 0s,
-    $fill-mode: forwards
-) {
+@mixin animate-fade-in($duration: 1.6s, $delay: 0s, $fill-mode: forwards) {
     opacity: 0;
     animation: fadeIn $duration $delay $fill-mode;
 }
 
-@mixin animate-fade-out(
-    $duration: 1.6s,
-    $delay: 0s,
-    $fill-mode: forwards
-) {
+@mixin animate-fade-out($duration: 1.6s, $delay: 0s, $fill-mode: forwards) {
     opacity: 1;
     animation: fadeOut $duration $delay $fill-mode;
 }
 
-@mixin animate-slide-in(
-    $duration: 0.5s,
-    $delay: 0s,
-    $fill-mode: forwards
-) {
+@mixin animate-slide-in($duration: 0.5s, $delay: 0s, $fill-mode: forwards) {
     opacity: 0;
     animation: slideIn $duration $delay $fill-mode;
 }
@@ -112,17 +100,10 @@
     animation: pulse $duration ease-in-out $delay infinite;
 }
 
-@mixin staggered-slide-in(
-    $items: 5,
-    $base-delay: 0.1s,
-    $duration: 0.5s
-) {
+@mixin staggered-slide-in($items: 5, $base-delay: 0.1s, $duration: 0.5s) {
     @for $i from 1 through $items {
         &:nth-child(#{$i}) {
-            @include animate-slide-in(
-                $duration,
-                $base-delay * $i
-            );
+            @include animate-slide-in($duration, $base-delay * $i);
         }
     }
 }

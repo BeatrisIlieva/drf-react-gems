@@ -1,9 +1,9 @@
-import { useCallback } from 'react';
-import { useApi } from '../hooks/useApi';
-import { keysToCamelCase } from '../utils/convertToCamelCase';
-import { HOST } from '../constants/host';
+import { useCallback } from "react";
+import { useApi } from "../hooks/useApi";
+import { keysToCamelCase } from "../utils/convertToCamelCase";
+import { HOST } from "../constants/host";
 
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from "../hooks/useAuth";
 
 const baseUrl = `${HOST}/api/wishlist`;
 
@@ -15,7 +15,7 @@ export const useWishlist = () => {
         try {
             const response = await get(`${baseUrl}/`, {
                 accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated
+                refreshRequired: isAuthenticated,
             });
             return keysToCamelCase(response);
         } catch (error) {
@@ -29,14 +29,14 @@ export const useWishlist = () => {
                 const response = await post(`${baseUrl}/`, {
                     data,
                     accessRequired: isAuthenticated,
-                    refreshRequired: isAuthenticated
+                    refreshRequired: isAuthenticated,
                 });
                 return keysToCamelCase(response);
             } catch (error) {
                 console.error(error);
             }
         },
-        [post, isAuthenticated]
+        [post, isAuthenticated],
     );
 
     const deleteItem = useCallback(
@@ -46,8 +46,8 @@ export const useWishlist = () => {
                     `${baseUrl}/remove/${params.content_type}/${params.object_id}/`,
                     {
                         accessRequired: isAuthenticated,
-                        refreshRequired: isAuthenticated
-                    }
+                        refreshRequired: isAuthenticated,
+                    },
                 );
 
                 return true;
@@ -55,14 +55,14 @@ export const useWishlist = () => {
                 console.error(error);
             }
         },
-        [del, isAuthenticated]
+        [del, isAuthenticated],
     );
 
     const getCount = useCallback(async () => {
         try {
             const response = await get(`${baseUrl}/count/`, {
                 accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated
+                refreshRequired: isAuthenticated,
             });
             return keysToCamelCase(response);
         } catch (error) {
@@ -74,6 +74,6 @@ export const useWishlist = () => {
         getItems,
         createItem,
         deleteItem,
-        getCount
+        getCount,
     };
 };

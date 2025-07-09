@@ -1,15 +1,12 @@
-import styles from './ReviewItem.module.scss';
-import { Stars } from '../../../../../../reusable/stars/Stars';
+import styles from "./ReviewItem.module.scss";
+import { Stars } from "../../../../../../reusable/stars/Stars";
 
 export const ReviewItem = ({ review }) => {
     return (
-        <li className={styles['review-item']}>
+        <li className={styles["review-item"]}>
             <span>
                 <span>
-                    <img
-                        src={review.photoUrl}
-                        alt={`${review.userFullName}`}
-                    />
+                    <img src={review.photoUrl} alt={`${review.userFullName}`} />
                 </span>
 
                 <span>

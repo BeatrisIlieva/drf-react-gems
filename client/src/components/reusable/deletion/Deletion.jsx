@@ -1,26 +1,24 @@
-import { Button } from '../button/Button';
-import styles from './Deletion.module.scss';
+import { Button } from "../button/Button";
+import styles from "./Deletion.module.scss";
 
 export const Deletion = ({ entityName, onProceed, onCancel }) => {
     return (
-        <section className={styles['deletion']}>
+        <section className={styles["deletion"]}>
             <h3>Delete {entityName}</h3>
 
-            <p>
-                Are you sure you want to delete your {entityName}?
-            </p>
+            <p>Are you sure you want to delete your {entityName}?</p>
 
-            <div className={styles['buttons-wrapper']}>
+            <div className={styles["buttons-wrapper"]}>
                 <Button
-                    title='Yes, Delete'
-                    buttonGrow='1'
-                    color='black'
+                    title="Yes, Delete"
+                    buttonGrow="1"
+                    color="black"
                     callbackHandler={onProceed}
                 />
                 <Button
-                    title='Cancel'
-                    buttonGrow='1'
-                    color='white'
+                    title="Cancel"
+                    buttonGrow="1"
+                    color="white"
                     callbackHandler={onCancel}
                 />
             </div>

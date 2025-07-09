@@ -1,8 +1,8 @@
-import { useCallback } from 'react';
-import { useApi } from '../hooks/useApi';
-import { keysToCamelCase } from '../utils/convertToCamelCase';
+import { useCallback } from "react";
+import { useApi } from "../hooks/useApi";
+import { keysToCamelCase } from "../utils/convertToCamelCase";
 
-import { HOST } from '../constants/host';
+import { HOST } from "../constants/host";
 
 const baseUrl = `${HOST}/api/products`;
 
@@ -16,32 +16,32 @@ export const useFilters = () => {
             colorIds = [],
             stoneIds = [],
             metalIds = [],
-            collectionIds = []
+            collectionIds = [],
         }) => {
             const params = new URLSearchParams();
 
             if (colorIds) {
                 colorIds.forEach((id) =>
-                    params.append('colors', id.toString())
+                    params.append("colors", id.toString()),
                 );
             }
             if (stoneIds) {
                 stoneIds.forEach((id) =>
-                    params.append('stones', id.toString())
+                    params.append("stones", id.toString()),
                 );
             }
             if (metalIds) {
                 metalIds.forEach((id) =>
-                    params.append('metals', id.toString())
+                    params.append("metals", id.toString()),
                 );
             }
             if (collectionIds) {
                 collectionIds.forEach((id) =>
-                    params.append('collections', id.toString())
+                    params.append("collections", id.toString()),
                 );
             }
 
-            params.append('category', categoryName || '');
+            params.append("category", categoryName || "");
 
             const queryString = params.toString();
             const fullUrl = `${baseUrl}/${entityName}/?${queryString}`;
@@ -54,7 +54,7 @@ export const useFilters = () => {
                 console.error(error);
             }
         },
-        [get]
+        [get],
     );
 
     return { getFilters };

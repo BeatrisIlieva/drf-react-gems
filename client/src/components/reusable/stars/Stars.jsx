@@ -1,21 +1,18 @@
-import { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
-import styles from './Stars.module.scss';
+import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import styles from "./Stars.module.scss";
 
 export const Stars = ({
     rating,
     fontSize,
     interactive = false,
     onRatingChange = null,
-    hoverColor = 'gold'
+    hoverColor = "gold",
 }) => {
     const [hoveredRating, setHoveredRating] = useState(0);
-    const [selectedRating, setSelectedRating] = useState(
-        rating || 0
-    );
+    const [selectedRating, setSelectedRating] = useState(rating || 0);
 
-    // Update selected rating when rating prop changes
     useEffect(() => {
         setSelectedRating(rating || 0);
     }, [rating]);
@@ -46,33 +43,29 @@ export const Stars = ({
 
     const getStarClass = (starIndex) => {
         if (!interactive) {
-            return starIndex < displayRating ? 'filled' : 'empty';
+            return starIndex < displayRating ? "filled" : "empty";
         }
 
         if (hoveredRating > 0) {
             return starIndex < hoveredRating
                 ? `hover-${hoverColor}`
-                : 'interactive-empty';
+                : "interactive-empty";
         }
 
-        return starIndex < selectedRating
-            ? 'filled'
-            : 'interactive-empty';
+        return starIndex < selectedRating ? "filled" : "interactive-empty";
     };
 
     return (
         <ul
-            className={`${styles['stars']} ${
-                interactive ? styles['interactive'] : ''
+            className={`${styles["stars"]} ${
+                interactive ? styles["interactive"] : ""
             }`}
         >
             {[...Array(5)].map((_, i) => (
                 <li
                     key={i}
                     style={{
-                        fontSize: fontSize
-                            ? `${fontSize}em`
-                            : `${1.2}em`
+                        fontSize: fontSize ? `${fontSize}em` : `${1.2}em`,
                     }}
                     onClick={() => handleStarClick(i)}
                     onMouseEnter={() => handleStarHover(i)}

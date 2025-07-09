@@ -1,15 +1,15 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext } from "react";
 
 export const ProductItemContext = createContext({
-    firstImage: '',
-    secondImage: '',
+    firstImage: "",
+    secondImage: "",
     averageRating: 0,
     reviews: [],
     productId: 0,
-    collectionName: '',
-    colorName: '',
-    stoneName: '',
-    metalName: '',
+    collectionName: "",
+    colorName: "",
+    stoneName: "",
+    metalName: "",
     inventory: [],
     relatedCollectionProducts: [],
     relatedProducts: [],
@@ -21,7 +21,7 @@ export const ProductItemContext = createContext({
     addToCartError: null,
     isSoldOut: false,
     isMiniBagPopupOpen: false,
-    toggleMiniBagPopupOpen: () => {}
+    toggleMiniBagPopupOpen: () => {},
 });
 
 export const useProductItemContext = () => {

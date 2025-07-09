@@ -1,5 +1,5 @@
-import { useCallback } from 'react';
-import { useUserContext } from '../contexts/UserContext';
+import { useCallback } from "react";
+import { useUserContext } from "../contexts/UserContext";
 
 let isRefreshing = false;
 let refreshPromise = null;
@@ -12,7 +12,7 @@ export const useAuthRefresh = () => {
             return refreshPromise;
         }
 
-        const authDataString = localStorage.getItem('auth');
+        const authDataString = localStorage.getItem("auth");
 
         if (!authDataString) {
             userLogoutHandler();
@@ -37,14 +37,14 @@ export const useAuthRefresh = () => {
         refreshPromise = (async () => {
             try {
                 const response = await fetch(
-                    'http://localhost:8000/api/accounts/token/refresh/',
+                    "http://localhost:8000/api/accounts/token/refresh/",
                     {
-                        method: 'POST',
+                        method: "POST",
                         headers: {
-                            'Content-Type': 'application/json'
+                            "Content-Type": "application/json",
                         },
-                        body: JSON.stringify({ refresh })
-                    }
+                        body: JSON.stringify({ refresh }),
+                    },
                 );
 
                 if (!response.ok) {
@@ -53,7 +53,7 @@ export const useAuthRefresh = () => {
                     }
                     const errorText = await response.text();
                     throw new Error(
-                        `Failed to refresh token: ${response.status} - ${errorText}`
+                        `Failed to refresh token: ${response.status} - ${errorText}`,
                     );
                 }
 
@@ -61,23 +61,19 @@ export const useAuthRefresh = () => {
 
                 if (data.access) {
                     localStorage.setItem(
-                        'auth',
+                        "auth",
                         JSON.stringify({
                             ...authData,
-                            access: data.access
-                        })
+                            access: data.access,
+                        }),
                     );
                 } else {
-                    throw new Error(
-                        'No access token in response'
-                    );
+                    throw new Error("No access token in response");
                 }
             } catch (err) {
                 console.error(
-                    'Refresh error:',
-                    err instanceof Error
-                        ? err.message
-                        : String(err)
+                    "Refresh error:",
+                    err instanceof Error ? err.message : String(err),
                 );
                 userLogoutHandler();
                 throw err;
@@ -91,6 +87,6 @@ export const useAuthRefresh = () => {
     }, [userLogoutHandler]);
 
     return {
-        authRefresh
+        authRefresh,
     };
 };

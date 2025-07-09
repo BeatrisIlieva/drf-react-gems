@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { ProductFiltersContext } from '../contexts/ProductFiltersContext';
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { ProductFiltersContext } from "../contexts/ProductFiltersContext";
 
-import { toggleIdInArray } from '../utils/toggleIdInArray';
-import { useFilters } from '../api/filtersApi';
-import { useCategoryName } from '../hooks/useCategoryName';
+import { toggleIdInArray } from "../utils/toggleIdInArray";
+import { useFilters } from "../api/filtersApi";
+import { useCategoryName } from "../hooks/useCategoryName";
 
 export const ProductFiltersProvider = ({ children }) => {
     const { categoryName } = useCategoryName();
@@ -23,25 +23,20 @@ export const ProductFiltersProvider = ({ children }) => {
             Color: colorIds,
             Stone: stoneIds,
             Metal: metalIds,
-            Collection: collectionIds
+            Collection: collectionIds,
         }),
-        [colorIds, stoneIds, metalIds, collectionIds]
+        [colorIds, stoneIds, metalIds, collectionIds],
     );
 
     const filterToggleFunctions = useMemo(
         () => ({
             Collection: (id) =>
-                setCollectionIds((prev) =>
-                    toggleIdInArray(prev, id)
-                ),
-            Color: (id) =>
-                setColorIds((prev) => toggleIdInArray(prev, id)),
-            Metal: (id) =>
-                setMetalIds((prev) => toggleIdInArray(prev, id)),
-            Stone: (id) =>
-                setStoneIds((prev) => toggleIdInArray(prev, id))
+                setCollectionIds((prev) => toggleIdInArray(prev, id)),
+            Color: (id) => setColorIds((prev) => toggleIdInArray(prev, id)),
+            Metal: (id) => setMetalIds((prev) => toggleIdInArray(prev, id)),
+            Stone: (id) => setStoneIds((prev) => toggleIdInArray(prev, id)),
         }),
-        []
+        [],
     );
 
     const resetFilters = useCallback(() => {
@@ -65,7 +60,7 @@ export const ProductFiltersProvider = ({ children }) => {
                     colorIds,
                     stoneIds,
                     metalIds,
-                    collectionIds
+                    collectionIds,
                 });
 
                 return response?.results || [];
@@ -74,19 +69,12 @@ export const ProductFiltersProvider = ({ children }) => {
                 return [];
             }
         },
-        [
-            getFilters,
-            categoryName,
-            colorIds,
-            stoneIds,
-            metalIds,
-            collectionIds
-        ]
+        [getFilters, categoryName, colorIds, stoneIds, metalIds, collectionIds],
     );
 
     const fetchCollections = useCallback(async () => {
         try {
-            const data = await fetchFiltersData('Collection');
+            const data = await fetchFiltersData("Collection");
             setCollections(data);
         } catch (error) {
             console.error(error);
@@ -95,7 +83,7 @@ export const ProductFiltersProvider = ({ children }) => {
 
     const fetchColors = useCallback(async () => {
         try {
-            const data = await fetchFiltersData('Color');
+            const data = await fetchFiltersData("Color");
             setColors(data);
         } catch (error) {
             console.error(error);
@@ -104,7 +92,7 @@ export const ProductFiltersProvider = ({ children }) => {
 
     const fetchMetals = useCallback(async () => {
         try {
-            const data = await fetchFiltersData('Metal');
+            const data = await fetchFiltersData("Metal");
             setMetals(data);
         } catch (error) {
             console.error(error);
@@ -113,7 +101,7 @@ export const ProductFiltersProvider = ({ children }) => {
 
     const fetchStones = useCallback(async () => {
         try {
-            const data = await fetchFiltersData('Stone');
+            const data = await fetchFiltersData("Stone");
             setStones(data);
         } catch (error) {
             console.error(error);
@@ -125,13 +113,7 @@ export const ProductFiltersProvider = ({ children }) => {
         fetchColors();
         fetchMetals();
         fetchStones();
-    }, [
-        fetchCollections,
-        fetchColors,
-        fetchMetals,
-        fetchStones,
-        categoryName
-    ]);
+    }, [fetchCollections, fetchColors, fetchMetals, fetchStones, categoryName]);
 
     const contextValue = useMemo(
         () => ({
@@ -146,7 +128,7 @@ export const ProductFiltersProvider = ({ children }) => {
             displayFilters,
             filtersMapper,
             toggleDisplayFilters,
-            filterToggleFunctions
+            filterToggleFunctions,
         }),
         [
             collections,
@@ -160,8 +142,8 @@ export const ProductFiltersProvider = ({ children }) => {
             displayFilters,
             filtersMapper,
             toggleDisplayFilters,
-            filterToggleFunctions
-        ]
+            filterToggleFunctions,
+        ],
     );
 
     useEffect(() => {

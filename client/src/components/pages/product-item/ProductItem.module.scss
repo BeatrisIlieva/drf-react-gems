@@ -1,10 +1,10 @@
-@use '../../../styles/variables' as vars;
-@use '../../../styles/animations' as anim;
+@use "../../../styles/variables" as vars;
+@use "../../../styles/animations" as anim;
 
 .product-item {
     display: flex;
     flex-direction: column;
     gap: 2em;
     min-height: 80vh;
-        @include anim.animate-fade-in(1.2s);
+    @include anim.animate-fade-in(1.2s);
 }

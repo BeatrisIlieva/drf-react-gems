@@ -1,31 +1,19 @@
-import { FilterItem } from './filter-item/FilterItem';
+import { FilterItem } from "./filter-item/FilterItem";
 
-import styles from './FilterList.module.scss';
-import { useProductFiltersContext } from '../../../../contexts/ProductFiltersContext';
-import { normalizeData } from './utils';
+import styles from "./FilterList.module.scss";
+import { useProductFiltersContext } from "../../../../contexts/ProductFiltersContext";
+import { normalizeData } from "./utils";
 
 export const FilterList = () => {
-    const {
-        collections,
-        colors,
-        metals,
-        stones,
-        displayFilters
-    } = useProductFiltersContext();
+    const { collections, colors, metals, stones, displayFilters } =
+        useProductFiltersContext();
 
-    const filters = normalizeData(
-        metals,
-        colors,
-        stones,
-        collections
-    );
+    const filters = normalizeData(metals, colors, stones, collections);
 
     return (
         <ul
-            className={`${styles['filter-list']} ${
-                displayFilters
-                    ? styles['visible']
-                    : styles['hidden']
+            className={`${styles["filter-list"]} ${
+                displayFilters ? styles["visible"] : styles["hidden"]
             }`}
         >
             {filters.map(({ key, label, data }) => (

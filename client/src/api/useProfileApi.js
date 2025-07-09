@@ -1,8 +1,8 @@
-import { useCallback } from 'react';
-import { useApi } from '../hooks/useApi';
-import { useAuth } from '../hooks/useAuth';
-import { HOST } from '../constants/host';
-import { keysToCamelCase } from '../utils/convertToCamelCase';
+import { useCallback } from "react";
+import { useApi } from "../hooks/useApi";
+import { useAuth } from "../hooks/useAuth";
+import { HOST } from "../constants/host";
+import { keysToCamelCase } from "../utils/convertToCamelCase";
 
 const profileBaseUrl = `${HOST}/api/accounts/profile`;
 const passwordBaseUrl = `${HOST}/api/accounts/change-password`;
@@ -15,17 +15,15 @@ export const useProfile = () => {
         try {
             const response = await get(`${profileBaseUrl}/`, {
                 accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated
+                refreshRequired: isAuthenticated,
             });
 
             return keysToCamelCase(response);
         } catch (error) {
             console.error(error);
             return {
-                error:
-                    error.message ||
-                    'Failed to get personal information',
-                ...error.data
+                error: error.message || "Failed to get personal information",
+                ...error.data,
             };
         }
     }, [get, isAuthenticated]);
@@ -33,14 +31,11 @@ export const useProfile = () => {
     const updatePersonalInfo = useCallback(
         async (personalData) => {
             try {
-                const response = await patch(
-                    `${profileBaseUrl}/`,
-                    {
-                        data: personalData,
-                        accessRequired: isAuthenticated,
-                        refreshRequired: isAuthenticated
-                    }
-                );
+                const response = await patch(`${profileBaseUrl}/`, {
+                    data: personalData,
+                    accessRequired: isAuthenticated,
+                    refreshRequired: isAuthenticated,
+                });
 
                 return keysToCamelCase(response);
             } catch (error) {
@@ -48,53 +43,46 @@ export const useProfile = () => {
                 return {
                     error:
                         error.message ||
-                        'Failed to update personal information',
-                    ...error.data
+                        "Failed to update personal information",
+                    ...error.data,
                 };
             }
         },
-        [patch, isAuthenticated]
+        [patch, isAuthenticated],
     );
 
     const changePassword = useCallback(
         async (passwordData) => {
             try {
-                const result = await patch(
-                    `${passwordBaseUrl}/`,
-                    {
-                        data: passwordData,
-                        accessRequired: isAuthenticated,
-                        refreshRequired: isAuthenticated
-                    }
-                );
+                const result = await patch(`${passwordBaseUrl}/`, {
+                    data: passwordData,
+                    accessRequired: isAuthenticated,
+                    refreshRequired: isAuthenticated,
+                });
                 return (
                     result || {
-                        message: 'Password changed successfully'
+                        message: "Password changed successfully",
                     }
                 );
             } catch (error) {
                 if (error?.status === 401) {
                     return {
-                        current_password: [
-                            'Current password is incorrect.'
-                        ],
-                        error: 'Current password is incorrect'
+                        current_password: ["Current password is incorrect."],
+                        error: "Current password is incorrect",
                     };
                 }
                 return {
-                    error:
-                        error.message ||
-                        'Failed to change password',
-                    ...error.data
+                    error: error.message || "Failed to change password",
+                    ...error.data,
                 };
             }
         },
-        [patch, isAuthenticated]
+        [patch, isAuthenticated],
     );
 
     return {
         getPersonalInfo,
         updatePersonalInfo,
-        changePassword
+        changePassword,
     };
 };

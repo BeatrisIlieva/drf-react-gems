@@ -1,7 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
-import { keysToCamelCase } from '../utils/convertToCamelCase';
+import { useState, useEffect, useCallback } from "react";
+import { keysToCamelCase } from "../utils/convertToCamelCase";
 
-export const useFormDataLoader = (loadDataFn, updateFieldValue, fieldConfig) => {
+export const useFormDataLoader = (
+    loadDataFn,
+    updateFieldValue,
+    fieldConfig,
+) => {
     const [loading, setLoading] = useState(true);
     const [initialDataLoaded, setInitialDataLoaded] = useState(false);
 
@@ -12,10 +16,10 @@ export const useFormDataLoader = (loadDataFn, updateFieldValue, fieldConfig) => 
             const data = await loadDataFn();
             if (data) {
                 const camelCaseData = keysToCamelCase(data);
-                
-                Object.keys(fieldConfig).forEach(fieldName => {
+
+                Object.keys(fieldConfig).forEach((fieldName) => {
                     const value = camelCaseData[fieldName];
-                    if (value !== undefined && value !== null && value !== '') {
+                    if (value !== undefined && value !== null && value !== "") {
                         updateFieldValue(fieldName, value, false);
                     }
                 });

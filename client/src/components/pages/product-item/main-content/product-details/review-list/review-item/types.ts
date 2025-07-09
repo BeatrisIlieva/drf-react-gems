@@ -1,4 +1,4 @@
-import type { Review } from '../../../../../../../types/Products';
+import type { Review } from "../../../../../../../types/Products";
 
 export interface Params {
     review: Review;

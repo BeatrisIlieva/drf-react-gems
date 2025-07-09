@@ -1,20 +1,15 @@
-import {
-    useCallback,
-    useState,
-    useTransition,
-    useEffect
-} from 'react';
-import { Button } from '../../reusable/button/Button';
-import { ComplimentaryShipping } from '../../reusable/complimentary-shipping/ComplimentaryShipping';
-import { OrderSummary } from '../../reusable/order-summary/OrderSummary';
-import { DeliveryAddressForm } from '../accounts/details/delivery-address-form/DeliveryAddressForm';
-import styles from './Checkout.module.scss';
-import { ShadowBox } from '../../reusable/shadow-box/ShadowBox';
-import { useNavigate } from 'react-router';
-import { PaddedContainer } from '../../reusable/padded-container/PaddedContainer';
-import { ProductsSummaryList } from '../../reusable/products-summary-list/ProductsSummaryList';
-import { Delivery } from '../../reusable/delivery/Delivery';
-import { useShoppingBagContext } from '../../../contexts/ShoppingBagContext';
+import { useCallback, useState, useTransition, useEffect } from "react";
+import { Button } from "../../reusable/button/Button";
+import { ComplimentaryShipping } from "../../reusable/complimentary-shipping/ComplimentaryShipping";
+import { OrderSummary } from "../../reusable/order-summary/OrderSummary";
+import { DeliveryAddressForm } from "../accounts/details/delivery-address-form/DeliveryAddressForm";
+import styles from "./Checkout.module.scss";
+import { ShadowBox } from "../../reusable/shadow-box/ShadowBox";
+import { useNavigate } from "react-router";
+import { PaddedContainer } from "../../reusable/padded-container/PaddedContainer";
+import { ProductsSummaryList } from "../../reusable/products-summary-list/ProductsSummaryList";
+import { Delivery } from "../../reusable/delivery/Delivery";
+import { useShoppingBagContext } from "../../../contexts/ShoppingBagContext";
 
 export const Checkout = () => {
     const [submitAction, setSubmitAction] = useState(null);
@@ -38,42 +33,34 @@ export const Checkout = () => {
 
     useEffect(() => {
         if (formState?.success) {
-            navigate('/user/payment');
+            navigate("/user/payment");
         }
     }, [formState, navigate]);
 
     return (
-        <PaddedContainer backgroundColor='lightest-grey'>
-            <section className={styles['checkout']}>
-                <div className={styles['wrapper-left']}>
+        <PaddedContainer backgroundColor="lightest-grey">
+            <section className={styles["checkout"]}>
+                <div className={styles["wrapper-left"]}>
                     <DeliveryAddressForm
-                        buttonTitle='Continue Checkout'
-                        buttonGrow='1'
+                        buttonTitle="Continue Checkout"
+                        buttonGrow="1"
                         showButton={false}
                         onFormReady={handleFormReady}
                     />
                     <ShadowBox>
-                        <ProductsSummaryList
-                            products={shoppingBagItems}
-                        >
+                        <ProductsSummaryList products={shoppingBagItems}>
                             <Delivery fontSize={1.2} />
                         </ProductsSummaryList>
                     </ShadowBox>
-                    <div
-                        className={
-                            styles['checkout-button-container']
-                        }
-                    >
+                    <div className={styles["checkout-button-container"]}>
                         <ShadowBox>
                             <Button
-                                title='Continue Checkout'
-                                color='black'
-                                actionType='button'
+                                title="Continue Checkout"
+                                color="black"
+                                actionType="button"
                                 pending={isPending}
-                                callbackHandler={
-                                    continueCheckoutHandler
-                                }
-                                buttonGrow='1'
+                                callbackHandler={continueCheckoutHandler}
+                                buttonGrow="1"
                             />
                         </ShadowBox>
                     </div>

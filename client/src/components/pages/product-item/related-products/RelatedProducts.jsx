@@ -1,19 +1,16 @@
-import styles from './RelatedProducts.module.scss';
-import { useProductItemContext } from '../../../../contexts/ProductItemContext';
-import { Link } from 'react-router';
+import styles from "./RelatedProducts.module.scss";
+import { useProductItemContext } from "../../../../contexts/ProductItemContext";
+import { Link } from "react-router";
 
 export const RelatedProducts = () => {
     const { relatedProducts } = useProductItemContext();
 
     return (
-        <section className={styles['related-products']}>
+        <section className={styles["related-products"]}>
             <h4>You may also like</h4>
             <ul>
                 {relatedProducts.map((product) => (
-                    <li
-                        key={product.id}
-                        className={styles['related-product']}
-                    >
+                    <li key={product.id} className={styles["related-product"]}>
                         <Link
                             to={`/products/${product.productType}/${product.id}`}
                         >

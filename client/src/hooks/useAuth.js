@@ -1,5 +1,5 @@
-import { useContext } from 'react';
-import { UserContext } from '../contexts/UserContext';
+import { useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
 
 export const useAuth = () => {
     const authData = useContext(UserContext);
@@ -7,6 +7,6 @@ export const useAuth = () => {
     return {
         ...authData,
         userId: authData._id,
-        isAuthenticated: !!authData.access
+        isAuthenticated: !!authData.access,
     };
 };

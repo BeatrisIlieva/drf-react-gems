@@ -1,83 +1,72 @@
-import { useEffect, useCallback } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faCcVisa,
-    faCcMastercard
-} from '@fortawesome/free-brands-svg-icons';
-import { useForm } from '../../../hooks/useForm';
-import { useShoppingBagContext } from '../../../contexts/ShoppingBagContext';
-import { Button } from '../../reusable/button/Button';
-import { ShadowBox } from '../../reusable/shadow-box/ShadowBox';
-import { InputField } from '../../reusable/input-field/InputField';
-import { CardNumberInput } from '../../reusable/card-number-input/CardNumberInput';
-import { FORM_CONFIGS } from '../../../config/formFieldConfigs';
-import { createApiDataFromForm } from '../../../utils/formHelpers';
-import { formatPrice } from '../../../utils/formatPrice';
+import { useEffect, useCallback } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCcVisa, faCcMastercard } from "@fortawesome/free-brands-svg-icons";
+import { useForm } from "../../../hooks/useForm";
+import { useShoppingBagContext } from "../../../contexts/ShoppingBagContext";
+import { Button } from "../../reusable/button/Button";
+import { ShadowBox } from "../../reusable/shadow-box/ShadowBox";
+import { InputField } from "../../reusable/input-field/InputField";
+import { CardNumberInput } from "../../reusable/card-number-input/CardNumberInput";
+import { FORM_CONFIGS } from "../../../config/formFieldConfigs";
+import { createApiDataFromForm } from "../../../utils/formHelpers";
+import { formatPrice } from "../../../utils/formatPrice";
 import {
     formatCardNumber,
     formatExpiryDate,
-    formatCvv
-} from '../../../utils/paymentValidation';
+    formatCvv,
+} from "../../../utils/paymentValidation";
 
-import styles from './Payment.module.scss';
-import { OrderSummary } from '../../reusable/order-summary/OrderSummary';
-import { useOrder } from '../../../api/orderApi';
-import { PaddedContainer } from '../../reusable/padded-container/PaddedContainer';
-import { ProductsSummaryList } from '../../reusable/products-summary-list/ProductsSummaryList';
-import { Delivery } from '../../reusable/delivery/Delivery';
-import { useNavigate } from 'react-router';
-import { ShippingInformation } from './shipping-information/ShippingInformation';
+import styles from "./Payment.module.scss";
+import { OrderSummary } from "../../reusable/order-summary/OrderSummary";
+import { useOrder } from "../../../api/orderApi";
+import { PaddedContainer } from "../../reusable/padded-container/PaddedContainer";
+import { ProductsSummaryList } from "../../reusable/products-summary-list/ProductsSummaryList";
+import { Delivery } from "../../reusable/delivery/Delivery";
+import { useNavigate } from "react-router";
+import { ShippingInformation } from "./shipping-information/ShippingInformation";
 export const Payment = () => {
     const { fieldConfig, initialValues } = FORM_CONFIGS.payment;
-    const {
-        shoppingBagTotalPrice,
-        refreshShoppingBag,
-        shoppingBagItems
-    } = useShoppingBagContext();
+    const { shoppingBagTotalPrice, refreshShoppingBag, shoppingBagItems } =
+        useShoppingBagContext();
     const { createOrderFromBag } = useOrder();
 
     const navigate = useNavigate();
 
     const handleSubmit = useCallback(
         async (formData) => {
-            const apiData = createApiDataFromForm(
-                formData,
-                fieldConfig
-            );
+            const apiData = createApiDataFromForm(formData, fieldConfig);
 
             try {
                 const result = await createOrderFromBag(apiData);
 
                 if (result && !result.error) {
                     await refreshShoppingBag();
-                    navigate('/user/order-confirmation');
+                    navigate("/user/order-confirmation");
                     return {
                         success: true,
-                        data: result
+                        data: result,
                     };
                 }
 
-                if (result && typeof result === 'object') {
+                if (result && typeof result === "object") {
                     return {
                         success: false,
-                        data: result
+                        data: result,
                     };
                 }
             } catch (error) {
                 return {
                     success: false,
-                    error:
-                        error.response?.data ||
-                        'Failed to process payment'
+                    error: error.response?.data || "Failed to process payment",
                 };
             }
         },
-        [fieldConfig, createOrderFromBag, refreshShoppingBag]
+        [fieldConfig, createOrderFromBag, refreshShoppingBag],
     );
 
     const formProps = useForm(initialValues, {
         onSubmit: handleSubmit,
-        validateOnSubmit: true
+        validateOnSubmit: true,
     });
 
     const {
@@ -89,7 +78,7 @@ export const Payment = () => {
         isSubmitting,
         resetValidationStates,
         formRef,
-        registerInput
+        registerInput,
     } = formProps;
 
     const handleFormattedFieldChange = useCallback(
@@ -97,13 +86,13 @@ export const Payment = () => {
             let formattedValue = value;
 
             switch (fieldName) {
-                case 'cardNumber':
+                case "cardNumber":
                     formattedValue = formatCardNumber(value);
                     break;
-                case 'expiryDate':
+                case "expiryDate":
                     formattedValue = formatExpiryDate(value);
                     break;
-                case 'cvv':
+                case "cvv":
                     formattedValue = formatCvv(value);
                     break;
                 default:
@@ -112,10 +101,9 @@ export const Payment = () => {
 
             handleFieldChange(fieldName, formattedValue);
         },
-        [handleFieldChange]
+        [handleFieldChange],
     );
 
-    // Handle successful form submission - reset validation states
     useEffect(() => {
         if (formProps.formState && formProps.formState.success) {
             resetValidationStates();
@@ -128,7 +116,7 @@ export const Payment = () => {
 
         if (!fieldData) return null;
 
-        if (fieldName === 'cardNumber') {
+        if (fieldName === "cardNumber") {
             return (
                 <CardNumberInput
                     key={fieldName}
@@ -151,7 +139,7 @@ export const Payment = () => {
                 handleFieldChange={handleFormattedFieldChange}
                 validateField={validateField}
                 fieldName={fieldName}
-                type={config.type || 'text'}
+                type={config.type || "text"}
                 registerInput={registerInput}
                 fieldConfig={fieldConfig}
             />
@@ -159,57 +147,37 @@ export const Payment = () => {
     };
 
     return (
-        <PaddedContainer backgroundColor='lightest-grey'>
-            <section className={styles['checkout']}>
-                <div className={styles['wrapper-left']}>
+        <PaddedContainer backgroundColor="lightest-grey">
+            <section className={styles["checkout"]}>
+                <div className={styles["wrapper-left"]}>
                     <ShippingInformation />
-                    <ShadowBox title='Payment'>
-                        <fieldset
-                            className={styles['payment-fieldset']}
-                        >
-                            <legend
-                                className={
-                                    styles['payment-legend']
-                                }
-                            >
+                    <ShadowBox title="Payment">
+                        <fieldset className={styles["payment-fieldset"]}>
+                            <legend className={styles["payment-legend"]}>
                                 <span>Card Details</span>
-                                <span
-                                    className={
-                                        styles['card-icons']
-                                    }
-                                >
-                                    <FontAwesomeIcon
-                                        icon={faCcMastercard}
-                                    />
-                                    <FontAwesomeIcon
-                                        icon={faCcVisa}
-                                    />
+                                <span className={styles["card-icons"]}>
+                                    <FontAwesomeIcon icon={faCcMastercard} />
+                                    <FontAwesomeIcon icon={faCcVisa} />
                                 </span>
                             </legend>
 
                             <form
                                 ref={formRef}
                                 action={submitAction}
-                                className={styles['payment-form']}
+                                className={styles["payment-form"]}
                             >
-                                {Object.keys(fieldConfig).map(
-                                    (fieldName) =>
-                                        renderField(fieldName)
+                                {Object.keys(fieldConfig).map((fieldName) =>
+                                    renderField(fieldName),
                                 )}
 
                                 <Button
-                                    title={`Place Order ${formatPrice(
-                                        shoppingBagTotalPrice
-                                    )}`}
-                                    color='black'
-                                    actionType='submit'
+                                    title={`Place Order ${formatPrice(shoppingBagTotalPrice)}`}
+                                    color="black"
+                                    actionType="submit"
                                     pending={isSubmitting}
-                                    success={
-                                        formProps.formState
-                                            ?.success
-                                    }
+                                    success={formProps.formState?.success}
                                     callbackHandler={() => {}}
-                                    buttonGrow='1'
+                                    buttonGrow="1"
                                 />
                             </form>
                         </fieldset>
@@ -217,9 +185,7 @@ export const Payment = () => {
                 </div>
 
                 <OrderSummary>
-                    <ProductsSummaryList
-                        products={shoppingBagItems}
-                    >
+                    <ProductsSummaryList products={shoppingBagItems}>
                         <Delivery fontSize={1} />
                     </ProductsSummaryList>
                 </OrderSummary>

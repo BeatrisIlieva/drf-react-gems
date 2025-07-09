@@ -1,30 +1,21 @@
-import {
-    Fragment,
-    useCallback,
-    useState,
-    useEffect
-} from 'react';
-import { useForm } from '../../../../../hooks/useForm';
-import { useProfile } from '../../../../../api/useProfileApi';
-import { Button } from '../../../../reusable/button/Button';
-import { InputField } from '../../../../reusable/input-field/InputField';
-import { PasswordValidator } from '../../../../reusable/password-validator/PasswordValidator';
-import { FORM_CONFIGS } from '../../../../../config/formFieldConfigs';
-import { createApiDataFromForm } from '../../../../../utils/formHelpers';
-import styles from './PasswordUpdateForm.module.scss';
+import { Fragment, useCallback, useState, useEffect } from "react";
+import { useForm } from "../../../../../hooks/useForm";
+import { useProfile } from "../../../../../api/useProfileApi";
+import { Button } from "../../../../reusable/button/Button";
+import { InputField } from "../../../../reusable/input-field/InputField";
+import { PasswordValidator } from "../../../../reusable/password-validator/PasswordValidator";
+import { FORM_CONFIGS } from "../../../../../config/formFieldConfigs";
+import { createApiDataFromForm } from "../../../../../utils/formHelpers";
+import styles from "./PasswordUpdateForm.module.scss";
 
 export const PasswordUpdateForm = ({ onSuccess }) => {
-    const { fieldConfig, initialValues } =
-        FORM_CONFIGS.passwordUpdate;
+    const { fieldConfig, initialValues } = FORM_CONFIGS.passwordUpdate;
     const { changePassword } = useProfile();
-    const [newPasswordValue, setNewPasswordValue] = useState('');
+    const [newPasswordValue, setNewPasswordValue] = useState("");
 
     const handleSubmit = useCallback(
         async (formData) => {
-            const apiData = createApiDataFromForm(
-                formData,
-                fieldConfig
-            );
+            const apiData = createApiDataFromForm(formData, fieldConfig);
 
             try {
                 const result = await changePassword(apiData);
@@ -34,30 +25,30 @@ export const PasswordUpdateForm = ({ onSuccess }) => {
                     return { success: true };
                 }
 
-                if (result && typeof result === 'object') {
+                if (result && typeof result === "object") {
                     return {
                         success: false,
-                        data: result
+                        data: result,
                     };
                 }
 
                 return {
                     success: false,
-                    error: 'Failed to update password'
+                    error: "Failed to update password",
                 };
             } catch {
                 return {
                     success: false,
-                    error: 'Failed to update password'
+                    error: "Failed to update password",
                 };
             }
         },
-        [fieldConfig, changePassword, onSuccess]
+        [fieldConfig, changePassword, onSuccess],
     );
 
     const formProps = useForm(initialValues, {
         onSubmit: handleSubmit,
-        validateOnSubmit: true
+        validateOnSubmit: true,
     });
 
     const {
@@ -69,7 +60,7 @@ export const PasswordUpdateForm = ({ onSuccess }) => {
         isSubmitting,
         resetValidationStates,
         formRef,
-        registerInput
+        registerInput,
     } = formProps;
 
     const handleNewPasswordChange = (e) => {
@@ -84,7 +75,7 @@ export const PasswordUpdateForm = ({ onSuccess }) => {
     }, [formProps.formState, resetValidationStates]);
 
     return (
-        <section className={styles['password-update-form']}>
+        <section className={styles["password-update-form"]}>
             <h2>Change Password</h2>
 
             <form ref={formRef} action={submitAction}>
@@ -94,8 +85,8 @@ export const PasswordUpdateForm = ({ onSuccess }) => {
                         fieldData={formData.currentPassword}
                         handleFieldChange={handleFieldChange}
                         validateField={validateField}
-                        fieldName='currentPassword'
-                        type='password'
+                        fieldName="currentPassword"
+                        type="password"
                         registerInput={registerInput}
                         fieldConfig={fieldConfig}
                     />
@@ -105,12 +96,10 @@ export const PasswordUpdateForm = ({ onSuccess }) => {
                     <InputField
                         getInputClassName={getInputClassName}
                         fieldData={formData.newPassword}
-                        handleFieldChange={
-                            handleNewPasswordChange
-                        }
+                        handleFieldChange={handleNewPasswordChange}
                         validateField={validateField}
-                        fieldName='newPassword'
-                        type='password'
+                        fieldName="newPassword"
+                        type="password"
                         registerInput={registerInput}
                         fieldConfig={fieldConfig}
                     />
@@ -118,19 +107,19 @@ export const PasswordUpdateForm = ({ onSuccess }) => {
 
                 <PasswordValidator password={newPasswordValue} />
 
-                <div className={styles['button-group']}>
+                <div className={styles["button-group"]}>
                     <Button
-                        title='Save'
-                        color='black'
-                        actionType='submit'
+                        title="Save"
+                        color="black"
+                        actionType="submit"
                         pending={isSubmitting}
                         success={formProps.formState?.success}
                         callbackHandler={() => {}}
                     />
                     <Button
-                        title='Cancel'
-                        color='white'
-                        actionType='button'
+                        title="Cancel"
+                        color="white"
+                        actionType="button"
                         callbackHandler={onSuccess}
                     />
                 </div>

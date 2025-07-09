@@ -1,11 +1,11 @@
-import { useCallback, useState } from 'react';
-import styles from './ShoppingBagItem.module.scss';
+import { useCallback, useState } from "react";
+import styles from "./ShoppingBagItem.module.scss";
 
-import { useShoppingBagContext } from '../../../../../contexts/ShoppingBagContext';
-import { useWishlistContext } from '../../../../../contexts/WishlistContext';
-import { QuantitySelector } from './quantity-selector/QuantitySelector';
-import { formatPrice } from '../../../../../utils/formatPrice';
-import { useNavigate } from 'react-router';
+import { useShoppingBagContext } from "../../../../../contexts/ShoppingBagContext";
+import { useWishlistContext } from "../../../../../contexts/WishlistContext";
+import { QuantitySelector } from "./quantity-selector/QuantitySelector";
+import { formatPrice } from "../../../../../utils/formatPrice";
+import { useNavigate } from "react-router";
 
 export const ShoppingBagItem = ({
     quantity,
@@ -13,47 +13,33 @@ export const ShoppingBagItem = ({
     productInfo,
     id,
     contentType,
-    objectId
+    objectId,
 }) => {
-    const { deleteShoppingBagHandler, isDeleting } =
-        useShoppingBagContext();
+    const { deleteShoppingBagHandler, isDeleting } = useShoppingBagContext();
     const { addToWishlist, isInWishlist } = useWishlistContext();
-    const [isMovingToWishlist, setIsMovingToWishlist] =
-        useState(false);
+    const [isMovingToWishlist, setIsMovingToWishlist] = useState(false);
     const navigate = useNavigate();
 
-    // Check if item is already in wishlist
     const category = productInfo.category?.toLowerCase();
     const productId = productInfo.productId;
     const isItemInWishlist = isInWishlist(category, productId);
-    const formattedTotalPricePerProduct = formatPrice(
-        totalPrice.toString()
-    );
+    const formattedTotalPricePerProduct = formatPrice(totalPrice.toString());
 
     const moveToWishListHandler = async () => {
-        // Prevent multiple clicks or if already in wishlist
-        if (isMovingToWishlist || isDeleting || isItemInWishlist)
-            return;
+        if (isMovingToWishlist || isDeleting || isItemInWishlist) return;
 
         setIsMovingToWishlist(true);
         try {
-            // Ensure we're passing the correct category format (without trailing 's')
-            const categoryValue = category.endsWith('s')
+            const categoryValue = category.endsWith("s")
                 ? category.slice(0, -1)
                 : category;
 
-            const success = await addToWishlist(
-                categoryValue,
-                productId
-            );
+            const success = await addToWishlist(categoryValue, productId);
             if (success) {
                 await deleteShoppingBagHandler(id);
             }
         } catch (error) {
-            console.error(
-                'Error moving item to wishlist:',
-                error
-            );
+            console.error("Error moving item to wishlist:", error);
         } finally {
             setIsMovingToWishlist(false);
         }
@@ -62,15 +48,15 @@ export const ShoppingBagItem = ({
     const navigateToProductItem = useCallback(() => {
         navigate(
             `/products/${
-                productInfo.category.toLowerCase() + 's'
-            }/${productInfo.productId}`
+                productInfo.category.toLowerCase() + "s"
+            }/${productInfo.productId}`,
         );
     }, [navigate, productInfo.category, productInfo.productId]);
 
     return (
-        <li className={styles['shopping-bag-item']}>
+        <li className={styles["shopping-bag-item"]}>
             <span
-                className={styles['thumbnail']}
+                className={styles["thumbnail"]}
                 onClick={navigateToProductItem}
             >
                 <img
@@ -96,34 +82,30 @@ export const ShoppingBagItem = ({
                     <button
                         onClick={moveToWishListHandler}
                         disabled={
-                            isDeleting ||
-                            isMovingToWishlist ||
-                            isItemInWishlist
+                            isDeleting || isMovingToWishlist || isItemInWishlist
                         }
                         className={
                             isItemInWishlist
-                                ? styles['in-wishlist']
+                                ? styles["in-wishlist"]
                                 : isDeleting || isMovingToWishlist
-                                ? styles['removing']
-                                : ''
+                                  ? styles["removing"]
+                                  : ""
                         }
                     >
                         {isMovingToWishlist
-                            ? 'Moving...'
+                            ? "Moving..."
                             : isItemInWishlist
-                            ? 'In Wishlist'
-                            : 'Move to Wish List'}
+                              ? "In Wishlist"
+                              : "Move to Wish List"}
                     </button>
                     <button
                         onClick={() => {
                             deleteShoppingBagHandler(id);
                         }}
                         disabled={isDeleting}
-                        className={
-                            isDeleting ? styles['removing'] : ''
-                        }
+                        className={isDeleting ? styles["removing"] : ""}
                     >
-                        {isDeleting ? 'Removing...' : 'Remove'}
+                        {isDeleting ? "Removing..." : "Remove"}
                     </button>
                 </span>
             </span>
@@ -135,9 +117,7 @@ export const ShoppingBagItem = ({
                     id={id}
                     contentType={contentType}
                     objectId={objectId}
-                    availableQuantity={
-                        productInfo.availableQuantity
-                    }
+                    availableQuantity={productInfo.availableQuantity}
                 />
             </span>
         </li>

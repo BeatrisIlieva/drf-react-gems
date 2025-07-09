@@ -1,8 +1,8 @@
-import styles from './ProductItem.module.scss';
-import { Nav } from './nav/Nav';
-import { MainContent } from './main-content/MainContent';
-import { RelatedProducts } from './related-products/RelatedProducts';
-import { useProductItemContext } from '../../../contexts/ProductItemContext';
+import styles from "./ProductItem.module.scss";
+import { Nav } from "./nav/Nav";
+import { MainContent } from "./main-content/MainContent";
+import { RelatedProducts } from "./related-products/RelatedProducts";
+import { useProductItemContext } from "../../../contexts/ProductItemContext";
 
 export const ProductItem = () => {
     const { loading, isTransitioning } = useProductItemContext();
@@ -10,12 +10,12 @@ export const ProductItem = () => {
     return (
         <>
             {!loading && (
-                <section className={styles['product-item']}>
+                <section className={styles["product-item"]}>
                     <div
                         className={
                             isTransitioning
-                                ? 'content-transition-out'
-                                : 'content-transition-in'
+                                ? "content-transition-out"
+                                : "content-transition-in"
                         }
                     >
                         <Nav />

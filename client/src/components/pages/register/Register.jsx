@@ -1,17 +1,17 @@
-import { Fragment, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router';
-import { useUserContext } from '../../../contexts/UserContext';
-import { useAuthentication } from '../../../api/authApi';
-import { AuthLayout } from '../../reusable/auth-layout/AuthLayout';
-import { InputField } from '../../reusable/input-field/InputField';
-import { Button } from '../../reusable/button/Button';
-import { PasswordValidator } from '../../reusable/password-validator/PasswordValidator';
-import { useForm } from '../../../hooks/useForm';
-import { FORM_CONFIGS } from '../../../config/formFieldConfigs';
-import { createApiDataFromForm } from '../../../utils/formHelpers';
+import { Fragment, useState, useCallback } from "react";
+import { useNavigate } from "react-router";
+import { useUserContext } from "../../../contexts/UserContext";
+import { useAuthentication } from "../../../api/authApi";
+import { AuthLayout } from "../../reusable/auth-layout/AuthLayout";
+import { InputField } from "../../reusable/input-field/InputField";
+import { Button } from "../../reusable/button/Button";
+import { PasswordValidator } from "../../reusable/password-validator/PasswordValidator";
+import { useForm } from "../../../hooks/useForm";
+import { FORM_CONFIGS } from "../../../config/formFieldConfigs";
+import { createApiDataFromForm } from "../../../utils/formHelpers";
 
-import styles from './Register.module.scss';
-import { Icon } from '../../reusable/icon/Icon';
+import styles from "./Register.module.scss";
+import { Icon } from "../../reusable/icon/Icon";
 
 export const Register = () => {
     const { fieldConfig, initialValues } = FORM_CONFIGS.register;
@@ -23,10 +23,7 @@ export const Register = () => {
 
     const handleSubmit = useCallback(
         async (formData) => {
-            const apiData = createApiDataFromForm(
-                formData,
-                fieldConfig
-            );
+            const apiData = createApiDataFromForm(formData, fieldConfig);
 
             const authData = await register(apiData);
 
@@ -35,36 +32,32 @@ export const Register = () => {
 
                 await login({
                     email_or_username: formData.email.value,
-                    password: formData.password.value
+                    password: formData.password.value,
                 });
 
-                navigate('/my-account/details');
+                navigate("/my-account/details");
                 return { success: true };
             }
 
-            if (
-                authData &&
-                typeof authData === 'object' &&
-                !authData.access
-            ) {
+            if (authData && typeof authData === "object" && !authData.access) {
                 return {
                     success: false,
-                    error: 'Registration failed',
-                    data: authData
+                    error: "Registration failed",
+                    data: authData,
                 };
             }
 
             return {
                 success: false,
-                error: 'Registration failed'
+                error: "Registration failed",
             };
         },
-        [fieldConfig, register, userLoginHandler, login, navigate]
+        [fieldConfig, register, userLoginHandler, login, navigate],
     );
 
     const formProps = useForm(initialValues, {
         onSubmit: handleSubmit,
-        validateOnSubmit: true
+        validateOnSubmit: true,
     });
 
     const {
@@ -73,18 +66,18 @@ export const Register = () => {
         handleFieldChange,
         getInputClassName,
         submitAction,
-        isSubmitting
+        isSubmitting,
     } = formProps;
 
     const navigateToLoginHandler = () => {
-        navigate('/my-account/login');
+        navigate("/my-account/login");
     };
 
     return (
         <AuthLayout>
-            <section className={styles['register']}>
+            <section className={styles["register"]}>
                 <p onClick={navigateToLoginHandler}>
-                    <Icon name='arrowLeft' />
+                    <Icon name="arrowLeft" />
 
                     <span>Back to Sign In</span>
                 </p>
@@ -92,67 +85,54 @@ export const Register = () => {
                 <h2>Create Account</h2>
 
                 <form action={submitAction}>
-                    {Object.entries(formData).map(
-                        ([fieldName, fieldData]) => (
-                            <Fragment key={fieldName}>
-                                {fieldData && (
-                                    <InputField
-                                        getInputClassName={
-                                            getInputClassName
-                                        }
-                                        fieldData={fieldData}
-                                        handleFieldChange={
-                                            handleFieldChange
-                                        }
-                                        validateField={
-                                            validateField
-                                        }
-                                        fieldName={fieldName}
-                                        fieldConfig={fieldConfig}
-                                    />
-                                )}
-                                {fieldName === 'email' &&
-                                    fieldData && (
-                                        <p>
-                                            Enter your email for
-                                            important order
-                                            updates.
-                                        </p>
-                                    )}
-                                {fieldName === 'username' &&
-                                    fieldData && (
-                                        <p>
-                                            Choose a unique
-                                            username for your
-                                            account.
-                                        </p>
-                                    )}
-                            </Fragment>
-                        )
-                    )}
+                    {Object.entries(formData).map(([fieldName, fieldData]) => (
+                        <Fragment key={fieldName}>
+                            {fieldData && (
+                                <InputField
+                                    getInputClassName={getInputClassName}
+                                    fieldData={fieldData}
+                                    handleFieldChange={handleFieldChange}
+                                    validateField={validateField}
+                                    fieldName={fieldName}
+                                    fieldConfig={fieldConfig}
+                                />
+                            )}
+                            {fieldName === "email" && fieldData && (
+                                <p>
+                                    Enter your email for important order
+                                    updates.
+                                </p>
+                            )}
+                            {fieldName === "username" && fieldData && (
+                                <p>
+                                    Choose a unique username for your account.
+                                </p>
+                            )}
+                        </Fragment>
+                    ))}
 
                     <PasswordValidator
-                        password={formData?.password?.value || ''}
+                        password={formData?.password?.value || ""}
                     />
 
-                    <div className={styles['terms-wrapper']}>
+                    <div className={styles["terms-wrapper"]}>
                         <input
-                            type='checkbox'
-                            name='agree'
-                            id='agree'
+                            type="checkbox"
+                            name="agree"
+                            id="agree"
                             checked={agree}
                             onChange={() => setAgree(!agree)}
                         />
-                        <label className={styles['agree']}>
-                            By creating an account, you agree to
-                            receive email updates*
+                        <label className={styles["agree"]}>
+                            By creating an account, you agree to receive email
+                            updates*
                         </label>
                     </div>
 
                     <Button
-                        title={'Register'}
-                        color='black'
-                        actionType='submit'
+                        title={"Register"}
+                        color="black"
+                        actionType="submit"
                         pending={isSubmitting}
                         success={formProps.formState?.success}
                         callbackHandler={() => {}}

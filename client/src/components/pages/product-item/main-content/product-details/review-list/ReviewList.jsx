@@ -1,15 +1,15 @@
-import { Stars } from '../../../../../reusable/stars/Stars';
+import { Stars } from "../../../../../reusable/stars/Stars";
 
-import styles from './ReviewList.module.scss';
-import { ReviewItem } from './review-item/ReviewItem';
-import { useProductItemContext } from '../../../../../../contexts/ProductItemContext';
+import styles from "./ReviewList.module.scss";
+import { ReviewItem } from "./review-item/ReviewItem";
+import { useProductItemContext } from "../../../../../../contexts/ProductItemContext";
 
 export const ReviewList = () => {
     const { averageRating, reviews } = useProductItemContext();
 
     return (
-        <section className={styles['reviews']}>
-            <div className={styles['wrapper-top']}>
+        <section className={styles["reviews"]}>
+            <div className={styles["wrapper-top"]}>
                 <div>
                     <h3>Latest Customer Reviews</h3>
                     <div>

@@ -1,26 +1,24 @@
-import { ProfilePhotoUpload } from './profile-photo-upload/ProfilePhotoUpload';
-import { usePhotoManager } from '../../../../hooks/usePhotoManager';
-import { DeliveryAddressForm } from './delivery-address-form/DeliveryAddressForm';
-import { LoginInformation } from './login-information/LoginInformation';
-import styles from './Details.module.scss';
-import { DeleteButton } from '../../../reusable/delete-button/DeleteButton';
-import { useState } from 'react';
-import { Popup } from '../../../reusable/popup/Popup';
-import { Deletion } from '../../../reusable/deletion/Deletion';
-import { PaddedContainer } from '../../../reusable/padded-container/PaddedContainer';
+import { ProfilePhotoUpload } from "./profile-photo-upload/ProfilePhotoUpload";
+import { usePhotoManager } from "../../../../hooks/usePhotoManager";
+import { DeliveryAddressForm } from "./delivery-address-form/DeliveryAddressForm";
+import { LoginInformation } from "./login-information/LoginInformation";
+import styles from "./Details.module.scss";
+import { DeleteButton } from "../../../reusable/delete-button/DeleteButton";
+import { useState } from "react";
+import { Popup } from "../../../reusable/popup/Popup";
+import { Deletion } from "../../../reusable/deletion/Deletion";
+import { PaddedContainer } from "../../../reusable/padded-container/PaddedContainer";
 
 export const Details = () => {
     const {
         currentPhoto,
         isUploading,
         uploadPhotoHandler,
-        deletePhotoHandler
+        deletePhotoHandler,
     } = usePhotoManager();
 
-    const [
-        isDeleteProfileImagePopupOpen,
-        setIsDeleteProfileImagePopupOpen
-    ] = useState(false);
+    const [isDeleteProfileImagePopupOpen, setIsDeleteProfileImagePopupOpen] =
+        useState(false);
 
     const confirmDeleteHandler = async () => {
         await deletePhotoHandler();
@@ -29,8 +27,8 @@ export const Details = () => {
 
     return (
         <PaddedContainer>
-            <section className={styles['details']}>
-                <section className={styles['photo']}>
+            <section className={styles["details"]}>
+                <section className={styles["photo"]}>
                     <h4>Profile Photo</h4>
 
                     <ProfilePhotoUpload
@@ -41,11 +39,9 @@ export const Details = () => {
 
                     {currentPhoto && (
                         <DeleteButton
-                            entityName='photo'
+                            entityName="photo"
                             callbackHandler={() =>
-                                setIsDeleteProfileImagePopupOpen(
-                                    true
-                                )
+                                setIsDeleteProfileImagePopupOpen(true)
                             }
                         />
                     )}
@@ -56,18 +52,12 @@ export const Details = () => {
 
                 <Popup
                     isOpen={isDeleteProfileImagePopupOpen}
-                    onClose={() =>
-                        setIsDeleteProfileImagePopupOpen(false)
-                    }
+                    onClose={() => setIsDeleteProfileImagePopupOpen(false)}
                 >
                     <Deletion
-                        entityName='profile photo'
+                        entityName="profile photo"
                         onProceed={confirmDeleteHandler}
-                        onCancel={() =>
-                            setIsDeleteProfileImagePopupOpen(
-                                false
-                            )
-                        }
+                        onCancel={() => setIsDeleteProfileImagePopupOpen(false)}
                     />
                 </Popup>
             </section>

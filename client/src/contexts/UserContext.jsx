@@ -1,13 +1,13 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext } from "react";
 
 export const UserContext = createContext({
-    id: '',
-    email: '',
-    username: '',
-    refresh: '',
-    access: '',
+    id: "",
+    email: "",
+    username: "",
+    refresh: "",
+    access: "",
     userLoginHandler: () => null,
-    userLogoutHandler: () => null
+    userLogoutHandler: () => null,
 });
 
 export const useUserContext = () => {

@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext } from "react";
 
 export const ShoppingBagContext = createContext({
     shoppingBagItems: [],
@@ -9,7 +9,7 @@ export const ShoppingBagContext = createContext({
     loading: false,
     continueCheckoutHandler: () => null,
     refreshShoppingBag: () => null,
-    createShoppingBagItemHandler: () => null
+    createShoppingBagItemHandler: () => null,
 });
 
 export const useShoppingBagContext = () => {

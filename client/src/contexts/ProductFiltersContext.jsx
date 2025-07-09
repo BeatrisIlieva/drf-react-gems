@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext } from "react";
 
 export const ProductFiltersContext = createContext({
     collections: [],
@@ -14,15 +14,15 @@ export const ProductFiltersContext = createContext({
         Color: [],
         Stone: [],
         Metal: [],
-        Collection: []
+        Collection: [],
     },
     toggleDisplayFilters: () => null,
     filterToggleFunctions: {
         Collection: () => null,
         Color: () => null,
         Metal: () => null,
-        Stone: () => null
-    }
+        Stone: () => null,
+    },
 });
 
 export const useProductFiltersContext = () => {

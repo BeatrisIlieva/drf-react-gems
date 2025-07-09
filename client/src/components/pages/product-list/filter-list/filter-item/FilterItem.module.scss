@@ -1,4 +1,4 @@
-@use '../../../../../styles/variables' as vars;
+@use "../../../../../styles/variables" as vars;
 
 .filter-item {
     padding-block: 1em;
@@ -40,7 +40,6 @@
             padding-block: 0.5em;
             padding-inline: 1em;
             justify-content: space-between;
-
 
             &:hover,
             &.selected {

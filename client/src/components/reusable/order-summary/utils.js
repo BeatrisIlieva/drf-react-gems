@@ -1,27 +1,27 @@
-import { formatPrice } from '../../../utils/formatPrice';
+import { formatPrice } from "../../../utils/formatPrice";
 
 export const getTextRows = (shoppingBagTotalPrice) => {
     const price = formatPrice(shoppingBagTotalPrice.toString());
 
     const textRows = [
         {
-            firstWord: 'Subtotal',
-            firstWordImportance: 'highlighted',
+            firstWord: "Subtotal",
+            firstWordImportance: "highlighted",
             secondWord: `${price}`,
-            secondWordImportance: 'highlighted'
+            secondWordImportance: "highlighted",
         },
         {
-            firstWord: 'Shipping',
-            secondWord: 'Complimentary',
-            secondWordImportance: 'subtle'
+            firstWord: "Shipping",
+            secondWord: "Complimentary",
+            secondWordImportance: "subtle",
         },
         {
-            firstWord: 'Total',
-            firstWordImportance: 'highlighted',
+            firstWord: "Total",
+            firstWordImportance: "highlighted",
             secondWord: `${price}`,
-            secondWordImportance: 'highlighted',
-            rowImportance: 'increased-font-size'
-        }
+            secondWordImportance: "highlighted",
+            rowImportance: "increased-font-size",
+        },
     ];
 
     return textRows;

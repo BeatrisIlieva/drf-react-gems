@@ -3,7 +3,7 @@ export const getNextPageNumber = (nextUrl) => {
 
     try {
         const url = new URL(nextUrl);
-        const page = url.searchParams.get('page');
+        const page = url.searchParams.get("page");
 
         return page ? Number(page) : null;
     } catch {

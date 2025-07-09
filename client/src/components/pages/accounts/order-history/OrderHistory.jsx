@@ -21,11 +21,7 @@ export const OrderHistory = () => {
                     setOrders(response);
                 }
             } catch (err) {
-                console.error(
-                    err instanceof Error
-                        ? err.message
-                        : String(err)
-                );
+                console.error(err instanceof Error ? err.message : String(err));
                 setOrders([]);
             } finally {
                 setLoading(false);
@@ -41,11 +37,7 @@ export const OrderHistory = () => {
                 <>
                     {orders.length > 0 ? (
                         <PaddedContainer>
-                            <section
-                                className={
-                                    styles['order-history']
-                                }
-                            >
+                            <section className={styles['order-history']}>
                                 <h2>Order History</h2>
 
                                 <OrderList orders={orders} />

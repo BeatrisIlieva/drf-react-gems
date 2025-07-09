@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react';
-import { Icon } from '../icon/Icon';
-import styles from './Button.module.scss';
+import { useState, useEffect } from "react";
+import { Icon } from "../icon/Icon";
+import styles from "./Button.module.scss";
 
 export const Button = ({
     title,
     callbackHandler,
     color,
-    actionType = 'button',
+    actionType = "button",
     pending = false,
     success = false,
     disabled = false,
-    buttonGrow = '0',
-    width = 'auto',
-    className = ''
+    buttonGrow = "0",
+    width = "auto",
+    className = "",
 }) => {
     const [showSuccess, setShowSuccess] = useState(false);
 
@@ -28,15 +28,10 @@ export const Button = ({
     }, [success, pending]);
 
     const handleClick = (e) => {
-        if (actionType === 'submit') {
-            // For submit buttons, let the form handle the submission
-            // Don't call the callbackHandler as it would interfere with form onSubmit
+        if (actionType === "submit") {
             return;
         } else {
-            if (
-                callbackHandler &&
-                typeof callbackHandler === 'function'
-            ) {
+            if (callbackHandler && typeof callbackHandler === "function") {
                 callbackHandler(e);
             }
         }
@@ -45,28 +40,19 @@ export const Button = ({
     const getButtonContent = () => {
         if (pending) {
             return (
-                <span
-                    className={styles['button-content']}
-                    key='pending'
-                >
-                    <Icon name='ellipsis' fontSize={1.2} />
+                <span className={styles["button-content"]} key="pending">
+                    <Icon name="ellipsis" fontSize={1.2} />
                 </span>
             );
         } else if (showSuccess) {
             return (
-                <span
-                    className={styles['button-content']}
-                    key='success'
-                >
-                    <Icon name='check' fontSize={1.2} />
+                <span className={styles["button-content"]} key="success">
+                    <Icon name="check" fontSize={1.2} />
                 </span>
             );
         } else {
             return (
-                <span
-                    className={styles['button-content']}
-                    key='title'
-                >
+                <span className={styles["button-content"]} key="title">
                     {title}
                 </span>
             );
@@ -76,17 +62,17 @@ export const Button = ({
     return (
         <button
             onClick={handleClick}
-            className={`${styles['btn']} ${styles[color]} ${
-                pending ? styles['pending'] : ''
-            } ${showSuccess ? styles['success'] : ''} ${className}`.trim()}
+            className={`${styles["btn"]} ${styles[color]} ${
+                pending ? styles["pending"] : ""
+            } ${showSuccess ? styles["success"] : ""} ${className}`.trim()}
             type={actionType}
             disabled={disabled || pending}
             style={{
                 flexGrow: buttonGrow,
-                width: width !== 'auto' ? `${width}em` : 'auto'
+                width: width !== "auto" ? `${width}em` : "auto",
             }}
         >
-            <div className={styles['content-wrapper']}>
+            <div className={styles["content-wrapper"]}>
                 {getButtonContent()}
             </div>
         </button>

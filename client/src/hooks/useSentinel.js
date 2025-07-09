@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 export const useSentinel = () => {
     const sentinelRef = useRef(null);
@@ -11,8 +11,8 @@ export const useSentinel = () => {
             },
             {
                 root: null,
-                threshold: 0
-            }
+                threshold: 0,
+            },
         );
 
         const sentinel = sentinelRef.current;
@@ -29,6 +29,6 @@ export const useSentinel = () => {
 
     return {
         sentinelRef,
-        isSticky
+        isSticky,
     };
 };

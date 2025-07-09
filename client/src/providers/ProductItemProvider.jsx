@@ -1,8 +1,8 @@
-import { useParams } from 'react-router';
-import { useProductItem } from '../api/productItemApi';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { ProductItemContext } from '../contexts/ProductItemContext';
-import { useShoppingBagContext } from '../contexts/ShoppingBagContext';
+import { useParams } from "react-router";
+import { useProductItem } from "../api/productItemApi";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { ProductItemContext } from "../contexts/ProductItemContext";
+import { useShoppingBagContext } from "../contexts/ShoppingBagContext";
 
 export const ProductItemProvider = ({ children }) => {
     const { getProductItem } = useProductItem();
@@ -10,19 +10,16 @@ export const ProductItemProvider = ({ children }) => {
     const {
         createShoppingBagItemHandler,
         refreshShoppingBag,
-        shoppingBagItemsCount
+        shoppingBagItemsCount,
     } = useShoppingBagContext();
 
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState(null);
     const [selectedSize, setSelectedSize] = useState(null);
-    const [notSelectedSizeError, setNotSelectedSizeError] =
-        useState(null);
-    const [selectedInventory, setSelectedInventory] =
-        useState(null);
+    const [notSelectedSizeError, setNotSelectedSizeError] = useState(null);
+    const [selectedInventory, setSelectedInventory] = useState(null);
 
-    const [isMiniBagPopupOpen, setIsMiniBagPopupOpen] =
-        useState(false);
+    const [isMiniBagPopupOpen, setIsMiniBagPopupOpen] = useState(false);
 
     useEffect(() => {
         const loadProduct = async () => {
@@ -30,7 +27,7 @@ export const ProductItemProvider = ({ children }) => {
             try {
                 const response = await getProductItem({
                     categoryName,
-                    productId
+                    productId,
                 });
                 setProduct(response.product);
             } finally {
@@ -47,12 +44,10 @@ export const ProductItemProvider = ({ children }) => {
                 try {
                     const response = await getProductItem({
                         categoryName,
-                        productId
+                        productId,
                     });
                     setProduct(response.product);
-                } catch {
-                    // Silently handle errors
-                }
+                } catch {}
             };
             refreshProduct();
             setIsMiniBagPopupOpen(false);
@@ -60,7 +55,13 @@ export const ProductItemProvider = ({ children }) => {
             refreshShoppingBag();
             setIsMiniBagPopupOpen(true);
         }
-    }, [isMiniBagPopupOpen, getProductItem, categoryName, productId, refreshShoppingBag]);
+    }, [
+        isMiniBagPopupOpen,
+        getProductItem,
+        categoryName,
+        productId,
+        refreshShoppingBag,
+    ]);
 
     const createShoppingBagHandler = useCallback(async () => {
         if (selectedSize === null) {
@@ -77,24 +78,19 @@ export const ProductItemProvider = ({ children }) => {
 
                     const updatedProduct = {
                         ...prevProduct,
-                        inventory: prevProduct.inventory.map(
-                            (item) => {
-                                if (
-                                    item.id ===
-                                    selectedInventory.objectId
-                                ) {
-                                    return {
-                                        ...item,
-                                        quantity: Math.max(
-                                            0,
-                                            item.quantity -
-                                                selectedInventory.quantity
-                                        )
-                                    };
-                                }
-                                return item;
+                        inventory: prevProduct.inventory.map((item) => {
+                            if (item.id === selectedInventory.objectId) {
+                                return {
+                                    ...item,
+                                    quantity: Math.max(
+                                        0,
+                                        item.quantity -
+                                            selectedInventory.quantity,
+                                    ),
+                                };
                             }
-                        )
+                            return item;
+                        }),
                     };
 
                     return updatedProduct;
@@ -105,25 +101,20 @@ export const ProductItemProvider = ({ children }) => {
             setSelectedInventory(null);
             refreshShoppingBag();
             setIsMiniBagPopupOpen(true);
-        } catch {
-            // No error message shown to user
-        }
+        } catch {}
     }, [
         selectedSize,
         selectedInventory,
         createShoppingBagItemHandler,
         product,
-        refreshShoppingBag
+        refreshShoppingBag,
     ]);
 
-    const updateSelectedInventoryHandler = (
-        contentType,
-        objectId
-    ) => {
+    const updateSelectedInventoryHandler = (contentType, objectId) => {
         setSelectedInventory({
             quantity: 1,
             contentType,
-            objectId
+            objectId,
         });
     };
 
@@ -132,10 +123,7 @@ export const ProductItemProvider = ({ children }) => {
             if (selectedSize === null) {
                 setSelectedSize(size);
                 setNotSelectedSizeError(false);
-                updateSelectedInventoryHandler(
-                    contentType,
-                    objectId
-                );
+                updateSelectedInventoryHandler(contentType, objectId);
             } else if (selectedSize === size) {
                 setSelectedSize(null);
                 setNotSelectedSizeError(null);
@@ -143,27 +131,18 @@ export const ProductItemProvider = ({ children }) => {
             } else {
                 setSelectedSize(size);
                 setNotSelectedSizeError(false);
-                updateSelectedInventoryHandler(
-                    contentType,
-                    objectId
-                );
+                updateSelectedInventoryHandler(contentType, objectId);
             }
         },
-        [selectedSize]
+        [selectedSize],
     );
 
     const isSoldOut = useMemo(() => {
-        if (
-            !product ||
-            !product.inventory ||
-            product.inventory.length === 0
-        ) {
+        if (!product || !product.inventory || product.inventory.length === 0) {
             return false;
         }
 
-        return product.inventory.every(
-            (item) => item.quantity === 0
-        );
+        return product.inventory.every((item) => item.quantity === 0);
     }, [product]);
 
     const contextValue = useMemo(
@@ -179,8 +158,7 @@ export const ProductItemProvider = ({ children }) => {
             metalName: product?.metal?.name,
             inventory: product?.inventory,
             relatedProducts: product?.relatedProducts,
-            relatedCollectionProducts:
-                product?.relatedCollectionProducts,
+            relatedCollectionProducts: product?.relatedCollectionProducts,
             loading,
             product,
             selectedSize,
@@ -189,7 +167,7 @@ export const ProductItemProvider = ({ children }) => {
             notSelectedSizeError,
             isSoldOut,
             isMiniBagPopupOpen,
-            toggleMiniBagPopupOpen
+            toggleMiniBagPopupOpen,
         }),
         [
             product,
@@ -200,29 +178,31 @@ export const ProductItemProvider = ({ children }) => {
             notSelectedSizeError,
             isSoldOut,
             isMiniBagPopupOpen,
-            toggleMiniBagPopupOpen
-        ]
+            toggleMiniBagPopupOpen,
+        ],
     );
 
-    // Automatically close the mini shopping bag popup when it becomes empty
     useEffect(() => {
         if (isMiniBagPopupOpen && shoppingBagItemsCount === 0) {
-            // Only refresh product if we're closing due to empty bag
             const refreshProduct = async () => {
                 try {
                     const response = await getProductItem({
                         categoryName,
-                        productId
+                        productId,
                     });
                     setProduct(response.product);
-                } catch {
-                    // Silently handle errors
-                }
+                } catch {}
             };
             refreshProduct();
             setIsMiniBagPopupOpen(false);
         }
-    }, [shoppingBagItemsCount, isMiniBagPopupOpen, getProductItem, categoryName, productId]);
+    }, [
+        shoppingBagItemsCount,
+        isMiniBagPopupOpen,
+        getProductItem,
+        categoryName,
+        productId,
+    ]);
 
     return (
         <ProductItemContext.Provider value={contextValue}>

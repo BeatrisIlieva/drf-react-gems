@@ -1,9 +1,9 @@
-import { useCallback } from 'react';
-import { useApi } from '../hooks/useApi';
-import { keysToCamelCase } from '../utils/convertToCamelCase';
-import { keysToSnakeCase } from '../utils/convertToSnakeCase';
-import { HOST } from '../constants/host';
-import { useAuth } from '../hooks/useAuth';
+import { useCallback } from "react";
+import { useApi } from "../hooks/useApi";
+import { keysToCamelCase } from "../utils/convertToCamelCase";
+import { keysToSnakeCase } from "../utils/convertToSnakeCase";
+import { HOST } from "../constants/host";
+import { useAuth } from "../hooks/useAuth";
 
 const baseUrl = `${HOST}/api/products/reviews`;
 
@@ -18,15 +18,15 @@ export const useReview = () => {
                 const response = await post(`${baseUrl}/`, {
                     data,
                     accessRequired: isAuthenticated,
-                    refreshRequired: isAuthenticated
+                    refreshRequired: isAuthenticated,
                 });
                 return keysToCamelCase(response);
             } catch (error) {
-                console.error('Create review error:', error);
+                console.error("Create review error:", error);
                 throw error;
             }
         },
-        [post, isAuthenticated]
+        [post, isAuthenticated],
     );
 
     const updateReview = useCallback(
@@ -36,15 +36,15 @@ export const useReview = () => {
                 const response = await put(`${baseUrl}/${reviewId}/`, {
                     data,
                     accessRequired: isAuthenticated,
-                    refreshRequired: isAuthenticated
+                    refreshRequired: isAuthenticated,
                 });
                 return keysToCamelCase(response);
             } catch (error) {
-                console.error('Update review error:', error);
+                console.error("Update review error:", error);
                 throw error;
             }
         },
-        [put, isAuthenticated]
+        [put, isAuthenticated],
     );
 
     const deleteReview = useCallback(
@@ -52,15 +52,15 @@ export const useReview = () => {
             try {
                 await del(`${baseUrl}/${reviewId}/`, {
                     accessRequired: isAuthenticated,
-                    refreshRequired: isAuthenticated
+                    refreshRequired: isAuthenticated,
                 });
                 return true;
             } catch (error) {
-                console.error('Delete review error:', error);
+                console.error("Delete review error:", error);
                 throw error;
             }
         },
-        [del, isAuthenticated]
+        [del, isAuthenticated],
     );
 
     const getUserReview = useCallback(
@@ -68,14 +68,14 @@ export const useReview = () => {
             if (!isAuthenticated) {
                 return null;
             }
-            
+
             try {
                 const response = await get(
                     `${baseUrl}/user-review/${contentType}/${objectId}/`,
                     {
                         accessRequired: isAuthenticated,
-                        refreshRequired: isAuthenticated
-                    }
+                        refreshRequired: isAuthenticated,
+                    },
                 );
                 return keysToCamelCase(response);
             } catch (error) {
@@ -85,11 +85,11 @@ export const useReview = () => {
                 if (error.status === 401) {
                     return null;
                 }
-                console.error('Get user review error:', error);
+                console.error("Get user review error:", error);
                 throw error;
             }
         },
-        [get, isAuthenticated]
+        [get, isAuthenticated],
     );
 
     const getApprovedReviews = useCallback(
@@ -99,8 +99,8 @@ export const useReview = () => {
                     `${baseUrl}/?content_type=${contentType}&object_id=${objectId}`,
                     {
                         accessRequired: false,
-                        refreshRequired: false
-                    }
+                        refreshRequired: false,
+                    },
                 );
                 return keysToCamelCase(response);
             } catch (error) {
@@ -110,7 +110,7 @@ export const useReview = () => {
                 throw error;
             }
         },
-        [get]
+        [get],
     );
 
     return {
@@ -118,6 +118,6 @@ export const useReview = () => {
         updateReview,
         deleteReview,
         getUserReview,
-        getApprovedReviews
+        getApprovedReviews,
     };
 };

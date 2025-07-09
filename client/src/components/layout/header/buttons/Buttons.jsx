@@ -1,11 +1,11 @@
-import { Icon } from '../../../reusable/icon/Icon';
+import { Icon } from "../../../reusable/icon/Icon";
 
-import styles from './Buttons.module.scss';
-import { Link } from 'react-router';
+import styles from "./Buttons.module.scss";
+import { Link } from "react-router";
 
-import { useShoppingBagContext } from '../../../../contexts/ShoppingBagContext';
-import { useWishlistContext } from '../../../../contexts/WishlistContext';
-import { useAuth } from '../../../../hooks/useAuth';
+import { useShoppingBagContext } from "../../../../contexts/ShoppingBagContext";
+import { useWishlistContext } from "../../../../contexts/WishlistContext";
+import { useAuth } from "../../../../hooks/useAuth";
 
 export const Buttons = () => {
     const { isAuthenticated } = useAuth();
@@ -13,23 +13,23 @@ export const Buttons = () => {
     const { wishlistItemsCount } = useWishlistContext();
 
     return (
-        <ul className={styles['buttons']}>
+        <ul className={styles["buttons"]}>
             <li>
                 <Link
                     to={
                         isAuthenticated
-                            ? '/my-account/details'
-                            : '/my-account/login'
+                            ? "/my-account/details"
+                            : "/my-account/login"
                     }
                 >
-                    <Icon name={'user'} fontSize={1} />
+                    <Icon name={"user"} fontSize={1} />
                     {isAuthenticated && <span></span>}
                 </Link>
             </li>
 
             <li>
-                <Link to='/user/wishlist'>
-                    <Icon name={'heart'} />
+                <Link to="/user/wishlist">
+                    <Icon name={"heart"} />
                     {wishlistItemsCount > 0 && (
                         <span>
                             <span>{wishlistItemsCount}</span>
@@ -38,8 +38,8 @@ export const Buttons = () => {
                 </Link>
             </li>
             <li>
-                <Link to='/user/shopping-bag'>
-                    <Icon name={'bag'} />
+                <Link to="/user/shopping-bag">
+                    <Icon name={"bag"} />
                     {shoppingBagItemsCount > 0 && (
                         <span>
                             <span>{shoppingBagItemsCount}</span>

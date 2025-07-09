@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { usePhoto } from '../api/usePhotoApi';
+import { useState, useEffect, useCallback } from "react";
+import { usePhoto } from "../api/usePhotoApi";
 
 export const usePhotoManager = () => {
     const [currentPhoto, setCurrentPhoto] = useState(null);
@@ -18,8 +18,8 @@ export const usePhotoManager = () => {
 
             setCurrentPhoto(null);
         } catch (err) {
-            setError('Failed to delete profile photo');
-            console.error('Error deleting photo:', err);
+            setError("Failed to delete profile photo");
+            console.error("Error deleting photo:", err);
         } finally {
             setIsLoading(false);
         }
@@ -35,8 +35,8 @@ export const usePhotoManager = () => {
                 setCurrentPhoto(response.photoUrl);
             }
         } catch (err) {
-            setError('Failed to load profile photo');
-            console.error('Error loading photo:', err);
+            setError("Failed to load profile photo");
+            console.error("Error loading photo:", err);
         } finally {
             setIsLoading(false);
         }
@@ -49,34 +49,31 @@ export const usePhotoManager = () => {
                 setError(null);
 
                 const formData = new FormData();
-                formData.append('photo', file);
+                formData.append("photo", file);
 
                 const response = await uploadPhoto(formData);
                 if (response?.photoUrl) {
                     setCurrentPhoto(response.photoUrl);
                 } else {
-                    throw new Error(
-                        'Upload failed - no URL returned'
-                    );
+                    throw new Error("Upload failed - no URL returned");
                 }
             } catch (err) {
-                setError('Failed to upload photo');
-                console.error('Error uploading photo:', err);
+                setError("Failed to upload photo");
+                console.error("Error uploading photo:", err);
             } finally {
                 setIsUploading(false);
             }
         },
-        [uploadPhoto]
+        [uploadPhoto],
     );
 
     useEffect(() => {
         const initializeData = async () => {
             try {
-                // Load current photo
                 await refreshPhoto();
             } catch (err) {
-                setError('Failed to initialize user data');
-                console.error('Error initializing data:', err);
+                setError("Failed to initialize user data");
+                console.error("Error initializing data:", err);
             }
         };
 
@@ -89,6 +86,6 @@ export const usePhotoManager = () => {
         isUploading,
         error,
         uploadPhotoHandler,
-        deletePhotoHandler
+        deletePhotoHandler,
     };
 };

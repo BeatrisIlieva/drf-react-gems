@@ -30,11 +30,10 @@ export const FIELD_LENGTHS = {
 
     APARTMENT_MAX: 20,
 
-    // Payment field lengths
     CARD_NUMBER_MAX: 19, // 16 digits + 3 spaces
     CARD_HOLDER_NAME_MAX: 50,
     CARD_HOLDER_NAME_MIN: 2,
     EXPIRY_DATE_MAX: 5, // MM/YY format
     CVV_MAX: 3,
-    CVV_MIN: 3
+    CVV_MIN: 3,
 };

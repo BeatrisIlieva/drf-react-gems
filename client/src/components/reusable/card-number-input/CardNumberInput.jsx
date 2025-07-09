@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCcVisa, faCcMastercard } from '@fortawesome/free-brands-svg-icons';
-import { getFieldDisplayName } from '../../../utils/getFieldDisplayName';
+import { useEffect, useRef, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCcVisa, faCcMastercard } from "@fortawesome/free-brands-svg-icons";
+import { getFieldDisplayName } from "../../../utils/getFieldDisplayName";
 
-import styles from './CardNumberInput.module.scss';
+import styles from "./CardNumberInput.module.scss";
 
 export const CardNumberInput = ({
     fieldName,
@@ -12,7 +12,7 @@ export const CardNumberInput = ({
     validateField,
     registerInput,
     fieldConfig,
-    getInputClassName
+    getInputClassName,
 }) => {
     const inputRef = useRef(null);
     const [cardType, setCardType] = useState(null);
@@ -22,57 +22,50 @@ export const CardNumberInput = ({
     const maxLength = config.maxLength || 19;
 
     const formatCardNumber = (value) => {
-        // Remove all non-digits
-        const digitsOnly = value.replace(/\D/g, '');
-        
-        // Limit to 16 digits maximum
+        const digitsOnly = value.replace(/\D/g, "");
+
         const limitedDigits = digitsOnly.substring(0, 16);
-        
-        // Add spaces every 4 digits
-        let formattedValue = '';
+
+        let formattedValue = "";
         for (let i = 0; i < limitedDigits.length; i++) {
             if (i > 0 && i % 4 === 0) {
-                formattedValue += ' ';
+                formattedValue += " ";
             }
             formattedValue += limitedDigits[i];
         }
-        
+
         return formattedValue;
     };
 
     const detectCardType = (value) => {
-        const cleanValue = value.replace(/\s/g, '');
-        
+        const cleanValue = value.replace(/\s/g, "");
+
         if (cleanValue.length < 1) {
             setCardType(null);
             return;
         }
 
-        // Check for Visa (starts with 4)
-        if (cleanValue.startsWith('4')) {
-            setCardType('visa');
+        if (cleanValue.startsWith("4")) {
+            setCardType("visa");
             return;
         }
 
-        // Check for MasterCard
-        // Legacy range: 51-55
         if (cleanValue.length >= 2) {
             const firstTwo = cleanValue.substring(0, 2);
             const firstTwoNum = parseInt(firstTwo, 10);
-            
+
             if (firstTwoNum >= 51 && firstTwoNum <= 55) {
-                setCardType('mastercard');
+                setCardType("mastercard");
                 return;
             }
         }
 
-        // New MasterCard range: 2221-2720
         if (cleanValue.length >= 4) {
             const firstFour = cleanValue.substring(0, 4);
             const firstFourNum = parseInt(firstFour, 10);
-            
+
             if (firstFourNum >= 2221 && firstFourNum <= 2720) {
-                setCardType('mastercard');
+                setCardType("mastercard");
                 return;
             }
         }
@@ -84,40 +77,37 @@ export const CardNumberInput = ({
         const input = inputRef.current;
         const rawValue = e.target.value;
         const cursorPosition = input ? input.selectionStart : 0;
-        
-        // Format the card number
+
         const formattedValue = formatCardNumber(rawValue);
-        
-        // Detect card type
+
         detectCardType(formattedValue);
-        
-        // Create synthetic event with formatted value
+
         const syntheticEvent = {
             target: {
                 name: fieldName,
-                value: formattedValue
-            }
+                value: formattedValue,
+            },
         };
 
-        // Call the parent handler first
         handleFieldChange(syntheticEvent);
 
-        // Calculate new cursor position based on the change
         if (input) {
             setTimeout(() => {
                 if (document.activeElement === input) {
-                    // Count digits before cursor position in the raw input
                     let digitsBeforeCursor = 0;
-                    for (let i = 0; i < Math.min(cursorPosition, rawValue.length); i++) {
+                    for (
+                        let i = 0;
+                        i < Math.min(cursorPosition, rawValue.length);
+                        i++
+                    ) {
                         if (/\d/.test(rawValue[i])) {
                             digitsBeforeCursor++;
                         }
                     }
-                    
-                    // Find the position in formatted string that corresponds to this digit count
+
                     let newCursorPosition = 0;
                     let digitCount = 0;
-                    
+
                     for (let i = 0; i < formattedValue.length; i++) {
                         if (/\d/.test(formattedValue[i])) {
                             digitCount++;
@@ -127,16 +117,20 @@ export const CardNumberInput = ({
                             }
                         }
                     }
-                    
-                    // If we haven't found the position yet, place cursor at the end
+
                     if (digitCount < digitsBeforeCursor) {
                         newCursorPosition = formattedValue.length;
                     }
-                    
-                    // Ensure cursor position is within bounds
-                    newCursorPosition = Math.max(0, Math.min(newCursorPosition, formattedValue.length));
-                    
-                    input.setSelectionRange(newCursorPosition, newCursorPosition);
+
+                    newCursorPosition = Math.max(
+                        0,
+                        Math.min(newCursorPosition, formattedValue.length),
+                    );
+
+                    input.setSelectionRange(
+                        newCursorPosition,
+                        newCursorPosition,
+                    );
                 }
             }, 0);
         }
@@ -160,17 +154,27 @@ export const CardNumberInput = ({
     }, [registerInput, fieldName]);
 
     const getCardIcon = () => {
-        if (cardType === 'visa') {
-            return <FontAwesomeIcon icon={faCcVisa} className={styles['card-icon']} />;
+        if (cardType === "visa") {
+            return (
+                <FontAwesomeIcon
+                    icon={faCcVisa}
+                    className={styles["card-icon"]}
+                />
+            );
         }
-        if (cardType === 'mastercard') {
-            return <FontAwesomeIcon icon={faCcMastercard} className={styles['card-icon']} />;
+        if (cardType === "mastercard") {
+            return (
+                <FontAwesomeIcon
+                    icon={faCcMastercard}
+                    className={styles["card-icon"]}
+                />
+            );
         }
         return null;
     };
 
     return (
-        <div className={`field ${styles['card-number-field']}`}>
+        <div className={`field ${styles["card-number-field"]}`}>
             <input
                 ref={inputRef}
                 className={getInputClassName(fieldData)}
@@ -183,16 +187,13 @@ export const CardNumberInput = ({
                 onBlur={handleBlur}
                 maxLength={maxLength}
             />
-            <label
-                htmlFor={fieldName}
-                className={getInputClassName(fieldData)}
-            >
+            <label htmlFor={fieldName} className={getInputClassName(fieldData)}>
                 {getFieldDisplayName(fieldName)}
-                {required ? '*' : ''}
+                {required ? "*" : ""}
             </label>
             {getCardIcon()}
             {fieldData.error && (
-                <span className='error'>{fieldData.error}</span>
+                <span className="error">{fieldData.error}</span>
             )}
         </div>
     );

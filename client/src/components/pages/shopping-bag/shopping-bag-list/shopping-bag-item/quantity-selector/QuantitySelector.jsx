@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
-import styles from './QuantitySelector.module.scss';
-import { Icon } from '../../../../../reusable/icon/Icon';
+import { useEffect, useState } from "react";
+import styles from "./QuantitySelector.module.scss";
+import { Icon } from "../../../../../reusable/icon/Icon";
 
-import { useShoppingBagContext } from '../../../../../../contexts/ShoppingBagContext';
-import { useShoppingBag } from '../../../../../../api/shoppingBagApi';
+import { useShoppingBagContext } from "../../../../../../contexts/ShoppingBagContext";
+import { useShoppingBag } from "../../../../../../api/shoppingBagApi";
 
 export const QuantitySelector = ({
     quantity,
     id,
     objectId,
     contentType,
-    availableQuantity
+    availableQuantity,
 }) => {
     const { updateItem } = useShoppingBag();
     const { refreshShoppingBag } = useShoppingBagContext();
@@ -18,7 +18,7 @@ export const QuantitySelector = ({
     const [localQuantity, setLocalQuantity] = useState(quantity);
 
     const totalAvailableQuantity =
-        typeof availableQuantity === 'string'
+        typeof availableQuantity === "string"
             ? parseInt(availableQuantity, 10) + quantity
             : availableQuantity + quantity;
 
@@ -35,7 +35,7 @@ export const QuantitySelector = ({
                 contentType,
                 objectId,
                 quantity: newQuantity,
-                id
+                id,
             });
             setLocalQuantity(newQuantity);
 
@@ -64,25 +64,19 @@ export const QuantitySelector = ({
     };
 
     return (
-        <span className={styles['quantity-selector']}>
-            <button
-                onClick={decrementQuantity}
-                disabled={isUpdating}
-            >
-                <Icon name='minus' />
+        <span className={styles["quantity-selector"]}>
+            <button onClick={decrementQuantity} disabled={isUpdating}>
+                <Icon name="minus" />
             </button>
             <span>{localQuantity}</span>
             <button
                 onClick={incrementQuantity}
-                disabled={
-                    isUpdating ||
-                    localQuantity >= totalAvailableQuantity
-                }
+                disabled={isUpdating || localQuantity >= totalAvailableQuantity}
             >
-                <Icon name='plus' />
+                <Icon name="plus" />
             </button>
             {isUpdating && (
-                <span className={styles['updating-indicator']}>
+                <span className={styles["updating-indicator"]}>
                     Updating...
                 </span>
             )}

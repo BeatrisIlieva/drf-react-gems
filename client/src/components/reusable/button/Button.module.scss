@@ -1,5 +1,5 @@
-@use '../../../styles/variables' as vars;
-@use 'sass:color';
+@use "../../../styles/variables" as vars;
+@use "sass:color";
 
 .btn {
     display: flex;
@@ -11,8 +11,10 @@
     border-radius: 0.1rem;
     font-weight: 500;
     font-size: 1.1em;
-    transition: opacity 0.3s ease-in-out,
-        background 0.3s ease-in-out, text-shadow 0.6s ease-in-out,
+    transition:
+        opacity 0.3s ease-in-out,
+        background 0.3s ease-in-out,
+        text-shadow 0.6s ease-in-out,
         transform 0.2s ease-in-out;
     text-transform: uppercase;
     font-size: 0.9em;
@@ -33,7 +35,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        transition: opacity 0.25s ease-in-out,
+        transition:
+            opacity 0.25s ease-in-out,
             transform 0.25s ease-in-out;
         min-height: 1.2em;
         min-width: 1.2em;
@@ -126,7 +129,7 @@
         position: relative;
 
         &::after {
-            content: '';
+            content: "";
             position: absolute;
             bottom: 0;
             left: 0;
