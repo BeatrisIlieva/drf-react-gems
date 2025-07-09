@@ -4,28 +4,8 @@
     @include anim.animate-fade-in();
 }
 
-.animate-fade-in-fast {
-    @include anim.animate-fade-in(0.5s);
-}
-
-.animate-fade-in-slow {
-    @include anim.animate-fade-in(1.5s);
-}
-
 .animate-fade-out {
     @include anim.animate-fade-out();
-}
-
-.animate-fade-out-fast {
-    @include anim.animate-fade-out(0.3s);
-}
-
-.animate-slide-in {
-    @include anim.animate-slide-in();
-}
-
-.animate-slide-in-delayed {
-    @include anim.animate-slide-in(0.5s, 0.3s);
 }
 
 .animate-pulse {
@@ -40,21 +20,9 @@
     @include anim.animate-fade-in(0.6s);
 }
 
-@for $i from 1 through 10 {
-    .delay-#{$i}00ms {
-        animation-delay: #{$i * 100}ms !important;
-    }
-}
-
 .duration-300ms {
     animation-duration: 300ms !important;
 }
 .duration-500ms {
     animation-duration: 500ms !important;
-}
-.duration-1s {
-    animation-duration: 1s !important;
-}
-.duration-2s {
-    animation-duration: 2s !important;
 }

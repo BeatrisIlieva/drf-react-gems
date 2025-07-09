@@ -112,18 +112,6 @@
     animation: pulse $duration ease-in-out $delay infinite;
 }
 
-@mixin staggered-fade-in(
-    $items: 5,
-    $base-delay: 0.1s,
-    $duration: 0.5s
-) {
-    @for $i from 1 through $items {
-        &:nth-child(#{$i}) {
-            @include animate-fade-in($duration, $base-delay * $i);
-        }
-    }
-}
-
 @mixin staggered-slide-in(
     $items: 5,
     $base-delay: 0.1s,
@@ -137,17 +125,4 @@
             );
         }
     }
-}
-
-@mixin animate(
-    $name,
-    $duration: 1s,
-    $timing-function: ease,
-    $delay: 0s,
-    $iteration-count: 1,
-    $direction: normal,
-    $fill-mode: forwards
-) {
-    animation: $name $duration $timing-function $delay
-        $iteration-count $direction $fill-mode;
 }
