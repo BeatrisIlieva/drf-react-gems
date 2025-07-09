@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 
+from src.products.constants import ReviewFieldLengths
+
 User = get_user_model()
 
 
@@ -21,6 +23,7 @@ class Review(models.Model):
     )
 
     comment = models.TextField(
+        max_length=ReviewFieldLengths.MAX_COMMENT_LENGTH,
         blank=False,
         help_text='Review comment is required.',
     )

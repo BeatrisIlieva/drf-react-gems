@@ -66,16 +66,16 @@ export const ReviewForm = ({
                 objectId: productId,
             };
 
-            let result;
+            let response;
             if (existingReview) {
-                result = await updateReview(existingReview.id, reviewData);
+                response = await updateReview(existingReview.id, reviewData);
             } else {
-                result = await createReview(reviewData);
+                response = await createReview(reviewData);
             }
 
             setSuccess(true);
             if (onReviewSubmitted) {
-                onReviewSubmitted(result);
+                onReviewSubmitted(response);
             }
 
             if (!existingReview) {
@@ -85,7 +85,7 @@ export const ReviewForm = ({
 
             setTimeout(() => setSuccess(false), 3000);
         } catch (err) {
-            setError(err.message || 'Failed to submit review');
+            setError('Ensure this field has no more than 300 characters.');
         } finally {
             setIsSubmitting(false);
         }
@@ -145,6 +145,7 @@ export const ReviewForm = ({
                         onChange={handleCommentChange}
                         placeholder="Leave a review... *"
                         disabled={isSubmitting}
+                        maxLength={3}
                     />
 
                     {error && <div className={styles['error-message']}>{error}</div>}
