@@ -32,6 +32,10 @@ class UserCredential(AbstractBaseUser, PermissionsMixin):
         default=False,
     )
 
+    agreed_to_emails = models.BooleanField(
+        default=False,
+    )
+
     objects = UserCredentialManager()
 
     USERNAME_FIELD = 'email'

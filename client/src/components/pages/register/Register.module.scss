@@ -104,3 +104,10 @@
         opacity: 0.6;
     }
 }
+
+.error-message {
+    color: vars.$red;
+    font-size: 0.95em;
+    margin-top: 0.25em;
+    margin-left: 0.25em;
+}

@@ -23,6 +23,7 @@ import styles from './Register.module.scss';
 export const Register = () => {
     const { fieldConfig, initialValues } = FORM_CONFIGS.register;
     const [agree, setAgree] = useState(true);
+    const [agreeError, setAgreeError] = useState('');
 
     const { userLoginHandler } = useUserContext();
     const { register, login } = useAuthentication();
@@ -30,8 +31,15 @@ export const Register = () => {
 
     const handleSubmit = useCallback(
         async formData => {
-            const apiData = createApiDataFromForm(formData, fieldConfig);
-
+            setAgreeError('');
+            if (!agree) {
+                setAgreeError('You must agree to receive email updates.');
+                return { success: false };
+            }
+            const apiData = {
+                ...createApiDataFromForm(formData, fieldConfig),
+                agreed_to_emails: true,
+            };
             const authData = await register(apiData);
 
             if (authData?.access) {
@@ -59,7 +67,7 @@ export const Register = () => {
                 error: 'Registration failed',
             };
         },
-        [fieldConfig, register, userLoginHandler, login, navigate]
+        [fieldConfig, register, userLoginHandler, login, navigate, agree]
     );
 
     const formProps = useForm(initialValues, {
@@ -91,7 +99,15 @@ export const Register = () => {
 
                 <h2>Create Account</h2>
 
-                <form action={submitAction}>
+                <form
+                    action={submitAction}
+                    onSubmit={e => {
+                        if (!agree) {
+                            e.preventDefault();
+                            setAgreeError('You must agree to receive email updates.');
+                        }
+                    }}
+                >
                     {Object.entries(formData).map(([fieldName, fieldData]) => (
                         <Fragment key={fieldName}>
                             {fieldData && (
@@ -121,12 +137,16 @@ export const Register = () => {
                             name="agree"
                             id="agree"
                             checked={agree}
-                            onChange={() => setAgree(!agree)}
+                            onChange={() => {
+                                setAgree(!agree);
+                                if (agreeError) setAgreeError('');
+                            }}
                         />
-                        <label className={styles['agree']}>
+                        <label className={styles['agree']} htmlFor="agree">
                             By creating an account, you agree to receive email updates*
                         </label>
                     </div>
+                    {agreeError && <div className={styles['error-message']}>{agreeError}</div>}
 
                     <Button
                         title={'Register'}

@@ -14,11 +14,12 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     # to resolve the problem we set the password to be write-only
     # write-only ensures that the password will not be returned in the response
     password = serializers.CharField(write_only=True, trim_whitespace=False)
+    agreed_to_emails = serializers.BooleanField(write_only=True)
 
     class Meta:
         model = UserModel
         # the serializer expects to receive json file containing `email`, `username` and `password`
-        fields = ['email', 'username', 'password']
+        fields = ['email', 'username', 'password', 'agreed_to_emails']
 
     def validate_password(self, value):
         # This will raise a ValidationError if the password is too short, common, numeric, etc.
@@ -29,6 +30,11 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         # Validate username format using custom validator
         username_validator = UsernameValidator()
         username_validator(value)
+        return value
+
+    def validate_agreed_to_emails(self, value):
+        if not value:
+            raise serializers.ValidationError("You must agree to receive email updates.")
         return value
 
     # the default `create` method does not hash the password
