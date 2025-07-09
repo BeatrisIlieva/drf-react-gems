@@ -1,9 +1,14 @@
-import { useState, useEffect, useCallback } from "react";
-import { ReviewForm } from "./review-form/ReviewForm";
-import { useReview } from "../../../../../../api/reviewApi";
-import { useAuth } from "../../../../../../hooks/useAuth";
-import styles from "./OrderProductItem.module.scss";
-import { useNavigate } from "react-router";
+import { useCallback, useEffect, useState } from 'react';
+
+import { useNavigate } from 'react-router';
+
+import { ReviewForm } from './review-form/ReviewForm';
+
+import { useReview } from '../../../../../../api/reviewApi';
+
+import { useAuth } from '../../../../../../hooks/useAuth';
+
+import styles from './OrderProductItem.module.scss';
 
 export const OrderProductItem = ({ product }) => {
     const [existingReview, setExistingReview] = useState(null);
@@ -13,8 +18,7 @@ export const OrderProductItem = ({ product }) => {
     const navigate = useNavigate();
 
     const productInfo = product.productInfo;
-    const contentType =
-        product.productContentType || product.product_content_type;
+    const contentType = product.productContentType || product.product_content_type;
     const objectId = product.productObjectId || product.product_object_id;
 
     useEffect(() => {
@@ -25,7 +29,7 @@ export const OrderProductItem = ({ product }) => {
                     const review = await getUserReview(contentType, objectId);
                     setExistingReview(review);
                 } catch (error) {
-                    console.error("Error loading review:", error);
+                    console.error('Error loading review:', error);
                 } finally {
                     setIsLoadingReview(false);
                 }
@@ -40,42 +44,33 @@ export const OrderProductItem = ({ product }) => {
         }
     }, [isAuthenticated, contentType, objectId]);
 
-    const handleReviewSubmitted = (newReview) => {
+    const handleReviewSubmitted = newReview => {
         setExistingReview(newReview);
     };
 
     const navigateToProductItem = useCallback(() => {
-        navigate(
-            `/products/${
-                productInfo.category.toLowerCase() + "s"
-            }/${productInfo.productId}`,
-        );
+        navigate(`/products/${productInfo.category.toLowerCase() + 's'}/${productInfo.productId}`);
     }, [navigate, productInfo.category, productInfo.productId]);
 
     return (
-        <div className={styles["order-product-item"]}>
-            <div className={styles["product-details"]}>
-                <div
-                    className={styles["thumbnail"]}
-                    onClick={navigateToProductItem}
-                >
+        <div className={styles['order-product-item']}>
+            <div className={styles['product-details']}>
+                <div className={styles['thumbnail']} onClick={navigateToProductItem}>
                     <img
                         src={productInfo.firstImage}
                         alt={`${productInfo.collection} ${productInfo.category}`}
                     />
                 </div>
 
-                <div className={styles["product-info"]}>
+                <div className={styles['product-info']}>
                     <h4>{`${productInfo.collection} ${productInfo.category}`}</h4>
-                    <p>
-                        {`${productInfo.color} ${productInfo.stone} set in ${productInfo.metal}`}
-                    </p>
+                    <p>{`${productInfo.color} ${productInfo.stone} set in ${productInfo.metal}`}</p>
                     <p>Size: {productInfo.size}</p>
                     <p>Quantity: {product.quantity}</p>
                 </div>
             </div>
 
-            <div className={styles["review-section"]}>
+            <div className={styles['review-section']}>
                 {isAuthenticated && contentType && objectId ? (
                     isLoadingReview ? (
                         <p>Loading review...</p>

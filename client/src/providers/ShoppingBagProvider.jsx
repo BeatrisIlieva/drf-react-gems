@@ -1,12 +1,14 @@
-import { useCallback, useMemo, useState, useEffect, useContext } from "react";
-import { useShoppingBag } from "../api/shoppingBagApi";
-import { ShoppingBagContext } from "../contexts/ShoppingBagContext";
-import { UserContext } from "../contexts/UserContext";
-import { useNavigate } from "react-router";
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+
+import { useNavigate } from 'react-router';
+
+import { useShoppingBag } from '../api/shoppingBagApi';
+
+import { ShoppingBagContext } from '../contexts/ShoppingBagContext';
+import { UserContext } from '../contexts/UserContext';
 
 export const ShoppingBagProvider = ({ children }) => {
-    const { deleteItem, getItems, getCount, getTotalPrice, createItem } =
-        useShoppingBag();
+    const { deleteItem, getItems, getCount, getTotalPrice, createItem } = useShoppingBag();
     const { id: userId } = useContext(UserContext);
 
     const navigate = useNavigate();
@@ -32,19 +34,18 @@ export const ShoppingBagProvider = ({ children }) => {
             setLoading(true);
 
             try {
-                const [itemsResponse, countResponse, priceResponse] =
-                    await Promise.all([
-                        getItems(),
-                        getCount(),
-                        getTotalPrice(),
-                    ]);
+                const [itemsResponse, countResponse, priceResponse] = await Promise.all([
+                    getItems(),
+                    getCount(),
+                    getTotalPrice(),
+                ]);
 
                 if (mounted) {
                     setShoppingBagItems(itemsResponse);
                     setShoppingBagItemsCount(countResponse.count);
 
                     const price =
-                        typeof priceResponse.totalPrice === "string"
+                        typeof priceResponse.totalPrice === 'string'
                             ? parseFloat(priceResponse.totalPrice)
                             : priceResponse.totalPrice;
                     setShoppingBagTotalPrice(isNaN(price) ? 0 : price);
@@ -70,10 +71,10 @@ export const ShoppingBagProvider = ({ children }) => {
     }, [userId, getItems, getCount, getTotalPrice]);
 
     const deleteShoppingBagHandler = useCallback(
-        async (id) => {
+        async id => {
             setIsDeleting(true);
 
-            const deletedItem = shoppingBagItems.find((item) => item.id === id);
+            const deletedItem = shoppingBagItems.find(item => item.id === id);
 
             if (!deletedItem) {
                 setIsDeleting(false);
@@ -83,22 +84,16 @@ export const ShoppingBagProvider = ({ children }) => {
             try {
                 await deleteItem(id);
 
-                const updatedItems = shoppingBagItems.filter(
-                    (item) => item.id !== id,
-                );
+                const updatedItems = shoppingBagItems.filter(item => item.id !== id);
                 setShoppingBagItems(updatedItems);
 
-                const newCount = Math.max(
-                    0,
-                    shoppingBagItemsCount - deletedItem.quantity,
-                );
+                const newCount = Math.max(0, shoppingBagItemsCount - deletedItem.quantity);
                 setShoppingBagItemsCount(newCount);
 
-                setShoppingBagTotalPrice((prev) => {
-                    const currentPrice =
-                        typeof prev === "string" ? parseFloat(prev) : prev;
+                setShoppingBagTotalPrice(prev => {
+                    const currentPrice = typeof prev === 'string' ? parseFloat(prev) : prev;
                     const itemPrice =
-                        typeof deletedItem.totalPrice === "string"
+                        typeof deletedItem.totalPrice === 'string'
                             ? parseFloat(deletedItem.totalPrice)
                             : deletedItem.totalPrice;
                     const newPrice = currentPrice - itemPrice;
@@ -113,7 +108,7 @@ export const ShoppingBagProvider = ({ children }) => {
                         setShoppingBagItemsCount(countResponse.count);
                         const priceResponse = await getTotalPrice();
                         const price =
-                            typeof priceResponse.totalPrice === "string"
+                            typeof priceResponse.totalPrice === 'string'
                                 ? parseFloat(priceResponse.totalPrice)
                                 : priceResponse.totalPrice;
                         setShoppingBagTotalPrice(isNaN(price) ? 0 : price);
@@ -124,33 +119,25 @@ export const ShoppingBagProvider = ({ children }) => {
                 setIsDeleting(false);
             }
         },
-        [
-            deleteItem,
-            shoppingBagItems,
-            shoppingBagItemsCount,
-            getItems,
-            getCount,
-            getTotalPrice,
-        ],
+        [deleteItem, shoppingBagItems, shoppingBagItemsCount, getItems, getCount, getTotalPrice]
     );
 
     const createShoppingBagItemHandler = useCallback(
-        async (inventory) => {
+        async inventory => {
             try {
                 await createItem(inventory);
 
-                const [itemsResponse, countResponse, priceResponse] =
-                    await Promise.all([
-                        getItems(),
-                        getCount(),
-                        getTotalPrice(),
-                    ]);
+                const [itemsResponse, countResponse, priceResponse] = await Promise.all([
+                    getItems(),
+                    getCount(),
+                    getTotalPrice(),
+                ]);
 
                 setShoppingBagItems(itemsResponse);
                 setShoppingBagItemsCount(countResponse.count);
 
                 const price =
-                    typeof priceResponse.totalPrice === "string"
+                    typeof priceResponse.totalPrice === 'string'
                         ? parseFloat(priceResponse.totalPrice)
                         : priceResponse.totalPrice;
                 setShoppingBagTotalPrice(isNaN(price) ? 0 : price);
@@ -160,23 +147,26 @@ export const ShoppingBagProvider = ({ children }) => {
                 return { success: false, error };
             }
         },
-        [createItem, getItems, getCount, getTotalPrice],
+        [createItem, getItems, getCount, getTotalPrice]
     );
 
     const continueCheckoutHandler = useCallback(() => {
-        navigate("/user/checkout");
+        navigate('/user/checkout');
     }, [navigate]);
 
     const refreshShoppingBag = useCallback(async () => {
         try {
-            const [itemsResponse, countResponse, priceResponse] =
-                await Promise.all([getItems(), getCount(), getTotalPrice()]);
+            const [itemsResponse, countResponse, priceResponse] = await Promise.all([
+                getItems(),
+                getCount(),
+                getTotalPrice(),
+            ]);
 
             setShoppingBagItems(itemsResponse);
             setShoppingBagItemsCount(countResponse.count);
 
             const price =
-                typeof priceResponse.totalPrice === "string"
+                typeof priceResponse.totalPrice === 'string'
                     ? parseFloat(priceResponse.totalPrice)
                     : priceResponse.totalPrice;
             setShoppingBagTotalPrice(isNaN(price) ? 0 : price);
@@ -209,12 +199,10 @@ export const ShoppingBagProvider = ({ children }) => {
             shoppingBagItemsCount,
             shoppingBagTotalPrice,
             refreshShoppingBag,
-        ],
+        ]
     );
 
     return (
-        <ShoppingBagContext.Provider value={contextValue}>
-            {children}
-        </ShoppingBagContext.Provider>
+        <ShoppingBagContext.Provider value={contextValue}>{children}</ShoppingBagContext.Provider>
     );
 };

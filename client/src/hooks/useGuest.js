@@ -1,11 +1,12 @@
-import { useCallback } from "react";
-import usePersistedState from "./usePersistedState";
+import { useCallback } from 'react';
+
+import usePersistedState from './usePersistedState';
 
 let globalGuestId = null;
 let isGenerating = false;
 
 export const useGuest = () => {
-    const [guestData, setGuestData] = usePersistedState("guest", {});
+    const [guestData, setGuestData] = usePersistedState('guest', {});
 
     const getGuestData = useCallback(() => {
         if (globalGuestId) {

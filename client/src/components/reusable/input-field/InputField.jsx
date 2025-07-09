@@ -1,10 +1,12 @@
-import { useState, useRef, useEffect } from "react";
-import { getFieldDisplayName } from "../../../utils/getFieldDisplayName";
-import { getDefaultMaxLength } from "../../../utils/formHelpers";
+import { useEffect, useRef, useState } from 'react';
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import styles from "./InputField.module.scss";
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { getDefaultMaxLength } from '../../../utils/formHelpers';
+import { getFieldDisplayName } from '../../../utils/getFieldDisplayName';
+
+import styles from './InputField.module.scss';
 
 export const InputField = ({
     getInputClassName,
@@ -22,7 +24,7 @@ export const InputField = ({
 
     const onBlurHandler = handleBlur || validateField;
 
-    const fieldType = type || fieldConfig?.[fieldName]?.type || "text";
+    const fieldType = type || fieldConfig?.[fieldName]?.type || 'text';
 
     const maxLength =
         fieldData?.maxLength ||
@@ -49,11 +51,7 @@ export const InputField = ({
                 ref={inputRef}
                 className={getInputClassName(fieldData)}
                 type={
-                    fieldType === "password"
-                        ? isPasswordVisible
-                            ? "text"
-                            : "password"
-                        : fieldType
+                    fieldType === 'password' ? (isPasswordVisible ? 'text' : 'password') : fieldType
                 }
                 name={fieldName}
                 id={fieldName}
@@ -65,20 +63,18 @@ export const InputField = ({
                 maxLength={maxLength}
             />
             <label htmlFor={fieldName} className={getInputClassName(fieldData)}>
-                {fieldName === "apartment"
+                {fieldName === 'apartment'
                     ? getFieldDisplayName(fieldName)
                     : `${getFieldDisplayName(fieldName)}*`}
             </label>
-            {fieldType === "password" && (
+            {fieldType === 'password' && (
                 <FontAwesomeIcon
                     icon={isPasswordVisible ? faEyeSlash : faEye}
-                    className={styles["eye-icon"]}
-                    onClick={() => setIsPasswordVisible((prev) => !prev)}
+                    className={styles['eye-icon']}
+                    onClick={() => setIsPasswordVisible(prev => !prev)}
                 />
             )}
-            {fieldData.error && (
-                <span className="error">{fieldData.error}</span>
-            )}
+            {fieldData.error && <span className="error">{fieldData.error}</span>}
         </div>
     );
 };

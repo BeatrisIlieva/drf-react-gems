@@ -1,8 +1,11 @@
-import { useCallback } from "react";
-import { useApi } from "../hooks/useApi";
-import { useAuth } from "../hooks/useAuth";
-import { HOST } from "../constants/host";
-import { keysToCamelCase } from "../utils/convertToCamelCase";
+import { useCallback } from 'react';
+
+import { useApi } from '../hooks/useApi';
+import { useAuth } from '../hooks/useAuth';
+
+import { keysToCamelCase } from '../utils/convertToCamelCase';
+
+import { HOST } from '../constants/host';
 
 const profileBaseUrl = `${HOST}/api/accounts/profile`;
 const passwordBaseUrl = `${HOST}/api/accounts/change-password`;
@@ -22,14 +25,14 @@ export const useProfile = () => {
         } catch (error) {
             console.error(error);
             return {
-                error: error.message || "Failed to get personal information",
+                error: error.message || 'Failed to get personal information',
                 ...error.data,
             };
         }
     }, [get, isAuthenticated]);
 
     const updatePersonalInfo = useCallback(
-        async (personalData) => {
+        async personalData => {
             try {
                 const response = await patch(`${profileBaseUrl}/`, {
                     data: personalData,
@@ -41,18 +44,16 @@ export const useProfile = () => {
             } catch (error) {
                 console.error(error);
                 return {
-                    error:
-                        error.message ||
-                        "Failed to update personal information",
+                    error: error.message || 'Failed to update personal information',
                     ...error.data,
                 };
             }
         },
-        [patch, isAuthenticated],
+        [patch, isAuthenticated]
     );
 
     const changePassword = useCallback(
-        async (passwordData) => {
+        async passwordData => {
             try {
                 const result = await patch(`${passwordBaseUrl}/`, {
                     data: passwordData,
@@ -61,23 +62,23 @@ export const useProfile = () => {
                 });
                 return (
                     result || {
-                        message: "Password changed successfully",
+                        message: 'Password changed successfully',
                     }
                 );
             } catch (error) {
                 if (error?.status === 401) {
                     return {
-                        current_password: ["Current password is incorrect."],
-                        error: "Current password is incorrect",
+                        current_password: ['Current password is incorrect.'],
+                        error: 'Current password is incorrect',
                     };
                 }
                 return {
-                    error: error.message || "Failed to change password",
+                    error: error.message || 'Failed to change password',
                     ...error.data,
                 };
             }
         },
-        [patch, isAuthenticated],
+        [patch, isAuthenticated]
     );
 
     return {

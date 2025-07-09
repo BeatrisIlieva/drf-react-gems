@@ -1,5 +1,6 @@
-import { Fragment } from "react";
-import { InputField } from "../input-field/InputField";
+import { Fragment } from 'react';
+
+import { InputField } from '../input-field/InputField';
 
 export const FormFieldRenderer = ({
     fieldNames,
@@ -10,7 +11,7 @@ export const FormFieldRenderer = ({
     registerInput,
     fieldConfig = {},
 }) => {
-    return fieldNames.map((fieldName) => {
+    return fieldNames.map(fieldName => {
         const fieldData = formData[fieldName];
         const config = fieldConfig[fieldName] || {};
 
@@ -24,7 +25,7 @@ export const FormFieldRenderer = ({
                     handleFieldChange={handleFieldChange}
                     validateField={validateField}
                     fieldName={fieldName}
-                    type={config.type || "text"}
+                    type={config.type || 'text'}
                     registerInput={registerInput}
                     fieldConfig={fieldConfig}
                 />

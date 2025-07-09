@@ -1,8 +1,10 @@
-import { useCallback } from "react";
-import { useApi } from "../hooks/useApi";
-import { keysToCamelCase } from "../utils/convertToCamelCase";
+import { useCallback } from 'react';
 
-import { HOST } from "../constants/host";
+import { useApi } from '../hooks/useApi';
+
+import { keysToCamelCase } from '../utils/convertToCamelCase';
+
+import { HOST } from '../constants/host';
 
 const baseUrl = `${HOST}/api/products`;
 
@@ -21,27 +23,19 @@ export const useFilters = () => {
             const params = new URLSearchParams();
 
             if (colorIds) {
-                colorIds.forEach((id) =>
-                    params.append("colors", id.toString()),
-                );
+                colorIds.forEach(id => params.append('colors', id.toString()));
             }
             if (stoneIds) {
-                stoneIds.forEach((id) =>
-                    params.append("stones", id.toString()),
-                );
+                stoneIds.forEach(id => params.append('stones', id.toString()));
             }
             if (metalIds) {
-                metalIds.forEach((id) =>
-                    params.append("metals", id.toString()),
-                );
+                metalIds.forEach(id => params.append('metals', id.toString()));
             }
             if (collectionIds) {
-                collectionIds.forEach((id) =>
-                    params.append("collections", id.toString()),
-                );
+                collectionIds.forEach(id => params.append('collections', id.toString()));
             }
 
-            params.append("category", categoryName || "");
+            params.append('category', categoryName || '');
 
             const queryString = params.toString();
             const fullUrl = `${baseUrl}/${entityName}/?${queryString}`;
@@ -54,7 +48,7 @@ export const useFilters = () => {
                 console.error(error);
             }
         },
-        [get],
+        [get]
     );
 
     return { getFilters };

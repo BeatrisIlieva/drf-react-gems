@@ -44,7 +44,7 @@ export const icons = {
             />
         </svg>
     ),
-    "heart-filled": (
+    'heart-filled': (
         <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
@@ -82,11 +82,7 @@ export const icons = {
             stroke="currentColor"
             className="size-6"
         >
-            <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m19.5 8.25-7.5 7.5-7.5-7.5"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
         </svg>
     ),
     arrowUp: (
@@ -98,11 +94,7 @@ export const icons = {
             stroke="currentColor"
             className="size-6"
         >
-            <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m4.5 15.75 7.5-7.5 7.5 7.5"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
         </svg>
     ),
     arrowLeft: (
@@ -128,11 +120,7 @@ export const icons = {
             strokeWidth={1.5}
             stroke="currentColor"
         >
-            <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18 18 6M6 6l12 12"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
         </svg>
     ),
     filter: (
@@ -169,11 +157,7 @@ export const icons = {
             strokeWidth={2.2}
             stroke="currentColor"
         >
-            <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 4.5v15m7.5-7.5h-15"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
         </svg>
     ),
     camera: (
@@ -242,7 +226,7 @@ export const icons = {
             />
         </svg>
     ),
-    "sign-out": (
+    'sign-out': (
         <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

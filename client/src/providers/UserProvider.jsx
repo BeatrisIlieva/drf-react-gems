@@ -1,13 +1,13 @@
-import { UserContext } from "../contexts/UserContext";
-import usePersistedState from "../hooks/usePersistedState";
+import { useGuest } from '../hooks/useGuest';
+import usePersistedState from '../hooks/usePersistedState';
 
-import { useGuest } from "../hooks/useGuest";
+import { UserContext } from '../contexts/UserContext';
 
 export const UserProvider = ({ children }) => {
-    const [authData, setAuthData] = usePersistedState("auth", {});
+    const [authData, setAuthData] = usePersistedState('auth', {});
     const { clearGuestData } = useGuest();
 
-    const userLoginHandler = (resultData) => {
+    const userLoginHandler = resultData => {
         setAuthData(resultData);
     };
 

@@ -1,10 +1,12 @@
-import { Link } from "react-router";
-import styles from "./OrderConfirmation.module.scss";
-import { PaddedContainer } from "../../reusable/padded-container/PaddedContainer";
-import { ShopByCategory } from "../../common/shop-by-category/ShopByCategory";
+import { Link } from 'react-router';
+
+import { ShopByCategory } from '../../common/shop-by-category/ShopByCategory';
+import { PaddedContainer } from '../../reusable/padded-container/PaddedContainer';
+
+import styles from './OrderConfirmation.module.scss';
 
 export const OrderConfirmation = () => {
-    const title = "Thank you for your purchase!";
+    const title = 'Thank you for your purchase!';
     const firstLetter = title.charAt(0);
 
     const restOfText = title.slice(1);
@@ -12,16 +14,13 @@ export const OrderConfirmation = () => {
     return (
         <>
             <PaddedContainer>
-                <section className={styles["order-confirmation"]}>
-                    <h1 className={styles["title"]}>
-                        <span className={styles["letter-span"]}>
+                <section className={styles['order-confirmation']}>
+                    <h1 className={styles['title']}>
+                        <span className={styles['letter-span']}>
                             {firstLetter}
-                            <div
-                                className={styles["thumbnail"]}
-                                data-testid="butterfly-container"
-                            >
+                            <div className={styles['thumbnail']} data-testid="butterfly-container">
                                 <img
-                                    className={styles["butterfly"]}
+                                    className={styles['butterfly']}
                                     src="https://res.cloudinary.com/deztgvefu/image/upload/v1723986117/forget-me-not-collection/miniImages/1042750_d9d98_vfqzme.gif"
                                     alt="butterfly"
                                 />
@@ -29,8 +28,8 @@ export const OrderConfirmation = () => {
                         </span>
                         <span>{restOfText}</span>
                     </h1>
-                    <Link to={"/my-account/orders"} className={styles["link"]}>
-                        <span className={styles["violet"]}>
+                    <Link to={'/my-account/orders'} className={styles['link']}>
+                        <span className={styles['violet']}>
                             You can track your order details in your Account.
                         </span>
                     </Link>

@@ -1,8 +1,11 @@
-import { useCallback } from "react";
-import { useNavigate } from "react-router";
-import { useApi } from "../hooks/useApi";
-import { useAuth } from "../hooks/useAuth";
-import { HOST } from "../constants/host";
+import { useCallback } from 'react';
+
+import { useNavigate } from 'react-router';
+
+import { useApi } from '../hooks/useApi';
+import { useAuth } from '../hooks/useAuth';
+
+import { HOST } from '../constants/host';
 
 const baseUrl = `${HOST}/api/accounts`;
 
@@ -12,7 +15,7 @@ export const useAuthentication = () => {
     const navigate = useNavigate();
 
     const register = useCallback(
-        async (userData) => {
+        async userData => {
             try {
                 const response = await post(`${baseUrl}/register/`, {
                     data: userData,
@@ -21,16 +24,16 @@ export const useAuthentication = () => {
             } catch (error) {
                 console.error(error);
                 return {
-                    error: error.message || "Registration failed",
+                    error: error.message || 'Registration failed',
                     ...error.data,
                 };
             }
         },
-        [post],
+        [post]
     );
 
     const login = useCallback(
-        async (userData) => {
+        async userData => {
             try {
                 const response = await post(`${baseUrl}/login/`, {
                     data: userData,
@@ -39,12 +42,12 @@ export const useAuthentication = () => {
             } catch (error) {
                 console.error(error);
                 return {
-                    error: error.message || "Login failed",
+                    error: error.message || 'Login failed',
                     ...error.data,
                 };
             }
         },
-        [post],
+        [post]
     );
 
     const logout = useCallback(async () => {
@@ -53,7 +56,7 @@ export const useAuthentication = () => {
                 accessRequired: isAuthenticated,
                 refreshRequired: isAuthenticated,
             });
-            navigate("/my-account/register");
+            navigate('/my-account/register');
         } catch (error) {
             console.error(error);
         }

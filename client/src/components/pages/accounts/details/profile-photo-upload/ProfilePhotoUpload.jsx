@@ -1,24 +1,22 @@
-import { useState, useRef } from "react";
-import { Icon } from "../../../../reusable/icon/Icon";
-import styles from "./ProfilePhotoUpload.module.scss";
+import { useRef, useState } from 'react';
 
-export const ProfilePhotoUpload = ({
-    currentPhoto,
-    onPhotoUpdate,
-    isUploading = false,
-}) => {
+import { Icon } from '../../../../reusable/icon/Icon';
+
+import styles from './ProfilePhotoUpload.module.scss';
+
+export const ProfilePhotoUpload = ({ currentPhoto, onPhotoUpdate, isUploading = false }) => {
     const [preview, setPreview] = useState(null);
     const [dragOver, setDragOver] = useState(false);
     const fileInputRef = useRef(null);
 
-    const handleFileSelect = (file) => {
-        if (!file.type.startsWith("image/")) {
-            alert("Please select an image file");
+    const handleFileSelect = file => {
+        if (!file.type.startsWith('image/')) {
+            alert('Please select an image file');
             return;
         }
 
         if (file.size > 5 * 1024 * 1024) {
-            alert("Image size should be less than 5MB");
+            alert('Image size should be less than 5MB');
             return;
         }
 
@@ -26,13 +24,13 @@ export const ProfilePhotoUpload = ({
         onPhotoUpdate(file);
     };
 
-    const handleInputChange = (e) => {
+    const handleInputChange = e => {
         if (e.target.files && e.target.files[0]) {
             handleFileSelect(e.target.files[0]);
         }
     };
 
-    const handleDrop = (e) => {
+    const handleDrop = e => {
         e.preventDefault();
         setDragOver(false);
 
@@ -41,7 +39,7 @@ export const ProfilePhotoUpload = ({
         }
     };
 
-    const handleDragOver = (e) => {
+    const handleDragOver = e => {
         e.preventDefault();
         setDragOver(true);
     };
@@ -58,42 +56,32 @@ export const ProfilePhotoUpload = ({
     const hasPhoto = Boolean(displayPhoto);
 
     return (
-        <div className={styles["photo-upload-container"]}>
+        <div className={styles['photo-upload-container']}>
             <div
-                className={`${styles["photo-wrapper"]} ${
-                    dragOver ? styles["drag-over"] : ""
-                }`}
+                className={`${styles['photo-wrapper']} ${dragOver ? styles['drag-over'] : ''}`}
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onClick={handleClick}
             >
                 {currentPhoto ? (
-                    <img
-                        src={displayPhoto}
-                        alt="Profile"
-                        className={styles["profile-photo"]}
-                    />
+                    <img src={displayPhoto} alt="Profile" className={styles['profile-photo']} />
                 ) : (
                     <img
                         src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1750959197/user-1699635_1280_z3dgxn.png"
                         alt="Profile"
-                        className={styles["profile-photo"]}
+                        className={styles['profile-photo']}
                     />
                 )}
 
-                <div
-                    className={`${styles["overlay"]} ${
-                        isUploading ? styles["uploading"] : ""
-                    }`}
-                >
+                <div className={`${styles['overlay']} ${isUploading ? styles['uploading'] : ''}`}>
                     {isUploading ? (
-                        <div className={styles["loading-spinner"]} />
+                        <div className={styles['loading-spinner']} />
                     ) : (
                         <>
                             <Icon name="camera" fontSize={24} />
-                            <span className={styles["upload-text"]}>
-                                {hasPhoto ? "Change Photo" : "Add Photo"}
+                            <span className={styles['upload-text']}>
+                                {hasPhoto ? 'Change Photo' : 'Add Photo'}
                             </span>
                         </>
                     )}
@@ -105,15 +93,13 @@ export const ProfilePhotoUpload = ({
                 type="file"
                 accept="image/*"
                 onChange={handleInputChange}
-                className={styles["hidden-input"]}
+                className={styles['hidden-input']}
             />
 
-            <p className={styles["helper-text"]}>
+            <p className={styles['helper-text']}>
                 Click to upload or drag and drop
                 <br />
-                <span className={styles["file-info"]}>
-                    JPG, PNG or GIF (max 5MB)
-                </span>
+                <span className={styles['file-info']}>JPG, PNG or GIF (max 5MB)</span>
             </p>
         </div>
     );

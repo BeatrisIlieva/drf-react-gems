@@ -76,21 +76,13 @@
     animation: slideIn $duration $delay $fill-mode;
 }
 
-@mixin animate-slide-in-from-right(
-    $duration: 0.3s,
-    $delay: 0s,
-    $fill-mode: forwards
-) {
+@mixin animate-slide-in-from-right($duration: 0.3s, $delay: 0s, $fill-mode: forwards) {
     opacity: 0;
     transform: translateX(100%);
     animation: slideInFromRight $duration ease-out $delay $fill-mode;
 }
 
-@mixin animate-slide-out-to-right(
-    $duration: 0.3s,
-    $delay: 0s,
-    $fill-mode: forwards
-) {
+@mixin animate-slide-out-to-right($duration: 0.3s, $delay: 0s, $fill-mode: forwards) {
     opacity: 1;
     transform: translateX(0);
     animation: slideOutToRight $duration ease-in $delay $fill-mode;

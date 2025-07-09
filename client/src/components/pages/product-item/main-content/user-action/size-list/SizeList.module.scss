@@ -1,4 +1,4 @@
-@use "../../../../../../styles/variables" as vars;
+@use '../../../../../../styles/variables' as vars;
 
 .size-list {
     display: grid;
@@ -31,7 +31,7 @@
     }
 
     button.sold-out::before {
-        content: "";
+        content: '';
         position: absolute;
         top: 50%;
         left: 0;

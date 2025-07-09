@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
 export const useToggleDisplayModal = () => {
     const [displayModal, setDisplayModal] = useState(false);
@@ -6,25 +6,22 @@ export const useToggleDisplayModal = () => {
     const containerRef = useRef(null);
 
     const toggleDisplayModal = () => {
-        setDisplayModal((prev) => !prev);
+        setDisplayModal(prev => !prev);
     };
 
     useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (
-                containerRef.current &&
-                !containerRef.current.contains(event.target)
-            ) {
+        const handleClickOutside = event => {
+            if (containerRef.current && !containerRef.current.contains(event.target)) {
                 setDisplayModal(false);
             }
         };
 
         if (displayModal) {
-            document.addEventListener("mousedown", handleClickOutside);
+            document.addEventListener('mousedown', handleClickOutside);
         }
 
         return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [displayModal]);
 

@@ -1,21 +1,16 @@
-import { useState, useActionState, useCallback } from "react";
+import { useActionState, useCallback, useState } from 'react';
 
-import { getFormFieldErrorMessage } from "../utils/getFormFieldErrorMessage";
-import { useFocusOnInvalidInput } from "./useFocusOnInvalidInput";
+import { useFocusOnInvalidInput } from './useFocusOnInvalidInput';
+
+import { getFormFieldErrorMessage } from '../utils/getFormFieldErrorMessage';
 
 export const useForm = (initialFormValues, options = {}) => {
-    const {
-        validateOnSubmit = true,
-        resetOnSuccess = false,
-        onSubmit,
-        customValidation,
-    } = options;
+    const { validateOnSubmit = true, resetOnSuccess = false, onSubmit, customValidation } = options;
 
     const [formData, setFormData] = useState(initialFormValues);
     const [interactedFields, setInteractedFields] = useState(new Set());
 
-    const { formRef, registerInput, focusFirstInvalid } =
-        useFocusOnInvalidInput();
+    const { formRef, registerInput, focusFirstInvalid } = useFocusOnInvalidInput();
 
     const handleFormSubmission = async () => {
         if (validateOnSubmit) {
@@ -23,7 +18,7 @@ export const useForm = (initialFormValues, options = {}) => {
             if (!isValid) {
                 return {
                     success: false,
-                    error: "Form validation failed",
+                    error: 'Form validation failed',
                 };
             }
         }
@@ -44,10 +39,7 @@ export const useForm = (initialFormValues, options = {}) => {
         return { success: true };
     };
 
-    const [formState, submitFormAction, isSubmitting] = useActionState(
-        handleFormSubmission,
-        null,
-    );
+    const [formState, submitFormAction, isSubmitting] = useActionState(handleFormSubmission, null);
 
     const submitAction = submitFormAction;
 
@@ -57,20 +49,20 @@ export const useForm = (initialFormValues, options = {}) => {
                 ? customValidation(fieldName, value)
                 : getFormFieldErrorMessage(fieldName, value);
 
-            setFormData((state) => ({
+            setFormData(state => ({
                 ...state,
                 [fieldName]: {
                     value,
-                    error: preserveError ? state[fieldName]?.error || "" : "",
-                    valid: markAsInteracted ? error === "" : false,
+                    error: preserveError ? state[fieldName]?.error || '' : '',
+                    valid: markAsInteracted ? error === '' : false,
                 },
             }));
 
             if (markAsInteracted) {
-                setInteractedFields((prev) => new Set(prev).add(fieldName));
+                setInteractedFields(prev => new Set(prev).add(fieldName));
             }
         },
-        [customValidation],
+        [customValidation]
     );
 
     const validateFields = useCallback(() => {
@@ -84,14 +76,14 @@ export const useForm = (initialFormValues, options = {}) => {
                 ? customValidation(field, fieldData.value)
                 : getFormFieldErrorMessage(field, fieldData.value);
 
-            if (errorMessage !== "") {
+            if (errorMessage !== '') {
                 isValid = false;
             }
 
             updatedFormData[field] = {
                 ...fieldData,
                 error: errorMessage,
-                valid: errorMessage === "",
+                valid: errorMessage === '',
             };
         });
 
@@ -104,16 +96,16 @@ export const useForm = (initialFormValues, options = {}) => {
         return isValid;
     }, [formData, customValidation, focusFirstInvalid]);
 
-    const validateField = (e) => {
+    const validateField = e => {
         const { name, value } = e.target;
         const error = customValidation
             ? customValidation(name, value)
             : getFormFieldErrorMessage(name, value);
-        const valid = error === "";
+        const valid = error === '';
 
-        setInteractedFields((prev) => new Set(prev).add(name));
+        setInteractedFields(prev => new Set(prev).add(name));
 
-        setFormData((state) => ({
+        setFormData(state => ({
             ...state,
             [name]: {
                 value,
@@ -123,43 +115,42 @@ export const useForm = (initialFormValues, options = {}) => {
         }));
     };
 
-    const handleFieldChange = (e) => {
+    const handleFieldChange = e => {
         const { name, value } = e.target;
         const error = customValidation
             ? customValidation(name, value)
             : getFormFieldErrorMessage(name, value);
-        const isFieldValid = error === "";
+        const isFieldValid = error === '';
         const hasInteracted = interactedFields.has(name);
 
         const shouldShowValid =
-            (hasInteracted && isFieldValid) ||
-            (String(value).trim() !== "" && isFieldValid);
+            (hasInteracted && isFieldValid) || (String(value).trim() !== '' && isFieldValid);
 
-        setFormData((state) => ({
+        setFormData(state => ({
             ...state,
             [name]: {
                 value,
-                error: isFieldValid ? "" : state[name]?.error || "",
+                error: isFieldValid ? '' : state[name]?.error || '',
                 valid: shouldShowValid,
             },
         }));
     };
 
     const handleServerSideErrors = useCallback(
-        (serverResponse) => {
-            if (!serverResponse || typeof serverResponse !== "object") {
+        serverResponse => {
+            if (!serverResponse || typeof serverResponse !== 'object') {
                 return false;
             }
 
             let hasErrors = false;
             let updatedFormData = {};
 
-            Object.keys(initialFormValues).forEach((fieldName) => {
+            Object.keys(initialFormValues).forEach(fieldName => {
                 if (serverResponse[fieldName]) {
                     hasErrors = true;
                     updatedFormData[fieldName] = {
                         error: Array.isArray(serverResponse[fieldName])
-                            ? serverResponse[fieldName].join(" ")
+                            ? serverResponse[fieldName].join(' ')
                             : serverResponse[fieldName],
                         valid: false,
                     };
@@ -167,37 +158,30 @@ export const useForm = (initialFormValues, options = {}) => {
             });
 
             const fieldMapping = {
-                current_password: "currentPassword",
-                new_password: "newPassword",
-                email_or_username: "email_or_username",
-                first_name: "firstName",
-                last_name: "lastName",
-                phone_number: "phoneNumber",
+                current_password: 'currentPassword',
+                new_password: 'newPassword',
+                email_or_username: 'email_or_username',
+                first_name: 'firstName',
+                last_name: 'lastName',
+                phone_number: 'phoneNumber',
             };
 
-            Object.entries(fieldMapping).forEach(
-                ([serverFieldName, clientFieldName]) => {
-                    if (
-                        serverResponse[serverFieldName] &&
-                        initialFormValues[clientFieldName]
-                    ) {
-                        hasErrors = true;
-                        updatedFormData[clientFieldName] = {
-                            error: Array.isArray(
-                                serverResponse[serverFieldName],
-                            )
-                                ? serverResponse[serverFieldName].join(" ")
-                                : serverResponse[serverFieldName],
-                            valid: false,
-                        };
-                    }
-                },
-            );
+            Object.entries(fieldMapping).forEach(([serverFieldName, clientFieldName]) => {
+                if (serverResponse[serverFieldName] && initialFormValues[clientFieldName]) {
+                    hasErrors = true;
+                    updatedFormData[clientFieldName] = {
+                        error: Array.isArray(serverResponse[serverFieldName])
+                            ? serverResponse[serverFieldName].join(' ')
+                            : serverResponse[serverFieldName],
+                        valid: false,
+                    };
+                }
+            });
 
             if (hasErrors) {
-                setFormData((state) => {
+                setFormData(state => {
                     const newState = { ...state };
-                    Object.keys(updatedFormData).forEach((fieldName) => {
+                    Object.keys(updatedFormData).forEach(fieldName => {
                         if (newState[fieldName]) {
                             newState[fieldName] = {
                                 ...newState[fieldName],
@@ -216,13 +200,13 @@ export const useForm = (initialFormValues, options = {}) => {
 
             return hasErrors;
         },
-        [initialFormValues, focusFirstInvalid],
+        [initialFormValues, focusFirstInvalid]
     );
 
     const getInputClassName = ({ error, valid }) => {
-        if (valid) return "valid";
-        if (error) return "invalid";
-        return "";
+        if (valid) return 'valid';
+        if (error) return 'invalid';
+        return '';
     };
 
     const resetForm = () => {
@@ -231,14 +215,14 @@ export const useForm = (initialFormValues, options = {}) => {
     };
 
     const resetValidationStates = useCallback(() => {
-        setFormData((state) => {
+        setFormData(state => {
             const resetState = { ...state };
             for (const key in resetState) {
                 if (resetState[key]) {
                     resetState[key] = {
                         ...resetState[key],
                         valid: false,
-                        error: "",
+                        error: '',
                     };
                 }
             }

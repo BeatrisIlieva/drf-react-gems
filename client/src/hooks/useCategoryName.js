@@ -1,5 +1,6 @@
-import { useMemo } from "react";
-import { useParams } from "react-router";
+import { useMemo } from 'react';
+
+import { useParams } from 'react-router';
 
 export const useCategoryName = () => {
     const { categoryName } = useParams();
@@ -12,8 +13,7 @@ export const useCategoryName = () => {
             };
         }
 
-        const capitalized =
-            categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
+        const capitalized = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
         const singular = capitalized.slice(0, -1);
 
         return {

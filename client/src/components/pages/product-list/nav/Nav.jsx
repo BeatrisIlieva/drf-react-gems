@@ -1,11 +1,11 @@
-import { SortBy } from "./sort-by/SortBy";
-import { Filters } from "./filters/Filters";
+import { Filters } from './filters/Filters';
+import { SortBy } from './sort-by/SortBy';
 
-import styles from "./Nav.module.scss";
+import styles from './Nav.module.scss';
 
 export const Nav = () => {
     return (
-        <nav className={styles["secondary-nav"]}>
+        <nav className={styles['secondary-nav']}>
             <ul>
                 <Filters />
                 <SortBy />

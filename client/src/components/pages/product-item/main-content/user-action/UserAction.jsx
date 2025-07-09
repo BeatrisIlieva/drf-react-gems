@@ -1,18 +1,23 @@
-import styles from "./UserAction.module.scss";
-import { useCategoryName } from "../../../../../hooks/useCategoryName";
-import { StyledTextBlock } from "../../../../reusable/styled-text-block/StyledTextBlock";
-import { formatPrice } from "../../../../../utils/formatPrice";
-import { RelatedProducts } from "./related-products/RelatedProducts";
-import { SizeList } from "./size-list/SizeList";
-import { Button } from "../../../../reusable/button/Button";
-import { Icon } from "../../../../reusable/icon/Icon";
-import { useProductItemContext } from "../../../../../contexts/ProductItemContext";
-import { ComplimentaryShipping } from "../../../../reusable/complimentary-shipping/ComplimentaryShipping";
-import { useWishlistContext } from "../../../../../contexts/WishlistContext";
-import { Popup } from "../../../../reusable/popup/Popup";
-import { useShoppingBagContext } from "../../../../../contexts/ShoppingBagContext";
-import { ShoppingBagItem } from "../../../shopping-bag/shopping-bag-list/shopping-bag-item/ShoppingBagItem";
-import { useNavigate } from "react-router";
+import { useNavigate } from 'react-router';
+
+import { Button } from '../../../../reusable/button/Button';
+import { ComplimentaryShipping } from '../../../../reusable/complimentary-shipping/ComplimentaryShipping';
+import { Icon } from '../../../../reusable/icon/Icon';
+import { Popup } from '../../../../reusable/popup/Popup';
+import { StyledTextBlock } from '../../../../reusable/styled-text-block/StyledTextBlock';
+import { ShoppingBagItem } from '../../../shopping-bag/shopping-bag-list/shopping-bag-item/ShoppingBagItem';
+import { RelatedProducts } from './related-products/RelatedProducts';
+import { SizeList } from './size-list/SizeList';
+
+import { useCategoryName } from '../../../../../hooks/useCategoryName';
+
+import { useProductItemContext } from '../../../../../contexts/ProductItemContext';
+import { useShoppingBagContext } from '../../../../../contexts/ShoppingBagContext';
+import { useWishlistContext } from '../../../../../contexts/WishlistContext';
+
+import { formatPrice } from '../../../../../utils/formatPrice';
+
+import styles from './UserAction.module.scss';
 
 export const UserAction = () => {
     const { categoryNameCapitalizedSingular, categoryName } = useCategoryName();
@@ -38,10 +43,10 @@ export const UserAction = () => {
         useShoppingBagContext();
 
     const selectedInventoryItem = selectedSize
-        ? inventory.find((item) => item.size.id === selectedSize)
+        ? inventory.find(item => item.size.id === selectedSize)
         : null;
 
-    const prices = inventory.map((item) => parseFloat(item.price));
+    const prices = inventory.map(item => parseFloat(item.price));
 
     const formattedMinPrice = formatPrice(Math.min(...prices).toString());
     const formattedMaxPrice = formatPrice(Math.max(...prices).toString());
@@ -59,10 +64,8 @@ export const UserAction = () => {
 
     return (
         <section
-            className={`${styles["user-action"]} ${
-                isAddingToBag
-                    ? "animate-fade-out duration-300ms"
-                    : "animate-fade-in duration-500ms"
+            className={`${styles['user-action']} ${
+                isAddingToBag ? 'animate-fade-out duration-300ms' : 'animate-fade-in duration-500ms'
             }`}
         >
             <h1>
@@ -74,7 +77,7 @@ export const UserAction = () => {
                 isSubtle={true}
             />
             <p
-                className={`${styles["price-display"]} ${selectedInventoryItem ? styles["selected-price"] : ""} ${isAddingToBag ? "animate-pulse" : ""}`}
+                className={`${styles['price-display']} ${selectedInventoryItem ? styles['selected-price'] : ''} ${isAddingToBag ? 'animate-pulse' : ''}`}
             >
                 {selectedInventoryItem ? (
                     <span>{formatPrice(selectedInventoryItem.price)}</span>
@@ -89,69 +92,52 @@ export const UserAction = () => {
             <RelatedProducts />
             <p
                 className={`${
-                    notSelectedSizeError ? styles["error"] : ""
-                } ${isAddingToBag ? "animate-pulse" : ""}`.trim()}
+                    notSelectedSizeError ? styles['error'] : ''
+                } ${isAddingToBag ? 'animate-pulse' : ''}`.trim()}
             >
                 Size:
             </p>
             <SizeList />
-            <p
-                className={`${
-                    notSelectedSizeError ? styles["error"] : styles["invisible"]
-                }`.trim()}
-            >
+            <p className={`${notSelectedSizeError ? styles['error'] : styles['invisible']}`.trim()}>
                 Please select a size.
             </p>
 
-            <div className={styles["buttons-wrapper"]}>
+            <div className={styles['buttons-wrapper']}>
                 <Button
-                    title={
-                        isAddingToBag
-                            ? "Adding..."
-                            : isSoldOut
-                              ? "Sold Out"
-                              : "Add to Bag"
-                    }
-                    color={isSoldOut ? "grey" : "black"}
+                    title={isAddingToBag ? 'Adding...' : isSoldOut ? 'Sold Out' : 'Add to Bag'}
+                    color={isSoldOut ? 'grey' : 'black'}
                     callbackHandler={createShoppingBagHandler}
-                    actionType={"button"}
+                    actionType={'button'}
                     disabled={isSoldOut || isAddingToBag}
                     buttonGrow="1"
-                    className={isAddingToBag ? "animate-pulse" : ""}
+                    className={isAddingToBag ? 'animate-pulse' : ''}
                 />
                 <Button
-                    title={
-                        <Icon
-                            name={isItemInWishlist ? "heart-filled" : "heart"}
-                        />
-                    }
-                    color={"black"}
-                    actionType={"button"}
-                    callbackHandler={() =>
-                        handleWishlistToggle(category + "s", productId)
-                    }
+                    title={<Icon name={isItemInWishlist ? 'heart-filled' : 'heart'} />}
+                    color={'black'}
+                    actionType={'button'}
+                    callbackHandler={() => handleWishlistToggle(category + 's', productId)}
                 />
             </div>
             <ComplimentaryShipping />
             <Popup isOpen={isMiniBagPopupOpen} onClose={toggleMiniBagPopupOpen}>
-                <div className={styles["mini-bag-header"]}>
+                <div className={styles['mini-bag-header']}>
                     <h3>Your Bag</h3>
                     <span>
-                        {shoppingBagItemsCount}{" "}
-                        {shoppingBagItemsCount > 1 ? "items" : "item"}
+                        {shoppingBagItemsCount} {shoppingBagItemsCount > 1 ? 'items' : 'item'}
                     </span>
                 </div>
 
-                <ul className={styles["shopping-bag-list"]}>
-                    {shoppingBagItems.map((item) => (
+                <ul className={styles['shopping-bag-list']}>
+                    {shoppingBagItems.map(item => (
                         <ShoppingBagItem key={item.id} {...item} />
                     ))}
                 </ul>
-                <div className={styles["total-price-wrapper"]}>
+                <div className={styles['total-price-wrapper']}>
                     <span>Total</span>
                     <span>{formatPrice(shoppingBagTotalPrice)}</span>
                 </div>
-                <div className={styles["mini-bag-buttons-wrapper"]}>
+                <div className={styles['mini-bag-buttons-wrapper']}>
                     <Button
                         title="View Bag"
                         color="white"

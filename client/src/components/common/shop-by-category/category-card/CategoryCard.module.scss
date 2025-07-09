@@ -1,4 +1,4 @@
-@use "../../../../styles/variables" as vars;
+@use '../../../../styles/variables' as vars;
 
 .thumbnail {
     display: flex;
@@ -18,7 +18,7 @@
     background: vars.$white;
     opacity: 0.8;
     height: 3.5em;
-    content: "";
+    content: '';
 }
 
 .thumbnail > h5 {

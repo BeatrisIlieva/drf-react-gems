@@ -1,18 +1,18 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { ProductListContext } from "../contexts/ProductListContext";
-import { useProductList } from "../api/productListApi";
-import { useCategoryName } from "../hooks/useCategoryName";
-import { usePagination } from "../hooks/usePagination";
+import { useProductList } from '../api/productListApi';
 
-import { useProductFiltersContext } from "../contexts/ProductFiltersContext";
+import { useCategoryName } from '../hooks/useCategoryName';
+import { usePagination } from '../hooks/usePagination';
+
+import { useProductFiltersContext } from '../contexts/ProductFiltersContext';
+import { ProductListContext } from '../contexts/ProductListContext';
 
 export const ProductListProvider = ({ children }) => {
     const { categoryName } = useCategoryName();
     const { getProductList } = useProductList();
     const { nextPage, updatePage } = usePagination();
-    const { colorIds, stoneIds, metalIds, collectionIds } =
-        useProductFiltersContext();
+    const { colorIds, stoneIds, metalIds, collectionIds } = useProductFiltersContext();
 
     const [count, setCount] = useState(0);
     const [products, setProducts] = useState([]);
@@ -60,7 +60,7 @@ export const ProductListProvider = ({ children }) => {
                 }
 
                 if (shouldUpdateProducts) {
-                    setProducts((prev) => [...prev, ...response.results]);
+                    setProducts(prev => [...prev, ...response.results]);
                 } else {
                     setProducts(response.results);
                 }
@@ -69,7 +69,7 @@ export const ProductListProvider = ({ children }) => {
                     resetOrdering();
                 }
             } catch (err) {
-                setError(err.message || "Failed to load products");
+                setError(err.message || 'Failed to load products');
                 if (!shouldUpdateProducts) {
                     setProducts([]);
                 }
@@ -77,11 +77,11 @@ export const ProductListProvider = ({ children }) => {
                 setLoading(false);
             }
         },
-        [getProductList, updatePage, resetOrdering],
+        [getProductList, updatePage, resetOrdering]
     );
 
     const updateOrdering = useCallback(
-        (criteria) => {
+        criteria => {
             setOrdering(criteria);
 
             fetchProducts({
@@ -93,15 +93,7 @@ export const ProductListProvider = ({ children }) => {
                 ordering: criteria,
             });
         },
-        [
-            categoryName,
-            colorIds,
-            stoneIds,
-            metalIds,
-            collectionIds,
-            fetchProducts,
-            setOrdering,
-        ],
+        [categoryName, colorIds, stoneIds, metalIds, collectionIds, fetchProducts, setOrdering]
     );
 
     const loadMoreHandler = useCallback(async () => {
@@ -183,12 +175,10 @@ export const ProductListProvider = ({ children }) => {
             ordering,
             fetchProducts,
             count,
-        ],
+        ]
     );
 
     return (
-        <ProductListContext.Provider value={contextValue}>
-            {children}
-        </ProductListContext.Provider>
+        <ProductListContext.Provider value={contextValue}>{children}</ProductListContext.Provider>
     );
 };

@@ -1,8 +1,10 @@
-import { useCallback } from "react";
-import { useApi } from "../hooks/useApi";
-import { keysToCamelCase } from "../utils/convertToCamelCase";
+import { useCallback } from 'react';
 
-import { HOST } from "../constants/host";
+import { useApi } from '../hooks/useApi';
+
+import { keysToCamelCase } from '../utils/convertToCamelCase';
+
+import { HOST } from '../constants/host';
 
 const baseUrl = `${HOST}/api/products`;
 
@@ -21,7 +23,7 @@ export const useProductItem = () => {
                 console.error(error);
             }
         },
-        [get],
+        [get]
     );
 
     return { getProductItem };

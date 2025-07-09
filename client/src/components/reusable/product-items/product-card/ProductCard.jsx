@@ -1,15 +1,20 @@
-import { useCallback, useEffect, useState } from "react";
-import { useCategoryName } from "../../../../hooks/useCategoryName";
-import { formatPrice } from "../../../../utils/formatPrice";
-import { useNavigate } from "react-router";
-import { useWishlistContext } from "../../../../contexts/WishlistContext";
-import styles from "./ProductCard.module.scss";
-import { Icon } from "../../icon/Icon";
-import { InventoryState } from "./inventory-state/InventoryState";
-import { ToggleImageButtons } from "./toggle-image-buttons/ToggleImageButtons";
-import { StyledTextBlock } from "../../styled-text-block/StyledTextBlock";
-import { Stars } from "../../stars/Stars";
-import { ProductItems } from "../ProductItems";
+import { useCallback, useEffect, useState } from 'react';
+
+import { useNavigate } from 'react-router';
+
+import { Icon } from '../../icon/Icon';
+import { Stars } from '../../stars/Stars';
+import { StyledTextBlock } from '../../styled-text-block/StyledTextBlock';
+import { InventoryState } from './inventory-state/InventoryState';
+import { ToggleImageButtons } from './toggle-image-buttons/ToggleImageButtons';
+
+import { useCategoryName } from '../../../../hooks/useCategoryName';
+
+import { useWishlistContext } from '../../../../contexts/WishlistContext';
+
+import { formatPrice } from '../../../../utils/formatPrice';
+
+import styles from './ProductCard.module.scss';
 
 export const ProductCard = ({
     id,
@@ -45,33 +50,26 @@ export const ProductCard = ({
     }, [categoryName]);
 
     const capitalizedCategoryName =
-        categoryParam.charAt(0).toUpperCase() +
-        categoryParam.slice(1, categoryParam.length - 1);
+        categoryParam.charAt(0).toUpperCase() + categoryParam.slice(1, categoryParam.length - 1);
 
     return (
-        <article className={styles["product-card"]}>
-            <div className={styles["wrapper"]}>
+        <article className={styles['product-card']}>
+            <div className={styles['wrapper']}>
                 <button
                     onClick={() => handleWishlistToggle(`${category}s`, id)}
-                    className={styles["wishlist-button"]}
-                    aria-label={
-                        isItemInWishlist
-                            ? "Remove from wishlist"
-                            : "Add to wishlist"
-                    }
+                    className={styles['wishlist-button']}
+                    aria-label={isItemInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
                 >
-                    <Icon name={isItemInWishlist ? "heart-filled" : "heart"} />
+                    <Icon name={isItemInWishlist ? 'heart-filled' : 'heart'} />
                 </button>
 
-                <div className={styles["thumbnail"]}>
+                <div className={styles['thumbnail']}>
                     <img
-                        src={
-                            selectedImageIndex === 0 ? firstImage : secondImage
-                        }
+                        src={selectedImageIndex === 0 ? firstImage : secondImage}
                         className={`${
                             selectedImageIndex === 0
-                                ? styles["slide-in-right"]
-                                : styles["slide-in-left"]
+                                ? styles['slide-in-right']
+                                : styles['slide-in-left']
                         }`}
                         alt={collectionName}
                         onClick={navigateToProductItem}
@@ -81,7 +79,7 @@ export const ProductCard = ({
                 <footer>
                     <InventoryState
                         positive={isSoldOut}
-                        label={isSoldOut ? "Sold Out" : "In Stock"}
+                        label={isSoldOut ? 'Sold Out' : 'In Stock'}
                     />
                     <ToggleImageButtons
                         selectedIndex={selectedImageIndex}
@@ -89,10 +87,8 @@ export const ProductCard = ({
                     />
                 </footer>
             </div>
-            <div className={styles["product-info"]}>
-                <StyledTextBlock
-                    text={`${collectionName} ${capitalizedCategoryName}`}
-                />
+            <div className={styles['product-info']}>
+                <StyledTextBlock text={`${collectionName} ${capitalizedCategoryName}`} />
                 <StyledTextBlock
                     text={`${formattedMinPrice} - ${formattedMaxPrice}`}
                     isLighter={true}

@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
-import { useOrder } from '../../../../api/orderApi';
-import styles from './OrderHistory.module.scss';
+import { useEffect, useState } from 'react';
+
 import { EmptyList } from '../../../reusable/empty-list/EmptyList';
 import { PaddedContainer } from '../../../reusable/padded-container/PaddedContainer';
 import { OrderList } from './order-list/OrderList';
+
+import { useOrder } from '../../../../api/orderApi';
+
+import styles from './OrderHistory.module.scss';
 
 export const OrderHistory = () => {
     const [orders, setOrders] = useState([]);
@@ -44,7 +47,7 @@ export const OrderHistory = () => {
                             </section>
                         </PaddedContainer>
                     ) : (
-                        <EmptyList title='Order History' />
+                        <EmptyList title="Order History" />
                     )}
                 </>
             )}

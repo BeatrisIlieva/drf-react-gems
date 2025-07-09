@@ -1,7 +1,9 @@
-import { useMemo, useState, useEffect, useCallback, useContext } from "react";
-import { WishlistContext } from "../contexts/WishlistContext";
-import { UserContext } from "../contexts/UserContext";
-import { useWishlist } from "../api/wishlistApi";
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+
+import { useWishlist } from '../api/wishlistApi';
+
+import { UserContext } from '../contexts/UserContext';
+import { WishlistContext } from '../contexts/WishlistContext';
 
 export const WishlistProvider = ({ children }) => {
     const [wishlistItems, setWishlistItems] = useState([]);
@@ -28,8 +30,8 @@ export const WishlistProvider = ({ children }) => {
                         wishlistId: newItem.id,
                         categoryName: `${newItem.contentType}s`,
                     };
-                    setWishlistItems((prev) => [...prev, transformedItem]);
-                    setWishlistItemsCount((prev) => prev + 1);
+                    setWishlistItems(prev => [...prev, transformedItem]);
+                    setWishlistItemsCount(prev => prev + 1);
                     return true;
                 }
                 return false;
@@ -37,7 +39,7 @@ export const WishlistProvider = ({ children }) => {
                 return false;
             }
         },
-        [createItem],
+        [createItem]
     );
 
     const removeFromWishlist = useCallback(
@@ -49,16 +51,13 @@ export const WishlistProvider = ({ children }) => {
                 });
 
                 if (success) {
-                    setWishlistItems((prev) =>
+                    setWishlistItems(prev =>
                         prev.filter(
-                            (item) =>
-                                !(
-                                    item.contentType === contentType &&
-                                    item.objectId === objectId
-                                ),
-                        ),
+                            item =>
+                                !(item.contentType === contentType && item.objectId === objectId)
+                        )
                     );
-                    setWishlistItemsCount((prev) => Math.max(0, prev - 1));
+                    setWishlistItemsCount(prev => Math.max(0, prev - 1));
                     return true;
                 }
                 return false;
@@ -66,19 +65,19 @@ export const WishlistProvider = ({ children }) => {
                 return false;
             }
         },
-        [deleteItem],
+        [deleteItem]
     );
 
     const isInWishlist = useCallback(
         (contentType, objectId) => {
             if (!contentType || !objectId) return false;
 
-            const standardizedContentType = contentType.endsWith("s")
+            const standardizedContentType = contentType.endsWith('s')
                 ? contentType.slice(0, -1)
                 : contentType;
 
-            return wishlistItems.some((item) => {
-                const itemContentType = item.contentType?.endsWith("s")
+            return wishlistItems.some(item => {
+                const itemContentType = item.contentType?.endsWith('s')
                     ? item.contentType.slice(0, -1)
                     : item.contentType;
 
@@ -92,7 +91,7 @@ export const WishlistProvider = ({ children }) => {
                 let categoryMatches = false;
                 if (item.category) {
                     const itemCategory =
-                        typeof item.category === "string"
+                        typeof item.category === 'string'
                             ? item.category.toLowerCase()
                             : item.category.name?.toLowerCase();
 
@@ -100,13 +99,12 @@ export const WishlistProvider = ({ children }) => {
                 }
 
                 const contentTypeMatches =
-                    itemContentType === standardizedContentType ||
-                    categoryMatches;
+                    itemContentType === standardizedContentType || categoryMatches;
 
                 return contentTypeMatches && idMatches;
             });
         },
-        [wishlistItems],
+        [wishlistItems]
     );
 
     const handleWishlistToggle = useCallback(
@@ -121,7 +119,7 @@ export const WishlistProvider = ({ children }) => {
                 }
             }
         },
-        [addToWishlist, removeFromWishlist, isInWishlist],
+        [addToWishlist, removeFromWishlist, isInWishlist]
     );
 
     useEffect(() => {
@@ -139,7 +137,7 @@ export const WishlistProvider = ({ children }) => {
             try {
                 const response = await getItems();
                 if (response && Array.isArray(response) && mounted) {
-                    const transformedItems = response.map((item) => ({
+                    const transformedItems = response.map(item => ({
                         ...item.productInfo,
                         contentType: item.contentType,
                         objectId: item.objectId,
@@ -175,7 +173,7 @@ export const WishlistProvider = ({ children }) => {
         try {
             const response = await getItems();
             if (response && Array.isArray(response)) {
-                const transformedItems = response.map((item) => ({
+                const transformedItems = response.map(item => ({
                     ...item.productInfo,
                     contentType: item.contentType,
                     objectId: item.objectId,
@@ -214,12 +212,8 @@ export const WishlistProvider = ({ children }) => {
             isInWishlist,
             handleWishlistToggle,
             refreshWishlist,
-        ],
+        ]
     );
 
-    return (
-        <WishlistContext.Provider value={contextValue}>
-            {children}
-        </WishlistContext.Provider>
-    );
+    return <WishlistContext.Provider value={contextValue}>{children}</WishlistContext.Provider>;
 };

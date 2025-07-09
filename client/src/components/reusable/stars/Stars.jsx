@@ -1,14 +1,16 @@
-import { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
-import styles from "./Stars.module.scss";
+import { useEffect, useState } from 'react';
+
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import styles from './Stars.module.scss';
 
 export const Stars = ({
     rating,
     fontSize,
     interactive = false,
     onRatingChange = null,
-    hoverColor = "gold",
+    hoverColor = 'gold',
 }) => {
     const [hoveredRating, setHoveredRating] = useState(0);
     const [selectedRating, setSelectedRating] = useState(rating || 0);
@@ -17,11 +19,9 @@ export const Stars = ({
         setSelectedRating(rating || 0);
     }, [rating]);
 
-    const displayRating = interactive
-        ? hoveredRating || selectedRating
-        : Math.floor(rating || 0);
+    const displayRating = interactive ? hoveredRating || selectedRating : Math.floor(rating || 0);
 
-    const handleStarClick = (starIndex) => {
+    const handleStarClick = starIndex => {
         if (!interactive) return;
 
         const newRating = starIndex + 1;
@@ -31,7 +31,7 @@ export const Stars = ({
         }
     };
 
-    const handleStarHover = (starIndex) => {
+    const handleStarHover = starIndex => {
         if (!interactive) return;
         setHoveredRating(starIndex + 1);
     };
@@ -41,26 +41,20 @@ export const Stars = ({
         setHoveredRating(0);
     };
 
-    const getStarClass = (starIndex) => {
+    const getStarClass = starIndex => {
         if (!interactive) {
-            return starIndex < displayRating ? "filled" : "empty";
+            return starIndex < displayRating ? 'filled' : 'empty';
         }
 
         if (hoveredRating > 0) {
-            return starIndex < hoveredRating
-                ? `hover-${hoverColor}`
-                : "interactive-empty";
+            return starIndex < hoveredRating ? `hover-${hoverColor}` : 'interactive-empty';
         }
 
-        return starIndex < selectedRating ? "filled" : "interactive-empty";
+        return starIndex < selectedRating ? 'filled' : 'interactive-empty';
     };
 
     return (
-        <ul
-            className={`${styles["stars"]} ${
-                interactive ? styles["interactive"] : ""
-            }`}
-        >
+        <ul className={`${styles['stars']} ${interactive ? styles['interactive'] : ''}`}>
             {[...Array(5)].map((_, i) => (
                 <li
                     key={i}
@@ -71,10 +65,7 @@ export const Stars = ({
                     onMouseEnter={() => handleStarHover(i)}
                     onMouseLeave={handleStarLeave}
                 >
-                    <FontAwesomeIcon
-                        icon={faStar}
-                        className={styles[getStarClass(i)]}
-                    />
+                    <FontAwesomeIcon icon={faStar} className={styles[getStarClass(i)]} />
                 </li>
             ))}
         </ul>

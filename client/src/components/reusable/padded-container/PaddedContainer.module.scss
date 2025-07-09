@@ -1,4 +1,4 @@
-@use "../../../styles/variables" as vars;
+@use '../../../styles/variables' as vars;
 
 .padded-container {
     padding: vars.$layout-inline-padding vars.$layout-inline-padding-desktop;

@@ -1,9 +1,12 @@
-import { useCallback } from "react";
-import { useApi } from "../hooks/useApi";
-import { keysToCamelCase } from "../utils/convertToCamelCase";
-import { keysToSnakeCase } from "../utils/convertToSnakeCase";
-import { HOST } from "../constants/host";
-import { useAuth } from "../hooks/useAuth";
+import { useCallback } from 'react';
+
+import { useApi } from '../hooks/useApi';
+import { useAuth } from '../hooks/useAuth';
+
+import { keysToCamelCase } from '../utils/convertToCamelCase';
+import { keysToSnakeCase } from '../utils/convertToSnakeCase';
+
+import { HOST } from '../constants/host';
 
 const baseUrl = `${HOST}/api/products/reviews`;
 
@@ -12,7 +15,7 @@ export const useReview = () => {
     const { isAuthenticated } = useAuth();
 
     const createReview = useCallback(
-        async (reviewData) => {
+        async reviewData => {
             try {
                 const data = keysToSnakeCase(reviewData);
                 const response = await post(`${baseUrl}/`, {
@@ -22,11 +25,11 @@ export const useReview = () => {
                 });
                 return keysToCamelCase(response);
             } catch (error) {
-                console.error("Create review error:", error);
+                console.error('Create review error:', error);
                 throw error;
             }
         },
-        [post, isAuthenticated],
+        [post, isAuthenticated]
     );
 
     const updateReview = useCallback(
@@ -40,15 +43,15 @@ export const useReview = () => {
                 });
                 return keysToCamelCase(response);
             } catch (error) {
-                console.error("Update review error:", error);
+                console.error('Update review error:', error);
                 throw error;
             }
         },
-        [put, isAuthenticated],
+        [put, isAuthenticated]
     );
 
     const deleteReview = useCallback(
-        async (reviewId) => {
+        async reviewId => {
             try {
                 await del(`${baseUrl}/${reviewId}/`, {
                     accessRequired: isAuthenticated,
@@ -56,11 +59,11 @@ export const useReview = () => {
                 });
                 return true;
             } catch (error) {
-                console.error("Delete review error:", error);
+                console.error('Delete review error:', error);
                 throw error;
             }
         },
-        [del, isAuthenticated],
+        [del, isAuthenticated]
     );
 
     const getUserReview = useCallback(
@@ -70,13 +73,10 @@ export const useReview = () => {
             }
 
             try {
-                const response = await get(
-                    `${baseUrl}/user-review/${contentType}/${objectId}/`,
-                    {
-                        accessRequired: isAuthenticated,
-                        refreshRequired: isAuthenticated,
-                    },
-                );
+                const response = await get(`${baseUrl}/user-review/${contentType}/${objectId}/`, {
+                    accessRequired: isAuthenticated,
+                    refreshRequired: isAuthenticated,
+                });
                 return keysToCamelCase(response);
             } catch (error) {
                 if (error.status === 404) {
@@ -85,11 +85,11 @@ export const useReview = () => {
                 if (error.status === 401) {
                     return null;
                 }
-                console.error("Get user review error:", error);
+                console.error('Get user review error:', error);
                 throw error;
             }
         },
-        [get, isAuthenticated],
+        [get, isAuthenticated]
     );
 
     const getApprovedReviews = useCallback(
@@ -100,7 +100,7 @@ export const useReview = () => {
                     {
                         accessRequired: false,
                         refreshRequired: false,
-                    },
+                    }
                 );
                 return keysToCamelCase(response);
             } catch (error) {
@@ -110,7 +110,7 @@ export const useReview = () => {
                 throw error;
             }
         },
-        [get],
+        [get]
     );
 
     return {

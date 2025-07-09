@@ -1,12 +1,16 @@
-import { useState, useEffect } from "react";
-import { Stars } from "../../../../../../reusable/stars/Stars";
-import { Button } from "../../../../../../reusable/button/Button";
-import { useReview } from "../../../../../../../api/reviewApi";
-import { useAuth } from "../../../../../../../hooks/useAuth";
-import styles from "./ReviewForm.module.scss";
-import { Deletion } from "../../../../../../reusable/deletion/Deletion";
-import { Popup } from "../../../../../../reusable/popup/Popup";
-import { DeleteButton } from "../../../../../../reusable/delete-button/DeleteButton";
+import { useEffect, useState } from 'react';
+
+import { Button } from '../../../../../../reusable/button/Button';
+import { DeleteButton } from '../../../../../../reusable/delete-button/DeleteButton';
+import { Deletion } from '../../../../../../reusable/deletion/Deletion';
+import { Popup } from '../../../../../../reusable/popup/Popup';
+import { Stars } from '../../../../../../reusable/stars/Stars';
+
+import { useReview } from '../../../../../../../api/reviewApi';
+
+import { useAuth } from '../../../../../../../hooks/useAuth';
+
+import styles from './ReviewForm.module.scss';
 
 export const ReviewForm = ({
     productId,
@@ -15,14 +19,13 @@ export const ReviewForm = ({
     existingReview = null,
 }) => {
     const [rating, setRating] = useState(existingReview?.rating || 0);
-    const [comment, setComment] = useState(existingReview?.comment || "");
+    const [comment, setComment] = useState(existingReview?.comment || '');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
 
-    const [isDeleteReviewPopupOpen, setIsDeleteReviewPopupOpen] =
-        useState(false);
+    const [isDeleteReviewPopupOpen, setIsDeleteReviewPopupOpen] = useState(false);
 
     const { createReview, updateReview, deleteReview } = useReview();
     const { isAuthenticated } = useAuth();
@@ -30,25 +33,25 @@ export const ReviewForm = ({
     useEffect(() => {
         if (existingReview) {
             setRating(existingReview.rating);
-            setComment(existingReview.comment || "");
+            setComment(existingReview.comment || '');
         } else {
             setRating(0);
-            setComment("");
+            setComment('');
         }
     }, [existingReview]);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async e => {
         e.preventDefault();
 
         setSuccess(false);
 
         if (rating === 0) {
-            setError("Please select a rating");
+            setError('Please select a rating');
             return;
         }
 
         if (!comment.trim()) {
-            setError("Please write a comment");
+            setError('Please write a comment');
             return;
         }
 
@@ -77,29 +80,29 @@ export const ReviewForm = ({
 
             if (!existingReview) {
                 setRating(0);
-                setComment("");
+                setComment('');
             }
 
             setTimeout(() => setSuccess(false), 3000);
         } catch (err) {
-            setError(err.message || "Failed to submit review");
+            setError(err.message || 'Failed to submit review');
         } finally {
             setIsSubmitting(false);
         }
     };
 
-    const handleRatingChange = (newRating) => {
+    const handleRatingChange = newRating => {
         setRating(newRating);
 
-        if (newRating > 0 && error === "Please select a rating") {
+        if (newRating > 0 && error === 'Please select a rating') {
             setError(null);
         }
     };
 
-    const handleCommentChange = (e) => {
+    const handleCommentChange = e => {
         setComment(e.target.value);
 
-        if (e.target.value.trim() && error === "Please write a comment") {
+        if (e.target.value.trim() && error === 'Please write a comment') {
             setError(null);
         }
     };
@@ -122,7 +125,7 @@ export const ReviewForm = ({
 
             setTimeout(() => setSuccess(false), 3000);
         } catch (err) {
-            setError(err.message || "Failed to delete review");
+            setError(err.message || 'Failed to delete review');
         } finally {
             setIsDeleting(false);
         }
@@ -130,18 +133,10 @@ export const ReviewForm = ({
 
     return (
         <>
-            <div className={styles["review-form"]}>
-                <div className={styles["rate-header"]}>
-                    <h5>
-                        {existingReview
-                            ? "Update your review"
-                            : "Rate this product"}
-                    </h5>
-                    <Stars
-                        rating={rating}
-                        interactive={true}
-                        onRatingChange={handleRatingChange}
-                    />
+            <div className={styles['review-form']}>
+                <div className={styles['rate-header']}>
+                    <h5>{existingReview ? 'Update your review' : 'Rate this product'}</h5>
+                    <Stars rating={rating} interactive={true} onRatingChange={handleRatingChange} />
                 </div>
 
                 <form onSubmit={handleSubmit}>
@@ -152,9 +147,7 @@ export const ReviewForm = ({
                         disabled={isSubmitting}
                     />
 
-                    {error && (
-                        <div className={styles["error-message"]}>{error}</div>
-                    )}
+                    {error && <div className={styles['error-message']}>{error}</div>}
 
                     <Button
                         type="submit"

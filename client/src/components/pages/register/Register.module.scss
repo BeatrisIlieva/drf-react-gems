@@ -1,5 +1,5 @@
-@use "../../../styles/variables" as vars;
-@use "../../../styles/animations" as anim;
+@use '../../../styles/variables' as vars;
+@use '../../../styles/animations' as anim;
 
 .register {
     display: flex;
@@ -49,7 +49,7 @@
         letter-spacing: 0.03em;
     }
 
-    input[type="checkbox"] {
+    input[type='checkbox'] {
         appearance: none;
         position: relative;
         aspect-ratio: 1 / 1;
@@ -78,14 +78,14 @@
         }
 
         &::after {
-            content: "";
+            content: '';
             background: vars.$black;
             width: 100%;
             aspect-ratio: 1 / 1;
         }
 
         &::before {
-            content: "\2713";
+            content: '\2713';
             color: vars.$white;
             z-index: 2;
             font-size: 1.2em;

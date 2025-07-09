@@ -1,20 +1,18 @@
-import styles from "./PaddedContainer.module.scss";
+import styles from './PaddedContainer.module.scss';
 
 export const PaddedContainer = ({ children, backgroundColor }) => {
-    const getBackgroundClass = (bgColor) => {
+    const getBackgroundClass = bgColor => {
         const colorMap = {
-            white: styles["padded-container--white"],
-            "lightest-grey": styles["padded-container--lightest-grey"],
+            white: styles['padded-container--white'],
+            'lightest-grey': styles['padded-container--lightest-grey'],
         };
-        return colorMap[bgColor] || "";
+        return colorMap[bgColor] || '';
     };
 
-    const backgroundClass = backgroundColor
-        ? getBackgroundClass(backgroundColor)
-        : "";
-    const containerClasses = [styles["padded-container"], backgroundClass]
+    const backgroundClass = backgroundColor ? getBackgroundClass(backgroundColor) : '';
+    const containerClasses = [styles['padded-container'], backgroundClass]
         .filter(Boolean)
-        .join(" ");
+        .join(' ');
 
     return <div className={containerClasses}>{children}</div>;
 };

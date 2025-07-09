@@ -1,9 +1,12 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { ProductFiltersContext } from "../contexts/ProductFiltersContext";
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { toggleIdInArray } from "../utils/toggleIdInArray";
-import { useFilters } from "../api/filtersApi";
-import { useCategoryName } from "../hooks/useCategoryName";
+import { useFilters } from '../api/filtersApi';
+
+import { useCategoryName } from '../hooks/useCategoryName';
+
+import { ProductFiltersContext } from '../contexts/ProductFiltersContext';
+
+import { toggleIdInArray } from '../utils/toggleIdInArray';
 
 export const ProductFiltersProvider = ({ children }) => {
     const { categoryName } = useCategoryName();
@@ -25,18 +28,17 @@ export const ProductFiltersProvider = ({ children }) => {
             Metal: metalIds,
             Collection: collectionIds,
         }),
-        [colorIds, stoneIds, metalIds, collectionIds],
+        [colorIds, stoneIds, metalIds, collectionIds]
     );
 
     const filterToggleFunctions = useMemo(
         () => ({
-            Collection: (id) =>
-                setCollectionIds((prev) => toggleIdInArray(prev, id)),
-            Color: (id) => setColorIds((prev) => toggleIdInArray(prev, id)),
-            Metal: (id) => setMetalIds((prev) => toggleIdInArray(prev, id)),
-            Stone: (id) => setStoneIds((prev) => toggleIdInArray(prev, id)),
+            Collection: id => setCollectionIds(prev => toggleIdInArray(prev, id)),
+            Color: id => setColorIds(prev => toggleIdInArray(prev, id)),
+            Metal: id => setMetalIds(prev => toggleIdInArray(prev, id)),
+            Stone: id => setStoneIds(prev => toggleIdInArray(prev, id)),
         }),
-        [],
+        []
     );
 
     const resetFilters = useCallback(() => {
@@ -48,11 +50,11 @@ export const ProductFiltersProvider = ({ children }) => {
     }, []);
 
     const toggleDisplayFilters = useCallback(() => {
-        setDisplayFilters((prev) => !prev);
+        setDisplayFilters(prev => !prev);
     }, []);
 
     const fetchFiltersData = useCallback(
-        async (entityName) => {
+        async entityName => {
             try {
                 const response = await getFilters({
                     categoryName,
@@ -69,12 +71,12 @@ export const ProductFiltersProvider = ({ children }) => {
                 return [];
             }
         },
-        [getFilters, categoryName, colorIds, stoneIds, metalIds, collectionIds],
+        [getFilters, categoryName, colorIds, stoneIds, metalIds, collectionIds]
     );
 
     const fetchCollections = useCallback(async () => {
         try {
-            const data = await fetchFiltersData("Collection");
+            const data = await fetchFiltersData('Collection');
             setCollections(data);
         } catch (error) {
             console.error(error);
@@ -83,7 +85,7 @@ export const ProductFiltersProvider = ({ children }) => {
 
     const fetchColors = useCallback(async () => {
         try {
-            const data = await fetchFiltersData("Color");
+            const data = await fetchFiltersData('Color');
             setColors(data);
         } catch (error) {
             console.error(error);
@@ -92,7 +94,7 @@ export const ProductFiltersProvider = ({ children }) => {
 
     const fetchMetals = useCallback(async () => {
         try {
-            const data = await fetchFiltersData("Metal");
+            const data = await fetchFiltersData('Metal');
             setMetals(data);
         } catch (error) {
             console.error(error);
@@ -101,7 +103,7 @@ export const ProductFiltersProvider = ({ children }) => {
 
     const fetchStones = useCallback(async () => {
         try {
-            const data = await fetchFiltersData("Stone");
+            const data = await fetchFiltersData('Stone');
             setStones(data);
         } catch (error) {
             console.error(error);
@@ -143,7 +145,7 @@ export const ProductFiltersProvider = ({ children }) => {
             filtersMapper,
             toggleDisplayFilters,
             filterToggleFunctions,
-        ],
+        ]
     );
 
     useEffect(() => {

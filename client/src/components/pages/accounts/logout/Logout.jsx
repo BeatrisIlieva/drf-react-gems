@@ -1,8 +1,10 @@
-import { useUserContext } from "../../../../contexts/UserContext";
-import { useAuthentication } from "../../../../api/authApi";
+import { Icon } from '../../../reusable/icon/Icon';
 
-import styles from "./Logout.module.scss";
-import { Icon } from "../../../reusable/icon/Icon";
+import { useAuthentication } from '../../../../api/authApi';
+
+import { useUserContext } from '../../../../contexts/UserContext';
+
+import styles from './Logout.module.scss';
 
 export const Logout = () => {
     const { logout } = useAuthentication();
@@ -18,7 +20,7 @@ export const Logout = () => {
     };
 
     return (
-        <button onClick={logoutHandler} className={styles["sign-out"]}>
+        <button onClick={logoutHandler} className={styles['sign-out']}>
             <Icon name="sign-out" fontSize={0.75} isSubtle={true} />
             <span>Sign Out</span>
         </button>

@@ -1,15 +1,19 @@
-import { useCallback, useState, useTransition, useEffect } from "react";
-import { Button } from "../../reusable/button/Button";
-import { ComplimentaryShipping } from "../../reusable/complimentary-shipping/ComplimentaryShipping";
-import { OrderSummary } from "../../reusable/order-summary/OrderSummary";
-import { DeliveryAddressForm } from "../accounts/details/delivery-address-form/DeliveryAddressForm";
-import styles from "./Checkout.module.scss";
-import { ShadowBox } from "../../reusable/shadow-box/ShadowBox";
-import { useNavigate } from "react-router";
-import { PaddedContainer } from "../../reusable/padded-container/PaddedContainer";
-import { ProductsSummaryList } from "../../reusable/products-summary-list/ProductsSummaryList";
-import { Delivery } from "../../reusable/delivery/Delivery";
-import { useShoppingBagContext } from "../../../contexts/ShoppingBagContext";
+import { useCallback, useEffect, useState, useTransition } from 'react';
+
+import { useNavigate } from 'react-router';
+
+import { Button } from '../../reusable/button/Button';
+import { ComplimentaryShipping } from '../../reusable/complimentary-shipping/ComplimentaryShipping';
+import { Delivery } from '../../reusable/delivery/Delivery';
+import { OrderSummary } from '../../reusable/order-summary/OrderSummary';
+import { PaddedContainer } from '../../reusable/padded-container/PaddedContainer';
+import { ProductsSummaryList } from '../../reusable/products-summary-list/ProductsSummaryList';
+import { ShadowBox } from '../../reusable/shadow-box/ShadowBox';
+import { DeliveryAddressForm } from '../accounts/details/delivery-address-form/DeliveryAddressForm';
+
+import { useShoppingBagContext } from '../../../contexts/ShoppingBagContext';
+
+import styles from './Checkout.module.scss';
 
 export const Checkout = () => {
     const [submitAction, setSubmitAction] = useState(null);
@@ -33,14 +37,14 @@ export const Checkout = () => {
 
     useEffect(() => {
         if (formState?.success) {
-            navigate("/user/payment");
+            navigate('/user/payment');
         }
     }, [formState, navigate]);
 
     return (
         <PaddedContainer backgroundColor="lightest-grey">
-            <section className={styles["checkout"]}>
-                <div className={styles["wrapper-left"]}>
+            <section className={styles['checkout']}>
+                <div className={styles['wrapper-left']}>
                     <DeliveryAddressForm
                         buttonTitle="Continue Checkout"
                         buttonGrow="1"
@@ -52,7 +56,7 @@ export const Checkout = () => {
                             <Delivery fontSize={1.2} />
                         </ProductsSummaryList>
                     </ShadowBox>
-                    <div className={styles["checkout-button-container"]}>
+                    <div className={styles['checkout-button-container']}>
                         <ShadowBox>
                             <Button
                                 title="Continue Checkout"

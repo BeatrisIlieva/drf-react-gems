@@ -1,13 +1,10 @@
-import styles from "./ToggleImageButtons.module.scss";
-import { Button } from "./button/Button";
+import { Button } from './button/Button';
 
-export const ToggleImageButtons = ({
-    selectedIndex,
-    onSelect,
-    buttonsCount = 2,
-}) => {
+import styles from './ToggleImageButtons.module.scss';
+
+export const ToggleImageButtons = ({ selectedIndex, onSelect, buttonsCount = 2 }) => {
     return (
-        <div className={styles["toggle-image-buttons"]}>
+        <div className={styles['toggle-image-buttons']}>
             {Array.from({ length: buttonsCount }).map((_, index) => (
                 <Button
                     key={index}

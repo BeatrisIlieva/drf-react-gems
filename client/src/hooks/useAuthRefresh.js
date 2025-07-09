@@ -1,5 +1,6 @@
-import { useCallback } from "react";
-import { useUserContext } from "../contexts/UserContext";
+import { useCallback } from 'react';
+
+import { useUserContext } from '../contexts/UserContext';
 
 let isRefreshing = false;
 let refreshPromise = null;
@@ -12,7 +13,7 @@ export const useAuthRefresh = () => {
             return refreshPromise;
         }
 
-        const authDataString = localStorage.getItem("auth");
+        const authDataString = localStorage.getItem('auth');
 
         if (!authDataString) {
             userLogoutHandler();
@@ -36,45 +37,37 @@ export const useAuthRefresh = () => {
         isRefreshing = true;
         refreshPromise = (async () => {
             try {
-                const response = await fetch(
-                    "http://localhost:8000/api/accounts/token/refresh/",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ refresh }),
+                const response = await fetch('http://localhost:8000/api/accounts/token/refresh/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
                     },
-                );
+                    body: JSON.stringify({ refresh }),
+                });
 
                 if (!response.ok) {
                     if (response.status === 401) {
                         userLogoutHandler();
                     }
                     const errorText = await response.text();
-                    throw new Error(
-                        `Failed to refresh token: ${response.status} - ${errorText}`,
-                    );
+                    throw new Error(`Failed to refresh token: ${response.status} - ${errorText}`);
                 }
 
                 const data = await response.json();
 
                 if (data.access) {
                     localStorage.setItem(
-                        "auth",
+                        'auth',
                         JSON.stringify({
                             ...authData,
                             access: data.access,
-                        }),
+                        })
                     );
                 } else {
-                    throw new Error("No access token in response");
+                    throw new Error('No access token in response');
                 }
             } catch (err) {
-                console.error(
-                    "Refresh error:",
-                    err instanceof Error ? err.message : String(err),
-                );
+                console.error('Refresh error:', err instanceof Error ? err.message : String(err));
                 userLogoutHandler();
                 throw err;
             } finally {

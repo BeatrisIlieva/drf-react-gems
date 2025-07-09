@@ -1,11 +1,15 @@
-import { useCallback, useState } from "react";
-import styles from "./ShoppingBagItem.module.scss";
+import { useCallback, useState } from 'react';
 
-import { useShoppingBagContext } from "../../../../../contexts/ShoppingBagContext";
-import { useWishlistContext } from "../../../../../contexts/WishlistContext";
-import { QuantitySelector } from "./quantity-selector/QuantitySelector";
-import { formatPrice } from "../../../../../utils/formatPrice";
-import { useNavigate } from "react-router";
+import { useNavigate } from 'react-router';
+
+import { QuantitySelector } from './quantity-selector/QuantitySelector';
+
+import { useShoppingBagContext } from '../../../../../contexts/ShoppingBagContext';
+import { useWishlistContext } from '../../../../../contexts/WishlistContext';
+
+import { formatPrice } from '../../../../../utils/formatPrice';
+
+import styles from './ShoppingBagItem.module.scss';
 
 export const ShoppingBagItem = ({
     quantity,
@@ -30,39 +34,27 @@ export const ShoppingBagItem = ({
 
         setIsMovingToWishlist(true);
         try {
-            const categoryValue = category.endsWith("s")
-                ? category.slice(0, -1)
-                : category;
+            const categoryValue = category.endsWith('s') ? category.slice(0, -1) : category;
 
             const success = await addToWishlist(categoryValue, productId);
             if (success) {
                 await deleteShoppingBagHandler(id);
             }
         } catch (error) {
-            console.error("Error moving item to wishlist:", error);
+            console.error('Error moving item to wishlist:', error);
         } finally {
             setIsMovingToWishlist(false);
         }
     };
 
     const navigateToProductItem = useCallback(() => {
-        navigate(
-            `/products/${
-                productInfo.category.toLowerCase() + "s"
-            }/${productInfo.productId}`,
-        );
+        navigate(`/products/${productInfo.category.toLowerCase() + 's'}/${productInfo.productId}`);
     }, [navigate, productInfo.category, productInfo.productId]);
 
     return (
-        <li className={styles["shopping-bag-item"]}>
-            <span
-                className={styles["thumbnail"]}
-                onClick={navigateToProductItem}
-            >
-                <img
-                    src={productInfo.firstImage}
-                    alt={productInfo.collection}
-                />
+        <li className={styles['shopping-bag-item']}>
+            <span className={styles['thumbnail']} onClick={navigateToProductItem}>
+                <img src={productInfo.firstImage} alt={productInfo.collection} />
             </span>
 
             <span>
@@ -81,31 +73,29 @@ export const ShoppingBagItem = ({
                 <span>
                     <button
                         onClick={moveToWishListHandler}
-                        disabled={
-                            isDeleting || isMovingToWishlist || isItemInWishlist
-                        }
+                        disabled={isDeleting || isMovingToWishlist || isItemInWishlist}
                         className={
                             isItemInWishlist
-                                ? styles["in-wishlist"]
+                                ? styles['in-wishlist']
                                 : isDeleting || isMovingToWishlist
-                                  ? styles["removing"]
-                                  : ""
+                                  ? styles['removing']
+                                  : ''
                         }
                     >
                         {isMovingToWishlist
-                            ? "Moving..."
+                            ? 'Moving...'
                             : isItemInWishlist
-                              ? "In Wishlist"
-                              : "Move to Wish List"}
+                              ? 'In Wishlist'
+                              : 'Move to Wish List'}
                     </button>
                     <button
                         onClick={() => {
                             deleteShoppingBagHandler(id);
                         }}
                         disabled={isDeleting}
-                        className={isDeleting ? styles["removing"] : ""}
+                        className={isDeleting ? styles['removing'] : ''}
                     >
-                        {isDeleting ? "Removing..." : "Remove"}
+                        {isDeleting ? 'Removing...' : 'Remove'}
                     </button>
                 </span>
             </span>

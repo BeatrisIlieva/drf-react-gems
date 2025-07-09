@@ -1,9 +1,11 @@
-import { useCallback } from "react";
-import { useApi } from "../hooks/useApi";
-import { keysToCamelCase } from "../utils/convertToCamelCase";
-import { HOST } from "../constants/host";
+import { useCallback } from 'react';
 
-import { useAuth } from "../hooks/useAuth";
+import { useApi } from '../hooks/useApi';
+import { useAuth } from '../hooks/useAuth';
+
+import { keysToCamelCase } from '../utils/convertToCamelCase';
+
+import { HOST } from '../constants/host';
 
 const baseUrl = `${HOST}/api/wishlist`;
 
@@ -24,7 +26,7 @@ export const useWishlist = () => {
     }, [get, isAuthenticated]);
 
     const createItem = useCallback(
-        async (data) => {
+        async data => {
             try {
                 const response = await post(`${baseUrl}/`, {
                     data,
@@ -36,26 +38,23 @@ export const useWishlist = () => {
                 console.error(error);
             }
         },
-        [post, isAuthenticated],
+        [post, isAuthenticated]
     );
 
     const deleteItem = useCallback(
-        async (params) => {
+        async params => {
             try {
-                await del(
-                    `${baseUrl}/remove/${params.content_type}/${params.object_id}/`,
-                    {
-                        accessRequired: isAuthenticated,
-                        refreshRequired: isAuthenticated,
-                    },
-                );
+                await del(`${baseUrl}/remove/${params.content_type}/${params.object_id}/`, {
+                    accessRequired: isAuthenticated,
+                    refreshRequired: isAuthenticated,
+                });
 
                 return true;
             } catch (error) {
                 console.error(error);
             }
         },
-        [del, isAuthenticated],
+        [del, isAuthenticated]
     );
 
     const getCount = useCallback(async () => {

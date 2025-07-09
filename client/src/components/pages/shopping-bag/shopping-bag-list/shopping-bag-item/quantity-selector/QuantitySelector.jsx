@@ -1,24 +1,21 @@
-import { useEffect, useState } from "react";
-import styles from "./QuantitySelector.module.scss";
-import { Icon } from "../../../../../reusable/icon/Icon";
+import { useEffect, useState } from 'react';
 
-import { useShoppingBagContext } from "../../../../../../contexts/ShoppingBagContext";
-import { useShoppingBag } from "../../../../../../api/shoppingBagApi";
+import { Icon } from '../../../../../reusable/icon/Icon';
 
-export const QuantitySelector = ({
-    quantity,
-    id,
-    objectId,
-    contentType,
-    availableQuantity,
-}) => {
+import { useShoppingBag } from '../../../../../../api/shoppingBagApi';
+
+import { useShoppingBagContext } from '../../../../../../contexts/ShoppingBagContext';
+
+import styles from './QuantitySelector.module.scss';
+
+export const QuantitySelector = ({ quantity, id, objectId, contentType, availableQuantity }) => {
     const { updateItem } = useShoppingBag();
     const { refreshShoppingBag } = useShoppingBagContext();
     const [isUpdating, setIsUpdating] = useState(false);
     const [localQuantity, setLocalQuantity] = useState(quantity);
 
     const totalAvailableQuantity =
-        typeof availableQuantity === "string"
+        typeof availableQuantity === 'string'
             ? parseInt(availableQuantity, 10) + quantity
             : availableQuantity + quantity;
 
@@ -26,7 +23,7 @@ export const QuantitySelector = ({
         setLocalQuantity(quantity);
     }, [quantity]);
 
-    const handleQuantityChange = async (newQuantity) => {
+    const handleQuantityChange = async newQuantity => {
         if (newQuantity === localQuantity) return;
 
         setIsUpdating(true);
@@ -64,7 +61,7 @@ export const QuantitySelector = ({
     };
 
     return (
-        <span className={styles["quantity-selector"]}>
+        <span className={styles['quantity-selector']}>
             <button onClick={decrementQuantity} disabled={isUpdating}>
                 <Icon name="minus" />
             </button>
@@ -75,11 +72,7 @@ export const QuantitySelector = ({
             >
                 <Icon name="plus" />
             </button>
-            {isUpdating && (
-                <span className={styles["updating-indicator"]}>
-                    Updating...
-                </span>
-            )}
+            {isUpdating && <span className={styles['updating-indicator']}>Updating...</span>}
         </span>
     );
 };

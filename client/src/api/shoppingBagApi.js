@@ -1,8 +1,11 @@
-import { useCallback } from "react";
-import { useApi } from "../hooks/useApi";
-import { keysToCamelCase } from "../utils/convertToCamelCase";
-import { useAuth } from "../hooks/useAuth";
-import { HOST } from "../constants/host";
+import { useCallback } from 'react';
+
+import { useApi } from '../hooks/useApi';
+import { useAuth } from '../hooks/useAuth';
+
+import { keysToCamelCase } from '../utils/convertToCamelCase';
+
+import { HOST } from '../constants/host';
 
 const baseUrl = `${HOST}/api/shopping-bags`;
 
@@ -29,11 +32,11 @@ export const useShoppingBag = () => {
                 console.error(error);
             }
         },
-        [post, isAuthenticated],
+        [post, isAuthenticated]
     );
 
     const deleteItem = useCallback(
-        async (bagItemId) => {
+        async bagItemId => {
             try {
                 const response = del(`${baseUrl}/${bagItemId}/`, {
                     accessRequired: isAuthenticated,
@@ -45,7 +48,7 @@ export const useShoppingBag = () => {
                 console.error(error);
             }
         },
-        [del, isAuthenticated],
+        [del, isAuthenticated]
     );
 
     const updateItem = useCallback(
@@ -73,7 +76,7 @@ export const useShoppingBag = () => {
                 console.error(error);
             }
         },
-        [put, isAuthenticated, deleteItem],
+        [put, isAuthenticated, deleteItem]
     );
 
     const getItems = useCallback(async () => {

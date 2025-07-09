@@ -1,17 +1,17 @@
-import { useParams } from "react-router";
-import { useProductItem } from "../api/productItemApi";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { ProductItemContext } from "../contexts/ProductItemContext";
-import { useShoppingBagContext } from "../contexts/ShoppingBagContext";
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import { useParams } from 'react-router';
+
+import { useProductItem } from '../api/productItemApi';
+
+import { ProductItemContext } from '../contexts/ProductItemContext';
+import { useShoppingBagContext } from '../contexts/ShoppingBagContext';
 
 export const ProductItemProvider = ({ children }) => {
     const { getProductItem } = useProductItem();
     const { categoryName, productId } = useParams();
-    const {
-        createShoppingBagItemHandler,
-        refreshShoppingBag,
-        shoppingBagItemsCount,
-    } = useShoppingBagContext();
+    const { createShoppingBagItemHandler, refreshShoppingBag, shoppingBagItemsCount } =
+        useShoppingBagContext();
 
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState(null);
@@ -55,13 +55,7 @@ export const ProductItemProvider = ({ children }) => {
             refreshShoppingBag();
             setIsMiniBagPopupOpen(true);
         }
-    }, [
-        isMiniBagPopupOpen,
-        getProductItem,
-        categoryName,
-        productId,
-        refreshShoppingBag,
-    ]);
+    }, [isMiniBagPopupOpen, getProductItem, categoryName, productId, refreshShoppingBag]);
 
     const createShoppingBagHandler = useCallback(async () => {
         if (selectedSize === null) {
@@ -73,19 +67,18 @@ export const ProductItemProvider = ({ children }) => {
             await createShoppingBagItemHandler(selectedInventory);
 
             if (product && selectedInventory) {
-                setProduct((prevProduct) => {
+                setProduct(prevProduct => {
                     if (!prevProduct) return null;
 
                     const updatedProduct = {
                         ...prevProduct,
-                        inventory: prevProduct.inventory.map((item) => {
+                        inventory: prevProduct.inventory.map(item => {
                             if (item.id === selectedInventory.objectId) {
                                 return {
                                     ...item,
                                     quantity: Math.max(
                                         0,
-                                        item.quantity -
-                                            selectedInventory.quantity,
+                                        item.quantity - selectedInventory.quantity
                                     ),
                                 };
                             }
@@ -134,7 +127,7 @@ export const ProductItemProvider = ({ children }) => {
                 updateSelectedInventoryHandler(contentType, objectId);
             }
         },
-        [selectedSize],
+        [selectedSize]
     );
 
     const isSoldOut = useMemo(() => {
@@ -142,7 +135,7 @@ export const ProductItemProvider = ({ children }) => {
             return false;
         }
 
-        return product.inventory.every((item) => item.quantity === 0);
+        return product.inventory.every(item => item.quantity === 0);
     }, [product]);
 
     const contextValue = useMemo(
@@ -179,7 +172,7 @@ export const ProductItemProvider = ({ children }) => {
             isSoldOut,
             isMiniBagPopupOpen,
             toggleMiniBagPopupOpen,
-        ],
+        ]
     );
 
     useEffect(() => {
@@ -196,17 +189,9 @@ export const ProductItemProvider = ({ children }) => {
             refreshProduct();
             setIsMiniBagPopupOpen(false);
         }
-    }, [
-        shoppingBagItemsCount,
-        isMiniBagPopupOpen,
-        getProductItem,
-        categoryName,
-        productId,
-    ]);
+    }, [shoppingBagItemsCount, isMiniBagPopupOpen, getProductItem, categoryName, productId]);
 
     return (
-        <ProductItemContext.Provider value={contextValue}>
-            {children}
-        </ProductItemContext.Provider>
+        <ProductItemContext.Provider value={contextValue}>{children}</ProductItemContext.Provider>
     );
 };

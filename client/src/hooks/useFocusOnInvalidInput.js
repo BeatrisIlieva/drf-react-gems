@@ -1,4 +1,4 @@
-import { useRef, useCallback } from "react";
+import { useCallback, useRef } from 'react';
 
 export function useFocusOnInvalidInput() {
     const formRef = useRef(null);
@@ -12,7 +12,7 @@ export function useFocusOnInvalidInput() {
         }
     }, []);
 
-    const focusFirstInvalid = useCallback((formData) => {
+    const focusFirstInvalid = useCallback(formData => {
         if (!formData) return false;
 
         for (const [fieldName, fieldValue] of Object.entries(formData)) {

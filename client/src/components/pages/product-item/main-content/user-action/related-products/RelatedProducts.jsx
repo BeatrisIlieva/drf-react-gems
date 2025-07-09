@@ -1,22 +1,19 @@
-import styles from "./RelatedProducts.module.scss";
-import { Link } from "react-router";
-import { useCategoryName } from "../../../../../../hooks/useCategoryName";
-import { useProductItemContext } from "../../../../../../contexts/ProductItemContext";
+import { Link } from 'react-router';
+
+import { useCategoryName } from '../../../../../../hooks/useCategoryName';
+
+import { useProductItemContext } from '../../../../../../contexts/ProductItemContext';
+
+import styles from './RelatedProducts.module.scss';
 
 export const RelatedProducts = () => {
     const { categoryNameCapitalizedPlural, categoryName } = useCategoryName();
-    const { relatedCollectionProducts, productId, collectionName } =
-        useProductItemContext();
+    const { relatedCollectionProducts, productId, collectionName } = useProductItemContext();
 
     return (
-        <ul className={styles["related-products"]}>
-            {relatedCollectionProducts.map((product) => (
-                <li
-                    key={product.id}
-                    className={
-                        product.id === productId ? styles["selected"] : ""
-                    }
-                >
+        <ul className={styles['related-products']}>
+            {relatedCollectionProducts.map(product => (
+                <li key={product.id} className={product.id === productId ? styles['selected'] : ''}>
                     <Link to={`/products/${categoryName}/${product.id}`}>
                         <img
                             src={product.firstImage}
