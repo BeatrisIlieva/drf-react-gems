@@ -83,8 +83,7 @@ export const Login = () => {
                 {invalidCredentials && (
                     <div className={styles['invalid-username-password']}>
                         <p>
-                            Your email/username or password is incorrect. Try again or reset your
-                            password.
+                            Your email/username or password is incorrect.
                         </p>
                     </div>
                 )}
