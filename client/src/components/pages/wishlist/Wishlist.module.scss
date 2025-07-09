@@ -1,7 +1,7 @@
 @use '../../../styles/variables' as vars;
 
 .wishlist {
-    padding-inline: vars.$layout-inline-padding;
+    padding-inline: var(--layout-inline-padding);
     margin-block: 2em;
 
     h2 {

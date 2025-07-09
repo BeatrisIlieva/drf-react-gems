@@ -5,7 +5,7 @@
     gap: 0.5em;
     opacity: 0.6;
     font-size: 0.9em;
-    padding-inline: vars.$layout-inline-padding;
+    padding-inline: var(--layout-inline-padding);
     padding-top: 1em;
 
     a {

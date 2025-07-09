@@ -5,6 +5,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.5em;
+
     @include anim.animate-fade-in(1.5s);
 }
 
@@ -15,6 +16,16 @@
 .wrapper-top {
     height: 70dvh;
     position: relative;
+
+    &::before {
+        position: absolute;
+        content: '';
+        width: 100%;
+        height: 100%;
+        background: vars.$white;
+        z-index: 2;
+        opacity: 0.3;
+    }
 }
 
 .hero-text {
@@ -24,12 +35,14 @@
     width: 22%;
     padding-left: 1em;
     padding-bottom: 2em;
+    z-index: 3;
 }
 
 .wrapper-bottom {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.5em;
-    margin-bottom: 2.5em;
+    margin-block: auto;
 
     .thumbnail:first-child {
         padding-left: 6em;
@@ -37,5 +50,24 @@
 
     .thumbnail:nth-child(2) {
         padding-right: 5em;
+    }
+}
+
+@media (max-width: 1200px) {
+    .wrapper-top {
+        height: auto;
+    }
+
+    .hero-text {
+        width: 80%;
+    }
+}
+
+@media (max-width: 900px) {
+    .wrapper-bottom {
+        .thumbnail:first-child,
+        .thumbnail:nth-child(2) {
+            padding: 0;
+        }
     }
 }

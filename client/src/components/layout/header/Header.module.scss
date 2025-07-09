@@ -12,7 +12,7 @@
     z-index: 40;
     display: flex;
     align-items: center;
-    padding-inline: vars.$layout-inline-padding;
+    padding-inline: var(--layout-inline-padding);
     font-size: 0.9em;
     letter-spacing: 0.1em;
     padding-block: 1.25em;
@@ -46,6 +46,20 @@
 
     &.sticky {
         border-bottom: 0.1em solid vars.$medium-grey;
+    }
+
+    & > span svg {
+        display: none;
+    }
+
+    @media (max-width: 900px) {
+        nav {
+            display: none;
+        }
+
+        & svg:nth-child(1) {
+            display: block;
+        }
     }
 }
 

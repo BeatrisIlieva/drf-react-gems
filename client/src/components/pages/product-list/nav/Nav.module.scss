@@ -3,7 +3,7 @@
 .secondary-nav {
     background: vars.$white;
     margin-bottom: 1em;
-    padding-inline: vars.$layout-inline-padding;
+    padding-inline: var(--layout-inline-padding);
 
     ul {
         display: flex;

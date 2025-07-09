@@ -10,5 +10,14 @@ $pink: #e48cb0;
 $blue: #2334a3;
 $gold: #efbf04;
 
-$layout-inline-padding: 3em;
-$layout-inline-padding-desktop: 12em;
+:root {
+    --layout-inline-padding: 3em;
+    --layout-inline-padding-desktop: 12em;
+}
+
+@media (max-width: 900px) {
+    :root {
+        --layout-inline-padding: 1em;
+        --layout-inline-padding-desktop: 3em;
+    }
+}

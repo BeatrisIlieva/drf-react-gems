@@ -9,4 +9,9 @@
     font-size: 1.6em;
     display: block;
     text-wrap: nowrap;
+
+    @media (max-width: 900px) {
+        margin-inline: auto;
+        font-size: 1.2em;
+    }
 }

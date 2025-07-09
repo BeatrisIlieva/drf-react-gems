@@ -2,13 +2,13 @@
 
 html {
     font:
-        13px / 1.5 'Tisa Sans Pro',
+        12px / 1.5 'Tisa Sans Pro',
         sans-serif;
     letter-spacing: 0.08em;
     color: var(--black);
 }
 
-@media (min-width: 1400px) {
+@media (min-width: 1200px) {
     html {
         font-size: 14px;
     }

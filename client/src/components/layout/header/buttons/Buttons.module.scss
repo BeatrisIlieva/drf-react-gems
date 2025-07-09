@@ -6,6 +6,10 @@
     align-items: flex-start;
     margin-left: auto;
 
+    @media (max-width: 900px) {
+        margin-left: 0;
+    }
+
     & li {
         display: flex;
         gap: 0.75em;

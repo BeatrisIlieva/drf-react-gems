@@ -1,0 +1,13 @@
+@use '../../../../styles/variables' as vars;
+
+.dropdown {
+    position: absolute;
+    z-index: 40;
+    left: 0;
+    top: 6.2em;
+    width: 100%;
+    background: vars.$white;
+    padding: 1em var(--layout-inline-padding);
+    border-top: 0.1em solid vars.$medium-grey;
+    border-bottom: 0.1em solid vars.$medium-grey;
+}

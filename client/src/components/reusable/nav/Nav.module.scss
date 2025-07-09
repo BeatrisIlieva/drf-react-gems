@@ -7,6 +7,10 @@
         display: flex;
         gap: 3em;
 
+        @media (max-width: 900px) {
+            gap: 1.5em;
+        }
+
         & li a {
             text-transform: uppercase;
             opacity: 0.6;

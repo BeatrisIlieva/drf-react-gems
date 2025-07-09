@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useLocation, useNavigate } from 'react-router';
 
@@ -6,6 +6,7 @@ import { Icon } from '../../reusable/icon/Icon';
 import { Nav } from '../../reusable/nav/Nav';
 import { Banner } from './banner/Banner';
 import { Buttons } from './buttons/Buttons';
+import { Dropdown } from './drop-down/Dropdown';
 import { Logo } from './logo/Logo';
 
 import { useSentinel } from '../../../hooks/useSentinel';
@@ -16,6 +17,8 @@ import styles from './Header.module.scss';
 
 export const Header = () => {
     const headerRef = useRef(null);
+
+    const [displayDropdown, setDisplayDropdown] = useState(false);
 
     const { sentinelRef, isSticky } = useSentinel();
     const navigate = useNavigate();
@@ -83,12 +86,17 @@ export const Header = () => {
                     </div>
                 ) : (
                     <>
+                        <Icon
+                            name={displayDropdown ? 'xMark' : 'bars'}
+                            callbackHandler={() => setDisplayDropdown(!displayDropdown)}
+                        />
                         <Logo />
                         <Nav links={navLinks} />
                         <Buttons />
                     </>
                 )}
             </header>
+            {displayDropdown && <Dropdown onClose={() => setDisplayDropdown(false)} />}
         </>
     );
 };
