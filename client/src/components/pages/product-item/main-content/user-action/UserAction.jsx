@@ -1,5 +1,5 @@
 import styles from './UserAction.module.scss';
-import { useCategoryName } from '../../../../../hooks/products/useCategoryName';
+import { useCategoryName } from '../../../../../hooks/useCategoryName';
 import { StyledTextBlock } from '../../../../reusable/styled-text-block/StyledTextBlock';
 import { formatPrice } from '../../../../../utils/formatPrice';
 import { RelatedProducts } from './related-products/RelatedProducts';

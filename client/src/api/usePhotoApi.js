@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
-import { useApi } from '../../hooks/useApi';
-import { useAuth } from '../../hooks/auth/useAuth';
-import { HOST } from '../../constants/host';
-import { keysToCamelCase } from '../../utils/convertToCamelCase';
+import { useApi } from '../hooks/useApi';
+import { useAuth } from '../hooks/useAuth';
+import { HOST } from '../constants/host';
+import { keysToCamelCase } from '../utils/convertToCamelCase';
 
 const baseUrl = `${HOST}/api/accounts/photo`;
 

@@ -1,5 +1,5 @@
 import { useUserContext } from '../../../../contexts/UserContext';
-import { useAuthentication } from '../../../../api/accounts/authApi';
+import { useAuthentication } from '../../../../api/authApi';
 
 import styles from './Logout.module.scss';
 import { Icon } from '../../../reusable/icon/Icon';

@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
-import { useApi } from '../../hooks/useApi';
-import { useAuth } from '../../hooks/auth/useAuth';
-import { HOST } from '../../constants/host';
+import { useApi } from '../hooks/useApi';
+import { useAuth } from '../hooks/useAuth';
+import { HOST } from '../constants/host';
 
 const baseUrl = `${HOST}/api/accounts`;
 

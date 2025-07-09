@@ -1,5 +1,5 @@
-import { useUserContext } from '../../contexts/UserContext';
 import { useCallback } from 'react';
+import { useUserContext } from '../contexts/UserContext';
 
 let isRefreshing = false;
 let refreshPromise = null;
@@ -68,12 +68,16 @@ export const useAuthRefresh = () => {
                         })
                     );
                 } else {
-                    throw new Error('No access token in response');
+                    throw new Error(
+                        'No access token in response'
+                    );
                 }
             } catch (err) {
                 console.error(
                     'Refresh error:',
-                    err instanceof Error ? err.message : String(err)
+                    err instanceof Error
+                        ? err.message
+                        : String(err)
                 );
                 userLogoutHandler();
                 throw err;

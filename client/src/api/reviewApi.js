@@ -3,7 +3,7 @@ import { useApi } from '../hooks/useApi';
 import { keysToCamelCase } from '../utils/convertToCamelCase';
 import { keysToSnakeCase } from '../utils/convertToSnakeCase';
 import { HOST } from '../constants/host';
-import { useAuth } from '../hooks/auth/useAuth';
+import { useAuth } from '../hooks/useAuth';
 
 const baseUrl = `${HOST}/api/products/reviews`;
 

@@ -1,9 +1,9 @@
 import { useContext, useCallback, useMemo } from 'react';
 
-import { useAuthRefresh } from './auth/useAuthRefresh';
 import { useGuest } from './useGuest';
 
 import { UserContext } from '../contexts/UserContext';
+import { useAuthRefresh } from './useAuthRefresh';
 
 export const useApi = () => {
     const { access, refresh } = useContext(UserContext);

@@ -6,7 +6,7 @@ import { Icon } from '../../../../reusable/icon/Icon';
 import styles from './LoginInformation.module.scss';
 import { useUserContext } from '../../../../../contexts/UserContext';
 import { Deletion } from '../../../../reusable/deletion/Deletion';
-import { useAuthentication } from '../../../../../api/accounts/authApi';
+import { useAuthentication } from '../../../../../api/authApi';
 import { DeleteButton } from '../../../../reusable/delete-button/DeleteButton';
 
 export const LoginInformation = () => {

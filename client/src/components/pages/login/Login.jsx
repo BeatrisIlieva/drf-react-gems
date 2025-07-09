@@ -2,7 +2,7 @@ import { Fragment, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { useForm } from '../../../hooks/useForm';
 import { useUserContext } from '../../../contexts/UserContext';
-import { useAuthentication } from '../../../api/accounts/authApi';
+import { useAuthentication } from '../../../api/authApi';
 import { InputField } from '../../reusable/input-field/InputField';
 import { Button } from '../../reusable/button/Button';
 import { AuthLayout } from '../../reusable/auth-layout/AuthLayout';

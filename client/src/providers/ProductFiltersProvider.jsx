@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ProductFiltersContext } from '../contexts/ProductFiltersContext';
 
 import { toggleIdInArray } from '../utils/toggleIdInArray';
-import { useFilters } from '../api/products/filtersApi';
-import { useCategoryName } from '../hooks/products/useCategoryName';
+import { useFilters } from '../api/filtersApi';
+import { useCategoryName } from '../hooks/useCategoryName';
 
 export const ProductFiltersProvider = ({ children }) => {
     const { categoryName } = useCategoryName();

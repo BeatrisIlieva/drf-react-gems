@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ProductListContext } from '../contexts/ProductListContext';
-import { useProductList } from '../api/products/productListApi';
-import { useCategoryName } from '../hooks/products/useCategoryName';
-import { usePagination } from '../hooks/products/usePagination';
+import { useProductList } from '../api/productListApi';
+import { useCategoryName } from '../hooks/useCategoryName';
+import { usePagination } from '../hooks/usePagination';
 
 import { useProductFiltersContext } from '../contexts/ProductFiltersContext';
 

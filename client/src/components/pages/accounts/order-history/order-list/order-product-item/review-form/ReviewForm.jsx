@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Stars } from '../../../../../../reusable/stars/Stars';
 import { Button } from '../../../../../../reusable/button/Button';
 import { useReview } from '../../../../../../../api/reviewApi';
-import { useAuth } from '../../../../../../../hooks/auth/useAuth';
+import { useAuth } from '../../../../../../../hooks/useAuth';
 import styles from './ReviewForm.module.scss';
 import { Deletion } from '../../../../../../reusable/deletion/Deletion';
 import { Popup } from '../../../../../../reusable/popup/Popup';

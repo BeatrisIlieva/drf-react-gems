@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useCategoryName } from '../../../../hooks/products/useCategoryName';
+import { useCategoryName } from '../../../../hooks/useCategoryName';
 import { formatPrice } from '../../../../utils/formatPrice';
 import { useNavigate } from 'react-router';
 import { useWishlistContext } from '../../../../contexts/WishlistContext';

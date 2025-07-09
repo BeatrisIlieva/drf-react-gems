@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
-import { useApi } from '../../hooks/useApi';
-import { useAuth } from '../../hooks/auth/useAuth';
-import { HOST } from '../../constants/host';
-import { keysToCamelCase } from '../../utils/convertToCamelCase';
+import { useApi } from '../hooks/useApi';
+import { useAuth } from '../hooks/useAuth';
+import { HOST } from '../constants/host';
+import { keysToCamelCase } from '../utils/convertToCamelCase';
 
 const profileBaseUrl = `${HOST}/api/accounts/profile`;
 const passwordBaseUrl = `${HOST}/api/accounts/change-password`;
@@ -22,7 +22,9 @@ export const useProfile = () => {
         } catch (error) {
             console.error(error);
             return {
-                error: error.message || 'Failed to get personal information',
+                error:
+                    error.message ||
+                    'Failed to get personal information',
                 ...error.data
             };
         }
@@ -44,7 +46,9 @@ export const useProfile = () => {
             } catch (error) {
                 console.error(error);
                 return {
-                    error: error.message || 'Failed to update personal information',
+                    error:
+                        error.message ||
+                        'Failed to update personal information',
                     ...error.data
                 };
             }

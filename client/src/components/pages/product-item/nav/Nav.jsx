@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { useCategoryName } from '../../../../hooks/products/useCategoryName';
+import { useCategoryName } from '../../../../hooks/useCategoryName';
 
 import styles from './Nav.module.scss';
 

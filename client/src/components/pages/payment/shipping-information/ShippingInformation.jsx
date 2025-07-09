@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useProfile } from '../../../../api/accounts/useProfileApi';
+import { useProfile } from '../../../../api/useProfileApi';
 import { useUserContext } from '../../../../contexts/UserContext';
 import { ShadowBox } from '../../../reusable/shadow-box/ShadowBox';
 

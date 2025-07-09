@@ -1,5 +1,5 @@
 import { useParams } from 'react-router';
-import { useProductItem } from '../api/products/productItemApi';
+import { useProductItem } from '../api/productItemApi';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ProductItemContext } from '../contexts/ProductItemContext';
 import { useShoppingBagContext } from '../contexts/ShoppingBagContext';

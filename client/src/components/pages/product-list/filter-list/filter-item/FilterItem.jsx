@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './FilterItem.module.scss';
 import { Icon } from '../../../../reusable/icon/Icon';
 import { ChevronToggle } from '../../../../reusable/chevron-toggle/ChevronToggle';
-import { useCategoryName } from '../../../../../hooks/products/useCategoryName';
+import { useCategoryName } from '../../../../../hooks/useCategoryName';
 import { useProductFiltersContext } from '../../../../../contexts/ProductFiltersContext';
 
 export const FilterItem = ({ label, data }) => {

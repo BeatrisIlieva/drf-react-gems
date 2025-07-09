@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useApi } from '../hooks/useApi';
 import { keysToCamelCase } from '../utils/convertToCamelCase';
-import { useAuth } from '../hooks/auth/useAuth';
+import { useAuth } from '../hooks/useAuth';
 import { HOST } from '../constants/host';
 
 const baseUrl = `${HOST}/api/shopping-bags`;

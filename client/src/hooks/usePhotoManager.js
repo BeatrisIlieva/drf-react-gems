@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { usePhoto } from '../api/accounts/usePhotoApi';
+import { usePhoto } from '../api/usePhotoApi';
 
 export const usePhotoManager = () => {
     const [currentPhoto, setCurrentPhoto] = useState(null);

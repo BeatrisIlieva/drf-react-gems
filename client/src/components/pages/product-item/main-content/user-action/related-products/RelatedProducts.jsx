@@ -1,6 +1,6 @@
 import styles from './RelatedProducts.module.scss';
 import { Link } from 'react-router';
-import { useCategoryName } from '../../../../../../hooks/products/useCategoryName';
+import { useCategoryName } from '../../../../../../hooks/useCategoryName';
 import { useProductItemContext } from '../../../../../../contexts/ProductItemContext';
 
 export const RelatedProducts = () => {

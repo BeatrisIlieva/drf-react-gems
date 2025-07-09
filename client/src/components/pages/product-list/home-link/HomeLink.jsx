@@ -1,4 +1,4 @@
-import { useCategoryName } from '../../../../hooks/products/useCategoryName';
+import { useCategoryName } from '../../../../hooks/useCategoryName';
 import { Link } from 'react-router';
 
 import styles from './HomeLink.module.scss';

@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 
 import { useShoppingBagContext } from '../../../../contexts/ShoppingBagContext';
 import { useWishlistContext } from '../../../../contexts/WishlistContext';
-import { useAuth } from '../../../../hooks/auth/useAuth';
+import { useAuth } from '../../../../hooks/useAuth';
 
 export const Buttons = () => {
     const { isAuthenticated } = useAuth();

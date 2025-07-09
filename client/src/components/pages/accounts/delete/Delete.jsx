@@ -1,5 +1,5 @@
 import { useUserContext } from '../../../../contexts/UserContext';
-import { useDelete } from '../../../../api/accounts/authApi';
+import { useDelete } from '../../../../api/authApi';
 
 export const Delete = () => {
     const { deleteUser } = useDelete();

@@ -8,7 +8,7 @@ import { FORM_CONFIGS } from '../../../../../config/formFieldConfigs';
 import { createApiDataFromForm } from '../../../../../utils/formHelpers';
 
 import styles from './DeliveryAddressForm.module.scss';
-import { useProfile } from '../../../../../api/accounts/useProfileApi';
+import { useProfile } from '../../../../../api/useProfileApi';
 
 export const DeliveryAddressForm = ({
     buttonTitle = 'Save',

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ReviewForm } from './review-form/ReviewForm';
 import { useReview } from '../../../../../../api/reviewApi';
-import { useAuth } from '../../../../../../hooks/auth/useAuth';
+import { useAuth } from '../../../../../../hooks/useAuth';
 import styles from './OrderProductItem.module.scss';
 import { useNavigate } from 'react-router';
 

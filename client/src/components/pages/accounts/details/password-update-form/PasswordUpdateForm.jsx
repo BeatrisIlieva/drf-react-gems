@@ -5,7 +5,7 @@ import {
     useEffect
 } from 'react';
 import { useForm } from '../../../../../hooks/useForm';
-import { useProfile } from '../../../../../api/accounts/useProfileApi';
+import { useProfile } from '../../../../../api/useProfileApi';
 import { Button } from '../../../../reusable/button/Button';
 import { InputField } from '../../../../reusable/input-field/InputField';
 import { PasswordValidator } from '../../../../reusable/password-validator/PasswordValidator';
