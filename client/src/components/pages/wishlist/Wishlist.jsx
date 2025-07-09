@@ -1,5 +1,4 @@
 import { useWishlistContext } from '../../../contexts/WishlistContext';
-import { LoadingSpinner } from '../../common/loading-spinner/LoadingSpinner';
 import { EmptyList } from '../../reusable/empty-list/EmptyList';
 import { ProductItems } from '../../reusable/product-items/ProductItems';
 
@@ -10,9 +9,7 @@ export const Wishlist = () => {
 
     return (
         <>
-            {loading ? (
-                <LoadingSpinner minHeight='60vh' />
-            ) : (
+            {!loading && (
                 <>
                     {wishlistItems.length > 0 ? (
                         <section className={styles['wishlist']}>

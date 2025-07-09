@@ -10,7 +10,6 @@ import {
 import styles from './OrderHistory.module.scss';
 import { EmptyList } from '../../../reusable/empty-list/EmptyList';
 import { PaddedContainer } from '../../../reusable/padded-container/PaddedContainer';
-import { LoadingSpinner } from '../../../common/loading-spinner/LoadingSpinner';
 
 export const OrderHistory = () => {
     const [orders, setOrders] = useState([]);
@@ -44,9 +43,7 @@ export const OrderHistory = () => {
 
     return (
         <>
-            {loading ? (
-                <LoadingSpinner minHeight='60vh' />
-            ) : (
+            {!loading && (
                 <>
                     {orders.length > 0 ? (
                         <PaddedContainer>

@@ -7,22 +7,14 @@ import { EmptyList } from '../../reusable/empty-list/EmptyList';
 import { Button } from '../../reusable/button/Button';
 import { ComplimentaryShipping } from '../../reusable/complimentary-shipping/ComplimentaryShipping';
 import { PaddedContainer } from '../../reusable/padded-container/PaddedContainer';
-import { LoadingSpinner } from '../../common/loading-spinner/LoadingSpinner';
 
 export const ShoppingBag = () => {
-    const {
-        shoppingBagItems,
-        continueCheckoutHandler,
-        loading
-    } = useShoppingBagContext();
+    const { shoppingBagItems, continueCheckoutHandler, loading } =
+        useShoppingBagContext();
 
     return (
         <>
-            {loading ? (
-                <PaddedContainer backgroundColor='white'>
-                    <LoadingSpinner minHeight="60vh" />
-                </PaddedContainer>
-            ) : (
+            {!loading && (
                 <>
                     {shoppingBagItems.length > 0 ? (
                         <PaddedContainer backgroundColor='white'>

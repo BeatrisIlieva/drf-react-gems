@@ -10,7 +10,6 @@ import { useProductFiltersContext } from '../../../contexts/ProductFiltersContex
 import { ProductItems } from '../../reusable/product-items/ProductItems';
 import { FilterList } from './filter-list/FilterList';
 import { Nav } from './nav/Nav';
-import { LoadingSpinner } from '../../common/loading-spinner/LoadingSpinner';
 
 const SCROLL_OFFSET = 10;
 
@@ -56,36 +55,29 @@ export const ProductList = () => {
 
     return (
         <>
-            {loading ? (
-                <LoadingSpinner minHeight="70vh" />
-            ) : (
-                <section className={styles['product-list']}>
-                    <div
-                        ref={sentinelRef}
-                        className={styles['sentinel']}
-                    />
+            <section className={styles['product-list']}>
+                <div
+                    ref={sentinelRef}
+                    className={styles['sentinel']}
+                />
 
-                    <HomeLink />
+                <HomeLink />
 
-                    <header
-                        className={
-                            isSticky ? styles['sticky'] : ''
-                        }
-                    >
-                        <Nav />
-                    </header>
+                <header
+                    className={isSticky ? styles['sticky'] : ''}
+                >
+                    <Nav />
+                </header>
 
-                    <div
-                        className={`${
-                            styles['wrapper-products']
-                        } ${
-                            displayFilters
-                                ? styles['with-gap']
-                                : styles['no-gap']
-                        }`}
-                    >
-                        <FilterList />
-
+                <div
+                    className={`${styles['wrapper-products']} ${
+                        displayFilters
+                            ? styles['with-gap']
+                            : styles['no-gap']
+                    }`}
+                >
+                    <FilterList />
+                    {!loading && (
                         <div className={styles['wrapper-inner']}>
                             {products.length > 0 && (
                                 <ProductItems
@@ -93,9 +85,9 @@ export const ProductList = () => {
                                 />
                             )}
                         </div>
-                    </div>
-                </section>
-            )}
+                    )}
+                </div>
+            </section>
         </>
     );
 };
