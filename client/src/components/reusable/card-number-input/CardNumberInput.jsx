@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCcVisa, faCcMastercard } from '@fortawesome/free-brands-svg-icons';
 import { getFieldDisplayName } from '../../../utils/getFieldDisplayName';
-import { PAYMENT_CONSTANTS } from '../../../constants/paymentConstants';
 
 import styles from './CardNumberInput.module.scss';
 
@@ -21,27 +20,6 @@ export const CardNumberInput = ({
     const config = fieldConfig?.[fieldName] || {};
     const required = config.required !== false;
     const maxLength = config.maxLength || 19;
-
-    const paymentCardsMapper = {
-        [PAYMENT_CONSTANTS.CARD_PREFIXES.VISA]: {
-            type: 'visa'
-        },
-        [PAYMENT_CONSTANTS.CARD_PREFIXES.MASTERCARD_51]: {
-            type: 'mastercard'
-        },
-        [PAYMENT_CONSTANTS.CARD_PREFIXES.MASTERCARD_55]: {
-            type: 'mastercard'
-        },
-        [PAYMENT_CONSTANTS.CARD_PREFIXES.MASTERCARD_222]: {
-            type: 'mastercard'
-        },
-        [PAYMENT_CONSTANTS.CARD_PREFIXES.MASTERCARD_227]: {
-            type: 'mastercard'
-        },
-        [PAYMENT_CONSTANTS.CARD_PREFIXES.MASTERCARD_27]: {
-            type: 'mastercard'
-        }
-    };
 
     const formatCardNumber = (value) => {
         // Remove all non-digits
@@ -65,21 +43,41 @@ export const CardNumberInput = ({
     const detectCardType = (value) => {
         const cleanValue = value.replace(/\s/g, '');
         
-        const firstDigit = cleanValue[0];
-        const firstTwoDigits = cleanValue.substring(0, 2);
-        const firstThreeDigits = cleanValue.substring(0, 3);
-
-        let detectedType = null;
-
-        if (paymentCardsMapper[firstDigit]) {
-            detectedType = paymentCardsMapper[firstDigit].type;
-        } else if (paymentCardsMapper[firstTwoDigits]) {
-            detectedType = paymentCardsMapper[firstTwoDigits].type;
-        } else if (paymentCardsMapper[firstThreeDigits]) {
-            detectedType = paymentCardsMapper[firstThreeDigits].type;
+        if (cleanValue.length < 1) {
+            setCardType(null);
+            return;
         }
 
-        setCardType(detectedType);
+        // Check for Visa (starts with 4)
+        if (cleanValue.startsWith('4')) {
+            setCardType('visa');
+            return;
+        }
+
+        // Check for MasterCard
+        // Legacy range: 51-55
+        if (cleanValue.length >= 2) {
+            const firstTwo = cleanValue.substring(0, 2);
+            const firstTwoNum = parseInt(firstTwo, 10);
+            
+            if (firstTwoNum >= 51 && firstTwoNum <= 55) {
+                setCardType('mastercard');
+                return;
+            }
+        }
+
+        // New MasterCard range: 2221-2720
+        if (cleanValue.length >= 4) {
+            const firstFour = cleanValue.substring(0, 4);
+            const firstFourNum = parseInt(firstFour, 10);
+            
+            if (firstFourNum >= 2221 && firstFourNum <= 2720) {
+                setCardType('mastercard');
+                return;
+            }
+        }
+
+        setCardType(null);
     };
 
     const handleInputChange = (e) => {
