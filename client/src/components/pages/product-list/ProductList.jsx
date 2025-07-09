@@ -62,11 +62,9 @@ export const ProductList = () => {
                     }`}
                 >
                     <FilterList />
-                    {!loading && (
-                        <div className={styles['wrapper-inner']}>
-                            {products.length > 0 && <ProductItems products={products} />}
-                        </div>
-                    )}
+                    <div className={styles['wrapper-inner']}>
+                        {products.length > 0 && <ProductItems products={products} />}
+                    </div>
                 </div>
             </section>
         </>

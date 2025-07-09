@@ -8,6 +8,18 @@
     row-gap: 2.5em;
     @include anim.animate-fade-in(1.4s);
     margin-top: 1em;
+
+    @media (max-width: 1200px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (max-width: 900px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 480px) {
+        grid-template-columns: repeat(1, 1fr);
+    }
 }
 
 .loading-more {

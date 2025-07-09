@@ -16,7 +16,6 @@
 
 .popup {
     width: 40dvw;
-    max-width: 90dvw;
     height: 100dvh;
     background-color: vars.$white;
     box-shadow: -0.125em 0 0.625em rgba(0, 0, 0, 0.1);
@@ -27,6 +26,14 @@
 
     &.closing {
         @include anim.animate-slide-out-to-right(0.3s);
+    }
+
+    @media (max-width: 1300px) {
+        width: 60dvw;
+    }
+
+    @media (max-width: 900px) {
+        width: 100dvw;
     }
 }
 

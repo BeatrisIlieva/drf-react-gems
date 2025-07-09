@@ -1,5 +1,8 @@
+@use '../../../../styles/variables' as vars;
+
 .filter-list {
-    width: 17%;
+    width: 250px;
+    // flex: 0 1 200px;
     transition:
         width 0.3s ease,
         opacity 0.3s ease,
@@ -13,6 +16,15 @@
     height: 100%;
     position: sticky;
     top: 3.8em;
+
+    @media (max-width: 980px) {
+        position: absolute;
+        z-index: 40;
+        background: vars.$white;
+        top: 1em;
+        left: 0;
+        width: 100%;
+    }
 }
 
 .filter-list.hidden {

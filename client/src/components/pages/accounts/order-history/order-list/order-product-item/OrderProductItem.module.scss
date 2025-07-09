@@ -12,11 +12,12 @@
         display: flex;
         gap: 1rem;
         align-items: flex-start;
+        margin-bottom: auto;
 
         .thumbnail {
             flex: 0 0 auto;
-            width: 4rem;
-            height: 4rem;
+            width: 6rem;
+            height: 6rem;
             border-radius: 0.25rem;
             overflow: hidden;
             cursor: pointer;
@@ -56,20 +57,4 @@
     }
 }
 
-@media (max-width: 768px) {
-    .order-product-item {
-        padding: 0.75rem;
-        gap: 1rem;
 
-        .product-details {
-            flex-direction: column;
-            text-align: center;
-
-            .thumbnail {
-                align-self: center;
-                width: 3rem;
-                height: 3rem;
-            }
-        }
-    }
-}

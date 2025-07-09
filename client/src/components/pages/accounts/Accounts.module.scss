@@ -4,6 +4,7 @@
 .accounts {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
     @include anim.animate-fade-in(1.2s);
 
     .wrapper {
@@ -21,20 +22,6 @@
             margin-bottom: 1.25em;
             display: flex;
             justify-content: center;
-
-            & li:nth-child(1) {
-                position: relative;
-
-                &::after {
-                    content: '';
-                    position: absolute;
-                    width: 0.1em;
-                    height: 100%;
-                    background: vars.$medium-grey;
-                    bottom: 0;
-                    right: -1.5em;
-                }
-            }
         }
     }
 }

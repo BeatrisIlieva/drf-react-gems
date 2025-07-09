@@ -12,6 +12,10 @@
 
         > li {
             flex: 0 0 45%;
+
+            @media (max-width: 600px) {
+                flex-basis: 100%;
+            }
         }
     }
 

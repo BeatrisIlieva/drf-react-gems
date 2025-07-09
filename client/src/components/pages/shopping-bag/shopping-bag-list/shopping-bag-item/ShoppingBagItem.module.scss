@@ -23,7 +23,7 @@
     }
 
     > span:nth-child(2) {
-        flex: 0 0 56%;
+        flex: 1 1 auto;
         flex-direction: column;
         justify-content: space-between;
 
@@ -71,7 +71,7 @@
 
     > span:nth-child(3) {
         flex-direction: column;
-        flex: 0 24%;
+        flex: 0 0 5.5em;
         justify-content: space-between;
 
         > span:nth-child(1) {
@@ -84,5 +84,11 @@
     &.removing {
         opacity: 0.5;
         cursor: not-allowed;
+    }
+}
+
+@media (max-width: 500px) {
+    #move-to-wishlist {
+        display: none;
     }
 }

@@ -6,6 +6,10 @@
     gap: 2em;
     @include anim.animate-fade-in(1.5s);
 
+    @media (max-width: 900px) {
+        flex-direction: column;
+    }
+
     .wrapper-left {
         display: flex;
         flex-direction: column;

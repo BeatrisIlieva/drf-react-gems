@@ -1,12 +1,18 @@
 @use '../../../styles/variables.scss' as vars;
 @use '../../../styles/animations.scss' as anim;
 
+.order-confirmation-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .order-confirmation {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 2em;
-    margin-bottom: 2em;
+    margin-top: 3em;
     @include anim.animate-fade-in(1.5s);
 }
 

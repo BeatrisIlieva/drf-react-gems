@@ -8,6 +8,10 @@
     margin-top: -5em;
     @include anim.animate-fade-in(1.2s);
 
+    @media (max-width: 1230px) {
+        margin-top: -2em;
+    }
+
     .photo {
         padding: 1em;
         display: flex;

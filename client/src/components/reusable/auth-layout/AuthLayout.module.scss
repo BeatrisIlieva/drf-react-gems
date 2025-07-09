@@ -2,25 +2,43 @@
 
 .auth-layout {
     display: flex;
-
-    @media (max-width: 1000px) {
-        flex-direction: column;
-    }
+    flex-grow: 1;
+    flex-wrap: wrap;
 }
 
 .thumbnail {
-    flex: 0 0 50%;
+    flex: 1 1 50%;
+
+    img {
+        aspect-ratio: 1/1.1;
+    }
+
     @include anim.animate-fade-in(1.5s);
+
+    @media (max-width: 1024px) {
+        flex: 1 1 100%;
+
+        img {
+            height: 40dvh;
+        }
+    }
+
+    @media (max-width: 1400px) {
+        img {
+            aspect-ratio: 1/1.2;
+        }
+    }
 }
 
 .form {
-    flex: 0 0 50%;
+    flex: 1 1 50%;
     display: flex;
     justify-content: center;
-    margin-top: 1em;
+    margin-top: 2.5em;
     padding-inline: clamp(1em, 10vw, 11em);
 
-    @media (max-width: 1000px) {
+    @media (max-width: 1024px) {
+        flex: 1 1 100%;
         order: -1;
         margin-bottom: 3em;
     }

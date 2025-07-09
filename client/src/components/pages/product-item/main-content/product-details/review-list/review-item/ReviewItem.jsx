@@ -12,7 +12,7 @@ export const ReviewItem = ({ review }) => {
 
                 <span>
                     <h5>{review.userFullName}</h5>
-                    <Stars rating={review.rating} />
+                    <Stars rating={review.rating} fontSize={0.9} />
                     <span>{review.createdAt.slice(0, 10)}</span>
                 </span>
             </span>

@@ -9,6 +9,10 @@
     flex: 0 0 36%;
     gap: 1.25em;
 
+    @media (max-width: 900px) {
+        position: static;
+    }
+
     h3 {
         text-transform: uppercase;
     }

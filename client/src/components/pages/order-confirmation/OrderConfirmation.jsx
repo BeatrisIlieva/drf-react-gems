@@ -12,7 +12,7 @@ export const OrderConfirmation = () => {
     const restOfText = title.slice(1);
 
     return (
-        <>
+        <section className={styles['order-confirmation-container']}>
             <PaddedContainer>
                 <section className={styles['order-confirmation']}>
                     <h1 className={styles['title']}>
@@ -36,6 +36,6 @@ export const OrderConfirmation = () => {
                 </section>
             </PaddedContainer>
             <ShopByCategory />
-        </>
+        </section>
     );
 };

@@ -16,8 +16,11 @@ form.delivery-form {
     }
 
     div:nth-of-type(6),
-    div:nth-of-type(7),
-    div:nth-of-type(8) {
+    div:nth-of-type(7) {
         flex: 1 1 30%;
+    }
+
+    div:nth-of-type(8) {
+        flex: 1 1 100%;
     }
 }

@@ -72,6 +72,7 @@ export const ShoppingBagItem = ({
 
                 <span>
                     <button
+                        id={styles['move-to-wishlist']}
                         onClick={moveToWishListHandler}
                         disabled={isDeleting || isMovingToWishlist || isItemInWishlist}
                         className={
