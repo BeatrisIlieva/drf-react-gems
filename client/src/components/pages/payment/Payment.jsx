@@ -65,7 +65,7 @@ export const Payment = () => {
                 };
             }
         },
-        [fieldConfig, createOrderFromBag, refreshShoppingBag]
+        [fieldConfig, createOrderFromBag, refreshShoppingBag, navigate]
     );
 
     const formProps = useForm(initialValues, {
