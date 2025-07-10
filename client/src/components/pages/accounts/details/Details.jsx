@@ -19,6 +19,7 @@ export const Details = () => {
 
     const confirmDeleteHandler = async () => {
         await deletePhotoHandler();
+
         setIsDeleteProfileImagePopupOpen(false);
     };
 

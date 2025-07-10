@@ -13,6 +13,7 @@ export const Logout = () => {
     const logoutHandler = async () => {
         try {
             await logout();
+            
             userLogoutHandler();
         } catch (err) {
             console.error(err instanceof Error ? err.message : String(err));

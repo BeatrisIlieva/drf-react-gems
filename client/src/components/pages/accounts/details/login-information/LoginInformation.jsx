@@ -14,20 +14,18 @@ import { useUserContext } from '../../../../../contexts/UserContext';
 import styles from './LoginInformation.module.scss';
 
 export const LoginInformation = () => {
-    const [isPasswordPopupOpen, setIsPasswordPopupOpen] = useState(false);
-
-    const [isDeleteAccountPopupOpen, setIsDeleteAccountPopupOpen] = useState(false);
-
     const { userLogoutHandler } = useUserContext();
     const { deleteUser } = useAuthentication();
+    const { email, username } = useUserContext();
+
+    const [isPasswordPopupOpen, setIsPasswordPopupOpen] = useState(false);
+    const [isDeleteAccountPopupOpen, setIsDeleteAccountPopupOpen] = useState(false);
 
     const deleteHandler = async () => {
         await deleteUser();
         setIsDeleteAccountPopupOpen(false);
         userLogoutHandler();
     };
-
-    const { email, username } = useUserContext();
 
     return (
         <>

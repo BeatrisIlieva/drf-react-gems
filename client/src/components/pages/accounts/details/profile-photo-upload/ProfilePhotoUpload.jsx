@@ -7,6 +7,7 @@ import styles from './ProfilePhotoUpload.module.scss';
 export const ProfilePhotoUpload = ({ currentPhoto, onPhotoUpdate, isUploading = false }) => {
     const [preview, setPreview] = useState(null);
     const [dragOver, setDragOver] = useState(false);
+
     const fileInputRef = useRef(null);
 
     const handleFileSelect = file => {
