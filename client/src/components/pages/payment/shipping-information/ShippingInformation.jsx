@@ -13,8 +13,9 @@ import styles from './ShippingInformation.module.scss';
 export const ShippingInformation = () => {
     const { email } = useUserContext();
     const { getPersonalInfo } = useProfile();
-    const [deliveryInfo, setDeliveryInfo] = useState(null);
     const navigate = useNavigate();
+
+    const [deliveryInfo, setDeliveryInfo] = useState(null);
 
     useEffect(() => {
         getPersonalInfo()
