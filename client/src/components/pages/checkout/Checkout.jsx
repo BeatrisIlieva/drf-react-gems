@@ -16,11 +16,12 @@ import { useShoppingBagContext } from '../../../contexts/ShoppingBagContext';
 import styles from './Checkout.module.scss';
 
 export const Checkout = () => {
-    const [submitAction, setSubmitAction] = useState(null);
-    const [formState, setFormState] = useState(null);
     const [isPending, startTransition] = useTransition();
     const navigate = useNavigate();
     const { shoppingBagItems } = useShoppingBagContext();
+
+    const [submitAction, setSubmitAction] = useState(null);
+    const [formState, setFormState] = useState(null);
 
     const handleFormReady = ({ submitAction, formState }) => {
         setSubmitAction(() => submitAction);

@@ -10,6 +10,10 @@
         flex-direction: column;
     }
 
+    @media (min-width: 900px) {
+        padding-inline: 6em;
+    }
+
     .wrapper-left {
         display: flex;
         flex-direction: column;
