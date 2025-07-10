@@ -1,0 +1,15 @@
+@use '../../../../../../styles/variables' as vars;
+
+.price-display {
+    transition: all 0.3s ease-in-out;
+
+    span {
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    &.selected-price {
+        font-weight: 500;
+        font-size: 1.1em;
+        color: vars.$dark-grey;
+    }
+}

@@ -1,28 +1,20 @@
-import { useNavigate } from 'react-router';
-
-import { Button } from '../../../../reusable/button/Button';
 import { ComplimentaryShipping } from '../../../../reusable/complimentary-shipping/ComplimentaryShipping';
-import { Icon } from '../../../../reusable/icon/Icon';
-import { Popup } from '../../../../reusable/popup/Popup';
 import { StyledTextBlock } from '../../../../reusable/styled-text-block/StyledTextBlock';
-import { ShoppingBagItem } from '../../../shopping-bag/shopping-bag-list/shopping-bag-item/ShoppingBagItem';
+import { MiniBagPopup } from './mini-bag-popup/MiniBagPopup';
+import { PriceDisplay } from './price-display/PriceDisplay';
+import { ProductActions } from './product-actions/ProductActions';
 import { RelatedProducts } from './related-products/RelatedProducts';
 import { SizeList } from './size-list/SizeList';
 
 import { useCategoryName } from '../../../../../hooks/useCategoryName';
+import { usePriceCalculation } from '../../../../../hooks/usePriceCalculation';
 
 import { useProductItemContext } from '../../../../../contexts/ProductItemContext';
-import { useShoppingBagContext } from '../../../../../contexts/ShoppingBagContext';
-import { useWishlistContext } from '../../../../../contexts/WishlistContext';
-
-import { formatPrice } from '../../../../../utils/formatPrice';
 
 import styles from './UserAction.module.scss';
 
 export const UserAction = () => {
-    const { categoryNameCapitalizedSingular, categoryName } = useCategoryName();
-    const { isInWishlist, handleWishlistToggle } = useWishlistContext();
-    const navigate = useNavigate();
+    const { categoryNameCapitalizedSingular } = useCategoryName();
     const {
         collectionName,
         colorName,
@@ -39,119 +31,64 @@ export const UserAction = () => {
         selectedSize,
     } = useProductItemContext();
 
-    const { shoppingBagItems, shoppingBagItemsCount, shoppingBagTotalPrice } =
-        useShoppingBagContext();
+    const { formattedMinPrice, formattedMaxPrice, selectedInventoryItem } = usePriceCalculation(
+        inventory,
+        selectedSize
+    );
 
-    const selectedInventoryItem = selectedSize
-        ? inventory.find(item => item.size.id === selectedSize)
-        : null;
+    const sectionClassName = [
+        styles['user-action'],
+        isAddingToBag ? 'animate-fade-out duration-300ms' : 'animate-fade-in duration-500ms',
+    ].join(' ');
 
-    const prices = inventory.map(item => parseFloat(item.price));
+    const sizeErrorClassName = [
+        notSelectedSizeError ? styles['error'] : '',
+        isAddingToBag ? 'animate-pulse' : '',
+    ]
+        .filter(Boolean)
+        .join(' ');
 
-    const formattedMinPrice = formatPrice(Math.min(...prices).toString());
-    const formattedMaxPrice = formatPrice(Math.max(...prices).toString());
-
-    const category = categoryName?.slice(0, categoryName?.length - 1);
-    const isItemInWishlist = isInWishlist(category, productId);
-
-    const navigateToCheckout = () => {
-        navigate(`/user/checkout`);
-    };
-
-    const navigateToShoppingBag = () => {
-        navigate(`/user/shopping-bag`);
-    };
+    const sizeMessageClassName = [notSelectedSizeError ? styles['error'] : styles['invisible']]
+        .filter(Boolean)
+        .join(' ');
 
     return (
-        <section
-            className={`${styles['user-action']} ${
-                isAddingToBag ? 'animate-fade-out duration-300ms' : 'animate-fade-in duration-500ms'
-            }`}
-        >
+        <section className={sectionClassName}>
             <h1>
                 <span>{collectionName}</span>
                 <span>{categoryNameCapitalizedSingular}</span>
             </h1>
+
             <StyledTextBlock
                 text={`${colorName} ${stoneName} set in ${metalName}`}
                 isSubtle={true}
             />
-            <p
-                className={`${styles['price-display']} ${selectedInventoryItem ? styles['selected-price'] : ''} ${isAddingToBag ? 'animate-pulse' : ''}`}
-            >
-                {selectedInventoryItem ? (
-                    <span>{formatPrice(selectedInventoryItem.price)}</span>
-                ) : (
-                    <>
-                        <span>{formattedMinPrice}</span>
-                        <span>-</span>
-                        <span>{formattedMaxPrice}</span>
-                    </>
-                )}
-            </p>
+
+            <PriceDisplay
+                selectedInventoryItem={selectedInventoryItem}
+                formattedMinPrice={formattedMinPrice}
+                formattedMaxPrice={formattedMaxPrice}
+                isAddingToBag={isAddingToBag}
+            />
+
             <RelatedProducts />
-            <p
-                className={`${
-                    notSelectedSizeError ? styles['error'] : ''
-                } ${isAddingToBag ? 'animate-pulse' : ''}`.trim()}
-            >
-                Size:
-            </p>
+
+            <p className={sizeErrorClassName}>Size:</p>
+
             <SizeList />
-            <p className={`${notSelectedSizeError ? styles['error'] : styles['invisible']}`.trim()}>
-                Please select a size.
-            </p>
 
-            <div className={styles['buttons-wrapper']}>
-                <Button
-                    title={isAddingToBag ? 'Adding...' : isSoldOut ? 'Sold Out' : 'Add to Bag'}
-                    color={isSoldOut ? 'grey' : 'black'}
-                    callbackHandler={createShoppingBagHandler}
-                    actionType={'button'}
-                    disabled={isSoldOut || isAddingToBag}
-                    buttonGrow="1"
-                    className={isAddingToBag ? 'animate-pulse' : ''}
-                />
-                <Button
-                    title={<Icon name={isItemInWishlist ? 'heart-filled' : 'heart'} />}
-                    color={'black'}
-                    actionType={'button'}
-                    callbackHandler={() => handleWishlistToggle(category + 's', productId)}
-                />
-            </div>
+            <p className={sizeMessageClassName}>Please select a size.</p>
+
+            <ProductActions
+                productId={productId}
+                isSoldOut={isSoldOut}
+                isAddingToBag={isAddingToBag}
+                createShoppingBagHandler={createShoppingBagHandler}
+            />
+
             <ComplimentaryShipping />
-            <Popup isOpen={isMiniBagPopupOpen} onClose={toggleMiniBagPopupOpen}>
-                <div className={styles['mini-bag-header']}>
-                    <h3>Your Bag</h3>
-                    <span>
-                        {shoppingBagItemsCount} {shoppingBagItemsCount > 1 ? 'items' : 'item'}
-                    </span>
-                </div>
 
-                <ul className={styles['shopping-bag-list']}>
-                    {shoppingBagItems.map(item => (
-                        <ShoppingBagItem key={item.id} {...item} />
-                    ))}
-                </ul>
-                <div className={styles['total-price-wrapper']}>
-                    <span>Total</span>
-                    <span>{formatPrice(shoppingBagTotalPrice)}</span>
-                </div>
-                <div className={styles['mini-bag-buttons-wrapper']}>
-                    <Button
-                        title="View Bag"
-                        color="white"
-                        buttonGrow="1"
-                        callbackHandler={navigateToShoppingBag}
-                    />
-                    <Button
-                        title="Continue Checkout"
-                        color="black"
-                        buttonGrow="1"
-                        callbackHandler={navigateToCheckout}
-                    />
-                </div>
-            </Popup>
+            <MiniBagPopup isOpen={isMiniBagPopupOpen} onClose={toggleMiniBagPopupOpen} />
         </section>
     );
 };
