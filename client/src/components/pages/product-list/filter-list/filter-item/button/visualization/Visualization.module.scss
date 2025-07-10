@@ -1,0 +1,19 @@
+@use '../../../../../../../styles/variables' as vars;
+
+.visualization {
+    display: flex;
+    width: 1.4em;
+    height: 1.4em;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    -webkit-clip-path: view-box;
+    clip-path: view-box;
+    display: block;
+    margin: 0;
+    margin-right: 0.25em;
+
+    &.white {
+        border: 0.1em solid vars.$dark-grey;
+        opacity: 0.7;
+    }
+}

@@ -1,0 +1,30 @@
+@use '../../../../../../styles/variables' as vars;
+
+li.item {
+    display: flex;
+    align-items: center;
+    padding-block: 0.5em;
+    padding-inline: 1em;
+    justify-content: space-between;
+
+    &:hover,
+    &.selected {
+        background: vars.$light-grey;
+    }
+
+    .add-filter {
+        display: flex;
+        gap: 0.25em;
+        cursor: pointer;
+
+        .count {
+            opacity: 0.6;
+        }
+    }
+
+    .remove-filter {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+}
