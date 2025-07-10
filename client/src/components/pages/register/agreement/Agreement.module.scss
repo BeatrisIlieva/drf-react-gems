@@ -1,0 +1,75 @@
+@use '../../../../styles/variables' as vars;
+
+.terms-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+
+    label {
+        opacity: 0.5;
+        font-weight: 500;
+        letter-spacing: 0.03em;
+    }
+
+    input[type='checkbox'] {
+        appearance: none;
+        position: relative;
+        aspect-ratio: 1 / 1;
+        border: 0.15em solid vars.$medium-grey;
+        z-index: 0;
+        border-radius: 0.1em;
+        align-self: flex-start;
+        font-size: 0.6em;
+
+        &:not(:placeholder-shown):invalid {
+            border-color: vars.$red;
+
+            ~ label {
+                color: vars.$red;
+            }
+        }
+
+        &::after,
+        &::before {
+            position: absolute;
+            opacity: 0;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        &::after {
+            content: '';
+            background: vars.$black;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+        }
+
+        &::before {
+            content: '\2713';
+            color: vars.$white;
+            z-index: 2;
+            font-size: 1.2em;
+        }
+
+        &:checked {
+            &::before,
+            &::after {
+                opacity: 1;
+            }
+        }
+    }
+
+    .agree {
+        font-size: 0.9em;
+        opacity: 0.6;
+    }
+}
+
+.error-message {
+    color: vars.$red;
+    font-size: 0.95em;
+    margin-left: 0.25em;
+    margin-top: -0.5em;
+}
