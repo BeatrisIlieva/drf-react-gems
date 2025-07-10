@@ -6,6 +6,10 @@
     justify-content: center;
     @include anim.animate-fade-in(1.5s);
 
+    @media (min-width: 900px) {
+        padding-inline: 6em;
+    }
+
     h2 {
         text-align: center;
         text-transform: uppercase;
