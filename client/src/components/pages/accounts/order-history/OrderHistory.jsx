@@ -9,9 +9,10 @@ import { useOrder } from '../../../../api/orderApi';
 import styles from './OrderHistory.module.scss';
 
 export const OrderHistory = () => {
+    const { getOrders } = useOrder();
+
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { getOrders } = useOrder();
 
     useEffect(() => {
         const fetchOrders = async () => {

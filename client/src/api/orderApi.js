@@ -46,23 +46,8 @@ export const useOrder = () => {
         }
     }, [get]);
 
-    const getOrderSummary = useCallback(async () => {
-        try {
-            const response = await get(`${baseUrl}/summary/`, {
-                accessRequired: true,
-                refreshRequired: true,
-            });
-
-            return keysToCamelCase(response);
-        } catch (error) {
-            console.error('Get order summary error:', error);
-            throw error;
-        }
-    }, [get]);
-
     return {
         createOrderFromBag,
         getOrders,
-        getOrderSummary,
     };
 };

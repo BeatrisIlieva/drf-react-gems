@@ -11,11 +11,12 @@ import { useAuth } from '../../../../../../hooks/useAuth';
 import styles from './OrderProductItem.module.scss';
 
 export const OrderProductItem = ({ product }) => {
-    const [existingReview, setExistingReview] = useState(null);
-    const [isLoadingReview, setIsLoadingReview] = useState(false);
     const { getUserReview } = useReview();
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
+
+    const [existingReview, setExistingReview] = useState(null);
+    const [isLoadingReview, setIsLoadingReview] = useState(false);
 
     const productInfo = product.productInfo;
     const contentType = product.productContentType || product.product_content_type;
