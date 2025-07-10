@@ -1,5 +1,5 @@
+from typing import Any
 from django.db import models
-
 from django.db.models import (
     Sum,
     Case,
@@ -14,17 +14,26 @@ from django.db.models import (
 
 
 class BaseProductManager(models.Manager):
-    def get_product_item(self, item_id):
+    def get_product_item(
+        self,
+        item_id: int
+    ) -> Any:
         return self.get(pk=item_id)
 
-    def get_product_list(self, filters, ordering):
+    def get_product_list(
+        self,
+        filters: dict[str, Any],
+        ordering: str
+    ) -> Any:
         qs = self.filter(filters)
-
         raw_products = self._get_raw_products(qs, ordering)
-
         return raw_products
 
-    def _get_raw_products(self, qs, ordering):
+    def _get_raw_products(
+        self,
+        qs: Any,
+        ordering: str
+    ) -> Any:
         ordering_map = {
             'price_asc': 'min_price',
             'price_desc': '-max_price',
@@ -32,7 +41,6 @@ class BaseProductManager(models.Manager):
             'in_stock': '-inventory__quantity',
         }
         ordering_criteria = ordering_map[ordering]
-
         return (
             qs.select_related(
                 'collection',
@@ -72,9 +80,12 @@ class BaseProductManager(models.Manager):
 
 
 class BaseAttributesManager(models.Manager):
-    def get_attributes_count(self, filters, category):
+    def get_attributes_count(
+        self,
+        filters: dict[str, Any],
+        category: str
+    ) -> Any:
         qs = self.get_queryset()
-
         return (
             qs
             .prefetch_related(

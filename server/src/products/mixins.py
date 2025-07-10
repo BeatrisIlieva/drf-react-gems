@@ -1,25 +1,27 @@
 from django.db import models
 from django.db.models import Q
+from typing import Dict
+from src.products.constants import NameFieldLengths
 
 
 class NameFieldMixin(models.Model):
-    NAME_MAX_LENGTH = 30
+    NAME_MAX_LENGTH: int = NameFieldLengths.NAME_MAX_LENGTH
 
     class Meta:
         abstract = True
 
-    name = models.CharField(
+    name: models.CharField = models.CharField(
         max_length=NAME_MAX_LENGTH,
         unique=True,
 
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
 class FilterMixin:
-    def _get_params(self):
+    def _get_params(self) -> Dict[str, list[str]]:
         return {
             'colors': self.request.query_params.getlist('colors'),
             'stones': self.request.query_params.getlist('stones'),
@@ -27,9 +29,9 @@ class FilterMixin:
             'collections': self.request.query_params.getlist('collections'),
         }
 
-    def _get_filters_for_attributes(self, category):
-        params = self._get_params()
-        filters = Q()
+    def _get_filters_for_attributes(self, category: str) -> Q:
+        params: Dict[str, list[str]] = self._get_params()
+        filters: Q = Q()
 
         if params['colors']:
             filters &= Q(**{f'{category}__color_id__in': params['colors']})
@@ -43,9 +45,9 @@ class FilterMixin:
 
         return filters
 
-    def _get_filters_for_product(self):
-        params = self._get_params()
-        filters = Q()
+    def _get_filters_for_product(self) -> Q:
+        params: Dict[str, list[str]] = self._get_params()
+        filters: Q = Q()
 
         if params['colors']:
             filters &= Q(color_id__in=params['colors'])

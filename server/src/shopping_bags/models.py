@@ -1,6 +1,5 @@
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
-
 from django.db import models
 from django.contrib.auth import get_user_model
 
@@ -10,7 +9,18 @@ UserModel = get_user_model()
 class ShoppingBag(models.Model):
 
     class Meta:
-        unique_together = ('user', 'content_type', 'object_id')
+        unique_together = [
+            (
+                'user',
+                'content_type',
+                'object_id'
+            ),
+            (
+                'guest_id',
+                'content_type',
+                'object_id'
+            ),
+        ]
         ordering = ['-created_at']
 
     quantity = models.PositiveIntegerField()

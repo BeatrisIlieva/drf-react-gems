@@ -1,10 +1,13 @@
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from django.db import models
+from django.contrib.auth import get_user_model
+
+
 import uuid
 
-from django.db import models
 from src.orders.choices import OrderStatusChoices
-from django.contrib.auth import get_user_model
+
 UserModel = get_user_model()
 
 
@@ -15,7 +18,6 @@ class Order(models.Model):
     order_group = models.UUIDField(
         default=uuid.uuid4,
         editable=False,
-        help_text="UUID to group products that belong to the same order"
     )
 
     status = models.CharField(

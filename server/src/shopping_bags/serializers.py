@@ -1,17 +1,19 @@
-from rest_framework import serializers
 from django.contrib.contenttypes.models import ContentType
+
+from rest_framework import serializers
+from typing import Any
+
 from src.shopping_bags.models import ShoppingBag
-from src.orders.services import InventoryMixin
+from src.common.mixins import InventoryMixin
 
 
 class ShoppingBagSerializer(serializers.ModelSerializer):
-    content_type = serializers.SlugRelatedField(
+    content_type: serializers.SlugRelatedField = serializers.SlugRelatedField(
         slug_field='model',
         queryset=ContentType.objects.all()
     )
-
-    product_info = serializers.SerializerMethodField()
-    total_price = serializers.SerializerMethodField()
+    product_info: serializers.SerializerMethodField = serializers.SerializerMethodField()
+    total_price: serializers.SerializerMethodField = serializers.SerializerMethodField()
 
     class Meta:
         model = ShoppingBag
@@ -34,10 +36,8 @@ class ShoppingBagSerializer(serializers.ModelSerializer):
         ]
         depth = 3
 
-    def get_product_info(self, obj):
-        """Get product information using the mixin."""
+    def get_product_info(self, obj: Any) -> Any:
         return InventoryMixin.get_product_info(obj)
 
-    def get_total_price(self, obj):
-        """Get total price per product using the mixin."""
+    def get_total_price(self, obj: Any) -> Any:
         return InventoryMixin.get_total_price_per_product(obj)

@@ -6,7 +6,6 @@ from django.core.management.base import BaseCommand
 from django.contrib.contenttypes.models import ContentType
 
 from django.contrib.auth import get_user_model
-from faker import Faker
 
 from src.products.models import (
     Earwear,
@@ -19,7 +18,6 @@ from src.products.models import (
 
 UserModel = get_user_model()
 
-fake = Faker()
 
 sample_reviews = [
     "Beautiful piece, exactly as described. The craftsmanship is impressive, and it really stands out on special occasions.",
@@ -170,7 +168,7 @@ class Command(BaseCommand):
                     'username': item['username']
                 }
             )
-            
+
             if created:
                 user.set_password(item['password'])
                 user.save()

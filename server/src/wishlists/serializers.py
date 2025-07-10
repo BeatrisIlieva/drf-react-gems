@@ -1,21 +1,22 @@
-from rest_framework import serializers
+from typing import Any, Dict
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import Avg
+
+from rest_framework import serializers
 
 from src.wishlists.models import Wishlist
-from src.products.serializers.base import ProductListDataMixin
 
 
-class WishlistSerializer(serializers.ModelSerializer, ProductListDataMixin):
-    content_type = serializers.SlugRelatedField(
+class WishlistSerializer(serializers.ModelSerializer):
+    content_type: serializers.SlugRelatedField = serializers.SlugRelatedField(
         slug_field='model',
         queryset=ContentType.objects.all()
     )
-    
-    product_info = serializers.SerializerMethodField()
+    product_info: serializers.SerializerMethodField = serializers.SerializerMethodField()
 
     class Meta:
         model = Wishlist
-        fields = [
+        fields: list[str] = [
             'id',
             'user',
             'guest_id',
@@ -24,33 +25,48 @@ class WishlistSerializer(serializers.ModelSerializer, ProductListDataMixin):
             'object_id',
             'product_info',
         ]
-        read_only_fields = [
+        read_only_fields: list[str] = [
             'id',
             'created_at',
             'user',
             'guest_id',
             'product_info',
         ]
-        
-    def get_product_info(self, obj):
-        """
-        Returns product data in the same format as product list views
-        """
-        product_obj = obj.product
-        
-        # If the wishlist item is an inventory item, get the actual product
-        if hasattr(product_obj, 'product') and hasattr(product_obj, 'size'):
-            # This is an inventory item, get the actual product
-            actual_product = product_obj.product
-            product_data = self.get_product_list_data(actual_product)
-            
-            # Add inventory-specific data
-            if product_data:
-                product_data['size'] = product_obj.size.name
-                product_data['price'] = product_obj.price
-                product_data['available_quantity'] = product_obj.quantity
-                
-            return product_data
+
+    def get_product_info(
+        self,
+        obj: Any
+    ) -> Dict[str, Any]:
+        product = obj.product
+
+        avg_rating = product.review.filter(
+            approved=True
+        ).aggregate(
+            avg=Avg('rating')
+        )['avg'] or 0
+
+        inventory_items = product.inventory.all()
+        if inventory_items:
+            prices = [item.price for item in inventory_items]
+            min_price = min(prices)
+            max_price = max(prices)
         else:
-            # This is a direct product
-            return self.get_product_list_data(product_obj)
+            min_price = max_price = 0
+
+        is_sold_out = not inventory_items.filter(
+            quantity__gt=0
+        ).exists()
+
+        return {
+            'id': product.id,
+            'first_image': product.first_image,
+            'second_image': product.second_image,
+            'collection__name': product.collection.name,
+            'color__name': product.color.name,
+            'stone__name': product.stone.name,
+            'metal__name': product.metal.name,
+            'is_sold_out': is_sold_out,
+            'average_rating': round(avg_rating, 2),
+            'min_price': min_price,
+            'max_price': max_price,
+        }

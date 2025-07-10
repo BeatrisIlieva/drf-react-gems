@@ -1,5 +1,6 @@
+from typing import Any
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.request import Request
 
 from src.accounts.models.user_profile import UserProfile
 from src.accounts.serializers.user_profile import UserProfileSerializer
@@ -7,11 +8,11 @@ from src.accounts.serializers.user_profile import UserProfileSerializer
 
 class UserProfileView(RetrieveUpdateDestroyAPIView):
     serializer_class = UserProfileSerializer
-    permission_classes = [IsAuthenticated]
 
-    def get_object(self):
+    def get_object(
+        self
+    ) -> UserProfile:
         profile, _ = UserProfile.objects.get_or_create(
             user=self.request.user
         )
-
         return profile

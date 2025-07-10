@@ -1,11 +1,17 @@
 from rest_framework.exceptions import ValidationError
+
 import uuid
-from typing import Dict, Any
+from typing import Dict, Any, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from rest_framework.request import Request
 
 
 class UserIdentificationService:
     @staticmethod
-    def get_user_identifier(request) -> Dict[str, Any]:
+    def get_user_identifier(
+        request: 'Request'
+    ) -> Dict[str, Any]:
         if request.user.is_authenticated:
             return {'user': request.user}
 

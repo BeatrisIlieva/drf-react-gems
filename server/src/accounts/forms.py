@@ -11,6 +11,6 @@ class UserCredentialCreationForm(UserCreationForm):
         fields = ('email', 'username',)
 
 
-# class UserCredentialChangeForm(UserChangeForm):
-#     class Meta(UserChangeForm.Meta):
-#         model = UserModel
+class UserCredentialChangeForm(UserChangeForm):
+    class Meta(UserChangeForm.Meta):
+        model = UserModel

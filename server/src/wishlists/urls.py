@@ -1,4 +1,5 @@
 from rest_framework.routers import DefaultRouter
+
 from src.wishlists.views import WishlistViewSet
 
 router = DefaultRouter()

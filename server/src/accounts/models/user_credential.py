@@ -1,6 +1,6 @@
 from django.contrib.auth.models import PermissionsMixin
-from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.db import models
 
 from src.accounts.managers import UserCredentialManager
 from src.accounts.validators.models import UsernameValidator
@@ -18,7 +18,9 @@ class UserCredential(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(
         max_length=UserFieldLengths.USERNAME_MAX,
         unique=True,
-        validators=[UsernameValidator()],
+        validators=[
+            UsernameValidator(),
+        ],
         error_messages={
             'unique': UserErrorMessages.USERNAME_UNIQUE,
         }

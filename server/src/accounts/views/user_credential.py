@@ -1,12 +1,15 @@
+from typing import Any
 from django.contrib.auth import get_user_model, authenticate
+
 from rest_framework.generics import CreateAPIView, DestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.request import Request
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
+
 from src.accounts.serializers.user_credential import (
     UserRegisterSerializer,
     UserLoginRequestSerializer,
@@ -20,22 +23,21 @@ UserModel = get_user_model()
 
 
 class UserRegisterView(CreateAPIView):
-    # uses signal to create related models
-    # like `UserProfile`, `UserAddress`, `UserPhoto`
+    # uses signal to create related models `UserProfile` and `UserPhoto`
     queryset = UserModel.objects.all()
     serializer_class = UserRegisterSerializer
-    # because in `settings.py` we defined that by default
-    # we expect the user to be authenticated
-    # we need to add `AllowAny` permission for the `UserRegisterView`
     permission_classes = [AllowAny]
 
-    def create(self, request, *args, **kwargs):
-        # Use the original serializer to validate and save the user
+    def create(
+        self,
+        request: Request,
+        *args: Any,
+        **kwargs: Any
+    ) -> Response:
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
-        # Generate tokens for the newly created user
         refresh = RefreshToken.for_user(user)
 
         guest_id = request.headers.get('Guest-Id')
@@ -48,7 +50,6 @@ class UserRegisterView(CreateAPIView):
                 'email': user.email,
                 'username': user.username,
                 'id': user.pk,
-
             },
             status=status.HTTP_201_CREATED
         )
@@ -57,8 +58,12 @@ class UserRegisterView(CreateAPIView):
 class UserLoginView(APIView):
     permission_classes = [AllowAny]
 
-    def post(self, request, *args, **kwargs):
-        # Validate the request data using the serializer
+    def post(
+        self,
+        request: Request,
+        *args: Any,
+        **kwargs: Any
+    ) -> Response:
         serializer = UserLoginRequestSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(
@@ -66,9 +71,8 @@ class UserLoginView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        # Extract validated data
-        email_or_username = serializer.validated_data['email_or_username']
-        password = serializer.validated_data['password']
+        email_or_username: str = serializer.validated_data['email_or_username']
+        password: str = serializer.validated_data['password']
 
         user = authenticate(
             username=email_or_username,
@@ -86,13 +90,11 @@ class UserLoginView(APIView):
         guest_id = request.headers.get('Guest-Id')
         migrate_guest_data_to_user(user, guest_id)
 
-        # if the user credentials are valid we issue both `access token` and `refresh token`
         refresh = RefreshToken.for_user(user)
 
         return Response(
             {
                 'refresh': str(refresh),
-                # the refresh token has a property `access_token`
                 'access': str(refresh.access_token),
                 'message': 'Login successful',
                 'username': user.username,
@@ -104,15 +106,15 @@ class UserLoginView(APIView):
 
 
 class UserLogoutView(APIView):
-    # upon logout we need to blacklist the token so it can be no longer used
-    def post(self, request, *args, **kwargs):
+    def post(
+        self,
+        request: Request,
+        *args: Any,
+        **kwargs: Any
+    ) -> Response:
         try:
-            # we get the token from the request as a string
             refresh_token = request.data.get('refresh')
-            # we create a token object
             token = RefreshToken(refresh_token)
-            # in order to call its method `blacklist` which adds the token
-            # into the table containing the blacklisted tokens
             token.blacklist()
 
             return Response(
@@ -134,10 +136,10 @@ class UserLogoutView(APIView):
 class PasswordChangeView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def patch(self, request):
-        """
-        Change user password
-        """
+    def patch(
+        self,
+        request: Request
+    ) -> Response:
         serializer = PasswordChangeSerializer(
             data=request.data,
             context={'request': request}
@@ -145,6 +147,7 @@ class PasswordChangeView(APIView):
 
         if serializer.is_valid():
             serializer.save()
+
             return Response(
                 {"message": "Password changed successfully"},
                 status=status.HTTP_200_OK
@@ -156,5 +159,5 @@ class PasswordChangeView(APIView):
 class UserDeleteView(DestroyAPIView):
     permission_classes = [IsAuthenticated]
 
-    def get_object(self):
+    def get_object(self) -> Any:
         return self.request.user

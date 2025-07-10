@@ -1,9 +1,10 @@
 from pathlib import Path
 from datetime import timedelta
-from django.urls import reverse_lazy
-from django.templatetags.static import static
+
 from django.utils.translation import gettext_lazy as _
 from corsheaders.defaults import default_headers
+
+from .unfold import UNFOLD
 
 
 import cloudinary
@@ -55,8 +56,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
-
-    'drf_spectacular',
 ] + PROJECT_APPS
 
 REST_FRAMEWORK = {
@@ -66,7 +65,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 SIMPLE_JWT = {
@@ -183,127 +181,3 @@ cloudinary.config(
     api_key='356773277236827',
     api_secret='Txaakp6bHutRt-Aw2ocf-dx7aMA'
 )
-
-
-UNFOLD = {
-    'SITE_DROPDOWN': [
-        {
-            'icon': 'diamond',
-            'title': _('DRF-React-TS Gems'),
-            'link': '/',
-        },
-    ],
-    'THEME': 'light',
-    'STYLES': [
-        lambda request: static('css/style.css'),
-    ],
-    'SCRIPTS': [
-        lambda request: static('js/script.js'),
-    ],
-    'SIDEBAR': {
-        'navigation': [
-            {
-                'title': _('Products'),
-                'separator': True,
-                'permission': lambda request: request.user.has_perm('products.view_earwear'),
-                'items': [
-                    {
-                        'title': _('Earwear'),
-                        'icon': 'inventory',
-                        'link': reverse_lazy('admin:products_earwear_changelist'),
-                        'permission': lambda request: request.user.has_perm('products.view_earwear'),
-                    },
-                    {
-                        'title': _('Fingerwear'),
-                        'icon': 'inventory',
-                        'link': reverse_lazy('admin:products_fingerwear_changelist'),
-                        'permission': lambda request: request.user.has_perm('products.view_fingerwear'),
-                    },
-                    {
-                        'title': _('Neckwear'),
-                        'icon': 'inventory',
-                        'link': reverse_lazy('admin:products_neckwear_changelist'),
-                        'permission': lambda request: request.user.has_perm('products.view_neckwear'),
-                    },
-                    {
-                        'title': _('Wristwear'),
-                        'icon': 'inventory',
-                        'link': reverse_lazy('admin:products_wristwear_changelist'),
-                        'permission': lambda request: request.user.has_perm('products.view_wristwear'),
-                    },
-                ],
-            },
-            {
-                'title': _('Reviews'),
-                'separator': True,
-                'permission': lambda request: request.user.has_perm('products.view_review'),
-                'items': [
-                    {
-                        'title': _('Product Reviews'),
-                        'icon': 'star',
-                        'link': reverse_lazy('admin:products_review_changelist'),
-                        'permission': lambda request: request.user.has_perm('products.view_review'),
-                    },
-                ],
-            },
-            {
-                'title': _('Characteristics'),
-                'separator': True,
-                'collapsible': True,
-                'permission': lambda request: request.user.has_perm('products.view_color'),
-                'items': [
-                    {
-                        'title': _('Colors'),
-                        'icon': 'Palette',
-                        'link': reverse_lazy('admin:products_color_changelist'),
-                        'permission': lambda request: request.user.has_perm('products.view_color'),
-                    },
-                    {
-                        'title': _('Metals'),
-                        'icon': 'Texture',
-                        'link': reverse_lazy('admin:products_metal_changelist'),
-                        'permission': lambda request: request.user.has_perm('products.view_metal'),
-                    },
-                    {
-                        'title': _('Stone'),
-                        'icon': 'Diamond',
-                        'link': reverse_lazy('admin:products_stone_changelist'),
-                        'permission': lambda request: request.user.has_perm('products.view_stone'),
-                    },
-                    {
-                        'title': _('Collections'),
-                        'icon': 'Bookmarks',
-                        'link': reverse_lazy('admin:products_collection_changelist'),
-                        'permission': lambda request: request.user.has_perm('products.view_collection'),
-                    },
-                    {
-                        'title': _('Size'),
-                        'icon': 'crop',
-                        'link': reverse_lazy('admin:products_size_changelist'),
-                        'permission': lambda request: request.user.has_perm('products.view_size'),
-                    },
-                ],
-            },
-            {
-                'title': _('Users & Groups'),
-                'icon': 'people',
-                'collapsible': True,
-                'separator': True,
-                'items': [
-                    {
-                        'title': _('Users'),
-                        'icon': 'person',
-                        'link': reverse_lazy('admin:accounts_usercredential_changelist'),
-                        'permission': lambda request: request.user.is_superuser,
-                    },
-                    {
-                        'title': _('Groups'),
-                        'icon': 'group',
-                        'link': reverse_lazy('admin:auth_group_changelist'),
-                        'permission': lambda request: request.user.is_superuser,
-                    },
-                ],
-            },
-        ],
-    },
-}

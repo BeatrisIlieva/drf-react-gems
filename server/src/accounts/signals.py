@@ -2,6 +2,7 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.contrib.auth import get_user_model
+
 from src.accounts.models.user_photo import UserPhoto
 from src.accounts.models.user_profile import UserProfile
 

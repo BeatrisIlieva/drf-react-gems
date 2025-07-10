@@ -8,11 +8,18 @@ UserModel = get_user_model()
 
 
 class Wishlist(models.Model):
-
     class Meta:
         unique_together = [
-            ('user', 'content_type', 'object_id'),
-            ('guest_id', 'content_type', 'object_id'),
+            (
+                'user',
+                'content_type',
+                'object_id'
+            ),
+            (
+                'guest_id',
+                'content_type',
+                'object_id'
+            ),
         ]
         ordering = ['-created_at']
 

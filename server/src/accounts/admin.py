@@ -12,10 +12,13 @@ UserModel = get_user_model()
 @admin.register(UserModel)
 class UserCredentialAdmin(UserAdmin):
     add_form = UserCredentialCreationForm
-    # model = UserModel
     list_display = (
-        'pk', 'email', 'username', 'password',
-        'is_staff', 'is_superuser'
+        'pk',
+        'email',
+        'username',
+        'password',
+        'is_staff',
+        'is_superuser'
     )
     search_fields = ('email', 'username')
     ordering = ('pk',)
@@ -23,13 +26,17 @@ class UserCredentialAdmin(UserAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                'email', 'password', 'username'
+                'email',
+                'password',
+                'username'
             )
         }),
         ('Permissions', {
             'fields': (
                 'is_active',
-                'is_staff', 'groups', 'user_permissions'
+                'is_staff',
+                'groups',
+                'user_permissions'
             )
         }),
         ('Important dates', {
@@ -42,7 +49,12 @@ class UserCredentialAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'username', 'password1', 'password2'),
+            'fields': (
+                'email',
+                'username',
+                'password1',
+                'password2'
+            ),
         }),
     )
 

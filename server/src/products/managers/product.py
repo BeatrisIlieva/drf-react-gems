@@ -1,33 +1,34 @@
+from typing import Type, Any
 from src.products.managers.base import BaseAttributesManager, BaseProductManager
 
 
-class EarwearManager(BaseProductManager):
+class EarwearManager(BaseProductManager[Type[Any]]):
     pass
 
 
-class NeckwearManager(BaseProductManager):
+class NeckwearManager(BaseProductManager[Type[Any]]):
     pass
 
 
-class WristwearManager(BaseProductManager):
+class WristwearManager(BaseProductManager[Type[Any]]):
     pass
 
 
-class FingerwearManager(BaseProductManager):
+class FingerwearManager(BaseProductManager[Type[Any]]):
     pass
 
 
-class ColorManager(BaseAttributesManager):
+class ColorManager(BaseAttributesManager[Type[Any]]):
     pass
 
 
-class CollectionManager(BaseAttributesManager):
+class CollectionManager(BaseAttributesManager[Type[Any]]):
     pass
 
 
-class MetalManager(BaseAttributesManager):
+class MetalManager(BaseAttributesManager[Type[Any]]):
     pass
 
 
-class StoneManager(BaseAttributesManager):
+class StoneManager(BaseAttributesManager[Type[Any]]):
     pass

@@ -1,7 +1,6 @@
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 
-
 from src.products.models.inventory import Inventory
 from src.products.models.review import Review
 
@@ -15,16 +14,10 @@ class BaseProduct(models.Model):
 
     first_image = models.URLField(
         unique=True,
-        error_messages={
-            'unique': 'This image already exists.'
-        }
     )
 
     second_image = models.URLField(
         unique=True,
-        error_messages={
-            'unique': 'This image already exists.'
-        }
     )
 
     created_at = models.DateTimeField(

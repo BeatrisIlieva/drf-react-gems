@@ -1,6 +1,6 @@
-from django.core.validators import MinLengthValidator
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.core.validators import MinLengthValidator
 
 from src.accounts.validators.models import (
     OnlyDigitsValidator,

@@ -1,6 +1,16 @@
 from src.products.models.base import BaseProduct
-from src.products.managers import EarwearManager, NeckwearManager, WristwearManager, FingerwearManager
-from src.products.managers.product import CollectionManager, ColorManager, MetalManager, StoneManager
+from src.products.managers import (
+    EarwearManager,
+    NeckwearManager,
+    WristwearManager,
+    FingerwearManager
+)
+from src.products.managers.product import (
+    CollectionManager,
+    ColorManager,
+    MetalManager,
+    StoneManager
+)
 from src.products.mixins import NameFieldMixin
 
 

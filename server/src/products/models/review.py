@@ -13,9 +13,16 @@ class Review(models.Model):
 
     class Meta:
         ordering = ['-created_at']
-        unique_together = ('user', 'content_type', 'object_id')
+        unique_together = (
+            'user',
+            'content_type',
+            'object_id'
+        )
         permissions = [
-            ('approve_review', 'Can approve reviews'),
+            (
+                'approve_review',
+                'Can approve reviews'
+            ),
         ]
 
     rating = models.IntegerField(
@@ -25,12 +32,10 @@ class Review(models.Model):
     comment = models.TextField(
         max_length=ReviewFieldLengths.MAX_COMMENT_LENGTH,
         blank=False,
-        help_text='Review comment is required.',
     )
 
     approved = models.BooleanField(
         default=False,
-        help_text='Indicates whether the review has been approved by an admin.',
     )
 
     created_at = models.DateTimeField(
