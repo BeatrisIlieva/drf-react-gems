@@ -21,11 +21,7 @@ export const Dropdown = ({ onClose }) => {
 
     return (
         <div ref={dropdownRef} className={styles['dropdown']}>
-            <Nav
-                links={navLinks}
-                flexDirection="column"
-                onLinkClick={onClose}
-            />
+            <Nav links={navLinks} flexDirection="column" onLinkClick={onClose} />
         </div>
     );
 };
