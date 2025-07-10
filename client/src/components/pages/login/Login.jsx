@@ -1,19 +1,11 @@
-import { Fragment, useCallback, useState } from 'react';
-
-import { useNavigate } from 'react-router';
-
 import { AuthLayout } from '../../reusable/auth-layout/AuthLayout';
 import { Button } from '../../reusable/button/Button';
 import { InputField } from '../../reusable/input-field/InputField';
+import { ErrorMessage } from './error-message/ErrorMessage';
 import { Footer } from './footer/Footer';
 
-import { useAuthentication } from '../../../api/authApi';
-
 import { useForm } from '../../../hooks/useForm';
-
-import { useUserContext } from '../../../contexts/UserContext';
-
-import { createApiDataFromForm } from '../../../utils/formHelpers';
+import { useLogin } from '../../../hooks/useLogin';
 
 import { FORM_CONFIGS } from '../../../config/formFieldConfigs';
 
@@ -21,45 +13,7 @@ import styles from './Login.module.scss';
 
 export const Login = () => {
     const { fieldConfig, initialValues } = FORM_CONFIGS.login;
-    const { userLoginHandler } = useUserContext();
-    const { login } = useAuthentication();
-    const navigate = useNavigate();
-
-    const [invalidCredentials, setInvalidCredentials] = useState(false);
-
-    const handleSubmit = useCallback(
-        async formData => {
-            setInvalidCredentials(false);
-
-            const apiData = createApiDataFromForm(formData, fieldConfig);
-
-            const authData = await login(apiData);
-
-            if (authData?.access) {
-                userLoginHandler(authData);
-                navigate('/my-account/details');
-                return { success: true };
-            }
-
-            if (authData === undefined || authData === 'Invalid username or password') {
-                setInvalidCredentials(true);
-                return {
-                    success: false,
-                    error: 'Invalid username or password',
-                };
-            }
-
-            if (authData && typeof authData === 'object' && !authData.access) {
-                return {
-                    success: false,
-                    data: authData,
-                };
-            }
-
-            return { success: false, error: 'Login failed' };
-        },
-        [fieldConfig, login, userLoginHandler, navigate]
-    );
+    const { handleSubmit, invalidCredentials } = useLogin(fieldConfig);
 
     const formProps = useForm(initialValues, {
         onSubmit: handleSubmit,
@@ -80,19 +34,15 @@ export const Login = () => {
             <section className={styles['login']}>
                 <h2>Welcome Back</h2>
                 <p>Please sign in to access your account.</p>
-                {invalidCredentials && (
-                    <div className={styles['invalid-username-password']}>
-                        <p>
-                            Your email/username or password is incorrect.
-                        </p>
-                    </div>
-                )}
+
+                <ErrorMessage show={invalidCredentials} />
 
                 <form action={submitAction}>
-                    {Object.entries(formData).map(([fieldName, fieldData]) => (
-                        <Fragment key={fieldName}>
-                            {fieldData && (
+                    {Object.entries(formData).map(
+                        ([fieldName, fieldData]) =>
+                            fieldData && (
                                 <InputField
+                                    key={fieldName}
                                     getInputClassName={getInputClassName}
                                     fieldData={fieldData}
                                     handleFieldChange={handleFieldChange}
@@ -100,12 +50,11 @@ export const Login = () => {
                                     fieldName={fieldName}
                                     fieldConfig={fieldConfig}
                                 />
-                            )}
-                        </Fragment>
-                    ))}
+                            )
+                    )}
 
                     <Button
-                        title={'Sign In'}
+                        title="Sign In"
                         color="black"
                         actionType="submit"
                         pending={isSubmitting}
@@ -113,6 +62,7 @@ export const Login = () => {
                         callbackHandler={() => {}}
                     />
                 </form>
+
                 <Footer />
             </section>
         </AuthLayout>

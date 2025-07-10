@@ -13,22 +13,9 @@
         margin-bottom: 0.75em;
     }
 
-    p {
+    & > p {
         opacity: 0.6;
         font-style: italic;
         margin-bottom: 1em;
-    }
-}
-
-.invalid-username-password {
-    background: #fdf4f4;
-    border: 0.1em solid vars.$red;
-    padding: 1em;
-    margin-bottom: 1em;
-
-    p {
-        color: vars.$red;
-        margin-bottom: 0;
-        opacity: 1;
     }
 }

@@ -1,0 +1,15 @@
+@use '../../../../styles/variables' as vars;
+
+.invalid-username-password {
+    background: #fdf4f4;
+    border: 0.1em solid vars.$red;
+    padding: 1em;
+    margin-bottom: 1em;
+    border-radius: 0.1em;
+
+    & > p {
+        color: vars.$red;
+        margin-bottom: 0;
+        opacity: 1;
+    }
+}
