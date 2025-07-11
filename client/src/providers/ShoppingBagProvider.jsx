@@ -4,26 +4,36 @@ import { useNavigate } from 'react-router';
 
 import { useShoppingBag } from '../api/shoppingBagApi';
 
+import { useGuest } from '../hooks/useGuest';
+import usePersistedState from '../hooks/usePersistedState';
+
 import { ShoppingBagContext } from '../contexts/ShoppingBagContext';
 import { UserContext } from '../contexts/UserContext';
 
 export const ShoppingBagProvider = ({ children }) => {
     const { deleteItem, getItems, getCount, getTotalPrice, createItem } = useShoppingBag();
     const { id: userId } = useContext(UserContext);
+    const { guestData } = useGuest();
 
     const navigate = useNavigate();
     const [isDeleting, setIsDeleting] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    const [shoppingBagItemsCount, setShoppingBagItemsCount] = useState(0);
-    const [shoppingBagTotalPrice, setShoppingBagTotalPrice] = useState(0);
-    const [shoppingBagItems, setShoppingBagItems] = useState([]);
+    const [shoppingBagItemsCount, setShoppingBagItemsCount] = usePersistedState(
+        'shopping-bag-count',
+        0
+    );
+    const [shoppingBagTotalPrice, setShoppingBagTotalPrice] = usePersistedState(
+        'shopping-bag-total-price',
+        0
+    );
+    const [shoppingBagItems, setShoppingBagItems] = usePersistedState('shopping-bag-items', []);
 
     useEffect(() => {
         let mounted = true;
 
         const loadShoppingBag = async () => {
-            if (!userId) {
+            if (!userId && !guestData.guest_id) {
                 setShoppingBagItems([]);
                 setShoppingBagItemsCount(0);
                 setShoppingBagTotalPrice(0);
@@ -68,7 +78,16 @@ export const ShoppingBagProvider = ({ children }) => {
         return () => {
             mounted = false;
         };
-    }, [userId, getItems, getCount, getTotalPrice]);
+    }, [
+        userId,
+        guestData,
+        getItems,
+        getCount,
+        getTotalPrice,
+        setShoppingBagItems,
+        setShoppingBagItemsCount,
+        setShoppingBagTotalPrice,
+    ]);
 
     const deleteShoppingBagHandler = useCallback(
         async id => {

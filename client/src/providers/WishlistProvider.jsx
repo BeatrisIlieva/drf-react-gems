@@ -2,13 +2,17 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { useWishlist } from '../api/wishlistApi';
 
+import { useGuest } from '../hooks/useGuest';
+import usePersistedState from '../hooks/usePersistedState';
+
 import { UserContext } from '../contexts/UserContext';
 import { WishlistContext } from '../contexts/WishlistContext';
 
 export const WishlistProvider = ({ children }) => {
-    const [wishlistItems, setWishlistItems] = useState([]);
-    const [wishlistItemsCount, setWishlistItemsCount] = useState(0);
     const [loading, setLoading] = useState(true);
+    const { guestData } = useGuest();
+    const [wishlistItemsCount, setWishlistItemsCount] = usePersistedState('wishlist-count', 0);
+    const [wishlistItems, setWishlistItems] = usePersistedState('wishlist-items', []);
 
     const { getItems, createItem, deleteItem } = useWishlist();
     const { id: userId } = useContext(UserContext);
@@ -126,7 +130,7 @@ export const WishlistProvider = ({ children }) => {
         let mounted = true;
 
         const loadWishlist = async () => {
-            if (!userId) {
+            if (!userId && !guestData.guest_id) {
                 setWishlistItems([]);
                 setWishlistItemsCount(0);
                 setLoading(false);
