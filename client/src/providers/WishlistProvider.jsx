@@ -10,9 +10,10 @@ import { WishlistContext } from '../contexts/WishlistContext';
 
 export const WishlistProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
-    const { guestData } = useGuest();
     const [wishlistItemsCount, setWishlistItemsCount] = usePersistedState('wishlist-count', 0);
     const [wishlistItems, setWishlistItems] = usePersistedState('wishlist-items', []);
+    const { getGuestData } = useGuest();
+    const guestId = getGuestData();
 
     const { getItems, createItem, deleteItem } = useWishlist();
     const { id: userId } = useContext(UserContext);
@@ -130,7 +131,7 @@ export const WishlistProvider = ({ children }) => {
         let mounted = true;
 
         const loadWishlist = async () => {
-            if (!userId && !guestData.guest_id) {
+            if (!userId && !guestId) {
                 setWishlistItems([]);
                 setWishlistItemsCount(0);
                 setLoading(false);
@@ -171,7 +172,7 @@ export const WishlistProvider = ({ children }) => {
         return () => {
             mounted = false;
         };
-    }, [userId, getItems]);
+    }, [userId, getItems, guestId, setWishlistItems, setWishlistItemsCount]);
 
     const refreshWishlist = useCallback(async () => {
         try {

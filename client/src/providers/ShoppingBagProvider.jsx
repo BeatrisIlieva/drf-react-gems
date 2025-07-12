@@ -13,7 +13,8 @@ import { UserContext } from '../contexts/UserContext';
 export const ShoppingBagProvider = ({ children }) => {
     const { deleteItem, getItems, getCount, getTotalPrice, createItem } = useShoppingBag();
     const { id: userId } = useContext(UserContext);
-    const { guestData } = useGuest();
+    const { getGuestData } = useGuest();
+    const guestId = getGuestData();
 
     const navigate = useNavigate();
     const [isDeleting, setIsDeleting] = useState(false);
@@ -33,7 +34,7 @@ export const ShoppingBagProvider = ({ children }) => {
         let mounted = true;
 
         const loadShoppingBag = async () => {
-            if (!userId && !guestData.guest_id) {
+            if (!userId && !guestId) {
                 setShoppingBagItems([]);
                 setShoppingBagItemsCount(0);
                 setShoppingBagTotalPrice(0);
@@ -80,7 +81,7 @@ export const ShoppingBagProvider = ({ children }) => {
         };
     }, [
         userId,
-        guestData,
+        guestId,
         getItems,
         getCount,
         getTotalPrice,
