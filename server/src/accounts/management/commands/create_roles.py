@@ -105,7 +105,7 @@ class Command(BaseCommand):
         )
 
         if created:
-            inventory_user.set_password('@dmin123')
+            inventory_user.set_password('!1Aabb')
             inventory_user.save()
             self.stdout.write(self.style.SUCCESS('Inventory user created.'))
         inventory_user.groups.add(inventory_group)
@@ -118,7 +118,7 @@ class Command(BaseCommand):
         )
 
         if created:
-            manager_user.set_password('@dmin123')
+            manager_user.set_password('!1Aabb')
             manager_user.save()
             self.stdout.write(self.style.SUCCESS('Manager user created.'))
         manager_user.groups.add(manager_group)
@@ -131,7 +131,7 @@ class Command(BaseCommand):
         )
 
         if created:
-            reviewer_user.set_password('@dmin123')
+            reviewer_user.set_password('!1Aabb')
             reviewer_user.save()
             self.stdout.write(self.style.SUCCESS('Reviewer user created.'))
         reviewer_user.groups.add(reviewer_group)
@@ -139,7 +139,7 @@ class Command(BaseCommand):
         # === Create Superuser ===
         if not User.objects.filter(email='super_user@mail.com').exists():
             User.objects.create_superuser(
-                email='super_user@mail.com', password='@dmin123')
+                email='super_user@mail.com', password='!1Aabb')
             self.stdout.write(self.style.SUCCESS('Superuser created.'))
 
         self.stdout.write(self.style.SUCCESS(

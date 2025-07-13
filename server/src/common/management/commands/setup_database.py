@@ -52,13 +52,13 @@ class Command(BaseCommand):
                 )
             )
             self.stdout.write(
-                '   • Super User: super_user@mail.com | @dmin123')
+                '   • Super User: super_user@mail.com | !1Aabb')
             self.stdout.write(
-                '   • Inventory User: inventory_user@mail.com | @dmin123')
+                '   • Inventory User: inventory_user@mail.com | !1Aabb')
             self.stdout.write(
-                '   • Manager User: manager_user@mail.com | @dmin123')
+                '   • Manager User: manager_user@mail.com | !1Aabb')
             self.stdout.write(
-                '   • Reviewer User: reviewer_user@mail.com | @dmin123')
+                '   • Reviewer User: reviewer_user@mail.com | !1Aabb')
 
         except Exception as e:
             self.stdout.write(

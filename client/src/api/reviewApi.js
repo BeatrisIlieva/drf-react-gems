@@ -113,11 +113,92 @@ export const useReview = () => {
         [get]
     );
 
+
+
+    const approveReview = useCallback(
+        async reviewId => {
+            try {
+                const response = await post(`${baseUrl}/${reviewId}/approve/`, {
+                    accessRequired: isAuthenticated,
+                    refreshRequired: isAuthenticated,
+                });
+                return keysToCamelCase(response);
+            } catch (error) {
+                console.error('Approve review error:', error);
+                throw error;
+            }
+        },
+        [post, isAuthenticated]
+    );
+
+    const unapproveReview = useCallback(
+        async reviewId => {
+            try {
+                const response = await post(`${baseUrl}/${reviewId}/unapprove/`, {
+                    accessRequired: isAuthenticated,
+                    refreshRequired: isAuthenticated,
+                });
+                return keysToCamelCase(response);
+            } catch (error) {
+                console.error('Unapprove review error:', error);
+                throw error;
+            }
+        },
+        [post, isAuthenticated]
+    );
+
+    const getPendingReviews = useCallback(
+        async () => {
+            try {
+                const response = await get(`${baseUrl}/pending/`, {
+                    accessRequired: isAuthenticated,
+                    refreshRequired: isAuthenticated,
+                });
+                return keysToCamelCase(response);
+            } catch (error) {
+                console.error('Get pending reviews error:', error);
+                throw error;
+            }
+        },
+        [get, isAuthenticated]
+    );
+
+    const getAllReviews = useCallback(
+        async () => {
+            try {
+                const response = await get(`${baseUrl}/`, {
+                    accessRequired: isAuthenticated,
+                    refreshRequired: isAuthenticated,
+                });
+                return keysToCamelCase(response);
+            } catch (error) {
+                console.error('Get all reviews error:', error);
+                throw error;
+            }
+        },
+        [get, isAuthenticated]
+    );
+
     return {
         createReview,
         updateReview,
         deleteReview,
         getUserReview,
         getApprovedReviews,
+
+        approveReview,
+        unapproveReview,
+        getPendingReviews,
+        getAllReviews,
+    };
+};
+
+
+export const useReviewApi = () => {
+    const { approveReview, unapproveReview } = useReview();
+    
+    return {
+        approveReview,
+        unapproveReview,
     };
 };

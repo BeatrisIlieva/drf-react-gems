@@ -6,7 +6,14 @@ import { useProductItemContext } from '../../../../../../contexts/ProductItemCon
 import styles from './ReviewList.module.scss';
 
 export const ReviewList = () => {
-    const { averageRating, reviews } = useProductItemContext();
+    const { averageRating, reviews, refreshProduct } = useProductItemContext();
+
+    const handleReviewUpdated = () => {
+
+        if (refreshProduct) {
+            refreshProduct();
+        }
+    };
 
     return (
         <section className={styles['reviews']}>
@@ -22,7 +29,11 @@ export const ReviewList = () => {
             </div>
             <ul>
                 {reviews.map(review => (
-                    <ReviewItem key={review.id} review={review} />
+                    <ReviewItem 
+                        key={review.id} 
+                        review={review} 
+                        onReviewUpdated={handleReviewUpdated}
+                    />
                 ))}
             </ul>
         </section>

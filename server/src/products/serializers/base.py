@@ -49,6 +49,8 @@ class AverageRatingField(serializers.Field):
         self,
         value: Any
     ) -> float:
+        # Always calculate average from approved reviews only
+        # This ensures consistency across all users
         avg: float = value.review.filter(approved=True).aggregate(
             avg=Avg('rating'))['avg'] or 0
         return round(avg, 2)
@@ -75,7 +77,16 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
         self,
         obj: Any
     ) -> Any:
-        latest_reviews = obj.review.filter(approved=True)[:6]
+        # Get the request from context to check user permissions
+        request = self.context.get('request')
+        
+        # If user is a reviewer, show all reviews (approved and unapproved)
+        if request and request.user.has_perm('products.approve_review'):
+            latest_reviews = obj.review.all()[:6]
+        else:
+            # Regular users only see approved reviews
+            latest_reviews = obj.review.filter(approved=True)[:6]
+        
         return ReviewSerializer(latest_reviews, many=True).data
 
     def get_related_collection_products(

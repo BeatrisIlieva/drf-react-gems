@@ -27,13 +27,15 @@ class ReviewSerializer(serializers.ModelSerializer):
             'content_type',
             'object_id',
             'photo_url',
-            'user_full_name'
+            'user_full_name',
+            'approved'
         ]
         read_only_fields: list[str] = [
             'user',
             'created_at',
             'photo_url',
-            'user_full_name'
+            'user_full_name',
+            'approved'
         ]
 
     def get_photo_url(

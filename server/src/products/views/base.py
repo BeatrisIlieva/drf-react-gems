@@ -65,7 +65,7 @@ class BaseProductItemView(RetrieveAPIView, BaseProductView):
     ) -> DRFResponse:
         pk: Any = kwargs.get('pk')
         product: Any = self.model.objects.get_product_item(pk)
-        serializer: Serializer = self.get_serializer(product)
+        serializer: Serializer = self.get_serializer(product, context={'request': request})
 
         return Response({
             'product': serializer.data,

@@ -92,6 +92,11 @@ class UserLoginView(APIView):
 
         refresh = RefreshToken.for_user(user)
 
+        # Get user permissions for frontend role-based functionality
+        permissions = []
+        if user.has_perm('products.approve_review'):
+            permissions.append('products.approve_review')
+
         return Response(
             {
                 'refresh': str(refresh),
@@ -100,6 +105,7 @@ class UserLoginView(APIView):
                 'username': user.username,
                 'email': user.email,
                 'id': user.pk,
+                'permissions': permissions,
             },
             status=status.HTTP_200_OK,
         )

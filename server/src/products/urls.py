@@ -20,7 +20,8 @@ from src.products.views.product import (
     NeckwearItemView,
     NeckwearListView,
     WristwearItemView,
-    WristwearListView
+    WristwearListView,
+    ProductAllReviewsView
 )
 from src.products.views.review import ReviewViewSet
 
@@ -84,4 +85,5 @@ urlpatterns = [
     path(
         'metals/async/', AsyncMetalRetrieveView.as_view(), name='metal-retrieve-async'
     ),
+    path('<str:category>/<int:pk>/all-reviews/', ProductAllReviewsView.as_view(), name='product-all-reviews'),
 ]

@@ -31,6 +31,14 @@ from src.products.views.base import (
     BaseProductListView,
     AsyncBaseAttributeView
 )
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from src.products.models.review import Review
+from src.products.serializers.review import ReviewSerializer
+from django.contrib.contenttypes.models import ContentType
+from rest_framework import status
+from rest_framework.permissions import BasePermission
 
 
 class EarwearListView(BaseProductListView):
@@ -170,3 +178,36 @@ class AsyncStoneRetrieveView(AsyncBaseAttributeView):
     """
     model: Type[Stone] = Stone
     serializer_class = StoneSerializer
+
+
+class IsReviewer(BasePermission):
+    """
+    Allows access only to users with the products.approve_review permission.
+    """
+    def has_permission(self, request, view):
+        return request.user and request.user.has_perm('products.approve_review')
+
+class ProductAllReviewsView(APIView):
+    permission_classes = [IsAuthenticated, IsReviewer]
+
+    def get(self, request, category, pk):
+        # Map category to model
+        from src.products.models.product import Earwear, Neckwear, Fingerwear, Wristwear
+        model_map = {
+            'earwear': Earwear,
+            'neckwear': Neckwear,
+            'fingerwear': Fingerwear,
+            'wristwear': Wristwear,
+        }
+        model = model_map.get(category.lower())
+        if not model:
+            return Response({'detail': 'Invalid category.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            product = model.objects.get(pk=pk)
+        except model.DoesNotExist:
+            return Response({'detail': 'Product not found.'}, status=status.HTTP_404_NOT_FOUND)
+        # Get all reviews for this product
+        content_type = ContentType.objects.get_for_model(model)
+        reviews = Review.objects.filter(content_type=content_type, object_id=product.id).order_by('-created_at')
+        serializer = ReviewSerializer(reviews, many=True)
+        return Response({'reviews': serializer.data})
