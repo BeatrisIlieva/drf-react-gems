@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import { useAuthentication } from '../api/authApi';
 
@@ -12,6 +12,7 @@ export const useRegister = fieldConfig => {
     const { userLoginHandler } = useUserContext();
     const { register, login } = useAuthentication();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [agree, setAgree] = useState(true);
     const [agreeError, setAgreeError] = useState('');
@@ -29,12 +30,13 @@ export const useRegister = fieldConfig => {
         if (authData?.access) {
             userLoginHandler(authData);
 
-            await login({
-                email_or_username: formData.email.value,
-                password: formData.password.value,
-            });
-
-            navigate('/my-account/details');
+            const params = new URLSearchParams(location.search);
+            const next = params.get('next');
+            if (next) {
+                navigate(next);
+            } else {
+                navigate('/my-account/details');
+            }
             return { success: true };
         }
 
@@ -66,7 +68,7 @@ export const useRegister = fieldConfig => {
             const authData = await register(apiData);
             return handleAuthResponse(authData, formData);
         },
-        [fieldConfig, register, login, userLoginHandler, navigate, agree]
+        [fieldConfig, register, login, userLoginHandler, navigate, agree, location]
     );
 
     const toggleAgreement = () => {

@@ -1,9 +1,10 @@
 import { useCallback, useState } from 'react';
 
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import { QuantitySelector } from './quantity-selector/QuantitySelector';
 
+import { useProductItemContext } from '../../../../../contexts/ProductItemContext';
 import { useShoppingBagContext } from '../../../../../contexts/ShoppingBagContext';
 import { useWishlistContext } from '../../../../../contexts/WishlistContext';
 
@@ -21,8 +22,10 @@ export const ShoppingBagItem = ({
 }) => {
     const { deleteShoppingBagHandler, isDeleting } = useShoppingBagContext();
     const { addToWishlist, isInWishlist } = useWishlistContext();
+    const { refreshProduct } = useProductItemContext();
     const [isMovingToWishlist, setIsMovingToWishlist] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const category = productInfo.category?.toLowerCase();
     const productId = productInfo.productId;
@@ -39,11 +42,23 @@ export const ShoppingBagItem = ({
             const success = await addToWishlist(categoryValue, productId);
             if (success) {
                 await deleteShoppingBagHandler(id);
+
+                if (location.pathname.includes(`/products/${category}s/${productId}`)) {
+                    refreshProduct();
+                }
             }
         } catch (error) {
             console.error('Error moving item to wishlist:', error);
         } finally {
             setIsMovingToWishlist(false);
+        }
+    };
+
+    const handleRemove = async () => {
+        await deleteShoppingBagHandler(id);
+
+        if (location.pathname.includes(`/products/${category}s/${productId}`)) {
+            refreshProduct();
         }
     };
 
@@ -90,9 +105,7 @@ export const ShoppingBagItem = ({
                               : 'Move to Wish List'}
                     </button>
                     <button
-                        onClick={() => {
-                            deleteShoppingBagHandler(id);
-                        }}
+                        onClick={handleRemove}
                         disabled={isDeleting}
                         className={isDeleting ? styles['removing'] : ''}
                     >

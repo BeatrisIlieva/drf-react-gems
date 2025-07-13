@@ -12,10 +12,13 @@ export const ProductActions = ({
     isSoldOut,
     isAddingToBag,
     createShoppingBagHandler,
+    categoryName: propCategoryName,
+    hideWishlistButton = false, // New prop to hide wishlist button
 }) => {
-    const { categoryName } = useCategoryName();
+    const { categoryName: contextCategoryName } = useCategoryName();
     const { isInWishlist, handleWishlistToggle } = useWishlistContext();
 
+    const categoryName = propCategoryName || contextCategoryName;
     const category = categoryName?.slice(0, categoryName?.length - 1);
     const isItemInWishlist = isInWishlist(category, productId);
 
@@ -40,12 +43,14 @@ export const ProductActions = ({
                 buttonGrow="1"
                 className={isAddingToBag ? 'animate-pulse' : ''}
             />
-            <Button
-                title={<Icon name={isItemInWishlist ? 'heart-filled' : 'heart'} />}
-                color="black"
-                actionType="button"
-                callbackHandler={() => handleWishlistToggle(category + 's', productId)}
-            />
+            {!hideWishlistButton && (
+                <Button
+                    title={<Icon name={isItemInWishlist ? 'heart-filled' : 'heart'} />}
+                    color="black"
+                    actionType="button"
+                    callbackHandler={() => handleWishlistToggle(category + 's', productId)}
+                />
+            )}
         </div>
     );
 };

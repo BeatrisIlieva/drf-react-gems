@@ -12,7 +12,7 @@ import { UserContext } from '../contexts/UserContext';
 
 export const ShoppingBagProvider = ({ children }) => {
     const { deleteItem, getItems, getCount, getTotalPrice, createItem } = useShoppingBag();
-    const { id: userId } = useContext(UserContext);
+    const { id: userId, access } = useContext(UserContext);
     const { getGuestData } = useGuest();
     const guestId = getGuestData();
 
@@ -29,6 +29,27 @@ export const ShoppingBagProvider = ({ children }) => {
         0
     );
     const [shoppingBagItems, setShoppingBagItems] = usePersistedState('shopping-bag-items', []);
+
+    const [isMiniBagPopupOpen, setIsMiniBagPopupOpen] = useState(false);
+    const toggleMiniBagPopupOpen = useCallback(() => {
+        setIsMiniBagPopupOpen(prev => !prev);
+    }, []);
+    const openMiniBagPopup = useCallback(() => {
+        console.log('openMiniBagPopup called, setting isMiniBagPopupOpen to true');
+        setIsMiniBagPopupOpen(true);
+    }, []);
+    const closeMiniBagPopup = useCallback(() => setIsMiniBagPopupOpen(false), []);
+
+    useEffect(() => {
+        console.log('MiniBagPopup state:', isMiniBagPopupOpen);
+    }, [isMiniBagPopupOpen]);
+
+    useEffect(() => {
+        if (shoppingBagItemsCount === 0 && isMiniBagPopupOpen) {
+            console.log('Shopping bag is empty, closing mini bag popup');
+            closeMiniBagPopup();
+        }
+    }, [shoppingBagItemsCount, isMiniBagPopupOpen, closeMiniBagPopup]);
 
     useEffect(() => {
         let mounted = true;
@@ -171,8 +192,14 @@ export const ShoppingBagProvider = ({ children }) => {
     );
 
     const continueCheckoutHandler = useCallback(() => {
-        navigate('/user/checkout');
-    }, [navigate]);
+        closeMiniBagPopup();
+
+        if (!access) {
+            navigate('/my-account/login?next=/user/checkout');
+        } else {
+            navigate('/user/checkout');
+        }
+    }, [navigate, access, closeMiniBagPopup]);
 
     const refreshShoppingBag = useCallback(async () => {
         try {
@@ -208,6 +235,10 @@ export const ShoppingBagProvider = ({ children }) => {
             continueCheckoutHandler,
             refreshShoppingBag,
             createShoppingBagItemHandler,
+            isMiniBagPopupOpen,
+            toggleMiniBagPopupOpen,
+            openMiniBagPopup,
+            closeMiniBagPopup,
         }),
         [
             continueCheckoutHandler,
@@ -219,6 +250,10 @@ export const ShoppingBagProvider = ({ children }) => {
             shoppingBagItemsCount,
             shoppingBagTotalPrice,
             refreshShoppingBag,
+            isMiniBagPopupOpen,
+            toggleMiniBagPopupOpen,
+            openMiniBagPopup,
+            closeMiniBagPopup,
         ]
     );
 

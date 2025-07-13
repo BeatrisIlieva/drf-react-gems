@@ -6,9 +6,13 @@ export const SizeList = () => {
     const { inventory, selectedSize, setSelectedSizeHandler, notSelectedSizeError } =
         useProductItemContext();
 
+    console.log('SizeList notSelectedSizeError:', notSelectedSizeError);
+
+    const items = Array.isArray(inventory) ? inventory : [];
+
     return (
         <ul className={styles['size-list']}>
-            {inventory.map(item => (
+            {items.map(item => (
                 <li key={item.id}>
                     <button
                         className={`${item.quantity === 0 ? styles['sold-out'] : ''} ${

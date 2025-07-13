@@ -10,10 +10,16 @@ import { useCategoryName } from '../../../../../hooks/useCategoryName';
 import { usePriceCalculation } from '../../../../../hooks/usePriceCalculation';
 
 import { useProductItemContext } from '../../../../../contexts/ProductItemContext';
+import { useShoppingBagContext } from '../../../../../contexts/ShoppingBagContext';
 
 import styles from './UserAction.module.scss';
 
-export const UserAction = () => {
+export const UserAction = ({
+    onAddToBag,
+    isAddingToBag = false,
+    categoryName: propCategoryName,
+    hideWishlistButton = false,
+}) => {
     const { categoryNameCapitalizedSingular } = useCategoryName();
     const {
         collectionName,
@@ -24,26 +30,29 @@ export const UserAction = () => {
         createShoppingBagHandler,
         notSelectedSizeError,
         isSoldOut,
-        isAddingToBag,
         productId,
-        toggleMiniBagPopupOpen,
-        isMiniBagPopupOpen,
         selectedSize,
     } = useProductItemContext();
+
+    console.log('UserAction notSelectedSizeError:', notSelectedSizeError);
+    const { isMiniBagPopupOpen, toggleMiniBagPopupOpen } = useShoppingBagContext();
 
     const { formattedMinPrice, formattedMaxPrice, selectedInventoryItem } = usePriceCalculation(
         inventory,
         selectedSize
     );
 
+    const handleAddToBag = onAddToBag || createShoppingBagHandler;
+    const isAdding = isAddingToBag || false;
+
     const sectionClassName = [
         styles['user-action'],
-        isAddingToBag ? 'animate-fade-out duration-300ms' : 'animate-fade-in duration-500ms',
+        isAdding ? 'animate-fade-out duration-300ms' : 'animate-fade-in duration-500ms',
     ].join(' ');
 
     const sizeErrorClassName = [
         notSelectedSizeError ? styles['error'] : '',
-        isAddingToBag ? 'animate-pulse' : '',
+        isAdding ? 'animate-pulse' : '',
     ]
         .filter(Boolean)
         .join(' ');
@@ -68,7 +77,7 @@ export const UserAction = () => {
                 selectedInventoryItem={selectedInventoryItem}
                 formattedMinPrice={formattedMinPrice}
                 formattedMaxPrice={formattedMaxPrice}
-                isAddingToBag={isAddingToBag}
+                isAddingToBag={isAdding}
             />
 
             <RelatedProducts />
@@ -82,13 +91,13 @@ export const UserAction = () => {
             <ProductActions
                 productId={productId}
                 isSoldOut={isSoldOut}
-                isAddingToBag={isAddingToBag}
-                createShoppingBagHandler={createShoppingBagHandler}
+                isAddingToBag={isAdding}
+                createShoppingBagHandler={handleAddToBag}
+                categoryName={propCategoryName}
+                hideWishlistButton={hideWishlistButton}
             />
 
             <ComplimentaryShipping />
-
-            <MiniBagPopup isOpen={isMiniBagPopupOpen} onClose={toggleMiniBagPopupOpen} />
         </section>
     );
 };

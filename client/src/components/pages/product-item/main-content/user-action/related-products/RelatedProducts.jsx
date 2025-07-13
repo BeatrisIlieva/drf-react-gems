@@ -10,9 +10,11 @@ export const RelatedProducts = () => {
     const { categoryNameCapitalizedPlural, categoryName } = useCategoryName();
     const { relatedCollectionProducts, productId, collectionName } = useProductItemContext();
 
+    const products = Array.isArray(relatedCollectionProducts) ? relatedCollectionProducts : [];
+
     return (
         <ul className={styles['related-products']}>
-            {relatedCollectionProducts.map(product => (
+            {products.map(product => (
                 <li key={product.id} className={product.id === productId ? styles['selected'] : ''}>
                     <Link to={`/products/${categoryName}/${product.id}`}>
                         <img

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import { AuthLayout } from '../../reusable/auth-layout/AuthLayout';
 import { Button } from '../../reusable/button/Button';
@@ -17,6 +17,9 @@ import styles from './Register.module.scss';
 
 export const Register = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const params = new URLSearchParams(location.search);
+    const next = params.get('next');
     const { fieldConfig, initialValues } = FORM_CONFIGS.register;
 
     const { handleSubmit, agree, agreeError, toggleAgreement, validateAgreement } =
@@ -45,7 +48,15 @@ export const Register = () => {
     return (
         <AuthLayout>
             <section className={styles['register']}>
-                <p onClick={() => navigate('/my-account/login')}>
+                <p
+                    onClick={() =>
+                        navigate(
+                            next
+                                ? `/my-account/login?next=${encodeURIComponent(next)}`
+                                : '/my-account/login'
+                        )
+                    }
+                >
                     <Icon name="arrowLeft" />
                     <span>Back to Sign In</span>
                 </p>

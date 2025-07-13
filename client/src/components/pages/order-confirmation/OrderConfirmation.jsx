@@ -7,7 +7,7 @@ import styles from './OrderConfirmation.module.scss';
 
 export const OrderConfirmation = () => {
     const title = 'Thank you for your purchase!';
-    
+
     const firstLetter = title.charAt(0);
     const restOfText = title.slice(1);
 

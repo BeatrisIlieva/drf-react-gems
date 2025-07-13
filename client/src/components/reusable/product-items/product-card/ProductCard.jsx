@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import { Icon } from '../../icon/Icon';
 import { Stars } from '../../stars/Stars';
@@ -29,7 +29,9 @@ export const ProductCard = ({
     maxPrice,
     averageRating,
     categoryName,
+    onMoveToBag, // New prop for handling move to bag
 }) => {
+    const location = useLocation();
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
     const { categoryName: categoryFromUrl } = useCategoryName();
     const formattedMinPrice = formatPrice(minPrice);
@@ -41,9 +43,48 @@ export const ProductCard = ({
 
     const isItemInWishlist = isInWishlist(category, id);
 
+    const isWishlistPage = location.pathname.includes('/wishlist');
+
     const navigateToProductItem = useCallback(() => {
         navigate(`/products/${categoryParam}/${id}`);
     }, [categoryParam, id, navigate]);
+
+    const handleMoveToBag = useCallback(
+        e => {
+            e.stopPropagation(); // Prevent navigation
+            if (onMoveToBag) {
+                onMoveToBag({
+                    id,
+                    collectionName,
+                    firstImage,
+                    secondImage,
+                    isSoldOut,
+                    colorName,
+                    stoneName,
+                    metalName,
+                    minPrice,
+                    maxPrice,
+                    averageRating,
+                    categoryName: category,
+                });
+            }
+        },
+        [
+            onMoveToBag,
+            id,
+            collectionName,
+            firstImage,
+            secondImage,
+            isSoldOut,
+            colorName,
+            stoneName,
+            metalName,
+            minPrice,
+            maxPrice,
+            averageRating,
+            category,
+        ]
+    );
 
     useEffect(() => {
         setSelectedImageIndex(0);
@@ -60,7 +101,11 @@ export const ProductCard = ({
                     className={styles['wishlist-button']}
                     aria-label={isItemInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
                 >
-                    <Icon name={isItemInWishlist ? 'heart-filled' : 'heart'} />
+                    {!isWishlistPage ? (
+                        <Icon name={isItemInWishlist ? 'heart-filled' : 'heart'} />
+                    ) : (
+                        <Icon name="xMark" fontSize={0.9} isSubtle={true} />
+                    )}
                 </button>
 
                 <div className={styles['thumbnail']}>
@@ -74,6 +119,11 @@ export const ProductCard = ({
                         alt={collectionName}
                         onClick={navigateToProductItem}
                     />
+                    {isWishlistPage && !isSoldOut && (
+                        <button onClick={handleMoveToBag} className={styles['add-to-bag-button']}>
+                            <span>Move to Bag</span>
+                        </button>
+                    )}
                 </div>
 
                 <footer>

@@ -52,9 +52,11 @@ export const ProductList = () => {
 
                 <HomeLink />
 
-                <header className={isSticky ? styles['sticky'] : ''}>
-                    <Nav />
-                </header>
+                {!loading && (
+                    <header className={isSticky ? styles['sticky'] : ''}>
+                        <Nav />
+                    </header>
+                )}
 
                 <div
                     className={`${styles['wrapper-products']} ${

@@ -1,12 +1,13 @@
 import { useCallback } from 'react';
 
 import { useApi } from '../hooks/useApi';
+
 import { keysToCamelCase } from '../utils/convertToCamelCase';
+
 import { HOST } from '../constants/host';
 
 const baseUrl = `${HOST}/api/products`;
 
-// Config: Use async endpoints by default, fallback to sync if async fails
 const USE_ASYNC_FILTERS = true;
 
 export const useFilters = () => {
@@ -46,25 +47,21 @@ export const useFilters = () => {
             params.append('category', categoryName || '');
 
             const queryString = params.toString();
-            // Try async endpoint first if enabled
+
             let fullUrl = `${baseUrl}/${entityName}/async/?${queryString}`;
 
             try {
                 if (USE_ASYNC_FILTERS) {
-                    // Try async endpoint
                     const response = await get(fullUrl);
                     return keysToCamelCase(response);
                 }
-                // If not using async, fall through to sync
             } catch (error) {
-                // If async fails, fallback to sync endpoint
                 console.warn('Async filter endpoint failed, falling back to sync:', error);
                 fullUrl = `${baseUrl}/${entityName}/?${queryString}`;
                 try {
                     const response = await get(fullUrl);
                     return keysToCamelCase(response);
                 } catch (syncError) {
-                    // If both fail, throw the sync error
                     console.error('Both async and sync filter endpoints failed:', syncError);
                     throw syncError;
                 }

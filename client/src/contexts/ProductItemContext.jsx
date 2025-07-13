@@ -22,6 +22,7 @@ export const ProductItemContext = createContext({
     isSoldOut: false,
     isMiniBagPopupOpen: false,
     toggleMiniBagPopupOpen: () => {},
+    refreshProduct: async () => {},
 });
 
 export const useProductItemContext = () => {

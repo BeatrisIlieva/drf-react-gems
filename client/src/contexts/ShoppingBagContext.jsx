@@ -10,6 +10,10 @@ export const ShoppingBagContext = createContext({
     continueCheckoutHandler: () => null,
     refreshShoppingBag: () => null,
     createShoppingBagItemHandler: () => null,
+    isMiniBagPopupOpen: false,
+    toggleMiniBagPopupOpen: () => null,
+    openMiniBagPopup: () => null,
+    closeMiniBagPopup: () => null,
 });
 
 export const useShoppingBagContext = () => {

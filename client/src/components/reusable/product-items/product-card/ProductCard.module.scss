@@ -19,7 +19,7 @@
 
         .thumbnail {
             display: flex;
-
+            position: relative;
             width: 100%;
             height: auto;
 
@@ -52,6 +52,26 @@
                 to {
                     transform: translateX(0);
                 }
+            }
+        }
+
+        .add-to-bag-button {
+            background: vars.$white;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            top: 80%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.75em 1.75em;
+            text-transform: uppercase;
+            text-wrap: nowrap;
+            opacity: 0.7;
+            transition: opacity 0.3s ease-in-out;
+
+            &:hover {
+                opacity: 1;
             }
         }
 

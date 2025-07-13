@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import { useAuthentication } from '../api/authApi';
 
@@ -12,13 +12,21 @@ export const useLogin = fieldConfig => {
     const { userLoginHandler } = useUserContext();
     const { login } = useAuthentication();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [invalidCredentials, setInvalidCredentials] = useState(false);
 
     const handleAuthResponse = authData => {
         if (authData?.access) {
             userLoginHandler(authData);
-            navigate('/my-account/details');
+
+            const params = new URLSearchParams(location.search);
+            const next = params.get('next');
+            if (next) {
+                navigate(next);
+            } else {
+                navigate('/my-account/details');
+            }
             return { success: true };
         }
 
@@ -49,7 +57,7 @@ export const useLogin = fieldConfig => {
 
             return handleAuthResponse(authData);
         },
-        [fieldConfig, login, userLoginHandler, navigate]
+        [fieldConfig, login, userLoginHandler, navigate, location]
     );
 
     return {

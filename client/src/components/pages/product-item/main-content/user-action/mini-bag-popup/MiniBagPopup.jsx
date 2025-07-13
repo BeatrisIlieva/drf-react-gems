@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useNavigate } from 'react-router';
 
 import { Button } from '../../../../../reusable/button/Button';
@@ -11,14 +13,21 @@ import { formatPrice } from '../../../../../../utils/formatPrice';
 import styles from './MiniBagPopup.module.scss';
 
 export const MiniBagPopup = ({ isOpen, onClose }) => {
+    console.log('MiniBagPopup render', { isOpen });
     const navigate = useNavigate();
-    const { shoppingBagItems, shoppingBagItemsCount, shoppingBagTotalPrice } =
-        useShoppingBagContext();
+    const {
+        shoppingBagItems,
+        shoppingBagItemsCount,
+        shoppingBagTotalPrice,
+        continueCheckoutHandler,
+    } = useShoppingBagContext();
 
-    const navigateToCheckout = () => {
-        navigate('/user/checkout');
-        onClose();
-    };
+    useEffect(() => {
+        if (shoppingBagItemsCount === 0 && isOpen) {
+            console.log('MiniBagPopup: Shopping bag is empty, closing popup');
+            onClose();
+        }
+    }, [shoppingBagItemsCount, isOpen, onClose]);
 
     const navigateToShoppingBag = () => {
         navigate('/user/shopping-bag');
@@ -56,7 +65,7 @@ export const MiniBagPopup = ({ isOpen, onClose }) => {
                     title="Continue Checkout"
                     color="black"
                     buttonGrow="1"
-                    callbackHandler={navigateToCheckout}
+                    callbackHandler={continueCheckoutHandler}
                 />
             </div>
         </Popup>

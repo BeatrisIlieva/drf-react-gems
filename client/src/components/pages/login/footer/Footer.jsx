@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import { Button } from '../../../reusable/button/Button';
 import { Icon } from '../../../reusable/icon/Icon';
@@ -9,9 +9,14 @@ import styles from './Footer.module.scss';
 
 export const Footer = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const params = new URLSearchParams(location.search);
+    const next = params.get('next');
 
     const navigateToRegisterHandler = () => {
-        navigate('/my-account/register');
+        navigate(
+            next ? `/my-account/register?next=${encodeURIComponent(next)}` : '/my-account/register'
+        );
     };
 
     return (
