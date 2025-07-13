@@ -28,7 +28,8 @@ from src.products.models import (
 from src.products.views.base import (
     BaseAttributeView,
     BaseProductItemView,
-    BaseProductListView
+    BaseProductListView,
+    AsyncBaseAttributeView
 )
 
 
@@ -88,5 +89,84 @@ class MetalRetrieveView(BaseAttributeView):
 
 
 class StoneRetrieveView(BaseAttributeView):
+    model: Type[Stone] = Stone
+    serializer_class = StoneSerializer
+
+
+# =============================================================================
+# ASYNC ATTRIBUTE VIEWS FOR FILTERS
+# =============================================================================
+# These async views provide improved performance for concurrent filter requests.
+# They are designed to handle multiple simultaneous requests for filter attributes
+# and can be used alongside the synchronous views or as replacements.
+
+class AsyncCollectionRetrieveView(AsyncBaseAttributeView):
+    """
+    Asynchronous view for retrieving collection filter data.
+    
+    This view provides async support for collection filtering, allowing
+    for better performance when multiple filter requests are made
+    simultaneously. It's particularly useful when the frontend needs
+    to fetch multiple filter attributes at once.
+    
+    Usage:
+    - Endpoint: /api/products/collections/async/
+    - Query params: category (optional)
+    - Returns: Collection data with counts for filtering
+    """
+    model: Type[Collection] = Collection
+    serializer_class = CollectionSerializer
+
+
+class AsyncColorRetrieveView(AsyncBaseAttributeView):
+    """
+    Asynchronous view for retrieving color filter data.
+    
+    This view provides async support for color filtering, enabling
+    concurrent requests for color attribute data. It's optimized
+    for scenarios where multiple filter attributes are requested
+    simultaneously.
+    
+    Usage:
+    - Endpoint: /api/products/colors/async/
+    - Query params: category (optional)
+    - Returns: Color data with counts for filtering
+    """
+    model: Type[Color] = Color
+    serializer_class = ColorSerializer
+
+
+class AsyncMetalRetrieveView(AsyncBaseAttributeView):
+    """
+    Asynchronous view for retrieving metal filter data.
+    
+    This view provides async support for metal filtering, allowing
+    for improved performance when multiple filter requests are
+    processed concurrently. It's designed to handle high-traffic
+    scenarios efficiently.
+    
+    Usage:
+    - Endpoint: /api/products/metals/async/
+    - Query params: category (optional)
+    - Returns: Metal data with counts for filtering
+    """
+    model: Type[Metal] = Metal
+    serializer_class = MetalSerializer
+
+
+class AsyncStoneRetrieveView(AsyncBaseAttributeView):
+    """
+    Asynchronous view for retrieving stone filter data.
+    
+    This view provides async support for stone filtering, enabling
+    concurrent processing of stone attribute requests. It's optimized
+    for scenarios where multiple filter attributes need to be
+    retrieved simultaneously.
+    
+    Usage:
+    - Endpoint: /api/products/stones/async/
+    - Query params: category (optional)
+    - Returns: Stone data with counts for filtering
+    """
     model: Type[Stone] = Stone
     serializer_class = StoneSerializer

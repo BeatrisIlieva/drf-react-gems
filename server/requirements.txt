@@ -3,6 +3,7 @@ attrs==25.3.0
 certifi==2025.4.26
 charset-normalizer==3.4.2
 cloudinary==1.44.0
+coverage==7.9.2
 Django==5.2.1
 django-cloudinary-storage==0.3.0
 django-cors-headers==4.7.0
@@ -14,6 +15,7 @@ inflection==0.5.1
 jsonschema==4.24.0
 jsonschema-specifications==2025.4.1
 psycopg2-binary==2.9.10
+pytest==8.4.1
 PyJWT==2.9.0
 PyYAML==6.0.2
 referencing==0.36.2

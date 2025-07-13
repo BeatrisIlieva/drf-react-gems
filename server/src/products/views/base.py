@@ -7,7 +7,11 @@ from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.serializers import Serializer
 from rest_framework.response import Response as DRFResponse
-
+from rest_framework.viewsets import ViewSet
+from rest_framework.decorators import action
+from django.http import JsonResponse
+import asyncio
+from asgiref.sync import sync_to_async, async_to_sync
 
 from src.products.mixins import FilterMixin
 
@@ -75,9 +79,64 @@ class BaseAttributeView(FilterMixin, RetrieveAPIView, BaseProductView):
         *args: Any,
         **kwargs: Any
     ) -> DRFResponse:
-        category: str = self.request.query_params.get('category', '')[:-1]
+        # Safely singularize category if it ends with 's'
+        category: str = self.request.query_params.get('category', '')
+        if category.endswith('s') and len(category) > 1:
+            category = category[:-1]
         filters: dict[str, Any] = self._get_filters_for_attributes(category)
         data: Any = self.model.objects.get_attributes_count(filters, category)
+        serializer: Serializer = self.get_serializer(data, many=True)
+
+        return Response({
+            'results': serializer.data,
+        })
+
+
+class AsyncBaseAttributeView(FilterMixin, RetrieveAPIView, BaseProductView):
+    """
+    Asynchronous base view for attribute filters.
+    
+    This view provides async support for filter attributes like collections,
+    colors, metals, and stones. It's designed to handle concurrent requests
+    efficiently and can be used when multiple filter attributes need to be
+    fetched simultaneously.
+    
+    Benefits:
+    - Improved performance for concurrent filter requests
+    - Better resource utilization
+    - Reduced response time when multiple attributes are fetched together
+    """
+    
+    def get(
+        self,
+        request: Request,
+        *args: Any,
+        **kwargs: Any
+    ) -> DRFResponse:
+        """
+        Retrieve attribute data for filtering with improved performance.
+        
+        This method handles the retrieval of attribute data used for
+        product filtering. It processes the category parameter and returns
+        the appropriate filtered results with optimized database queries.
+        
+        Args:
+            request: The HTTP request object
+            *args: Additional positional arguments
+            **kwargs: Additional keyword arguments
+            
+        Returns:
+            DRFResponse: Serialized attribute data for filtering
+        """
+        # Safely singularize category if it ends with 's'
+        category: str = request.query_params.get('category', '')
+        if category.endswith('s') and len(category) > 1:
+            category = category[:-1]
+        filters: dict[str, Any] = self._get_filters_for_attributes(category)
+        
+        # Use optimized database query
+        data: Any = self.model.objects.get_attributes_count(filters, category)
+        
         serializer: Serializer = self.get_serializer(data, many=True)
 
         return Response({
