@@ -11,18 +11,13 @@ const baseUrl = `${HOST}/api/products`;
 
 export const useProductItem = () => {
     const { get } = useApi();
-    const { isAuthenticated, user } = useAuth();
+    const { isAuthenticated } = useAuth();
 
     const getProductItem = useCallback(
         async ({ categoryName, productId }) => {
             const fullUrl = `${baseUrl}/${categoryName}/${productId}`;
 
             try {
-
-                const isReviewer = user?.permissions?.includes('products.approve_review');
-                
-
-
                 const response = await get(fullUrl, {
                     accessRequired: isAuthenticated,
                     refreshRequired: isAuthenticated,
@@ -33,7 +28,7 @@ export const useProductItem = () => {
                 console.error(error);
             }
         },
-        [get, isAuthenticated, user]
+        [get, isAuthenticated]
     );
 
     return { getProductItem };

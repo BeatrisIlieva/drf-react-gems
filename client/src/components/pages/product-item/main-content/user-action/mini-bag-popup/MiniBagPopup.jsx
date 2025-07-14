@@ -13,7 +13,6 @@ import { formatPrice } from '../../../../../../utils/formatPrice';
 import styles from './MiniBagPopup.module.scss';
 
 export const MiniBagPopup = ({ isOpen, onClose }) => {
-    console.log('MiniBagPopup render', { isOpen });
     const navigate = useNavigate();
     const {
         shoppingBagItems,
@@ -24,7 +23,6 @@ export const MiniBagPopup = ({ isOpen, onClose }) => {
 
     useEffect(() => {
         if (shoppingBagItemsCount === 0 && isOpen) {
-            console.log('MiniBagPopup: Shopping bag is empty, closing popup');
             onClose();
         }
     }, [shoppingBagItemsCount, isOpen, onClose]);

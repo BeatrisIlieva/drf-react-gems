@@ -1,6 +1,5 @@
 import { ComplimentaryShipping } from '../../../../reusable/complimentary-shipping/ComplimentaryShipping';
 import { StyledTextBlock } from '../../../../reusable/styled-text-block/StyledTextBlock';
-import { MiniBagPopup } from './mini-bag-popup/MiniBagPopup';
 import { PriceDisplay } from './price-display/PriceDisplay';
 import { ProductActions } from './product-actions/ProductActions';
 import { RelatedProducts } from './related-products/RelatedProducts';
@@ -10,7 +9,6 @@ import { useCategoryName } from '../../../../../hooks/useCategoryName';
 import { usePriceCalculation } from '../../../../../hooks/usePriceCalculation';
 
 import { useProductItemContext } from '../../../../../contexts/ProductItemContext';
-import { useShoppingBagContext } from '../../../../../contexts/ShoppingBagContext';
 
 import styles from './UserAction.module.scss';
 
@@ -33,9 +31,6 @@ export const UserAction = ({
         productId,
         selectedSize,
     } = useProductItemContext();
-
-    console.log('UserAction notSelectedSizeError:', notSelectedSizeError);
-    const { isMiniBagPopupOpen, toggleMiniBagPopupOpen } = useShoppingBagContext();
 
     const { formattedMinPrice, formattedMaxPrice, selectedInventoryItem } = usePriceCalculation(
         inventory,

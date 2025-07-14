@@ -35,18 +35,14 @@ export const ShoppingBagProvider = ({ children }) => {
         setIsMiniBagPopupOpen(prev => !prev);
     }, []);
     const openMiniBagPopup = useCallback(() => {
-        console.log('openMiniBagPopup called, setting isMiniBagPopupOpen to true');
         setIsMiniBagPopupOpen(true);
     }, []);
     const closeMiniBagPopup = useCallback(() => setIsMiniBagPopupOpen(false), []);
 
-    useEffect(() => {
-        console.log('MiniBagPopup state:', isMiniBagPopupOpen);
-    }, [isMiniBagPopupOpen]);
+    useEffect(() => {}, [isMiniBagPopupOpen]);
 
     useEffect(() => {
         if (shoppingBagItemsCount === 0 && isMiniBagPopupOpen) {
-            console.log('Shopping bag is empty, closing mini bag popup');
             closeMiniBagPopup();
         }
     }, [shoppingBagItemsCount, isMiniBagPopupOpen, closeMiniBagPopup]);

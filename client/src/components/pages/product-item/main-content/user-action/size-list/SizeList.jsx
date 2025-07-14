@@ -6,8 +6,6 @@ export const SizeList = () => {
     const { inventory, selectedSize, setSelectedSizeHandler, notSelectedSizeError } =
         useProductItemContext();
 
-    console.log('SizeList notSelectedSizeError:', notSelectedSizeError);
-
     const items = Array.isArray(inventory) ? inventory : [];
 
     return (

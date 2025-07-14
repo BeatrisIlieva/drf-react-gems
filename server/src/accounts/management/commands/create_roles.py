@@ -57,22 +57,6 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.WARNING(
                         f'Permission {codename} not found.'))
 
-        # === Create Manager group with limited permissions ===
-        manager_group, _ = Group.objects.get_or_create(name='Manager')
-        limited_actions = ['view']
-
-        for model in models_permissions:
-            content_type = ContentType.objects.get_for_model(model)
-            for action in limited_actions:
-                codename = f'{action}_{model._meta.model_name}'
-                try:
-                    perm = Permission.objects.get(
-                        codename=codename, content_type=content_type)
-                    manager_group.permissions.add(perm)
-                except Permission.DoesNotExist:
-                    self.stdout.write(self.style.WARNING(
-                        f'Permission {codename} not found.'))
-
         # === Create Reviewer group with review approval permissions ===
         reviewer_group, _ = Group.objects.get_or_create(name='Reviewer')
 
@@ -109,19 +93,6 @@ class Command(BaseCommand):
             inventory_user.save()
             self.stdout.write(self.style.SUCCESS('Inventory user created.'))
         inventory_user.groups.add(inventory_group)
-
-        # === Create Manager staff user ===
-        manager_user, created = User.objects.get_or_create(
-            email='manager_user@mail.com',
-            username='manager_user',
-            defaults={'is_staff': True}
-        )
-
-        if created:
-            manager_user.set_password('!1Aabb')
-            manager_user.save()
-            self.stdout.write(self.style.SUCCESS('Manager user created.'))
-        manager_user.groups.add(manager_group)
 
         # === Create Reviewer staff user ===
         reviewer_user, created = User.objects.get_or_create(

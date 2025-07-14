@@ -92,8 +92,7 @@ export const ProductDataProvider = ({
             setSelectedSize(null);
             setSelectedInventory(null);
             refreshShoppingBag();
-            openMiniBagPopup(); 
-            console.log('openMiniBagPopup called from ProductItem');
+            openMiniBagPopup();
 
             return true;
         } catch (error) {
@@ -150,7 +149,7 @@ export const ProductDataProvider = ({
                 productId,
             });
             setProduct(response.product);
-        } catch { }
+        } catch {}
     }, [getProductItem, categoryName, productId]);
 
     const contextValue = useMemo(
@@ -174,7 +173,7 @@ export const ProductDataProvider = ({
             createShoppingBagHandler,
             notSelectedSizeError,
             isSoldOut,
-            refreshProduct, // <-- Expose here
+            refreshProduct,
         }),
         [
             product,
@@ -190,11 +189,9 @@ export const ProductDataProvider = ({
 
     useEffect(() => {
         if (productData) {
-            console.log('ProductDataProvider: Skipping refresh in popup context');
             return;
         }
 
-        console.log('ProductDataProvider: Refreshing product data due to shopping bag change');
         const refreshProduct = async () => {
             try {
                 const response = await getProductItem({
@@ -202,7 +199,7 @@ export const ProductDataProvider = ({
                     productId,
                 });
                 setProduct(response.product);
-            } catch { }
+            } catch {}
         };
         refreshProduct();
     }, [shoppingBagItemsCount, getProductItem, categoryName, productId, productData]);

@@ -57,8 +57,6 @@ export const WishlistProductPopup = ({ isOpen, onClose, productData, categoryNam
         }
     }, [isOpen, categoryName, productId, getProductItem]);
 
-    console.log('WishlistProductPopup render', { isOpen, productData });
-
     if (!isOpen || !productData) {
         return null;
     }
@@ -67,10 +65,8 @@ export const WishlistProductPopup = ({ isOpen, onClose, productData, categoryNam
         ? normalizeProductData(fullProductData)
         : normalizeProductData(productData);
 
-    function AddToBagWrapper(props) {
-        const { createShoppingBagHandler, notSelectedSizeError } = useProductItemContext();
-
-        console.log('WishlistPopup notSelectedSizeError:', notSelectedSizeError);
+    function AddToBagWrapper() {
+        const { createShoppingBagHandler } = useProductItemContext();
 
         const wrappedAddToBag = async () => {
             const result = await createShoppingBagHandler();
