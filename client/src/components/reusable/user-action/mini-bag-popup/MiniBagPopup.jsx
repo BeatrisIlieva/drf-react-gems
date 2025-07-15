@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 
 import { useNavigate } from 'react-router';
 
-import { Button } from '../../../../../reusable/button/Button';
-import { Popup } from '../../../../../reusable/popup/Popup';
-import { ShoppingBagItem } from '../../../../shopping-bag/shopping-bag-list/shopping-bag-item/ShoppingBagItem';
+import { ShoppingBagItem } from '../../../pages/shopping-bag/shopping-bag-list/shopping-bag-item/ShoppingBagItem';
+import { Button } from '../../button/Button';
+import { Popup } from '../../popup/Popup';
 
-import { useShoppingBagContext } from '../../../../../../contexts/ShoppingBagContext';
+import { useShoppingBagContext } from '../../../../contexts/ShoppingBagContext';
 
-import { formatPrice } from '../../../../../../utils/formatPrice';
+import { formatPrice } from '../../../../utils/formatPrice';
 
 import styles from './MiniBagPopup.module.scss';
 

@@ -61,7 +61,7 @@ export const ShippingInformation = () => {
                         </p>
                         {deliveryInfo.apartment && (
                             <p className={styles['subtle']}>
-                                Apartment:
+                                Apartment: {" "}
                                 {deliveryInfo.apartment}
                             </p>
                         )}

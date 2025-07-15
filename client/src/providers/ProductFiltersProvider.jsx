@@ -41,14 +41,6 @@ export const ProductFiltersProvider = ({ children }) => {
         []
     );
 
-    const resetFilters = useCallback(() => {
-        setColorIds([]);
-        setStoneIds([]);
-        setMetalIds([]);
-        setCollectionIds([]);
-        setDisplayFilters(false);
-    }, []);
-
     const toggleDisplayFilters = useCallback(() => {
         setDisplayFilters(prev => !prev);
     }, []);
@@ -111,6 +103,14 @@ export const ProductFiltersProvider = ({ children }) => {
     }, [fetchFiltersData]);
 
     useEffect(() => {
+        setColorIds([]);
+        setStoneIds([]);
+        setMetalIds([]);
+        setCollectionIds([]);
+        setDisplayFilters(false);
+    }, [categoryName]);
+
+    useEffect(() => {
         fetchCollections();
         fetchColors();
         fetchMetals();
@@ -147,10 +147,6 @@ export const ProductFiltersProvider = ({ children }) => {
             filterToggleFunctions,
         ]
     );
-
-    useEffect(() => {
-        resetFilters();
-    }, [categoryName, resetFilters]);
 
     return (
         <ProductFiltersContext.Provider value={contextValue}>

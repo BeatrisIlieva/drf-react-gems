@@ -1,4 +1,4 @@
-import { useProductItemContext } from '../../../../../../contexts/ProductItemContext';
+import { useProductItemContext } from '../../../../contexts/ProductItemContext';
 
 import styles from './SizeList.module.scss';
 

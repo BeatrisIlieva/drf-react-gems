@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Popup } from '../../../reusable/popup/Popup';
-import { UserAction } from '../../product-item/main-content/user-action/UserAction';
+import { UserAction } from '../../../reusable/user-action/UserAction';
 
 import { useProductItem } from '../../../../api/productItemApi';
 

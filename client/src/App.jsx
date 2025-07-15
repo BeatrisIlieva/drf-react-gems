@@ -20,11 +20,11 @@ import { Login } from './components/pages/login/Login';
 import { OrderConfirmation } from './components/pages/order-confirmation/OrderConfirmation';
 import { Payment } from './components/pages/payment/Payment';
 import { ProductItem } from './components/pages/product-item/ProductItem';
-import { MiniBagPopup } from './components/pages/product-item/main-content/user-action/mini-bag-popup/MiniBagPopup';
 import { ProductList } from './components/pages/product-list/ProductList';
 import { Register } from './components/pages/register/Register';
 import { ShoppingBag } from './components/pages/shopping-bag/ShoppingBag';
 import { Wishlist } from './components/pages/wishlist/Wishlist';
+import { MiniBagPopup } from './components/reusable/user-action/mini-bag-popup/MiniBagPopup';
 
 import styles from './App.module.scss';
 

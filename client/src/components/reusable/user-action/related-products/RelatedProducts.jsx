@@ -1,8 +1,8 @@
 import { Link } from 'react-router';
 
-import { useCategoryName } from '../../../../../../hooks/useCategoryName';
+import { useCategoryName } from '../../../../hooks/useCategoryName';
 
-import { useProductItemContext } from '../../../../../../contexts/ProductItemContext';
+import { useProductItemContext } from '../../../../contexts/ProductItemContext';
 
 import styles from './RelatedProducts.module.scss';
 

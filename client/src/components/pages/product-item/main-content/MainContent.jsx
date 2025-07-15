@@ -1,5 +1,5 @@
+import { UserAction } from '../../../reusable/user-action/UserAction';
 import { ProductDetails } from './product-details/ProductDetails';
-import { UserAction } from './user-action/UserAction';
 
 import styles from './MainContent.module.scss';
 

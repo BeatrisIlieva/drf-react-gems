@@ -1,9 +1,9 @@
-import { Button } from '../../../../../reusable/button/Button';
-import { Icon } from '../../../../../reusable/icon/Icon';
+import { Button } from '../../button/Button';
+import { Icon } from '../../icon/Icon';
 
-import { useCategoryName } from '../../../../../../hooks/useCategoryName';
+import { useCategoryName } from '../../../../hooks/useCategoryName';
 
-import { useWishlistContext } from '../../../../../../contexts/WishlistContext';
+import { useWishlistContext } from '../../../../contexts/WishlistContext';
 
 import styles from './ProductActions.module.scss';
 

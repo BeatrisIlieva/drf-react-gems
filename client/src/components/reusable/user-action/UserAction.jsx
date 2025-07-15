@@ -1,14 +1,14 @@
-import { ComplimentaryShipping } from '../../../../reusable/complimentary-shipping/ComplimentaryShipping';
-import { StyledTextBlock } from '../../../../reusable/styled-text-block/StyledTextBlock';
+import { ComplimentaryShipping } from '../complimentary-shipping/ComplimentaryShipping';
+import { StyledTextBlock } from '../styled-text-block/StyledTextBlock';
 import { PriceDisplay } from './price-display/PriceDisplay';
 import { ProductActions } from './product-actions/ProductActions';
 import { RelatedProducts } from './related-products/RelatedProducts';
 import { SizeList } from './size-list/SizeList';
 
-import { useCategoryName } from '../../../../../hooks/useCategoryName';
-import { usePriceCalculation } from '../../../../../hooks/usePriceCalculation';
+import { useCategoryName } from '../../../hooks/useCategoryName';
+import { usePriceCalculation } from '../../../hooks/usePriceCalculation';
 
-import { useProductItemContext } from '../../../../../contexts/ProductItemContext';
+import { useProductItemContext } from '../../../contexts/ProductItemContext';
 
 import styles from './UserAction.module.scss';
 
