@@ -256,7 +256,7 @@ See implementation: (`server/src/products/admin.py`)
     -   Automatic focus on errors: When a form is submitted with errors, the first invalid input is automatically focused for user convenience. (`client/src/hooks/useFocusOnInvalidInput.js`)
     -   Server-side error integration: Any validation errors returned from the backend are mapped to the correct form fields and displayed to the user in real time. (`client/src/components/reusable/input-field/InputField.jsx`)
 
-## 2. Bonus Features
+## 2. Bonus Features 
 
 ### Testing Implementation ✅
 
@@ -320,23 +320,29 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 
 ### Object-Oriented Design ✅
 
--   **Data encapsulation:**
-    Business logic and data validation are encapsulated within dedicated service classes and model managers, such as `ShoppingBagService` (`server/src/shopping_bags/services.py`) and `UserCredentialManager` (`server/src/accounts/managers/user_credential.py`). This ensures that critical operations—like inventory validation, atomic updates, and secure user creation—are only accessible through well-defined interfaces, promoting maintainability and security.
+- [Data Encapsulation](#data-encapsulation)
+- [Exception Handling](#exception-handling)
+- [Inheritance, Abstraction, and Polymorphism](#inheritance-abstraction-and-polymorphism)
+- [Cohesion and Loose Coupling](#cohesion-and-loose-coupling)
+- [Code Quality and Readability](#code-quality-and-readability)
 
--   **Exception handling:**
-    Robust error handling is implemented using try-except blocks and DRF exception classes, particularly for authentication and business-critical operations. For example, authentication and registration logic in `UserCredentialViewSet` ([server/src/accounts/views/user_credential.py]) uses structured exception handling to provide clear API error responses. Service classes such as `ShoppingBagService` ([server/src/shopping_bags/services.py]) and `OrderService` ([server/src/orders/services.py]) consistently raise and handle exceptions for validation errors, inventory issues, and transactional integrity. This approach ensures that all errors are managed in a predictable, secure, and user-friendly manner across the backend.
+### Data Encapsulation
+Business logic and data validation are encapsulated within dedicated service classes and model managers, such as `ShoppingBagService` ([server/src/shopping_bags/services.py]) and `UserCredentialManager` ([server/src/accounts/managers/user_credential.py]). This ensures that critical operations—like inventory validation, atomic updates, and secure user creation—are only accessible through well-defined interfaces, promoting maintainability and security.
 
--   **Inheritance, abstraction, and polymorphism:**
-    Product models leverage inheritance and abstract base classes, while polymorphic relationships are managed using Django's GenericForeignKey for maximum flexibility.  
-    (`server/src/products/models/base.py`)
+### Exception Handling
+Robust error handling is implemented using try-except blocks and DRF exception classes, particularly for authentication and business-critical operations. For example, authentication and registration logic in `UserCredentialViewSet` ([server/src/accounts/views/user_credential.py]) uses structured exception handling to provide clear API error responses. Service classes such as `ShoppingBagService` ([server/src/shopping_bags/services.py]) and `OrderService` ([server/src/orders/services.py]) consistently raise and handle exceptions for validation errors, inventory issues, and transactional integrity. This approach ensures that all errors are managed in a predictable, secure, and user-friendly manner across the backend.
 
--   **Cohesion and loose coupling:**
-    Each Django app (accounts, products, orders, shopping_bags, wishlists, common) encapsulates a distinct business domain, promoting strong cohesion and loose coupling across the backend.  
-    (`server/src/`)
+### Inheritance, Abstraction, and Polymorphism
+Product models leverage inheritance and abstract base classes, while polymorphic relationships are managed using Django's GenericForeignKey for maximum flexibility.  
+([server/src/products/models/base.py])
 
--   **Code quality and readability:**
-    All code adheres to PEP 8 (Python) and uses ESLint/Prettier (JavaScript) for consistent formatting and clear naming conventions.  
-    (e.g., `createShoppingBagHandler`, `useProductItemContext`)
+### Cohesion and Loose Coupling
+Each Django app (accounts, products, orders, shopping_bags, wishlists, common) encapsulates a distinct business domain, promoting strong cohesion and loose coupling across the backend.  
+([server/src/])
+
+### Code Quality and Readability
+All code adheres to PEP 8 (Python) and uses ESLint/Prettier (JavaScript) for consistent formatting and clear naming conventions.  
+(e.g., `createShoppingBagHandler`, `useProductItemContext`)
 
 ### User Interface & Experience ✅
 
