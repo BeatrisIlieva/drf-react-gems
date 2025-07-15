@@ -7,7 +7,15 @@
 [![JWT](https://img.shields.io/badge/JWT%20Authentication-green.svg)](https://jwt.io/)
 [![Azure](https://img.shields.io/badge/Azure%20Deployment-blue.svg)](https://azure.microsoft.com/)
 
-A modern, full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Features comprehensive user authentication, product management, shopping cart functionality, wishlist system, and secure payment processing.
+A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Features comprehensive user authentication, product management, shopping cart functionality, wishlist system, and secure payment processing.
+
+<!-- Place screenshots here -->
+<!-- Example:
+## 📸 Screenshots
+
+![Home Page](screenshots/home.png)
+![Product List](screenshots/product-list.png)
+-->
 
 ## 📋 Table of Contents
 
@@ -114,21 +122,27 @@ A modern, full-stack e-commerce platform built with Django REST Framework (DRF) 
 
 -   Database configuration with PostgreSQL 13+ (`server/src/settings.py`)
 
+**Data Normalization:** The database is organized to keep information tidy and avoid repeating the same data in different places. It follows the main rules of database design:
+
+-   **First Normal Form (1NF):** Each table has columns that hold just one piece of information (no lists or groups in a single cell). For example, the `products_color` table has a column for the color name, and each row is a single color.
+-   **Second Normal Form (2NF):** All details in a table are linked only to that table's main ID. For example, in the `products_inventory` table, the amount in stock and the price are linked to a specific product and size, so there’s no confusion or extra copies.
+-   **Third Normal Form (3NF):** There are no “hidden” connections between details. For example, product features like color, metal, and stone are always stored in their own tables and linked by ID, so if we change a color’s name, it updates everywhere at once.
+
+**Entity Relationship Diagram:**
+
+![ERD](https://res.cloudinary.com/dpgvbozrb/image/upload/v1752592187/ERD.pgerd_w6i0a3.png)
+
 **Multiple storage systems are utilized:**
 
--   Cloudinary: User profile photos stored in Cloudinary (`server/src/accounts/models/user_photo.py`)
+-   Cloudinary: User profile photos are stored in Cloudinary (`server/src/accounts/models/user_photo.py`)
 
 ### Frontend Implementation ✅
 
-**React components are used for the frontend:**
-
--   React-based Single Page Application (SPA) (`client/src/App.jsx`)
+-   React-based Single Page Application (SPA)
 
 ### Web Page Design ✅
 
-**Custom SCSS-based design system is implemented:**
-
--   SCSS modules for component-based styling (`client/src/styles/`)
+-   Custom SCSS modules for component-based styling
 
 ### Authentication Functionality ✅
 
@@ -145,35 +159,46 @@ A modern, full-stack e-commerce platform built with Django REST Framework (DRF) 
 **Public part is accessible by everyone:**
 
 -   Anonymous users can browse products and use guest shopping cart/wishlist
--   Items are transferred to user account after login/register
 
-**Note:**
-Guest users can add items to their shopping bag and wishlist. Each guest’s data is securely isolated using a unique guest ID, ensuring that no guest can access or modify another user’s data. All inventory validation is performed on the backend, so users—whether guests or authenticated—cannot add more items than are available in stock. If a guest registers or logs in, their shopping bag and wishlist are safely migrated to their new account, with checks for duplicates and out-of-stock items. This approach is industry standard for modern e-commerce, provides a smooth user experience, and fully meets the project’s requirements for public/private data access and security.
+> ⚠️ **Note:**  
+> Guest users can add items to their shopping bag and wishlist, with each guest’s data isolated using a unique guest ID. All modifications—adding, removing, or updating items—are performed via API requests to the backend, which centrally enforces inventory validation and business rules. The frontend uses quantity information from the backend to prevent users from adding more items than are available or removing more than they have in their bag. When a guest registers or logs in, their shopping bag and wishlist are migrated to their new account, with checks to prevent duplicate items.
+>
+> This approach ensures data integrity, a smooth user experience, and prevents errors related to unavailable inventory.
 
 ### Private Part ✅
 
-**Private part is accessible only by authenticated users and admins:**
+**The private part of the application is accessible only to authenticated users and admins:**
 
--   Protected routes requiring authentication or admin status
--   Checkout, account management, review moderation
--   Users can create, read, update, delete their own data
--   Amazon-style checkout: Users can add items to cart as guests, but must authenticate to complete checkout (`client/src/components/pages/checkout/Checkout.jsx`)
+-   Access to checkout, account management, and order history requires authentication.
 
 **Review Moderation & Approval System:**
 
--   **Regular users** can only see reviews that have been approved for a product
+-   **Regular users** can only see reviews that have been approved on a product item page
 -   **Reviewers** (users in the "reviewer" group with the `products.approve_review` permission) can see all reviews (approved and unapproved) for a product
--   **Reviewers** can approve or unapprove reviews directly from the product item page via dedicated controls
 -   **Backend**: A dedicated DRF endpoint `/api/products/<category>/<pk>/all-reviews/` returns all reviews for a product, accessible only to reviewers
 -   **Frontend**: The UI conditionally fetches and displays all reviews for reviewers, and only approved reviews for regular users. Approve/unapprove buttons are visible only to reviewers
 
 ### Customized Admin Site ✅
 
-**Custom Django admin with Unfold framework and at least 5 custom options is implemented:**
+**Custom Django admin with Unfold framework:**
 
 -   Unfold Framework: Modern admin interface with custom themes, and styling (`server/src/unfold.py`)
 -   Custom Navigation: Organized sidebar with collapsible sections for Users & Groups, Products, Product Attributes, and Reviews
 -   Permission-Based Access: Different admin sections visible based on user permissions
+
+**The admin interface includes more than 5 custom options:**
+
+-   Custom list filters (e.g., by stone and color)
+-   Custom list display with image previews
+-   Custom ordering of records
+-   Custom search fields for product attributes
+-   Custom fieldsets for organized editing
+-   Inline editing of related inventory
+-   Readonly and editable fields for reviews
+-   Custom admin methods (e.g., product links)
+-   Custom permissions for review moderation
+
+See implementation: (`server/src/products/admin.py`)
 
 ### Admin Groups ✅
 
@@ -231,146 +256,116 @@ Guest users can add items to their shopping bag and wishlist. Each guest’s dat
     -   Automatic focus on errors: When a form is submitted with errors, the first invalid input is automatically focused for user convenience. (`client/src/hooks/useFocusOnInvalidInput.js`)
     -   Server-side error integration: Any validation errors returned from the backend are mapped to the correct form fields and displayed to the user in real time. (`client/src/components/reusable/input-field/InputField.jsx`)
 
-**Appropriate messages are shown to users during validation:**
-
--   Visual feedback with green/red/blue states
--   Real-time validation feedback
--   Clear, contextual error messages are shown next to the relevant input fields, with concise and user-friendly language.
-
 ## 2. Bonus Features
 
 ### Testing Implementation ✅
 
-**The project includes around 200 automated tests, ensuring robust quality and reliability across all backend features.**
+**The project includes around 130 automated tests, ensuring robust quality and reliability across all backend features.**
 
--   Shows 90%+ coverage (`coverage run manage.py test && coverage report`)
+-   Shows 85%+ coverage (`coverage run manage.py test && coverage report`)
 -   Runs all tests (`python manage.py test`)
 
 ### Asynchronous Views ✅
 
-**High-performance asynchronous views are implemented to optimize user experience and server efficiency.**
+**Asynchronous views are implemented to optimize user experience and server efficiency for product attribute filtering.**
 
 -   Asynchronous endpoints allow the backend to handle multiple filter and product data requests concurrently, reducing wait times for users.
--   Database queries are optimized for speed and scalability, especially when the frontend needs to fetch several filters or product lists at once.
 -   Implementation example: Async product listing and attribute filtering (`server/src/products/views/base.py`)
 
 ### REST API Implementation ✅
 
-**The entire backend is built with Django REST Framework (DRF), exposing all business logic as RESTful API endpoints consumed by the React frontend.**
+-   The backend utilizes DRF API views and serializers to provide all features to the React frontend, rather than using Django’s traditional HTML templates.
+-   All business logic—including authentication, products, shopping bag, wishlist, orders, and reviews—is exposed through RESTful API endpoints.
 
-- No traditional Django HTML views—everything is handled via DRF API views and serializers.
-- All features (authentication, products, shopping bag, wishlist, orders, reviews) are accessible through REST endpoints.
+### Django User Extension ✅
 
-**Key files:**
-- API views: (`server/src/accounts/views/`, `server/src/products/views/`, `server/src/orders/views.py`, `server/src/shopping_bags/views.py`, `server/src/wishlists/views.py`)
-- Serializers: (`server/src/accounts/serializers/`, `server/src/products/serializers/`, `server/src/orders/serializers.py`, etc.)
+-   **Custom user model:**  
+    Uses email as the primary login identifier, with unique username and additional fields for marketing consent.  
+    (`server/src/accounts/models/user_credential.py`)
 
-### User Extension ✅
+-   **User profile:**  
+    Stores personal and shipping information in a dedicated profile model linked one-to-one with the user.  
+    (`server/src/accounts/models/user_profile.py`)
 
-**The default Django user model is fully extended to support modern authentication and user management needs.**
+-   **User photo:**  
+    Handles user profile pictures with cloud storage and automatic optimization.  
+    (`server/src/accounts/models/user_photo.py`)
 
-- **Custom user model:**  
-  Uses email as the primary login identifier, with unique username and additional fields for marketing consent.  
-  (`server/src/accounts/models/user_credential.py`)
-
-- **User profile:**  
-  Stores personal and shipping information in a dedicated profile model linked one-to-one with the user.  
-  (`server/src/accounts/models/user_profile.py`)
-
-- **User photo:**  
-  Handles user profile pictures with cloud storage and automatic optimization.  
-  (`server/src/accounts/models/user_photo.py`)
-
-- **Flexible authentication:**  
-  Custom authentication backend allows login with either email or username, supporting case-insensitive authentication.  
-  (`server/src/accounts/authentication.py`)
-
-- **Automatic profile and photo creation:**  
-  Django signals ensure that every new user automatically gets a profile and photo record.  
-  (`server/src/accounts/signals.py`)
+-   **Automatic profile and photo creation:**  
+    Django signals ensure that every new user automatically gets a profile and photo record.  
+    (`server/src/accounts/signals.py`)
 
 ### Deployment ✅
 
-**Azure App Service deployment is implemented**
-
--   Production deployment with CI/CD pipeline and environment configuration
+-   Azure App Service deployment is implemented
 
 ### Additional Functionality ✅
 
-- **Polymorphic product relationships:**
-  The products app uses Django's `GenericForeignKey` and `GenericRelation` to enable flexible, polymorphic relationships between products, inventory, and reviews. 
-  - In `base.py`, all product types inherit from `BaseProduct`, which defines generic relations to both inventory and reviews, allowing any product (Earwear, Neckwear, Fingerwear, Wristwear) to be linked to multiple inventory records and reviews without duplicating code.
-  - In `inventory.py`, the `Inventory` model uses `GenericForeignKey` to associate stock and pricing with any product type, supporting size variations and centralized inventory management.
-  - In `product.py`, each product category inherits this structure, making it easy to add new product types or attributes.
+-   **Polymorphic product relationships:**
+    The products app uses Django's `GenericForeignKey` and `GenericRelation` to enable flexible, polymorphic relationships between products, inventory, and reviews.
+    -   In `base.py`, all product types inherit from `BaseProduct`, which defines generic relations to both inventory and reviews, allowing any product (Earwear, Neckwear, Fingerwear, Wristwear) to be linked to multiple inventory records and reviews without duplicating code.
+    -   In `inventory.py`, the `Inventory` model uses `GenericForeignKey` to associate stock and pricing with any product type, supporting size variations and centralized inventory management.
+    -   In `product.py`, each product category inherits this structure, making it easy to add new product types or attributes.
 
 **Design rationale:**
 Dedicated models for each product category (Earwear, Neckwear, etc.) allow the backend to efficiently query and manage each category without filtering a single large product table. This improves performance, keeps the codebase organized, and makes it easy to add category-specific features in the future. `GenericForeignKey` and `GenericRelation` are used to maintain flexible, DRY relationships for inventory and reviews across all categories.
 
-**Benefits:**
-- **Flexibility:** Easily support new product types and relationships without schema changes.
-- **Scalability:** Centralized inventory and review logic for all products.
-- **DRY code:** Avoids duplication by using abstract base classes and generic relations.
-- **Extensibility:** New product categories or features can be added with minimal changes to the codebase.
-
 **Key files:**
-- Base product and generic relations (`server/src/products/models/base.py`)
-- Inventory model with GenericForeignKey (`server/src/products/models/inventory.py`)
-- Product category models (`server/src/products/models/product.py`)
+
+-   Base product and generic relations (`server/src/products/models/base.py`)
+-   Inventory model with GenericForeignKey (`server/src/products/models/inventory.py`)
+-   Product category models (`server/src/products/models/product.py`)
 
 ## 3. Additional Requirements
 
 ### Object-Oriented Design ✅
 
-**The project follows modern object-oriented design principles and best practices throughout the codebase:**
+-   **Data encapsulation:**
+    Business logic and data validation are encapsulated within dedicated service classes and model managers, such as `ShoppingBagService` (`server/src/shopping_bags/services.py`) and `UserCredentialManager` (`server/src/accounts/managers/user_credential.py`). This ensures that critical operations—like inventory validation, atomic updates, and secure user creation—are only accessible through well-defined interfaces, promoting maintainability and security.
 
-- **Data encapsulation:**
-  User data and business logic are encapsulated within dedicated models and methods, ensuring maintainability and security.  
-  (`server/src/accounts/models/user_credential.py`)
+-   **Exception handling:**
+    Robust error handling is implemented using try-except blocks and DRF exception classes, particularly for authentication and business-critical operations. For example, authentication and registration logic in `UserCredentialViewSet` ([server/src/accounts/views/user_credential.py]) uses structured exception handling to provide clear API error responses. Service classes such as `ShoppingBagService` ([server/src/shopping_bags/services.py]) and `OrderService` ([server/src/orders/services.py]) consistently raise and handle exceptions for validation errors, inventory issues, and transactional integrity. This approach ensures that all errors are managed in a predictable, secure, and user-friendly manner across the backend.
 
-- **Exception handling:**
-  Robust error handling is implemented using try-except blocks, particularly for authentication and business-critical operations.  
-  (`server/src/accounts/views/user_credential.py`)
+-   **Inheritance, abstraction, and polymorphism:**
+    Product models leverage inheritance and abstract base classes, while polymorphic relationships are managed using Django's GenericForeignKey for maximum flexibility.  
+    (`server/src/products/models/base.py`)
 
-- **Inheritance, abstraction, and polymorphism:**
-  Product models leverage inheritance and abstract base classes, while polymorphic relationships are managed using Django's GenericForeignKey for maximum flexibility.  
-  (`server/src/products/models/base.py`)
+-   **Cohesion and loose coupling:**
+    Each Django app (accounts, products, orders, shopping_bags, wishlists, common) encapsulates a distinct business domain, promoting strong cohesion and loose coupling across the backend.  
+    (`server/src/`)
 
-- **Cohesion and loose coupling:**
-  Each Django app (accounts, products, orders, shopping_bags, wishlists, common) encapsulates a distinct business domain, promoting strong cohesion and loose coupling across the backend.  
-  (`server/src/`)
-
-- **Code quality and readability:**
-  All code adheres to PEP 8 (Python) and uses ESLint/Prettier (JavaScript) for consistent formatting and clear naming conventions.  
-  (e.g., `createShoppingBagHandler`, `useProductItemContext`)
+-   **Code quality and readability:**
+    All code adheres to PEP 8 (Python) and uses ESLint/Prettier (JavaScript) for consistent formatting and clear naming conventions.  
+    (e.g., `createShoppingBagHandler`, `useProductItemContext`)
 
 ### User Interface & Experience ✅
 
 **The project delivers a visually appealing and highly usable interface, with a strong focus on both design consistency and user experience.**
 
-- **Custom design system:**  
-  All components use a consistent SCSS-based design system, ensuring visual harmony and easy theming.  
-  (`client/src/styles/_variables.scss`)
+-   **Custom design system:**  
+    All components use a consistent SCSS-based design system, ensuring visual harmony and easy theming.  
+    (`client/src/styles/_variables.scss`)
 
-- **Responsive design:**  
-  The UI is fully responsive, adapting seamlessly to different screen sizes and devices.
+-   **Responsive design:**  
+    The UI is fully responsive, adapting seamlessly to different screen sizes and devices.
 
-- **Component-based architecture:**  
-  The frontend is built with reusable, modular React components, promoting maintainability and scalability.  
-  (`client/src/components/`)
+-   **Component-based architecture:**  
+    The frontend is built with reusable, modular React components, promoting maintainability and scalability.  
+    (`client/src/components/`)
 
-- **Real-time feedback:**  
-  Forms provide instant validation feedback, with clear visual cues for valid, invalid, and focused states.  
-  (`client/src/hooks/useForm.js`, `client/src/styles/forms.scss`)
+-   **Real-time feedback:**  
+    Forms provide instant validation feedback, with clear visual cues for valid, invalid, and focused states.  
+    (`client/src/hooks/useForm.js`, `client/src/styles/forms.scss`)
 
-- **Smooth user flows:**  
-  Features like the mini bag popup, dynamic product filtering, and automatic focus on invalid inputs enhance usability and reduce friction.  
-  (`client/src/components/pages/product-item/main-content/user-action/mini-bag-popup/MiniBagPopup.jsx`)
+-   **Smooth user flows:**  
+    Features like the mini bag popup, dynamic product filtering, and automatic focus on invalid inputs enhance usability and reduce friction.  
+    (`client/src/components/pages/product-item/main-content/user-action/mini-bag-popup/MiniBagPopup.jsx`)
 
-- **Accessible and intuitive navigation:**  
-  The application uses clear navigation patterns, accessible controls, and user-friendly error messages.
+-   **Accessible and intuitive navigation:**  
+    The application uses clear navigation patterns, accessible controls, and user-friendly error messages.
 
-- **Consistent user experience:**  
-  All interactive elements, from buttons to forms, follow a unified style and behavior, ensuring a professional and predictable experience.
+-   **Consistent user experience:**  
+    All interactive elements, from buttons to forms, follow a unified style and behavior, ensuring a professional and predictable experience.
 
 ---
 
@@ -393,7 +388,7 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 1. **Clone and setup**
 
     ```bash
-    git clone https://github.com/yourusername/drf-react-gems.git
+    git clone https://github.com/BeatrisIlieva/drf-react-gems.git
     cd drf-react-gems
     ```
 
@@ -401,14 +396,10 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 
     ```bash
     cd server
-    python -m venv venv
-    source venv/bin/activate  # On Windows: venv\Scripts\activate
+    python3 -m venv .venv
+    source .venv/bin/activate
     pip install -r requirements.txt
-    ```
 
-3. **Database setup**
-
-    ```bash
     # Create PostgreSQL database
     createdb drf_react_gems_db
 
@@ -417,9 +408,11 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 
     # Populate database with products, reviews, and roles
     python manage.py setup_database
+
+    python manage.py runserver
     ```
 
-4. **Frontend setup**
+3. **Frontend setup**
     ```bash
     cd ../client
     npm install
@@ -428,17 +421,21 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 
 ### Database Population
 
-The project includes a comprehensive setup command that creates:
+The project includes a setup command that creates:
 
 -   **Products**: All jewelry items with categories, collections, colors, metals, stones
 -   **Reviews**: Customer reviews with ratings and comments
--   **Admin Users**: 4 different admin roles with specific permissions
+-   **Admin Users**: 2 different admin roles with specific permissions
 -   **Superuser**: Full system access
 
 **Command**: `python manage.py setup_database`
 
 **Created Admin Users**:
 
--   Super User: `super_user@mail.com` | `@dmin123`
--   Inventory User: `inventory_user@mail.com` | `@dmin123`
--   Manager User: `manager_user@mail.com` | `@dmin123`
+-   Super User: `super_user@mail.com` | `!1Aabb`
+-   Inventory User: `inventory_user@mail.com` | `!1Aabb`
+-   Reviewer User: `reviewer_user@mail.com` | `!1Aabb`
+
+## 📝 License
+
+This project is licensed under the MIT License.
