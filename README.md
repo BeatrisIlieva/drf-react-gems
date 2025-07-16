@@ -9,14 +9,6 @@
 
 A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Features user authentication, product management, shopping cart functionality, wishlist system, and secure payment processing.
 
-<!-- Place screenshots here -->
-<!-- Example:
-## 📸 Screenshots
-
-![Home Page](screenshots/home.png)
-![Product List](screenshots/product-list.png)
--->
-
 ## 📋 Table of Contents
 
 ### 1. General Requirements
@@ -160,7 +152,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 -   Anonymous users can browse products and use guest shopping cart/wishlist
 
-> ⚠️ **Note:**  
+> **Note:**  
 > Guest users can add items to their shopping bag and wishlist, with each guest’s data isolated using a unique guest ID. All modifications—adding, removing, or updating items—are performed via API requests to the backend, which centrally enforces inventory validation and business rules. The frontend uses quantity information from the backend to prevent users from adding more items than are available or removing more than they have in their bag. When a guest registers or logs in, their shopping bag and wishlist are migrated to their new account, with checks to prevent duplicate items.
 >
 > This approach ensures data integrity, a smooth user experience, and prevents errors related to unavailable inventory.
