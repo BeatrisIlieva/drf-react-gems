@@ -46,7 +46,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 ## 1. General Requirements
 
-### Django Framework Implementation ✅
+### Django Framework Implementation
 
 **The application is implemented using Django Framework:**
 
@@ -108,7 +108,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   Delivery information form (`client/src/components/pages/checkout/Checkout.jsx`)
 -   Payment form (`client/src/components/pages/payment/Payment.jsx`)
 
-### Database Service ✅
+### Database Service
 
 **PostgreSQL database is used as the primary database:**
 
@@ -128,15 +128,15 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 -   Cloudinary: User profile photos are stored in Cloudinary (`server/src/accounts/models/user_photo.py`)
 
-### Frontend Implementation ✅
+### Frontend Implementation
 
 -   React-based Single Page Application (SPA)
 
-### Web Page Design ✅
+### Web Page Design
 
 -   Custom SCSS modules for component-based styling
 
-### Authentication Functionality ✅
+### Authentication Functionality
 
 **The application has login/register/logout/delete account functionality:**
 
@@ -146,7 +146,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   Logout: UserLogoutView (`server/src/accounts/views/user_credential.py`)
 -   Account deletion: UserDeleteView (`server/src/accounts/views/user_credential.py`)
 
-### Public Part ✅
+### Public Part
 
 **Public part is accessible by everyone:**
 
@@ -157,7 +157,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 >
 > This approach ensures data integrity, a smooth user experience, and prevents errors related to unavailable inventory.
 
-### Private Part ✅
+### Private Part
 
 **The private part of the application is accessible only to authenticated users and admins:**
 
@@ -170,7 +170,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   **Backend**: A dedicated DRF endpoint `/api/products/<category>/<pk>/all-reviews/` returns all reviews for a product, accessible only to reviewers
 -   **Frontend**: The UI conditionally fetches and displays all reviews for reviewers, and only approved reviews for regular users. Approve/unapprove buttons are visible only to reviewers
 
-### Customized Admin Site ✅
+### Customized Admin Site
 
 **Custom Django admin with Unfold framework:**
 
@@ -192,7 +192,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 See implementation: (`server/src/products/admin.py`)
 
-### Admin Groups ✅
+### Admin Groups
 
 **3 admin groups with different permission levels are implemented:**
 
@@ -223,7 +223,7 @@ See implementation: (`server/src/products/admin.py`)
 
 -   All admin groups and their associated users are created automatically by a management command (`server/src/accounts/management/commands/create_roles.py`)
 
-### Exception Handling and Data Validation ✅
+### Exception Handling and Data Validation
 
 **Comprehensive exception handling and data validation is implemented:**
 
@@ -240,26 +240,26 @@ See implementation: (`server/src/products/admin.py`)
 
 ## 2. Bonus Features
 
-### Testing Implementation ✅
+### Testing Implementation
 
 **The project includes around 130 automated tests, ensuring robust quality and reliability across all backend features.**
 
 -   Shows 85%+ coverage (`coverage run manage.py test && coverage report`)
 -   Runs all tests (`python manage.py test`)
 
-### Asynchronous Views ✅
+### Asynchronous Views
 
 **Asynchronous views are implemented to optimize user experience and server efficiency for product attribute filtering.**
 
 -   Asynchronous endpoints allow the backend to handle multiple filter and product data requests concurrently, reducing wait times for users.
 -   Implementation example: Async product listing and attribute filtering (`server/src/products/views/base.py`)
 
-### REST API Implementation ✅
+### REST API Implementation
 
 -   The backend utilizes DRF API views and serializers to provide all features to the React frontend, rather than using Django’s traditional HTML templates.
 -   All business logic—including authentication, products, shopping bag, wishlist, orders, and reviews—is exposed through RESTful API endpoints.
 
-### Django User Extension ✅
+### Django User Extension
 
 -   **Custom user model:**  
     Uses email as the primary login identifier, with unique username and additional fields for marketing consent.  
@@ -277,11 +277,11 @@ See implementation: (`server/src/products/admin.py`)
     Django signals ensure that every new user automatically gets a profile and photo record.  
     (`server/src/accounts/signals.py`)
 
-### Deployment ✅
+### Deployment
 
 -   Azure App Service deployment is implemented
 
-### Additional Functionality ✅
+### Additional Functionality
 
 -   **Polymorphic product relationships:**
     The products app uses Django's `GenericForeignKey` and `GenericRelation` to enable flexible, polymorphic relationships between products, inventory, and reviews.
@@ -294,7 +294,7 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 
 ## 3. Additional Requirements
 
-### Object-Oriented Design ✅
+### Object-Oriented Design
 
 -   **Data encapsulation:**
     Business logic and data validation are encapsulated within dedicated service classes and model managers.
@@ -311,7 +311,7 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 -   **Code quality and readability:**
     All code adheres to PEP 8 (Python) and uses ESLint/Prettier (JavaScript) for consistent formatting and clear naming conventions.
 
-### User Interface & Experience ✅
+### User Interface & Experience
 
 **The project delivers a visually appealing and highly usable interface, with a strong focus on both design consistency and user experience.**
 
@@ -335,7 +335,7 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 
 ---
 
-### Source Control System ✅
+### Source Control System
 
 **GitHub source control system is used for version control**
 
