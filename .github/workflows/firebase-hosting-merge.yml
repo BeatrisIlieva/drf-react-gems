@@ -21,3 +21,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DRF_REACT_GEMS }}
           channelId: live
           projectId: drf-react-gems
+          entryPoint: client
