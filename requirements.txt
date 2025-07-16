@@ -1,0 +1,36 @@
+asgiref==3.8.1  # ASGI support for Django, enables async features
+attrs==25.3.0  # Utilities for defining classes with less boilerplate, used by some dependencies
+certifi==2025.4.26  # Provides Mozilla's root certificates for secure HTTP requests
+charset-normalizer==3.4.2  # Handles character encoding detection for HTTP requests
+cloudinary==1.44.0  # Python SDK for Cloudinary, used for image upload and management
+coverage==7.9.2  # Measures code coverage for tests
+Django==5.2.1  # The main web framework for the backend
+django-cloudinary-storage==0.3.0  # Integrates Cloudinary with Django's file storage system
+django-cors-headers==4.7.0  # Handles Cross-Origin Resource Sharing (CORS) for APIs
+django-stubs==5.2.1  # Type hints for Django, improves static type checking
+django-stubs-ext==5.2.1  # Extra type hints for Django, extends django-stubs
+django-unfold==0.59.0  # Admin interface enhancement for Django
+djangorestframework==3.16.0  # Django REST Framework, for building RESTful APIs
+djangorestframework_simplejwt==5.5.0  # JWT authentication for DRF
+idna==3.10  # Internationalized Domain Names in Applications, used by requests
+inflection==0.5.1  # String transformation utilities (e.g., pluralize, camelize)
+iniconfig==2.1.0  # INI file parser, used by pytest
+jsonschema==4.24.0  # Validates JSON schemas, used in testing and validation
+jsonschema-specifications==2025.4.1  # Provides JSON schema specifications for validation
+packaging==25.0  # Utilities for package version parsing and comparison
+pluggy==1.6.0  # Plugin management, used by pytest
+psycopg2-binary==2.9.10  # PostgreSQL database adapter for Python
+Pygments==2.19.2  # Syntax highlighting, used in documentation and test output
+PyJWT==2.9.0  # JSON Web Token implementation for Python
+pytest==8.4.1  # Testing framework for Python
+PyYAML==6.0.2  # YAML parser and emitter for Python
+referencing==0.36.2  # JSON schema reference resolution, used by jsonschema
+requests==2.32.3  # HTTP library for making requests to external APIs
+rpds-py==0.26.0  # Immutable data structures, used by jsonschema
+six==1.17.0  # Python 2 and 3 compatibility utilities
+sqlparse==0.5.3  # SQL parsing library, used by Django for SQL formatting
+types-PyYAML==6.0.12.20250516  # Type hints for PyYAML
+typing_extensions==4.14.1  # Backports for new typing features (for older Python versions)
+tzdata==2025.2  # Timezone database, used by Django for timezone support
+uritemplate==4.2.0  # URI template expansion, used by some APIs
+urllib3==2.4.0  # HTTP client, used by requests and other libraries

@@ -1,4 +1,5 @@
 {
+    "reportAttributeAccessIssue": false,
     "typeCheckingMode": "off",
     "useLibraryCodeForTypes": true,
     "reportMissingImports": false,

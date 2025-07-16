@@ -1,3 +1,12 @@
+"""
+This module contains base and shared serializers for product-related API endpoints.
+
+It provides:
+- Base serializers for product lists and product detail views
+- Logic for calculating average ratings and handling related products
+- Shared fields and methods for reuse and extension in the product app
+"""
+
 from typing import Any, Dict, Type, Optional
 from django.db.models import Avg
 

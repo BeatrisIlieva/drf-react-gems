@@ -1,9 +1,5 @@
 """
-Custom Model Validators for DRF React Gems E-commerce Platform
-
 This module contains custom Django validators for model field validation.
-These validators ensure data integrity and provide user-friendly error messages
-for various field types including names, usernames, emails, and phone numbers.
 
 The validators use the @deconstructible decorator to make them serializable
 for Django migrations and form handling.
@@ -15,11 +11,9 @@ Validators included:
 - EmailOrUsernameValidator: Validates either email or username format
 """
 
-# Standard library imports
-from typing import Any, Optional
+from typing import Any
 import re
 
-# Django imports for validation and internationalization
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator as DjangoEmailValidator
 from django.utils.deconstruct import deconstructible
@@ -30,33 +24,20 @@ from django.utils.translation import gettext as _
 class OnlyDigitsValidator:
     """
     Validator that ensures a field contains only numeric characters.
-    
+
     This validator is used for fields like phone numbers where only
-    digits are allowed. It provides a clean way to validate numeric-only
-    input without allowing letters or special characters.
-    
-    The @deconstructible decorator makes this validator serializable
-    for Django migrations and form handling.
-    
-    Usage:
-        phone_number = models.CharField(
-            validators=[OnlyDigitsValidator()],
-            max_length=15
-        )
+    digits are allowed. 
     """
-    
+
     # Default error message for this validator
     DEFAULT_MESSAGE: str = 'This field can contain only digits.'
 
     def __init__(
         self,
-        message: Optional[str] = None
+        message: None | str = None
     ) -> None:
         """
         Initialize the validator with an optional custom message.
-        
-        Args:
-            message: Custom error message to use instead of default
         """
         self.message = message
 
@@ -64,22 +45,16 @@ class OnlyDigitsValidator:
     def message(self) -> str:
         """
         Get the current error message.
-        
-        Returns:
-            str: The error message to display on validation failure
         """
         return self.__message
 
     @message.setter
     def message(
         self,
-        value: Optional[str]
+        value: None | str = None
     ) -> None:
         """
         Set the error message, using default if None is provided.
-        
-        Args:
-            value: Custom error message or None for default
         """
         if value is None:
             self.__message = self.DEFAULT_MESSAGE
@@ -92,14 +67,14 @@ class OnlyDigitsValidator:
     ) -> None:
         """
         Validate that the value contains only digits.
-        
+
         This method is called by Django's validation system when
         the field is validated. It checks if the string contains
         only numeric characters.
-        
+
         Args:
             value: The string value to validate
-            
+
         Raises:
             ValidationError: If the value contains non-digit characters
         """
@@ -113,30 +88,20 @@ class OnlyDigitsValidator:
 class NameValidator:
     """
     Validator that ensures a field contains only valid name characters.
-    
+
     This validator is used for name fields (first name, last name, city, country)
-    and allows letters, hyphens, apostrophes, and spaces. It normalizes
-    different types of apostrophes to ensure consistent validation.
-    
-    Usage:
-        first_name = models.CharField(
-            validators=[NameValidator()],
-            max_length=50
-        )
+    and allows letters, hyphens, apostrophes, and spaces. 
     """
-    
+
     # Default error message for this validator
     DEFAULT_MESSAGE: str = 'This field can contain only letters, hyphens, apostrophes and spaces.'
 
     def __init__(
         self,
-        message: Optional[str] = None
+        message: None | str = None
     ) -> None:
         """
         Initialize the validator with an optional custom message.
-        
-        Args:
-            message: Custom error message to use instead of default
         """
         self.message = message
 
@@ -144,22 +109,16 @@ class NameValidator:
     def message(self) -> str:
         """
         Get the current error message.
-        
-        Returns:
-            str: The error message to display on validation failure
         """
         return self.__message
 
     @message.setter
     def message(
         self,
-        value: Optional[str]
+        value: None | str
     ) -> None:
         """
         Set the error message, using default if None is provided.
-        
-        Args:
-            value: Custom error message or None for default
         """
         if value is None:
             self.__message = self.DEFAULT_MESSAGE
@@ -172,21 +131,20 @@ class NameValidator:
     ) -> None:
         """
         Validate that the value contains only valid name characters.
-        
+
         This method normalizes different types of apostrophes and then
         checks each character to ensure it's a letter, hyphen, apostrophe,
         or space.
-        
+
         Args:
             value: The string value to validate
-            
+
         Raises:
             ValidationError: If the value contains invalid characters
         """
         # Normalize different types of apostrophes to standard apostrophe
-        # This handles smart quotes and other apostrophe variants
         normalized: str = value.replace("'", "'")
-        
+
         # Check each character in the normalized string
         for char in normalized:
             # Allow letters, apostrophes, hyphens, and spaces
@@ -202,28 +160,21 @@ class NameValidator:
 class UsernameValidator:
     """
     Validator that ensures a username follows proper format rules.
-    
+
     This validator ensures usernames are 3-30 characters long and contain
-    only letters, numbers, and underscores. This provides a consistent
-    and safe username format across the application.
-    
-    Usage:
-        username = models.CharField(
-            validators=[UsernameValidator()],
-            max_length=30
-        )
+    only letters, numbers, and underscores. 
     """
-    
+
     # Default error message for this validator
     DEFAULT_MESSAGE: str = 'Username must be 3-30 characters long and contain only letters, numbers, and underscores.'
 
     def __init__(
         self,
-        message: Optional[str] = None
+        message: str | None = None
     ) -> None:
         """
         Initialize the validator with an optional custom message.
-        
+
         Args:
             message: Custom error message to use instead of default
         """
@@ -233,7 +184,7 @@ class UsernameValidator:
     def message(self) -> str:
         """
         Get the current error message.
-        
+
         Returns:
             str: The error message to display on validation failure
         """
@@ -242,11 +193,11 @@ class UsernameValidator:
     @message.setter
     def message(
         self,
-        value: Optional[str]
+        value: None | str = None
     ) -> None:
         """
         Set the error message, using default if None is provided.
-        
+
         Args:
             value: Custom error message or None for default
         """
@@ -261,24 +212,17 @@ class UsernameValidator:
     ) -> None:
         """
         Validate that the value follows username format rules.
-        
+
         This method uses a regular expression to validate the username format:
         - 3-30 characters long
         - Only letters (a-z, A-Z), numbers (0-9), and underscores (_)
-        - Must match the entire string (^ and $ anchors)
-        
+
         Args:
             value: The string value to validate
-            
+
         Raises:
             ValidationError: If the value doesn't match username format
         """
-        # Regular expression pattern for username validation
-        # ^[A-Za-z0-9_]{3,30}$ means:
-        # ^ - Start of string
-        # [A-Za-z0-9_] - Letters, numbers, and underscores only
-        # {3,30} - Between 3 and 30 characters
-        # $ - End of string
         if not re.match(r'^[A-Za-z0-9_]{3,30}$', value):
             raise ValidationError(self.__message)
 
@@ -287,31 +231,22 @@ class UsernameValidator:
 class EmailOrUsernameValidator:
     """
     Validator that accepts either a valid email address or username.
-    
+
     This validator is used for login fields where users can enter either
     their email address or username. It first tries to validate as an email,
     then as a username if email validation fails.
-    
-    This provides flexibility for users who might prefer to log in with
-    either their email or username.
-    
-    Usage:
-        login_field = models.CharField(
-            validators=[EmailOrUsernameValidator()],
-            max_length=254
-        )
     """
-    
+
     # Default error message for this validator
     DEFAULT_MESSAGE: str = 'Please enter a valid email address or username.'
 
     def __init__(
         self,
-        message: Optional[str] = None
+        message: str | None = None
     ) -> None:
         """
         Initialize the validator with an optional custom message.
-        
+
         Args:
             message: Custom error message to use instead of default
         """
@@ -321,7 +256,7 @@ class EmailOrUsernameValidator:
     def message(self) -> str:
         """
         Get the current error message.
-        
+
         Returns:
             str: The error message to display on validation failure
         """
@@ -330,11 +265,11 @@ class EmailOrUsernameValidator:
     @message.setter
     def message(
         self,
-        value: Optional[str]
+        value: str | None = None
     ) -> None:
         """
         Set the error message, using default if None is provided.
-        
+
         Args:
             value: Custom error message or None for default
         """
@@ -349,21 +284,21 @@ class EmailOrUsernameValidator:
     ) -> None:
         """
         Validate that the value is either a valid email or username.
-        
+
         This method first tries to validate the value as an email address
         using Django's built-in EmailValidator. If that fails, it tries
         to validate as a username using the same regex pattern as UsernameValidator.
-        
+
         Args:
             value: The string value to validate
-            
+
         Raises:
             ValidationError: If the value is neither a valid email nor username
         """
         # Create Django's email validator instance
         django_email_validator: DjangoEmailValidator = DjangoEmailValidator()
         is_email: bool = False
-        
+
         # Try to validate as email first
         try:
             django_email_validator(value)
@@ -371,10 +306,10 @@ class EmailOrUsernameValidator:
         except ValidationError:
             # If email validation fails, continue to username validation
             pass
-        
+
         # Try to validate as username using the same pattern as UsernameValidator
         is_username: Any = re.match(r'^[A-Za-z0-9_]{3,30}$', value)
-        
+
         # If neither email nor username validation passes, raise error
         if not (is_email or is_username):
             raise ValidationError(self.__message)

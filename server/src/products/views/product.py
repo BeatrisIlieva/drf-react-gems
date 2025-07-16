@@ -1,3 +1,14 @@
+"""
+This module contains views for product listing, detail, attribute retrieval, and review management.
+
+It provides:
+- List and detail views for each product type (Earwear, Neckwear, Wristwear, Fingerwear)
+- Attribute views for product properties like color, metal, stone, and collection
+- Both synchronous and asynchronous endpoints for attribute retrieval
+- Custom permission for reviewer access to all product reviews
+- Review management endpoints for products
+"""
+
 from typing import Type
 from src.products.models.product import (
     Color,
@@ -101,81 +112,22 @@ class StoneRetrieveView(BaseAttributeView):
     serializer_class = StoneSerializer
 
 
-# =============================================================================
-# ASYNC ATTRIBUTE VIEWS FOR FILTERS
-# =============================================================================
-# These async views provide improved performance for concurrent filter requests.
-# They are designed to handle multiple simultaneous requests for filter attributes
-# and can be used alongside the synchronous views or as replacements.
-
 class AsyncCollectionRetrieveView(AsyncBaseAttributeView):
-    """
-    Asynchronous view for retrieving collection filter data.
-    
-    This view provides async support for collection filtering, allowing
-    for better performance when multiple filter requests are made
-    simultaneously. It's particularly useful when the frontend needs
-    to fetch multiple filter attributes at once.
-    
-    Usage:
-    - Endpoint: /api/products/collections/async/
-    - Query params: category (optional)
-    - Returns: Collection data with counts for filtering
-    """
     model: Type[Collection] = Collection
     serializer_class = CollectionSerializer
 
 
 class AsyncColorRetrieveView(AsyncBaseAttributeView):
-    """
-    Asynchronous view for retrieving color filter data.
-    
-    This view provides async support for color filtering, enabling
-    concurrent requests for color attribute data. It's optimized
-    for scenarios where multiple filter attributes are requested
-    simultaneously.
-    
-    Usage:
-    - Endpoint: /api/products/colors/async/
-    - Query params: category (optional)
-    - Returns: Color data with counts for filtering
-    """
     model: Type[Color] = Color
     serializer_class = ColorSerializer
 
 
 class AsyncMetalRetrieveView(AsyncBaseAttributeView):
-    """
-    Asynchronous view for retrieving metal filter data.
-    
-    This view provides async support for metal filtering, allowing
-    for improved performance when multiple filter requests are
-    processed concurrently. It's designed to handle high-traffic
-    scenarios efficiently.
-    
-    Usage:
-    - Endpoint: /api/products/metals/async/
-    - Query params: category (optional)
-    - Returns: Metal data with counts for filtering
-    """
     model: Type[Metal] = Metal
     serializer_class = MetalSerializer
 
 
 class AsyncStoneRetrieveView(AsyncBaseAttributeView):
-    """
-    Asynchronous view for retrieving stone filter data.
-    
-    This view provides async support for stone filtering, enabling
-    concurrent processing of stone attribute requests. It's optimized
-    for scenarios where multiple filter attributes need to be
-    retrieved simultaneously.
-    
-    Usage:
-    - Endpoint: /api/products/stones/async/
-    - Query params: category (optional)
-    - Returns: Stone data with counts for filtering
-    """
     model: Type[Stone] = Stone
     serializer_class = StoneSerializer
 
@@ -184,8 +136,10 @@ class IsReviewer(BasePermission):
     """
     Allows access only to users with the products.approve_review permission.
     """
+
     def has_permission(self, request, view):
         return request.user and request.user.has_perm('products.approve_review')
+
 
 class ProductAllReviewsView(APIView):
     permission_classes = [IsAuthenticated, IsReviewer]
@@ -208,6 +162,7 @@ class ProductAllReviewsView(APIView):
             return Response({'detail': 'Product not found.'}, status=status.HTTP_404_NOT_FOUND)
         # Get all reviews for this product
         content_type = ContentType.objects.get_for_model(model)
-        reviews = Review.objects.filter(content_type=content_type, object_id=product.id).order_by('-created_at')
+        reviews = Review.objects.filter(
+            content_type=content_type, object_id=product.id).order_by('-created_at')
         serializer = ReviewSerializer(reviews, many=True)
         return Response({'reviews': serializer.data})

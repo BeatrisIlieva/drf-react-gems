@@ -1,29 +1,41 @@
-# views.py for the Orders app
-# This file defines the API endpoints for order management using Django REST Framework (DRF).
-# Every line is documented for beginners to understand the purpose and reasoning behind each implementation.
+"""
+This module defines the API views for order management.
+
+Key features:
+- Allows users to view their orders (list, retrieve)
+- Provides a custom endpoint to create orders from the shopping bag using a POST request
+- Ensures all order creation steps are performed atomically (all succeed or all fail)
+"""
 
 from typing import Any
-from django.db import transaction  # For atomic database operations (all-or-nothing)
+from django.db import transaction
 
-from rest_framework import viewsets, status  # DRF base classes and status codes
-from rest_framework.decorators import action  # For custom actions on viewsets
-from rest_framework.response import Response  # For API responses
-from rest_framework.exceptions import ValidationError  # For API error handling
-from rest_framework.request import Request  # Type hint for requests
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework.exceptions import ValidationError
+from rest_framework.request import Request
 
-from src.orders.serializers import OrderCreateSerializer, OrderGroupSerializer  # Serializers for order logic
-from src.orders.services import OrderService  # Business logic for orders
-from src.orders.constants import OrderStatusMessages  # User-facing status messages
+from src.orders.serializers import OrderCreateSerializer, OrderGroupSerializer
+from src.orders.services import OrderService
+from src.orders.constants import OrderStatusMessages
 
 
 class OrderViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    API ViewSet for managing orders.
+    ViewSet for user order management.
+
+    Inherits from DRF's ReadOnlyModelViewSet, which provides only the 'list' and 'retrieve' actions (GET requests).
+    This means users can view their orders but cannot create, update, or delete them through the standard API endpoints.
+    This is appropriate because order creation is handled by a custom workflow (create_from_shopping_bag),
+    and we want to prevent direct modification of orders via the API.
+
     - Allows users to view their orders (list, retrieve)
     - Provides a custom action to create orders from the shopping bag
-    - Uses DRF's ViewSet for clean, RESTful API design
+    - Uses @action to add a custom endpoint (not standard CRUD)
+    - Uses @transaction.atomic to ensure all DB changes for order creation are all-or-nothing
     """
-    serializer_class = OrderGroupSerializer  # Default serializer for responses
+    serializer_class = OrderGroupSerializer
 
     def get_queryset(
         self
@@ -55,11 +67,20 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
         methods=['post'],  # Only POST requests are allowed
         url_path='create-from-bag'  # URL will be /orders/create-from-bag/
     )
-    @transaction.atomic  # Ensures all DB operations succeed or fail together (no partial orders)
+    # Ensures all DB operations succeed or fail together (no partial orders)
+    @transaction.atomic
     def create_from_shopping_bag(
         self,
         request: Request
     ) -> Response:
+        """
+        Custom endpoint to create an order from the user's shopping bag.
+
+        - Uses @action to expose this as a POST endpoint at /orders/create-from-bag/
+        - Uses @transaction.atomic to guarantee that all database changes (order creation, inventory updates, etc.)
+          are performed as a single transaction. If any step fails, all changes are rolled back, preventing partial orders.
+        - Handles validation, order processing, and returns a summary of the created order group.
+        """
         # Handles order creation from the user's shopping bag
         serializer = OrderCreateSerializer(data=request.data)
         if serializer.is_valid():

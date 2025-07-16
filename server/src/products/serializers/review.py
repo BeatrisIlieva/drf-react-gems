@@ -1,3 +1,13 @@
+"""
+This module contains the serializer for product reviews.
+
+It provides:
+- Serialization of review fields, including user info and photo URL
+- Logic to display the user's full name and profile photo
+- Validation for review comments and ratings
+- Used to serialize and validate review data for product APIs
+"""
+
 from typing import Any, Optional
 from django.contrib.contenttypes.models import ContentType
 

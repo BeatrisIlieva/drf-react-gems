@@ -1,7 +1,3 @@
-# Shopping Bag Serializers
-# This module contains serializers for the ShoppingBag model.
-# Serializers convert model instances to JSON and vice versa for API communication.
-
 from django.contrib.contenttypes.models import ContentType
 
 from rest_framework import serializers
@@ -26,7 +22,7 @@ class ShoppingBagSerializer(serializers.ModelSerializer):
     """
     
     # SlugRelatedField for content_type allows us to use the model name as a string
-    # instead of the numeric ID. This makes the API more user-friendly and readable.
+    # instead of the numeric ID.
     # The 'model' field returns the model name (e.g., 'earwear', 'necklace')
     content_type: serializers.SlugRelatedField = serializers.SlugRelatedField(
         slug_field='model',
@@ -75,12 +71,6 @@ class ShoppingBagSerializer(serializers.ModelSerializer):
         
         This method uses the InventoryMixin to retrieve standardized product information
         regardless of the specific product type (earwear, necklace, etc.).
-        
-        Args:
-            obj: The ShoppingBag instance
-            
-        Returns:
-            Dictionary containing product information (name, price, etc.)
         """
         return InventoryMixin.get_product_info(obj)
 
@@ -90,11 +80,5 @@ class ShoppingBagSerializer(serializers.ModelSerializer):
         
         This method calculates the total cost by multiplying the item's price
         by the quantity in the shopping bag.
-        
-        Args:
-            obj: The ShoppingBag instance
-            
-        Returns:
-            The total price for this item (price * quantity)
         """
         return InventoryMixin.get_total_price_per_product(obj)

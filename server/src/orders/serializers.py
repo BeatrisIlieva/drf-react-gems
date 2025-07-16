@@ -1,21 +1,16 @@
-# serializers.py for the Orders app
-# This file defines serializers for the Order model and related business logic.
-# Every line is documented for beginners to understand the purpose and reasoning behind each implementation.
-
 from typing import Any, Dict, Optional
-from django.contrib.contenttypes.models import ContentType  # Used for generic relations to any model
+from django.contrib.contenttypes.models import ContentType
 
-from rest_framework import serializers  # DRF's base for serialization and validation
+from rest_framework import serializers
 
-from src.orders.constants import CardFieldLengths  # Card field length constraints for validation
-from src.orders.models import Order  # The Order model
-from src.orders.services import OrderService, PaymentValidationService  # Business logic for orders and payment
-from src.common.mixins import InventoryMixin  # Mixin for product/inventory info
+from src.orders.constants import CardFieldLengths
+from src.orders.models import Order
+from src.orders.services import OrderService, PaymentValidationService
+from src.common.mixins import InventoryMixin
 
 
 class OrderSerializer(serializers.ModelSerializer):
     """
-    Serializer for the Order model.
     Adds extra fields and methods to provide detailed product and order info in API responses.
     """
     # Serializes the content_type as a string (e.g., 'earwear', 'neckwear') instead of a numeric ID
@@ -37,7 +32,6 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        # Fields to include in the serialized output
         fields: list[str] = [
             'id',
             'user',
@@ -53,7 +47,6 @@ class OrderSerializer(serializers.ModelSerializer):
             'product_info',
             'total_price',
         ]
-        # Fields that are read-only (cannot be set by the client)
         read_only_fields: list[str] = [
             'id',
             'created_at',
@@ -118,10 +111,14 @@ class OrderGroupSerializer(serializers.Serializer):
     """
     order_group: serializers.UUIDField = serializers.UUIDField(read_only=True)
     status: serializers.CharField = serializers.CharField(read_only=True)
-    status_display: serializers.CharField = serializers.CharField(read_only=True)
-    created_at: serializers.DateTimeField = serializers.DateTimeField(read_only=True)
-    total_price: serializers.FloatField = serializers.FloatField(read_only=True)
-    total_items: serializers.IntegerField = serializers.IntegerField(read_only=True)
+    status_display: serializers.CharField = serializers.CharField(
+        read_only=True)
+    created_at: serializers.DateTimeField = serializers.DateTimeField(
+        read_only=True)
+    total_price: serializers.FloatField = serializers.FloatField(
+        read_only=True)
+    total_items: serializers.IntegerField = serializers.IntegerField(
+        read_only=True)
     products: OrderSerializer = OrderSerializer(many=True, read_only=True)
 
     def to_representation(
@@ -129,7 +126,6 @@ class OrderGroupSerializer(serializers.Serializer):
         instance: Any
     ) -> Dict[str, Any]:
         # Customizes the output format for grouped orders
-        # If instance is a dict with 'orders', aggregate info for the group
         if isinstance(instance, dict) and 'orders' in instance:
             orders = instance['orders']
             if not orders:

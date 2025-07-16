@@ -1,3 +1,13 @@
+"""
+This module contains concrete serializers for each product type and related attributes.
+
+It provides:
+- List and detail serializers for each product type (Earwear, Neckwear, Wristwear, Fingerwear)
+- Attribute serializers for product properties like color, metal, stone, and collection
+- All serializers are based on shared base serializers for consistency and reuse
+- Used for product list/detail API endpoints and for serializing product attributes
+"""
+
 from typing import Type
 from src.products.models.product import (
     Color,

@@ -1,22 +1,18 @@
-# services.py for the Orders app
-# This file contains business logic for payment validation and order processing.
-# Every line is documented for beginners to understand the purpose and reasoning behind each implementation.
+from django.db import transaction
+from django.db.models import QuerySet
+from django.contrib.contenttypes.models import ContentType
 
-from django.db import transaction  # For atomic database operations (all-or-nothing)
-from django.db.models import QuerySet  # Type hint for querysets
-from django.contrib.contenttypes.models import ContentType  # For generic relations to any model
-
-from rest_framework.exceptions import ValidationError, NotFound  # For API error handling
+from rest_framework.exceptions import ValidationError, NotFound
 
 from typing import Dict, Any, List
-from datetime import datetime  # For date/time validation
-import re  # For regex-based validation
-import uuid  # For generating unique order group IDs
+from datetime import datetime
+import re
+import uuid
 
-from src.orders.models import Order  # The Order model
-from src.shopping_bags.models import ShoppingBag  # Shopping bag model for cart functionality
-from src.common.services import UserIdentificationService  # Service for user identification
-from src.orders.constants import CardErrorMessages, CardRegexPatterns  # Error messages and regex patterns for card validation
+from src.orders.models import Order
+from src.shopping_bags.models import ShoppingBag
+from src.common.services import UserIdentificationService
+from src.orders.constants import CardErrorMessages, CardRegexPatterns
 
 
 class PaymentValidationService:
@@ -138,7 +134,8 @@ class OrderService:
             raise NotFound('Product not found')
 
     @staticmethod
-    @transaction.atomic  # Ensures all DB operations succeed or fail together (no partial orders)
+    # Ensures all DB operations succeed or fail together (no partial orders)
+    @transaction.atomic
     def process_order_from_shopping_bag(
         user: Any,
         payment_data: Dict[str, str]

@@ -1,3 +1,12 @@
+"""
+This module contains the serializer for inventory items related to products.
+
+It provides:
+- Serialization of inventory fields such as size, quantity, and price
+- Logic to expose content type and object ID for generic relations (so inventory can be linked to different product types)
+- Used to serialize inventory data for product APIs
+"""
+
 from typing import Any
 from django.contrib.contenttypes.models import ContentType
 

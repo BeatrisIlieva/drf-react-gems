@@ -17,49 +17,37 @@ from src.common.permissions import IsReviewer
 
 class ReviewViewSet(viewsets.ModelViewSet):
     """
-    ViewSet for managing product reviews.
-    
     This ViewSet provides CRUD operations for reviews with role-based access control.
     Regular users can only see and manage their own approved reviews, while
     reviewers can see all reviews and manage approval status.
-    
-    Key Features:
-    - Role-based review visibility (regular users vs reviewers)
-    - Review approval system for content moderation
-    - User-specific review management
-    - Proper error handling and validation
     """
-    
+
     permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
         """
         Return appropriate serializer based on user permissions.
-        
+
         This method determines which serializer to use based on the user's
         permissions. Reviewers get the management serializer with approval
         fields, while regular users get the standard serializer.
-        
-        Returns:
-            Serializer class appropriate for the user's permissions
         """
+
         # Check if user is a reviewer and this is a reviewer-specific action
-        if (self.request.user.has_perm('products.approve_review') and 
-            self.action in ['approve', 'unapprove', 'pending']):
+        if (self.request.user.has_perm('products.approve_review') and
+                self.action in ['approve', 'unapprove', 'pending']):
             return ReviewManagementSerializer
         return ReviewSerializer
 
     def get_queryset(self) -> Any:
         """
         Get filtered queryset based on user permissions.
-        
+
         This method returns different querysets based on user permissions:
         - Regular users: Only their own reviews
         - Reviewers: All reviews (approved and unapproved)
-        
-        Returns:
-            QuerySet filtered by user permissions
         """
+
         # Check if user is a reviewer
         if self.request.user.has_perm('products.approve_review'):
             # Reviewers can see all reviews
@@ -83,17 +71,14 @@ class ReviewViewSet(viewsets.ModelViewSet):
     def create(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         """
         Create a new review.
-        
+
         Regular users can create reviews, but they start as unapproved.
         Reviewers can create reviews and set approval status.
-        
+
         Args:
             request: The HTTP request object
             *args: Additional positional arguments
             **kwargs: Additional keyword arguments
-            
-        Returns:
-            Response with created review data
         """
         try:
             serializer = self.get_serializer(data=request.data)
@@ -101,7 +86,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
             # Create the review with user
             review = serializer.save(user=request.user)
-            
+
             response_serializer = self.get_serializer(review)
 
             return Response(response_serializer.data, status=status.HTTP_201_CREATED)
@@ -112,37 +97,27 @@ class ReviewViewSet(viewsets.ModelViewSet):
     def update(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         """
         Update an existing review.
-        
+
         Regular users can only update their own reviews.
         Reviewers can update any review and change approval status.
-        
-        Args:
-            request: The HTTP request object
-            *args: Additional positional arguments
-            **kwargs: Additional keyword arguments
-            
-        Returns:
-            Response with updated review data
         """
+
         return super().update(request, *args, **kwargs)
 
     def destroy(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         """
         Delete a review.
-        
+
         Regular users can only delete their own reviews.
         Reviewers can delete any review.
-        
-        Args:
-            request: The HTTP request object
-            *args: Additional positional arguments
-            **kwargs: Additional keyword arguments
-            
-        Returns:
-            Response indicating successful deletion
         """
         return super().destroy(request, *args, **kwargs)
 
+    # The @action decorator is used here to add a custom endpoint to the ViewSet.
+    # Standard CRUD actions (list, retrieve, create, update, delete) do not cover the use case of fetching
+    # the current user's review for a specific product (by content type and object ID).
+    # @action allows us to define a flexible, RESTful, and organized custom route for this special workflow.
+    # This keeps the API clean and groups related logic together in the ViewSet.
     @action(
         detail=False,
         methods=['get'],
@@ -154,16 +129,32 @@ class ReviewViewSet(viewsets.ModelViewSet):
         content_type_name: Optional[str] = None,
         object_id: Optional[str] = None
     ) -> Response:
+        """
+        Custom action to retrieve the current user's review for a specific product.
+
+        - Exposed as a GET endpoint at /user-review/<content_type_name>/<object_id>/
+        - content_type_name: The model name of the product type (e.g., 'earwear', 'neckwear')
+        - object_id: The primary key of the product instance
+
+        Workflow:
+        1. Validates the content type and object ID from the URL.
+        2. Looks up the review for the current user, product type, and product ID.
+        3. If found, returns the serialized review data.
+        4. If not found, returns a 404 error with a helpful message.
+        """
         try:
+            # Get the ContentType object for the given model name (e.g., 'earwear')
             content_type = ContentType.objects.get(model=content_type_name)
             object_id_int = int(object_id) if object_id is not None else None
         except (ContentType.DoesNotExist, ValueError):
+            # Invalid content type or object ID
             return Response(
                 {'error': ReviewErrorMessages.ERROR_INVALID_CONTENT_TYPE_OR_ID},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
         try:
+            # Look up the review for the current user and product
             review = Review.objects.get(
                 user=request.user,
                 content_type=content_type,
@@ -173,6 +164,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         except Review.DoesNotExist:
+            # No review found for this user and product
             return Response(
                 {'error': ReviewErrorMessages.ERROR_REVIEW_NOT_FOUND},
                 status=status.HTTP_404_NOT_FOUND
@@ -182,23 +174,17 @@ class ReviewViewSet(viewsets.ModelViewSet):
     def approve(self, request: Request, pk: Optional[int] = None) -> Response:
         """
         Approve a review (reviewers only).
-        
+
         This action allows reviewers to approve reviews, making them
         visible to regular users. Only users with reviewer permissions
         can access this endpoint.
-        
-        Args:
-            request: The HTTP request object
-            pk: The primary key of the review to approve
-            
-        Returns:
-            Response indicating successful approval
+
         """
         try:
             review = self.get_object()
             review.approved = True
             review.save()
-            
+
             return Response(
                 {'message': 'Review approved successfully'},
                 status=status.HTTP_200_OK
@@ -213,23 +199,16 @@ class ReviewViewSet(viewsets.ModelViewSet):
     def unapprove(self, request: Request, pk: Optional[int] = None) -> Response:
         """
         Unapprove a review (reviewers only).
-        
+
         This action allows reviewers to unapprove reviews, making them
         invisible to regular users. Only users with reviewer permissions
         can access this endpoint.
-        
-        Args:
-            request: The HTTP request object
-            pk: The primary key of the review to unapprove
-            
-        Returns:
-            Response indicating successful unapproval
         """
         try:
             review = self.get_object()
             review.approved = False
             review.save()
-            
+
             return Response(
                 {'message': 'Review unapproved successfully'},
                 status=status.HTTP_200_OK
@@ -244,15 +223,9 @@ class ReviewViewSet(viewsets.ModelViewSet):
     def pending(self, request: Request) -> Response:
         """
         Get all pending (unapproved) reviews (reviewers only).
-        
+
         This action returns all reviews that haven't been approved yet.
         Only users with reviewer permissions can access this endpoint.
-        
-        Args:
-            request: The HTTP request object
-            
-        Returns:
-            Response with list of pending reviews
         """
         pending_reviews = Review.objects.filter(approved=False).select_related(
             'user',
@@ -260,6 +233,6 @@ class ReviewViewSet(viewsets.ModelViewSet):
             'user__userprofile',
             'user__userphoto'
         )
-        
+
         serializer = ReviewManagementSerializer(pending_reviews, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

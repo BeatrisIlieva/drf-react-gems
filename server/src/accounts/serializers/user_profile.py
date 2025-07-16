@@ -7,15 +7,8 @@ from src.accounts.models.user_profile import UserProfile
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields: list[str] = [
-            'first_name',
-            'last_name',
-            'phone_number',
-            'apartment',
-            'country',
-            'city',
-            'street_address',
-            'zip_code',
+        exclude: list[str] = [
+            'user'
         ]
 
     def update(

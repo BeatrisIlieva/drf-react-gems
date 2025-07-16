@@ -9,6 +9,7 @@ from src.accounts.serializers.user_photo import PhotoSerializer
 
 class PhotoUploadView(RetrieveUpdateDestroyAPIView):
     serializer_class = PhotoSerializer
+    # These parsers allow the API to accept file uploads (e.g., images)
     parser_classes = (MultiPartParser, FormParser)
 
     def get_object(
