@@ -26,7 +26,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   [Admin Groups](#admin-groups)
 -   [Exception Handling and Data Validation](#exception-handling-and-data-validation)
 
-### 2. Bonus Features (15% Bonus)
+### 2. Bonus Features
 
 -   [Testing Implementation](#testing-implementation)
 -   [Asynchronous Views](#asynchronous-views)
@@ -107,6 +107,8 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   Product review form (`server/src/products/serializers/base.py`)
 -   Delivery information form (`client/src/components/pages/checkout/Checkout.jsx`)
 -   Payment form (`client/src/components/pages/payment/Payment.jsx`)
+
+<p align="right" dir="auto"><a href="#django-framework-implementation">Back To Top</a></p>
 
 ### Database Service
 
