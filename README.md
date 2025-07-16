@@ -20,10 +20,6 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
   &nbsp;
 </p>
 
-
-
-
-
 ## 📋 Table of Contents
 
 ### 1. General Requirements
@@ -54,6 +50,11 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   [User Interface](#user-interface)
 -   [User Experience](#user-experience)
 -   [Source Control System](#source-control-system)
+
+### 4. Quick Start
+
+-   [Installation](#installation)
+-   [Database Population](#database-population)
 
 ---
 
@@ -382,54 +383,103 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 
 ### Installation
 
-1. **Clone and setup**
+#### 1. Clone and setup
 
+```bash
+git clone https://github.com/BeatrisIlieva/drf-react-gems.git
+cd drf-react-gems
+```
+
+---
+
+#### 2. Backend environment variables
+
+-   Copy `.env.example` to `.env` in the `server/` directory:
     ```bash
-    git clone https://github.com/BeatrisIlieva/drf-react-gems.git
-    cd drf-react-gems
+    cp server/.env.example server/.env
     ```
+-   Edit `server/.env` and set your own secret key, database credentials, and Cloudinary credentials.
 
-2. **Backend setup**
+**Example `server/.env.example`:**
 
+```env
+# Django settings
+SECRET_KEY=your-django-secret-key
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1,[::1],testserver
+
+# Database settings
+DB_NAME=django_react_gems_db
+DB_USER=postgres
+DB_PASSWORD=your-db-password
+DB_HOST=127.0.0.1
+DB_PORT=5432
+
+# Cloudinary settings
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+```
+
+---
+
+#### 3. Backend setup
+
+```bash
+cd server
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+# Create PostgreSQL database
+createdb drf_react_gems_db
+
+# Run migrations
+python manage.py migrate
+
+# Populate database with products, reviews, and roles
+python manage.py setup_database
+
+# Start the backend server
+python manage.py runserver
+```
+
+---
+
+#### 4. Frontend environment variables
+
+-   Copy `.env.example` to `.env.development` in the `client/` directory:
     ```bash
-    cd server
-    python3 -m venv .venv
-    source .venv/bin/activate
-    pip install -r requirements.txt
-
-    # Create PostgreSQL database
-    createdb drf_react_gems_db
-
-    # Run migrations
-    python manage.py migrate
-
-    # Populate database with products, reviews, and roles
-    python manage.py setup_database
-
-    python manage.py runserver
+    cp client/.env.example client/.env.development
     ```
+-   Edit `client/.env.development` and set your backend server URL.
 
-3. **Frontend setup**
-    ```bash
-    cd ../client
-    npm install
-    npm start
-    ```
+**Example `client/.env.example`:**
 
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+```env
+VITE_APP_SERVER_URL=http://localhost:8000  # (will be replaced with your deployed server URL)
+```
+
+---
+
+#### 5. Frontend setup
+
+```bash
+cd ../client
+npm install
+npm start
+```
 
 ### Database Population
 
-The project includes a setup command that creates:
+The `python manage.py setup_database` command (run during installation) will:
 
--   **Products**: All jewelry items with categories, collections, colors, metals, stones
--   **Reviews**: Customer reviews with ratings and comments
--   **Admin Users**: 2 different admin roles with specific permissions
--   **Superuser**: Full system access
+-   Create all jewelry products with categories, collections, colors, metals, and stones
+-   Add customer reviews with ratings and comments
+-   Create admin users with different roles and permissions
+-   Create a superuser with full system access
 
-**Command**: `python manage.py setup_database`
-
-**Created Admin Users**:
+**Created Admin Users:**
 
 -   Super User: `super_user@mail.com` | `!1Aabb`
 -   Inventory User: `inventory_user@mail.com` | `!1Aabb`
