@@ -1,11 +1,11 @@
-{
-    "reportAttributeAccessIssue": false,
-    "typeCheckingMode": "off",
-    "useLibraryCodeForTypes": true,
-    "reportMissingImports": false,
-    "reportMissingTypeStubs": false,
-    "reportUnusedImport": false,
-    "reportUnusedClass": false,
-    "reportUnusedFunction": false,
-    "reportUnusedVariable": false
-} 
+// {
+//     "reportAttributeAccessIssue": false,
+//     "typeCheckingMode": "off",
+//     "useLibraryCodeForTypes": true,
+//     "reportMissingImports": false,
+//     "reportMissingTypeStubs": false,
+//     "reportUnusedImport": false,
+//     "reportUnusedClass": false,
+//     "reportUnusedFunction": false,
+//     "reportUnusedVariable": false
+// } 
