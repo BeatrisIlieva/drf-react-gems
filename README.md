@@ -11,6 +11,18 @@
 
 A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Features user authentication, product management, shopping cart functionality, wishlist system, and secure payment processing.
 
+<div align="center">
+  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.45.11_e0m7vo.png" width="250" alt="Screenshot 1" />
+  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.50.53_opvgpj.png" width="250" alt="Screenshot 2" />
+  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.54.43_cfyql5.png" width="250" alt="Screenshot 3" />
+  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.47.57_wtaozo.png" width="250" alt="Screenshot 4" />
+  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676883/Screenshot_2025-07-15_at_21.04.39_mdvm8x.png" width="250" alt="Screenshot 5" />
+  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.54.43_cfyql5.png" width="250" alt="Screenshot 6" />
+  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676883/Screenshot_2025-07-15_at_21.03.29_kttsez.png" width="250" alt="Screenshot 7" />
+  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676883/Screenshot_2025-07-15_at_21.01.40_dkxf9c.png" width="250" alt="Screenshot 8" />
+</div>
+
+
 ## 📋 Table of Contents
 
 ### 1. General Requirements
@@ -339,6 +351,8 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 -   **Responsive design:** The UI is fully responsive, adapting to different screen sizes and devices.
 
 -   **Component-based architecture:** The frontend is built with reusable, modular React components.
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ### User Experience
 
