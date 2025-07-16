@@ -131,13 +131,19 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 -   Cloudinary: User profile photos are stored in Cloudinary (`server/src/accounts/models/user_photo.py`)
 
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
 ### Frontend Implementation
 
 -   React-based Single Page Application (SPA)
 
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
 ### Web Page Design
 
 -   Custom SCSS modules for component-based styling
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ### Authentication Functionality
 
@@ -149,6 +155,8 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   Logout: UserLogoutView (`server/src/accounts/views/user_credential.py`)
 -   Account deletion: UserDeleteView (`server/src/accounts/views/user_credential.py`)
 
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
 ### Public Part
 
 **Public part is accessible by everyone:**
@@ -159,6 +167,8 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 > Guest users can add items to their shopping bag and wishlist, with each guest’s data isolated using a unique guest ID. All modifications—adding, removing, or updating items—are performed via API requests to the backend, which centrally enforces inventory validation and business rules. The frontend uses quantity information from the backend to prevent users from adding more items than are available or removing more than they have in their bag. When a guest registers or logs in, their shopping bag and wishlist are migrated to their new account, with checks to prevent duplicate items.
 >
 > This approach ensures data integrity, a smooth user experience, and prevents errors related to unavailable inventory.
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ### Private Part
 
@@ -172,6 +182,8 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   **Reviewers** (users in the "reviewer" group with the `products.approve_review` permission) can see all reviews (approved and unapproved) for a product
 -   **Backend**: A dedicated DRF endpoint `/api/products/<category>/<pk>/all-reviews/` returns all reviews for a product, accessible only to reviewers
 -   **Frontend**: The UI conditionally fetches and displays all reviews for reviewers, and only approved reviews for regular users. Approve/unapprove buttons are visible only to reviewers
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ### Customized Admin Site
 
@@ -194,6 +206,8 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   Custom permissions for review moderation
 
 See implementation: (`server/src/products/admin.py`)
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ### Admin Groups
 
@@ -226,6 +240,8 @@ See implementation: (`server/src/products/admin.py`)
 
 -   All admin groups and their associated users are created automatically by a management command (`server/src/accounts/management/commands/create_roles.py`)
 
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
 ### Exception Handling and Data Validation
 
 **Comprehensive exception handling and data validation is implemented:**
@@ -243,12 +259,16 @@ See implementation: (`server/src/products/admin.py`)
 
 ## 2. Bonus Features
 
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
 ### Testing Implementation
 
 **The project includes around 130 automated tests, ensuring robust quality and reliability across all backend features.**
 
 -   Shows 85%+ coverage (`coverage run manage.py test && coverage report`)
 -   Runs all tests (`python manage.py test`)
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ### Asynchronous Views
 
@@ -257,10 +277,14 @@ See implementation: (`server/src/products/admin.py`)
 -   Asynchronous endpoints allow the backend to handle multiple filter and product data requests concurrently, reducing wait times for users.
 -   Implementation example: Async product listing and attribute filtering (`server/src/products/views/base.py`)
 
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
 ### REST API Implementation
 
 -   The backend utilizes DRF API views and serializers to provide all features to the React frontend, rather than using Django’s traditional HTML templates.
 -   All business logic—including authentication, products, shopping bag, wishlist, orders, and reviews—is exposed through RESTful API endpoints.
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ### Django User Extension
 
@@ -280,9 +304,13 @@ See implementation: (`server/src/products/admin.py`)
     Django signals ensure that every new user automatically gets a profile and photo record.  
     (`server/src/accounts/signals.py`)
 
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
 ### Deployment
 
 -   Azure App Service deployment is implemented
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ### Additional Functionality
 
@@ -294,6 +322,8 @@ See implementation: (`server/src/products/admin.py`)
 
 **Design rationale:**
 Dedicated models for each product category (Earwear, Neckwear, etc.) allow the backend to efficiently query and manage each category without filtering a single large product table. This improves performance, keeps the codebase organized, and makes it easy to add category-specific features in the future. `GenericForeignKey` and `GenericRelation` are used to maintain flexible, DRY relationships for inventory and reviews across all categories.
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ## 3. Additional Requirements
 
@@ -313,6 +343,8 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 
 -   **Code quality and readability:**
     All code adheres to PEP 8 (Python) and uses ESLint/Prettier (JavaScript) for consistent formatting and clear naming conventions.
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ### User Interface & Experience
 
@@ -336,6 +368,8 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 -   **Consistent user experience:**  
     All interactive elements, from buttons to forms and popups, follow a unified style and behavior.
 
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
 ---
 
 ### Source Control System
@@ -344,6 +378,8 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 
 -   GitHub repository
 -   Complete project history with 450+ commits over 4 months
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ---
 
@@ -385,6 +421,8 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
     npm start
     ```
 
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
 ### Database Population
 
 The project includes a setup command that creates:
@@ -402,6 +440,10 @@ The project includes a setup command that creates:
 -   Inventory User: `inventory_user@mail.com` | `!1Aabb`
 -   Reviewer User: `reviewer_user@mail.com` | `!1Aabb`
 
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
 ## 📝 License
 
 This project is licensed under the MIT License.
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
