@@ -7,7 +7,7 @@
 [![JWT](https://img.shields.io/badge/JWT%20Authentication-green.svg)](https://jwt.io/)
 [![Azure](https://img.shields.io/badge/Azure%20Deployment-blue.svg)](https://azure.microsoft.com/)
 
-A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Features comprehensive user authentication, product management, shopping cart functionality, wishlist system, and secure payment processing.
+A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Features user authentication, product management, shopping cart functionality, wishlist system, and secure payment processing.
 
 <!-- Place screenshots here -->
 <!-- Example:
@@ -120,7 +120,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 **PostgreSQL database is used as the primary database:**
 
--   Database configuration with PostgreSQL 13+ (`server/src/settings.py`)
+-   Database configuration with PostgreSQL 13+
 
 **Data Normalization:** The database is organized to keep information tidy and avoid repeating the same data in different places. It follows the main rules of database design:
 
@@ -240,16 +240,11 @@ See implementation: (`server/src/products/admin.py`)
     -   Password validation: All password changes and registrations are validated using custom logic to enforce strong password policies. (`server/src/accounts/validators/password.py`)
     -   Payment & order validation: All payment details (card number, expiry, CVV, cardholder name) are strictly validated using regex and business rules before processing orders. (`server/src/orders/services.py`)
     -   Model & serializer validation: All user input is validated at the serializer and model level, ensuring only valid data is saved to the database.
-    -   Comprehensive exception handling: All API endpoints use DRF’s exception handling to return clear, actionable error messages for invalid input, authentication errors, and business logic violations.
 
 -   **Client-side:**
-    -   Real-time form validation: All forms (registration, login, delivery, payment, password update, etc.) provide instant feedback as users type, using custom React hooks and validation helpers. (`client/src/hooks/useForm.js`)
-    -   Password update form: Displays backend errors if the user enters an incorrect current password or tries to reuse their old password, guiding the user to correct the issue. (`client/src/components/pages/accounts/details/password-update-form/PasswordUpdateForm.jsx`)
-    -   Login form: Displays clear error messages if the user enters an incorrect email/username or password, reflecting backend authentication errors.
-    -   Registration form: If a user tries to register with an email that is already in use, the backend error is shown in the form, helping the user resolve the conflict.
-    -   Visual feedback with green/red/blue states: Input fields dynamically change color to indicate validation state (green for valid, red for invalid, blue for focus). (`client/src/styles/forms.scss`)
-    -   Automatic focus on errors: When a form is submitted with errors, the first invalid input is automatically focused for user convenience. (`client/src/hooks/useFocusOnInvalidInput.js`)
-    -   Server-side error integration: Any validation errors returned from the backend are mapped to the correct form fields and displayed to the user in real time. (`client/src/components/reusable/input-field/InputField.jsx`)
+    -   Real-time form validation: All forms (registration, login, delivery, payment, password update, etc.) provide instant feedback as users type, using custom React hooks and validation helpers.
+    -   Visual feedback with green/red/blue states: Input fields dynamically change color to indicate validation state (green for valid, red for invalid, blue for focus).
+    -   Server-side error integration: Any validation errors returned from the backend are mapped to the correct form fields and displayed to the user in real time.
 
 ## 2. Bonus Features
 
@@ -305,62 +300,46 @@ See implementation: (`server/src/products/admin.py`)
 **Design rationale:**
 Dedicated models for each product category (Earwear, Neckwear, etc.) allow the backend to efficiently query and manage each category without filtering a single large product table. This improves performance, keeps the codebase organized, and makes it easy to add category-specific features in the future. `GenericForeignKey` and `GenericRelation` are used to maintain flexible, DRY relationships for inventory and reviews across all categories.
 
-**Key files:**
-
--   Base product and generic relations (`server/src/products/models/base.py`)
--   Inventory model with GenericForeignKey (`server/src/products/models/inventory.py`)
--   Product category models (`server/src/products/models/product.py`)
-
 ## 3. Additional Requirements
 
 ### Object-Oriented Design ✅
 
 -   **Data encapsulation:**
-    Business logic and data validation are encapsulated within dedicated service classes and model managers, such as `ShoppingBagService` (`server/src/shopping_bags/services.py`) and `UserCredentialManager` (`server/src/accounts/managers/user_credential.py`). This ensures that critical operations—like inventory validation, atomic updates, and secure user creation—are only accessible through well-defined interfaces, promoting maintainability and security.
+    Business logic and data validation are encapsulated within dedicated service classes and model managers.
 
 -   **Exception handling:**
-    Error handling is implemented using try-except blocks and DRF exception classes, particularly for authentication and business-critical operations. For example, authentication and registration logic in `UserCredentialViewSet` ([server/src/accounts/views/user_credential.py]) uses structured exception handling to provide clear API error responses. Service classes such as `ShoppingBagService` ([server/src/shopping_bags/services.py]) and `OrderService` ([server/src/orders/services.py]) consistently raise and handle exceptions for validation errors, inventory issues, and transactional integrity. This approach ensures that all errors are managed in a predictable, secure, and user-friendly manner across the backend.
+    Error handling is implemented using try-except blocks and DRF exception classes, particularly for authentication and business-critical operations.
 
 -   **Inheritance, abstraction, and polymorphism:**
-    Product models leverage inheritance and abstract base classes, while polymorphic relationships are managed using Django's GenericForeignKey for maximum flexibility.  
-    (`server/src/products/models/base.py`)
+    Product models leverage inheritance and abstract base classes, while polymorphic relationships are managed using Django's GenericForeignKey.
 
 -   **Cohesion and loose coupling:**
-    Each Django app (accounts, products, orders, shopping_bags, wishlists, common) encapsulates a distinct business domain, promoting strong cohesion and loose coupling across the backend.  
-    (`server/src/`)
+    Each Django app (accounts, products, orders, shopping_bags, wishlists, common) encapsulates a distinct business domain, promoting strong cohesion and loose coupling across the backend.
 
 -   **Code quality and readability:**
-    All code adheres to PEP 8 (Python) and uses ESLint/Prettier (JavaScript) for consistent formatting and clear naming conventions.  
-    (e.g., `createShoppingBagHandler`, `useProductItemContext`)
+    All code adheres to PEP 8 (Python) and uses ESLint/Prettier (JavaScript) for consistent formatting and clear naming conventions.
 
 ### User Interface & Experience ✅
 
 **The project delivers a visually appealing and highly usable interface, with a strong focus on both design consistency and user experience.**
 
 -   **Custom design system:**  
-    All components use a consistent SCSS-based design system, ensuring visual harmony and easy theming.  
-    (`client/src/styles/_variables.scss`)
+    All components use a consistent SCSS-based design system, ensuring visual harmony.
 
 -   **Responsive design:**  
-    The UI is fully responsive, adapting seamlessly to different screen sizes and devices.
+    The UI is fully responsive, adapting to different screen sizes and devices.
 
 -   **Component-based architecture:**  
-    The frontend is built with reusable, modular React components, promoting maintainability and scalability.  
-    (`client/src/components/`)
+    The frontend is built with reusable, modular React components.
 
 -   **Real-time feedback:**  
-    Forms provide instant validation feedback, with clear visual cues for valid, invalid, and focused states.  
-    (`client/src/hooks/useForm.js`, `client/src/styles/forms.scss`)
-
--   **Smooth user flows:**  
-    Features like the mini bag popup, dynamic product filtering, and automatic focus on invalid inputs enhance usability and reduce friction.  
-    (`client/src/components/pages/product-item/main-content/user-action/mini-bag-popup/MiniBagPopup.jsx`)
+    Forms provide instant validation feedback, with clear visual cues for valid, invalid, and focused states.
 
 -   **Accessible and intuitive navigation:**  
-    The application uses clear navigation patterns, accessible controls, and user-friendly error messages.
+    The application uses clear navigation patterns and accessible controls.
 
 -   **Consistent user experience:**  
-    All interactive elements, from buttons to forms, follow a unified style and behavior, ensuring a professional and predictable experience.
+    All interactive elements, from buttons to forms and popups, follow a unified style and behavior.
 
 ---
 
@@ -368,11 +347,8 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 
 **GitHub source control system is used for version control**
 
--   GitHub repository with comprehensive version control
+-   GitHub repository
 -   Complete project history with 450+ commits over 4 months
--   Extensive development history with commits on multiple different days
--   Branch Management: Feature branches, pull requests, and code reviews
--   Collaboration: Team development with proper Git workflow
 
 ---
 
