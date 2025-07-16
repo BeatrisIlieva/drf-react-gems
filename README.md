@@ -1,4 +1,5 @@
 <a name="drf-react-gems"></a>
+
 # 🛍️ DRF React Gems - E-commerce Platform
 
 [![Django](https://img.shields.io/badge/Django-4.2+-green.svg)](https://www.djangoproject.com/)
@@ -66,6 +67,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   [Accounts page](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/accounts/Accounts.jsx)
 
 **The application has 15 independent class-based views:**
+
 -   [BaseProductListView](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
 -   [BaseProductItemView](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
 -   [BaseAttributeView](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
@@ -201,7 +203,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   Readonly and editable fields for reviews
 -   Custom admin methods (e.g., product links)
 -   Custom permissions for review moderation
-  
+
 [See implementation](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/admin.py)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
@@ -235,8 +237,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 **Automated Setup:**
 
-- [All admin groups and their associated users are created automatically by a management command ](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/management/commands/create_roles.py)
-
+-   [All admin groups and their associated users are created automatically by a management command ](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/management/commands/create_roles.py)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -245,6 +246,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 **Comprehensive exception handling and data validation is implemented:**
 
 -   **Server-side:**
+
     -   Password validation: [All password changes and registrations are validated using custom logic to enforce strong password policies.](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/validators/password.py)
     -   Payment & order validation: [All payment details (card number, expiry, CVV, cardholder name) are validated using regex and business rules before processing orders.](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/orders/services.py)
     -   Model & serializer validation: All user input is validated at the serializer and model level, ensuring only valid data is saved to the database.
@@ -285,18 +287,13 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 ### Django User Extension
 
--   **Custom user model:**  
-    Uses email as the primary login identifier, with unique username and additional fields for marketing consent.  
+-   **Custom user model:** Uses email as the primary login identifier, with unique username and additional fields for marketing consent.
 
--   **User profile:**  
-    Stores personal and shipping information in a dedicated profile model linked one-to-one with the user.  
+-   **User profile:** Stores personal and shipping information in a dedicated profile model linked one-to-one with the user.
 
--   **User photo:**  
-    Handles user profile pictures with cloud storage and automatic optimization.  
+-   **User photo:** Handles user profile pictures with cloud storage and automatic optimization.
 
--   **Automatic profile and photo creation:**  
-    [Django signals ensure that every new user automatically gets a profile and photo record.](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/signals.py)
-
+-   **Automatic profile and photo creation:** [Django signals ensure that every new user automatically gets a profile and photo record.](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/signals.py)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -323,44 +320,33 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 
 ### Object-Oriented Design
 
--   **Data encapsulation:**
-    Business logic and data validation are encapsulated within dedicated service classes and model managers.
+-   **Data encapsulation:** Business logic and data validation are encapsulated within dedicated service classes and model managers.
 
--   **Exception handling:**
-    Error handling is implemented using try-except blocks and DRF exception classes, particularly for authentication and business-critical operations.
+-   **Exception handling:** Error handling is implemented using try-except blocks and DRF exception classes, particularly for authentication and business-critical operations.
 
--   **Inheritance, abstraction, and polymorphism:**
-    Product models leverage inheritance and abstract base classes, while polymorphic relationships are managed using Django's GenericForeignKey.
+-   **Inheritance, abstraction, and polymorphism:** Product models leverage inheritance and abstract base classes, while polymorphic relationships are managed using Django's GenericForeignKey.
 
--   **Cohesion and loose coupling:**
-    Each Django app (accounts, products, orders, shopping_bags, wishlists, common) encapsulates a distinct business domain, promoting strong cohesion and loose coupling across the backend.
+-   **Cohesion and loose coupling:** Each Django app (accounts, products, orders, shopping_bags, wishlists, common) encapsulates a distinct business domain, promoting strong cohesion and loose coupling across the backend.
 
--   **Code quality and readability:**
-    All code adheres to PEP 8 (Python) and uses ESLint/Prettier (JavaScript) for consistent formatting and clear naming conventions.
+-   **Code quality and readability:** All code adheres to PEP 8 (Python) and uses ESLint/Prettier (JavaScript) for consistent formatting and clear naming conventions.
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ### User Interface
 
--   **Custom design system:**  
-    All components use a consistent SCSS-based design system, ensuring visual harmony.
+-   **Custom design system:** All components use a consistent SCSS-based design system, ensuring visual harmony.
 
--   **Responsive design:**  
-    The UI is fully responsive, adapting to different screen sizes and devices.
+-   **Responsive design:** The UI is fully responsive, adapting to different screen sizes and devices.
 
--   **Component-based architecture:**  
-    The frontend is built with reusable, modular React components.
+-   **Component-based architecture:** The frontend is built with reusable, modular React components.
 
 ### User Experience
 
--   **Real-time feedback:**  
-    Forms provide instant validation feedback, with clear visual cues for valid, invalid, and focused states.
+-   **Real-time feedback:** Forms provide instant validation feedback, with clear visual cues for valid, invalid, and focused states.
 
--   **Accessible and intuitive navigation:**  
-    The application uses clear navigation patterns and accessible controls.
+-   **Accessible and intuitive navigation:** The application uses clear navigation patterns and accessible controls.
 
--   **Consistent user experience:**  
-    All interactive elements, from buttons to forms and popups, follow a unified style and behavior.
+-   **Consistent user experience:** All interactive elements, from buttons to forms and popups, follow a unified style and behavior.
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 

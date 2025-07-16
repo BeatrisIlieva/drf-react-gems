@@ -18,7 +18,7 @@ from src.products.models.review import Review
 
 
 class Command(BaseCommand):
-    help = 'Setup roles: superuser, Inventory group/user, Manager group/user'
+    help = 'Setup roles: superuser, Inventory group/user, Reviewer group/user'
 
     def handle(self, *args, **kwargs):
         User = get_user_model()
