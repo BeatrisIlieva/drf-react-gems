@@ -11,16 +11,27 @@
 
 A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Features user authentication, product management, shopping cart functionality, wishlist system, and secure payment processing.
 
-<div align="center">
-  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.45.11_e0m7vo.png" width="250" alt="Screenshot 1" />
-  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.50.53_opvgpj.png" width="250" alt="Screenshot 2" />
-  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.54.43_cfyql5.png" width="250" alt="Screenshot 3" />
-  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.47.57_wtaozo.png" width="250" alt="Screenshot 4" />
-  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676883/Screenshot_2025-07-15_at_21.04.39_mdvm8x.png" width="250" alt="Screenshot 5" />
-  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.54.43_cfyql5.png" width="250" alt="Screenshot 6" />
-  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676883/Screenshot_2025-07-15_at_21.03.29_kttsez.png" width="250" alt="Screenshot 7" />
-  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676883/Screenshot_2025-07-15_at_21.01.40_dkxf9c.png" width="250" alt="Screenshot 8" />
-</div>
+<p align="center">
+  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.45.11_e0m7vo.png" width="200" height="200" />
+  &nbsp;
+  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.50.53_opvgpj.png" width="200" height="200" />
+  &nbsp;
+  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.54.43_cfyql5.png" width="200" height="200" />
+  &nbsp;
+  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.47.57_wtaozo.png" width="200" height="200" />
+</p>
+
+<p align="center">
+  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676883/Screenshot_2025-07-15_at_21.04.39_mdvm8x.png" width="200" height="200" />
+  &nbsp;
+  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.54.43_cfyql5.png" width="200" height="200" />
+  &nbsp;
+  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676883/Screenshot_2025-07-15_at_21.03.29_kttsez.png" width="200" height="200" />
+  &nbsp;
+  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676883/Screenshot_2025-07-15_at_21.01.40_dkxf9c.png" width="200" height="200" />
+</p>
+
+
 
 
 ## 📋 Table of Contents
