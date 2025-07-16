@@ -30,15 +30,8 @@ export const useLogin = fieldConfig => {
             return { success: true };
         }
 
-        if (!authData || authData === 'Invalid username or password') {
-            setInvalidCredentials(true);
-            return {
-                success: false,
-                error: 'Invalid username or password',
-            };
-        }
-
         if (authData && typeof authData === 'object' && !authData.access) {
+            setInvalidCredentials(true);
             return {
                 success: false,
                 data: authData,
