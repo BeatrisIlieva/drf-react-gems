@@ -1,6 +1,5 @@
 from django.db import models
 from django.db.models import Q
-from typing import Dict
 from src.products.constants import NameFieldLengths
 
 
@@ -16,7 +15,7 @@ class NameFieldMixin(models.Model):
     The mixin uses the NAME_MAX_LENGTH constant from the constants module,
     ensuring consistency across the application.
     """
-    NAME_MAX_LENGTH: int = NameFieldLengths.NAME_MAX_LENGTH
+    NAME_MAX_LENGTH = NameFieldLengths.NAME_MAX_LENGTH
 
     class Meta:
         # Abstract = True means this model won't create its own database table
@@ -26,12 +25,12 @@ class NameFieldMixin(models.Model):
     # Standardized name field used across multiple entities
     # unique=True ensures no duplicate names within the same entity type
     # max_length uses the constant for consistency
-    name: models.CharField = models.CharField(
+    name = models.CharField(
         max_length=NAME_MAX_LENGTH,
         unique=True,
     )
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
 
 
@@ -48,7 +47,7 @@ class FilterMixin:
     and filtering by related inventory attributes,
     """
 
-    def _get_params(self) -> Dict[str, list[str]]:
+    def _get_params(self):
         """
         Extract filter parameters from the request query string.
 
@@ -63,7 +62,7 @@ class FilterMixin:
             'collections': self.request.query_params.getlist('collections'),
         }
 
-    def _get_filters_for_attributes(self, category: str) -> Q:
+    def _get_filters_for_attributes(self, category):
         """
         Build database filters for attribute-based filtering.
 
@@ -73,9 +72,9 @@ class FilterMixin:
         directly (like when viewing a specific product category).
         """
         # Get the filter parameters from the request
-        params: Dict[str, list[str]] = self._get_params()
+        params = self._get_params()
         # Initialize an empty Q object to build filters
-        filters: Q = Q()
+        filters = Q()
 
         # Add color filter if colors are specified
         if params['colors']:
@@ -100,7 +99,7 @@ class FilterMixin:
 
         return filters
 
-    def _get_filters_for_product(self) -> Q:
+    def _get_filters_for_product(self):
         """
         Build database filters for direct product filtering.
 
@@ -110,9 +109,9 @@ class FilterMixin:
         the category prefix in the filter.
         """
         # Get the filter parameters from the request
-        params: Dict[str, list[str]] = self._get_params()
+        params = self._get_params()
         # Initialize an empty Q object to build filters
-        filters: Q = Q()
+        filters = Q()
 
         # Add color filter if colors are specified
         if params['colors']:

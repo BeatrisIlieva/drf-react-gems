@@ -2,9 +2,6 @@
 This module defines serializers for user registration, login, logout, and password change operations.
 """
 
-from typing import Any, cast
-from django.contrib.auth.models import AbstractBaseUser
-
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 
@@ -25,54 +22,50 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     """
     # Password field: write_only means it won't be returned in API responses.
     # trim_whitespace=False ensures passwords are not altered by removing spaces.
-    password: serializers.CharField = serializers.CharField(
-        write_only=True, trim_whitespace=False)
+    password = serializers.CharField(write_only=True, trim_whitespace=False)
+
     # Consent field: write_only as it's only needed during registration.
-    agreed_to_emails: serializers.BooleanField = serializers.BooleanField(
-        write_only=True)
+    agreed_to_emails = serializers.BooleanField(write_only=True)
 
     class Meta:
-        model: type[AbstractBaseUser] = UserModel
+        model = UserModel
         # Fields to include in the API (must match model fields or serializer fields)
-        fields: list[str] = [
-            'email',
-            'username',
-            'password',
-            'agreed_to_emails'
-        ]
+        fields = ['email', 'username', 'password', 'agreed_to_emails']
 
-    def validate_password(self, value: str) -> str:
+    def validate_password(self, value):
         validate_password(value)
 
         return value
 
-    def validate_username(self, value: str) -> str:
+    def validate_username(self, value):
         """
         Validate the username using a custom validator.
         Ensures the username meets project-specific requirements (e.g., allowed characters).
         """
         username_validator = UsernameValidator()
+
         username_validator(value)
 
         return value
 
-    def validate_agreed_to_emails(self, value: bool) -> bool:
+    def validate_agreed_to_emails(self, value):
         """
         Ensure the user has agreed to receive email updates.
         """
         if not value:
             raise serializers.ValidationError(
-                UserErrorMessages.AGREED_TO_EMAILS,
-            )
+                UserErrorMessages.AGREED_TO_EMAILS)
+
         return value
 
-    def create(self, validated_data: dict[str, Any]) -> AbstractBaseUser:
+    def create(self, validated_data):
         """
         Create a new user instance using the validated data.
         Uses the custom manager's create_user method, which handles password hashing and other logic.
         """
         user = UserModel.objects.create_user(**validated_data)
-        return cast(AbstractBaseUser, user)
+
+        return user
 
 
 class UserLoginRequestSerializer(serializers.Serializer):
@@ -82,16 +75,18 @@ class UserLoginRequestSerializer(serializers.Serializer):
     Uses a plain Serializer (not ModelSerializer) because login does not create or update model instances.
     Accepts either email or username and a password.
     """
-    email_or_username: serializers.CharField = serializers.CharField()
-    password: serializers.CharField = serializers.CharField()
+    email_or_username = serializers.CharField()
+    password = serializers.CharField()
 
-    def validate_email_or_username(self, value: str) -> str:
+    def validate_email_or_username(self, value):
         """
         Validate the email or username using a custom validator.
         Ensures the input is a valid email or username format.
         """
         email_or_username_validator = EmailOrUsernameValidator()
+
         email_or_username_validator(value)
+
         return value
 
 
@@ -101,9 +96,9 @@ class UserLoginResponseSerializer(serializers.Serializer):
 
     Returns authentication tokens and a message after successful login.
     """
-    refresh: serializers.CharField = serializers.CharField()
-    access: serializers.CharField = serializers.CharField()
-    message: serializers.CharField = serializers.CharField()
+    refresh = serializers.CharField()
+    access = serializers.CharField()
+    message = serializers.CharField()
 
 
 class UserLogoutRequestSerializer(serializers.Serializer):
@@ -112,7 +107,7 @@ class UserLogoutRequestSerializer(serializers.Serializer):
 
     Accepts a refresh token to invalidate the session.
     """
-    refresh: serializers.CharField = serializers.CharField()
+    refresh = serializers.CharField()
 
 
 class UserLogoutResponseSerializer(serializers.Serializer):
@@ -121,7 +116,7 @@ class UserLogoutResponseSerializer(serializers.Serializer):
 
     Returns a message confirming logout.
     """
-    message: serializers.CharField = serializers.CharField()
+    message = serializers.CharField()
 
 
 class PasswordChangeSerializer(serializers.Serializer):
@@ -130,31 +125,32 @@ class PasswordChangeSerializer(serializers.Serializer):
 
     Handles validation of current and new passwords.
     """
-    current_password: serializers.CharField = serializers.CharField(
-        write_only=True, trim_whitespace=False
-    )
-    new_password: serializers.CharField = serializers.CharField(
-        write_only=True, trim_whitespace=False
-    )
+    current_password = serializers.CharField(
+        write_only=True, trim_whitespace=False)
+    new_password = serializers.CharField(
+        write_only=True, trim_whitespace=False)
 
-    def validate_current_password(self, value: str) -> str:
+    def validate_current_password(self, value):
         """
         Ensure the current password matches the user's actual password.
         """
         user = self.context['request'].user
+
         if not user.check_password(value):
             raise serializers.ValidationError(
                 UserErrorMessages.INCORRECT_PASSWORD)
+
         return value
 
-    def validate_new_password(self, value: str) -> str:
+    def validate_new_password(self, value):
         """
         Validate the new password using Django's and custom password validators.
         """
         validate_password(value, user=self.context['request'].user)
+
         return value
 
-    def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
+    def validate(self, attrs):
         """
         Object-level validation to ensure the new password is different from the current password.
         """
@@ -162,15 +158,18 @@ class PasswordChangeSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 {"new_password": UserErrorMessages.NEW_PASSWORD_SAME_AS_CURRENT}
             )
+
         return attrs
 
-    def save(self) -> AbstractBaseUser:
+    def save(self):
         """
         Set the new password for the user and save the user instance.
         This method is called after validation passes.
         """
         user = self.context['request'].user
+
         user.set_password(self.validated_data['new_password'])
+
         user.save()
 
         return user

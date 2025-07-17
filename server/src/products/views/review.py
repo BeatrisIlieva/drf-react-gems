@@ -4,9 +4,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
-from rest_framework.request import Request
 from rest_framework.permissions import IsAuthenticated
-from typing import Any, Optional
 
 from src.products.models.review import Review
 from src.products.serializers.review import ReviewSerializer
@@ -39,7 +37,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
             return ReviewManagementSerializer
         return ReviewSerializer
 
-    def get_queryset(self) -> Any:
+    def get_queryset(self):
         """
         Get filtered queryset based on user permissions.
 
@@ -68,7 +66,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
                 'user__userphoto'
             )
 
-    def create(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+    def create(self, request, *args, **kwargs):
         """
         Create a new review.
 
@@ -94,7 +92,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
         except ValidationError as e:
             return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
 
-    def update(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+    def update(self, request, *args, **kwargs):
         """
         Update an existing review.
 
@@ -104,7 +102,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
         return super().update(request, *args, **kwargs)
 
-    def destroy(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+    def destroy(self, request, *args, **kwargs):
         """
         Delete a review.
 
@@ -125,10 +123,10 @@ class ReviewViewSet(viewsets.ModelViewSet):
     )
     def get_user_review(
         self,
-        request: Request,
-        content_type_name: Optional[str] = None,
-        object_id: Optional[str] = None
-    ) -> Response:
+        request,
+        content_type_name=None,
+        object_id=None
+    ):
         """
         Custom action to retrieve the current user's review for a specific product.
 
@@ -171,7 +169,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
             )
 
     @action(detail=True, methods=['post'], permission_classes=[IsReviewer])
-    def approve(self, request: Request, pk: Optional[int] = None) -> Response:
+    def approve(self, request, pk=None):
         """
         Approve a review (reviewers only).
 
@@ -196,7 +194,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
             )
 
     @action(detail=True, methods=['post'], permission_classes=[IsReviewer])
-    def unapprove(self, request: Request, pk: Optional[int] = None) -> Response:
+    def unapprove(self, request, pk=None):
         """
         Unapprove a review (reviewers only).
 
@@ -220,7 +218,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
             )
 
     @action(detail=False, methods=['get'], permission_classes=[IsReviewer])
-    def pending(self, request: Request) -> Response:
+    def pending(self, request):
         """
         Get all pending (unapproved) reviews (reviewers only).
 
@@ -235,4 +233,5 @@ class ReviewViewSet(viewsets.ModelViewSet):
         )
 
         serializer = ReviewManagementSerializer(pending_reviews, many=True)
+
         return Response(serializer.data, status=status.HTTP_200_OK)

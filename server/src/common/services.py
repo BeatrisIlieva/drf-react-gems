@@ -5,10 +5,8 @@ functionality.
 """
 
 from rest_framework.exceptions import ValidationError
-from rest_framework.request import Request
 
 import uuid
-from typing import Dict, Any
 
 
 class UserIdentificationService:
@@ -20,7 +18,7 @@ class UserIdentificationService:
     """
 
     @staticmethod
-    def get_user_identifier(request: 'Request') -> Dict[str, Any]:
+    def get_user_identifier(request):
         # Check if the user is authenticated (logged in)
         if request.user.is_authenticated:
             # Return the authenticated user object
@@ -40,8 +38,10 @@ class UserIdentificationService:
             # Convert the string guest ID to a UUID object
             # UUID validation ensures the guest ID is in the correct format
             guest_uuid = uuid.UUID(guest_id)
+
             # Return the validated guest ID
             return {'guest_id': guest_uuid}
+
         except (ValueError, TypeError):
             # If the guest ID is not a valid UUID format, raise validation error
             # This prevents invalid guest IDs from being used

@@ -1,6 +1,4 @@
-from django.contrib.contenttypes.models import ContentType
 from rest_framework.exceptions import ValidationError, NotFound
-from typing import Dict, Any
 
 from src.wishlists.models import Wishlist
 from src.common.services import UserIdentificationService
@@ -17,9 +15,7 @@ class WishlistService:
     """
 
     @staticmethod
-    def get_user_identifier(
-        request: Any
-    ) -> Dict[str, Any]:
+    def get_user_identifier(request):
         """
         This method delegates to UserIdentificationService to determine
         whether the request is from an authenticated user or guest user
@@ -28,10 +24,7 @@ class WishlistService:
         return UserIdentificationService.get_user_identifier(request)
 
     @staticmethod
-    def get_product_object(
-        content_type: ContentType,
-        object_id: int
-    ) -> Any:
+    def get_product_object(content_type, object_id):
         """
         Retrieve a product object using ContentType framework.
 
@@ -44,11 +37,7 @@ class WishlistService:
             raise NotFound(WishlistErrorMessages.PRODUCT_NOT_FOUND)
 
     @staticmethod
-    def check_item_exists(
-        user_filters: Dict[str, Any],
-        content_type: ContentType,
-        object_id: int
-    ) -> bool:
+    def check_item_exists(user_filters, content_type, object_id):
         """
         Check if a wishlist item already exists for the user.
 
@@ -63,11 +52,7 @@ class WishlistService:
         ).exists()
 
     @staticmethod
-    def create_wishlist_item(
-        user_filters: Dict[str, Any],
-        content_type: ContentType,
-        object_id: int
-    ) -> Wishlist:
+    def create_wishlist_item(user_filters, content_type, object_id):
         """
         This method creates a new wishlist item after validating that:
         1. The product exists in the database
@@ -82,25 +67,22 @@ class WishlistService:
         WishlistService.get_product_object(content_type, object_id)
 
         # Create the wishlist item
-        created_item: Wishlist = Wishlist.objects.create(
+        created_item = Wishlist.objects.create(
             content_type=content_type,
             object_id=object_id,
             **user_filters
         )
+
         return created_item
 
     @staticmethod
-    def get_wishlist_item(
-        user_filters: Dict[str, Any],
-        content_type: ContentType,
-        object_id: int
-    ) -> Wishlist:
+    def get_wishlist_item(user_filters, content_type, object_id):
         """
         This method finds and returns a specific wishlist item for the user
         (authenticated or guest) and the specified product.
         """
         try:
-            item: Wishlist = Wishlist.objects.get(
+            item = Wishlist.objects.get(
                 content_type=content_type,
                 object_id=object_id,
                 **user_filters
@@ -110,20 +92,17 @@ class WishlistService:
             raise NotFound(WishlistErrorMessages.ITEM_NOT_FOUND)
 
     @staticmethod
-    def delete_wishlist_item(
-        user_filters: Dict[str, Any],
-        content_type: ContentType,
-        object_id: int
-    ) -> bool:
+    def delete_wishlist_item(user_filters, content_type, object_id):
         """
         This method removes a specific wishlist item from the user's wishlist.
         It first validates that the item exists before deletion.
         """
         # Get the wishlist item (this will raise NotFound if it doesn't exist)
-        wishlist_item: Wishlist = WishlistService.get_wishlist_item(
+        wishlist_item = WishlistService.get_wishlist_item(
             user_filters, content_type, object_id
         )
 
         # Delete the item
         wishlist_item.delete()
+
         return True

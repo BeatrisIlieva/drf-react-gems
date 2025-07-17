@@ -10,7 +10,6 @@ Key features:
 - Guest data migration on registration/login
 """
 
-from typing import Any
 from django.contrib.auth import get_user_model, authenticate
 
 from rest_framework.generics import CreateAPIView, DestroyAPIView
@@ -41,15 +40,11 @@ class UserRegisterView(CreateAPIView):
     serializer_class = UserRegisterSerializer
     permission_classes = [AllowAny]
 
-    def create(
-        self,
-        request: Request,
-        *args: Any,
-        **kwargs: Any
-    ) -> Response:
+    def create(self, request, *args, **kwargs):
         # Validate incoming registration data
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
         # Save the new user instance
         user = serializer.save()
 
@@ -61,6 +56,7 @@ class UserRegisterView(CreateAPIView):
         migrate_guest_data_to_user(user, guest_id)
 
         # Return tokens and user info to the frontend
+
         return Response(
             {
                 'refresh': str(refresh),
@@ -82,12 +78,7 @@ class UserLoginView(APIView):
     """
     permission_classes = [AllowAny]
 
-    def post(
-        self,
-        request: Request,
-        *args: Any,
-        **kwargs: Any
-    ) -> Response:
+    def post(self, request, *args, **kwargs):
         # Validate login credentials
         serializer = UserLoginRequestSerializer(data=request.data)
         if not serializer.is_valid():
@@ -97,8 +88,8 @@ class UserLoginView(APIView):
             )
 
         # Extract validated credentials
-        email_or_username: str = serializer.validated_data['email_or_username']
-        password: str = serializer.validated_data['password']
+        email_or_username = serializer.validated_data['email_or_username']
+        password = serializer.validated_data['password']
 
         # Authenticate user (returns user instance or None)
         user = authenticate(
@@ -126,6 +117,7 @@ class UserLoginView(APIView):
             permissions.append('products.approve_review')
 
         # Return tokens, user info, and permissions
+
         return Response(
             {
                 'refresh': str(refresh),
@@ -146,16 +138,12 @@ class UserLogoutView(APIView):
     - Returns a success or error message.
     """
 
-    def post(
-        self,
-        request: Request,
-        *args: Any,
-        **kwargs: Any
-    ) -> Response:
+    def post(self, request, *args, **kwargs):
         try:
             # Get refresh token from request data
             refresh_token = request.data.get('refresh')
             token = RefreshToken(refresh_token)
+
             # Blacklist the token (requires blacklist app enabled)
             token.blacklist()
 
@@ -180,10 +168,7 @@ class PasswordChangeView(APIView):
     """
     permission_classes = [IsAuthenticated]
 
-    def patch(
-        self,
-        request: Request
-    ) -> Response:
+    def patch(self, request):
         # Validate current and new passwords
         serializer = PasswordChangeSerializer(
             data=request.data,
@@ -194,7 +179,7 @@ class PasswordChangeView(APIView):
             serializer.save()
 
             return Response(
-                {"message": "Password changed successfully"},
+                {'message': 'Password changed successfully'},
                 status=status.HTTP_200_OK
             )
 
@@ -208,6 +193,7 @@ class UserDeleteView(DestroyAPIView):
     """
     permission_classes = [IsAuthenticated]
 
-    def get_object(self) -> Any:
+    def get_object(self):
         # Return the current user instance for deletion
+
         return self.request.user

@@ -209,8 +209,10 @@ class Command(BaseCommand):
 
                 shuffled_users = users.copy()
                 random.shuffle(shuffled_users)
+                
+                first_six_users = shuffled_users[:6]
 
-                for user in shuffled_users:
+                for user in first_six_users:
                     rating = randint(3, 5)
                     comment = random.choice(sample_reviews)
 

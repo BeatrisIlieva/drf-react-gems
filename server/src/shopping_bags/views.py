@@ -1,4 +1,3 @@
-from typing import Any
 from django.db import transaction
 from django.db.models import Sum
 
@@ -7,7 +6,6 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny
-from rest_framework.request import Request
 
 from src.shopping_bags.models import ShoppingBag
 from src.shopping_bags.serializers import ShoppingBagSerializer
@@ -34,7 +32,7 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
     # This is necessary since shopping bags work for both user types
     permission_classes = [AllowAny]
 
-    def get_queryset(self) -> Any:
+    def get_queryset(self):
         """
         This method filters shopping bag items based on the user (authenticated or guest)
         and includes related objects for efficient database queries.
@@ -59,7 +57,7 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
             return ShoppingBag.objects.none()
 
     @transaction.atomic
-    def perform_create(self, serializer: Any) -> None:
+    def perform_create(self, serializer):
         """
         This method handles the creation of shopping bag items with proper inventory
         validation and quantity updates. It uses atomic transactions to ensure data consistency.
@@ -110,7 +108,7 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
         serializer.instance = bag_item
 
     @transaction.atomic
-    def perform_update(self, serializer: Any) -> None:
+    def perform_update(self, serializer):
         """
         This method handles updating shopping bag item quantities with proper
         inventory validation. If quantity becomes 0 or negative, it deletes the item.
@@ -147,7 +145,7 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
         serializer.save()
 
     @transaction.atomic
-    def perform_destroy(self, instance: Any) -> None:
+    def perform_destroy(self, instance):
         """
         This method handles the deletion of shopping bag items and restores
         the corresponding inventory quantity.
@@ -170,7 +168,7 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
         methods=['get'],
         url_path='count'
     )
-    def get_bag_count(self, request: Request) -> Response:
+    def get_bag_count(self, request):
         """
         Get the total count of items in the shopping bag.
 
@@ -195,7 +193,7 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
         methods=['get'],
         url_path='total-price'
     )
-    def get_total_price(self, request: Request) -> Response:
+    def get_total_price(self, request):
         """
         Get the total price of all items in the shopping bag.
 

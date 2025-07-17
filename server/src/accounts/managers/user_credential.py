@@ -4,7 +4,6 @@ The manager extends Django's BaseUserManager to provide custom user creation
 methods that work with our email-based authentication system.
 """
 
-from typing import Any, Optional
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.hashers import make_password
 from django.contrib import auth
@@ -23,16 +22,9 @@ class UserCredentialManager(BaseUserManager):
     the methods needed for user creation, management, and queries.
     """
 
-    # Flag indicating this manager can be used in migrations
-    # This is required for Django to use this manager during database migrations
-    use_in_migrations: bool = True
+    use_in_migrations = True
 
-    def _create_user_object(
-        self: 'UserCredentialManager',
-        email: str,
-        password: str,
-        **extra_fields: Any
-    ) -> Any:
+    def _create_user_object(self, email, password, **extra_fields):
         """
         Create a user object without saving it to the database.
 
@@ -51,27 +43,15 @@ class UserCredentialManager(BaseUserManager):
         Raises:
             ValueError: If email is not provided
         """
-        # Validate that email is provided
         if not email:
             raise ValueError("The given email must be set")
-
-        # Normalize email (convert to lowercase, etc.)
         email = self.normalize_email(email)
-
-        # Create user object with email and extra fields
         user = self.model(email=email, **extra_fields)
-
-        # Hash the password for security
         user.password = make_password(password)
 
         return user
 
-    def _create_user(
-        self: 'UserCredentialManager',
-        email: str,
-        password: str,
-        **extra_fields: Any
-    ) -> Any:
+    def _create_user(self, email, password, **extra_fields):
         """
         Create and save a regular user to the database.
 
@@ -86,20 +66,12 @@ class UserCredentialManager(BaseUserManager):
         Returns:
             Saved UserCredential object
         """
-        # Create user object without saving
         user = self._create_user_object(email, password, **extra_fields)
-
-        # Save to database using the manager's database
         user.save(using=self._db)
 
         return user
 
-    async def _acreate_user(
-        self: 'UserCredentialManager',
-        email: str,
-        password: str,
-        **extra_fields: Any
-    ) -> Any:
+    async def _acreate_user(self, email, password, **extra_fields):
         """
         Create and save a regular user to the database asynchronously.
 
@@ -114,20 +86,12 @@ class UserCredentialManager(BaseUserManager):
         Returns:
             Saved UserCredential object
         """
-        # Create user object without saving
         user = self._create_user_object(email, password, **extra_fields)
-
-        # Save to database asynchronously
         await user.asave(using=self._db)
 
         return user
 
-    def create_user(
-        self: 'UserCredentialManager',
-        email: str,
-        password: str,
-        **extra_fields: Any
-    ) -> Any:
+    def create_user(self, email, password, **extra_fields):
         """
         Create and save a regular user.
 
@@ -149,23 +113,14 @@ class UserCredentialManager(BaseUserManager):
                 username='john_doe'
             )
         """
-        # Set default values for regular users
         extra_fields.setdefault("is_staff", False)
         extra_fields.setdefault("is_superuser", False)
 
-        # Create and save the user
         return self._create_user(email, password, **extra_fields)
 
-    # Flag indicating this method modifies database data
-    # Used by Django for transaction management
     create_user.alters_data = True
 
-    async def acreate_user(
-        self: 'UserCredentialManager',
-        email: str,
-        password: str,
-        **extra_fields: Any
-    ) -> Any:
+    async def acreate_user(self, email, password, **extra_fields):
         """
         Create and save a regular user asynchronously.
 
@@ -179,22 +134,14 @@ class UserCredentialManager(BaseUserManager):
         Returns:
             Saved UserCredential object
         """
-        # Set default values for regular users
         extra_fields.setdefault("is_staff", False)
         extra_fields.setdefault("is_superuser", False)
 
-        # Create and save the user asynchronously
         return await self._acreate_user(email, password, **extra_fields)
 
-    # Flag indicating this method modifies database data
     acreate_user.alters_data = True
 
-    def create_superuser(
-        self: 'UserCredentialManager',
-        email: str,
-        password: str,
-        **extra_fields: Any
-    ) -> Any:
+    def create_superuser(self, email, password, **extra_fields):
         """
         Create and save a superuser.
 
@@ -218,28 +165,18 @@ class UserCredentialManager(BaseUserManager):
                 password='admin_password'
             )
         """
-        # Set default values for superusers
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
-
-        # Validate that superuser has proper privileges
         if extra_fields.get("is_staff") is not True:
             raise ValueError("Superuser must have is_staff=True.")
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
 
-        # Create and save the superuser
         return self._create_user(email, password, **extra_fields)
 
-    # Flag indicating this method modifies database data
     create_superuser.alters_data = True
 
-    async def acreate_superuser(
-        self: 'UserCredentialManager',
-        email: str,
-        password: str,
-        **extra_fields: Any
-    ) -> Any:
+    async def acreate_superuser(self, email, password, **extra_fields):
         """
         Create and save a superuser asynchronously.
 
@@ -256,30 +193,18 @@ class UserCredentialManager(BaseUserManager):
         Raises:
             ValueError: If is_staff or is_superuser is not True
         """
-        # Set default values for superusers
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
-
-        # Validate that superuser has proper privileges
         if extra_fields.get("is_staff") is not True:
             raise ValueError("Superuser must have is_staff=True.")
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
 
-        # Create and save the superuser asynchronously
         return await self._acreate_user(email, password, **extra_fields)
 
-    # Flag indicating this method modifies database data
     acreate_superuser.alters_data = True
 
-    def with_perm(
-        self: 'UserCredentialManager',
-        perm: str,
-        is_active: bool = True,
-        include_superusers: bool = True,
-        backend: Optional[Any] = None,
-        obj: Optional[Any] = None
-    ) -> Any:
+    def with_perm(self, perm, is_active=True, include_superusers=True, backend=None, obj=None):
         """
         Return users with the specified permission.
 
@@ -300,29 +225,21 @@ class UserCredentialManager(BaseUserManager):
             ValueError: If multiple backends are configured and backend not specified
             TypeError: If backend is not a string
         """
-        # Handle backend selection
         if backend is None:
-            # Get all configured authentication backends
             backends = auth._get_backends(return_tuples=True)
             if len(backends) == 1:
-                # If only one backend, use it
                 backend, _ = backends[0]
             else:
-                # If multiple backends, require explicit backend specification
                 raise ValueError(
                     "You have multiple authentication backends configured and "
                     "therefore must provide the `backend` argument."
                 )
         elif not isinstance(backend, str):
-            # Validate backend is a string
             raise TypeError(
                 "backend must be a dotted import path string (got %r)." % backend
             )
         else:
-            # Load the backend from string
             backend = auth.load_backend(backend)
-
-        # Use backend's with_perm method if available
         if hasattr(backend, "with_perm"):
             return backend.with_perm(
                 perm,
@@ -331,5 +248,4 @@ class UserCredentialManager(BaseUserManager):
                 obj=obj,
             )
 
-        # Return empty queryset if backend doesn't support with_perm
         return self.none()

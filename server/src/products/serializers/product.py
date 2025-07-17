@@ -8,7 +8,6 @@ It provides:
 - Used for product list/detail API endpoints and for serializing product attributes
 """
 
-from typing import Type
 from src.products.models.product import (
     Color,
     Earwear,
@@ -19,6 +18,7 @@ from src.products.models.product import (
     Fingerwear,
     Collection
 )
+
 from src.products.serializers.base import (
     BaseAttributesSerializer,
     BaseProductItemSerializer,
@@ -28,59 +28,59 @@ from src.products.serializers.base import (
 
 class EarwearListSerializer(BaseProductListSerializer):
     class Meta(BaseProductListSerializer.Meta):
-        model: Type[Earwear] = Earwear
+        model = Earwear
 
 
 class NeckwearListSerializer(BaseProductListSerializer):
     class Meta(BaseProductListSerializer.Meta):
-        model: Type[Neckwear] = Neckwear
+        model = Neckwear
 
 
 class WristwearListSerializer(BaseProductListSerializer):
     class Meta(BaseProductListSerializer.Meta):
-        model: Type[Wristwear] = Wristwear
+        model = Wristwear
 
 
 class FingerwearListSerializer(BaseProductListSerializer):
     class Meta(BaseProductListSerializer.Meta):
-        model: Type[Fingerwear] = Fingerwear
+        model = Fingerwear
 
 
 class EarwearItemSerializer(BaseProductItemSerializer):
     class Meta(BaseProductItemSerializer.Meta):
-        model: Type[Earwear] = Earwear
+        model = Earwear
 
 
 class NeckwearItemSerializer(BaseProductItemSerializer):
     class Meta(BaseProductItemSerializer.Meta):
-        model: Type[Neckwear] = Neckwear
+        model = Neckwear
 
 
 class WristwearItemSerializer(BaseProductItemSerializer):
     class Meta(BaseProductItemSerializer.Meta):
-        model: Type[Wristwear] = Wristwear
+        model = Wristwear
 
 
 class FingerwearItemSerializer(BaseProductItemSerializer):
     class Meta(BaseProductItemSerializer.Meta):
-        model: Type[Fingerwear] = Fingerwear
+        model = Fingerwear
 
 
 class CollectionSerializer(BaseAttributesSerializer):
     class Meta(BaseAttributesSerializer.Meta):
-        model: Type[Collection] = Collection
+        model = Collection
 
 
 class ColorSerializer(BaseAttributesSerializer):
     class Meta(BaseAttributesSerializer.Meta):
-        model: Type[Color] = Color
+        model = Color
 
 
 class MetalSerializer(BaseAttributesSerializer):
     class Meta(BaseAttributesSerializer.Meta):
-        model: Type[Metal] = Metal
+        model = Metal
 
 
 class StoneSerializer(BaseAttributesSerializer):
     class Meta(BaseAttributesSerializer.Meta):
-        model: Type[Stone] = Stone
+        model = Stone

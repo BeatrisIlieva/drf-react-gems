@@ -1,4 +1,3 @@
-from typing import Any, Dict
 from django.contrib.contenttypes.models import ContentType
 
 
@@ -14,7 +13,7 @@ class InventoryMixin:
     """
 
     @staticmethod
-    def get_product_info(obj: Any) -> Dict[str, Any]:
+    def get_product_info(obj):
         # Get the inventory object from the passed object
         inventory = obj.inventory
         if not inventory:
@@ -32,11 +31,13 @@ class InventoryMixin:
         product_content_type = ContentType.objects.get_for_model(
             product.__class__
         )
+
         # Capitalize the model name for display purposes
         model_name = product_content_type.model.capitalize()
 
         # Return a standardized dictionary with product information
         # This ensures consistent data structure across the application
+
         return {
             'product_id': product.id,                    # Unique product identifier
             # Product collection name
@@ -54,11 +55,12 @@ class InventoryMixin:
         }
 
     @staticmethod
-    def get_total_price_per_product(obj: Any) -> float:
+    def get_total_price_per_product(obj):
         try:
             # Calculate total price by multiplying unit price by quantity
             # round() ensures we get exactly 2 decimal places for currency
             return round(obj.inventory.price * obj.quantity, 2)
+
         except Exception:
             # Return 0.0 if calculation fails (e.g., missing attributes)
             # This prevents the application from crashing due to data issues

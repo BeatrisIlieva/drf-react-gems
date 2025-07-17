@@ -1,7 +1,5 @@
-from typing import Any
 from rest_framework import serializers
 
-from src.products.models.review import Review
 from src.products.serializers.review import ReviewSerializer
 
 
@@ -20,14 +18,13 @@ class ReviewManagementSerializer(ReviewSerializer):
     """
 
     # Add approved field for reviewers to see and modify
-    approved: serializers.BooleanField = serializers.BooleanField(
-        read_only=True)
+    approved = serializers.BooleanField(read_only=True)
 
     class Meta(ReviewSerializer.Meta):
         # Inherit all fields from parent and add approved
         fields = ReviewSerializer.Meta.fields + ['approved']
-        read_only_fields = ReviewSerializer.Meta.read_only_fields + \
-            ['approved']
+        read_only_fields = ReviewSerializer.Meta.read_only_fields + [
+            'approved']
 
     def to_representation(self, instance):
         """
@@ -45,4 +42,5 @@ class ReviewManagementSerializer(ReviewSerializer):
         data = super().to_representation(instance)
         # Always include approved field for management serializer
         data['approved'] = instance.approved
+
         return data

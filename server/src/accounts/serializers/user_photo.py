@@ -1,33 +1,34 @@
+"""
+This module defines the serializer for user photos.
+"""
+
 from rest_framework import serializers
 
 from cloudinary.utils import cloudinary_url
 
-from ..models.user_photo import UserPhoto
+from src.accounts.models.user_photo import UserPhoto
 
 
 class PhotoSerializer(serializers.ModelSerializer):
+    """
+    Serializer for user photos.
+
+    Handles serialization of UserPhoto model instances, including a computed photo_url field.
+    """
     # photo_url is a computed field, not stored in the model.
     # It returns the URL to the image hosted on Cloudinary.
     photo_url = serializers.SerializerMethodField()
+
     user = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = UserPhoto
         # Include user, photo (the file), and photo_url (the URL for display)
-        fields: list[str] = [
-            'user',
-            'photo',
-            'photo_url'
-        ]
+        fields = ['user', 'photo', 'photo_url']
         # user is read-only; it should not be set by the client
-        read_only_fields: list[str] = [
-            'user'
-        ]
+        read_only_fields = ['user']
 
-    def get_photo_url(
-        self,
-        obj: UserPhoto
-    ) -> str | None:
+    def get_photo_url(self, obj):
         """
         Returns the URL to the uploaded photo using Cloudinary.
         This allows the frontend to display the image by URL.
@@ -35,5 +36,8 @@ class PhotoSerializer(serializers.ModelSerializer):
         """
         if obj.photo:
             # cloudinary_url returns a tuple; [0] is the actual URL string
-            return cloudinary_url(obj.photo.public_id)[0]
+            url = cloudinary_url(obj.photo.public_id)[0]
+
+            return url
+
         return None

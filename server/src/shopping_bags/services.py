@@ -1,11 +1,7 @@
 from django.db import transaction
 from django.db.models import F
-from django.contrib.contenttypes.models import ContentType
 
 from rest_framework.exceptions import ValidationError, NotFound
-
-from typing import Dict, Any
-from django.http import HttpRequest
 
 from src.shopping_bags.models import ShoppingBag
 from src.common.services import UserIdentificationService
@@ -26,7 +22,7 @@ class ShoppingBagService:
     """
 
     @staticmethod
-    def get_user_identifier(request: HttpRequest) -> Dict[str, Any]:
+    def get_user_identifier(request):
         """
         Get user identifier for shopping bag operations.
 
@@ -36,7 +32,7 @@ class ShoppingBagService:
         return UserIdentificationService.get_user_identifier(request)
 
     @staticmethod
-    def get_inventory_object(content_type: ContentType, object_id: int) -> Any:
+    def get_inventory_object(content_type, object_id):
         """
         Retrieve an inventory object by content type and object ID.
 
@@ -53,7 +49,7 @@ class ShoppingBagService:
             raise NotFound(ShoppingBagErrorMessages.PRODUCT_NOT_FOUND)
 
     @staticmethod
-    def validate_inventory_quantity(inventory_obj: Any, required_quantity: int) -> None:
+    def validate_inventory_quantity(inventory_obj, required_quantity):
         """
         Validate that the required quantity is available in stock.
 
@@ -68,7 +64,7 @@ class ShoppingBagService:
 
     @staticmethod
     @transaction.atomic
-    def update_inventory_quantity(inventory_obj: Any, delta: int) -> None:
+    def update_inventory_quantity(inventory_obj, delta):
         """
         Update inventory quantity using atomic database operations.
 
@@ -84,7 +80,7 @@ class ShoppingBagService:
         inventory_obj.refresh_from_db()
 
     @staticmethod
-    def get_or_create_bag_item(filters: Dict[str, Any], defaults: Dict[str, Any]) -> tuple[ShoppingBag, bool]:
+    def get_or_create_bag_item(filters, defaults):
         """
         Get or create a shopping bag item.
 

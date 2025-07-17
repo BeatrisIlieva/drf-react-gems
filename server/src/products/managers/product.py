@@ -4,38 +4,36 @@ These managers inherit from the base managers to provide specialized functionali
 for different product categories while maintaining consistent query patterns.
 """
 
-
-from typing import Type, Any
 from src.products.managers.base import BaseAttributesManager, BaseProductManager
 
 
-class EarwearManager(BaseProductManager[Type[Any]]):
+class EarwearManager(BaseProductManager):
     pass
 
 
-class NeckwearManager(BaseProductManager[Type[Any]]):
+class NeckwearManager(BaseProductManager):
     pass
 
 
-class WristwearManager(BaseProductManager[Type[Any]]):
+class WristwearManager(BaseProductManager):
     pass
 
 
-class FingerwearManager(BaseProductManager[Type[Any]]):
+class FingerwearManager(BaseProductManager):
     pass
 
 
-class ColorManager(BaseAttributesManager[Type[Any]]):
+class ColorManager(BaseAttributesManager):
     pass
 
 
-class CollectionManager(BaseAttributesManager[Type[Any]]):
+class CollectionManager(BaseAttributesManager):
     pass
 
 
-class MetalManager(BaseAttributesManager[Type[Any]]):
+class MetalManager(BaseAttributesManager):
     pass
 
 
-class StoneManager(BaseAttributesManager[Type[Any]]):
+class StoneManager(BaseAttributesManager):
     pass

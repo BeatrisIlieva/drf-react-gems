@@ -1,4 +1,3 @@
-from typing import Any, Dict
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Avg
 
@@ -24,19 +23,19 @@ class WishlistSerializer(serializers.ModelSerializer):
     # SlugRelatedField for content_type allows us to use the model name as a string
     # instead of the numeric ID.
     # The 'model' field returns the model name (e.g., 'earwear', 'necklace')
-    content_type: serializers.SlugRelatedField = serializers.SlugRelatedField(
+    content_type = serializers.SlugRelatedField(
         slug_field='model',
         queryset=ContentType.objects.all()
     )
 
     # SerializerMethodField for product_info allows us to include additional
     # information about the product without modifying the model
-    product_info: serializers.SerializerMethodField = serializers.SerializerMethodField()
+    product_info = serializers.SerializerMethodField()
 
     class Meta:
         model = Wishlist
         # Fields to include in the serialized output
-        fields: list[str] = [
+        fields = [
             'id',
             'user',
             'guest_id',
@@ -46,7 +45,7 @@ class WishlistSerializer(serializers.ModelSerializer):
             'product_info',
         ]
         # Fields that cannot be modified through the API
-        read_only_fields: list[str] = [
+        read_only_fields = [
             'id',
             'created_at',
             'user',
@@ -54,10 +53,7 @@ class WishlistSerializer(serializers.ModelSerializer):
             'product_info',
         ]
 
-    def get_product_info(
-        self,
-        obj: Any
-    ) -> Dict[str, Any]:
+    def get_product_info(self, obj):
         """
         This method retrieves detailed information about the product including:
         - Basic product details (id, images, collection, color, stone, metal)

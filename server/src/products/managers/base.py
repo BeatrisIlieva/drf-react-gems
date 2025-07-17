@@ -1,4 +1,3 @@
-from typing import Any
 from django.db import models
 from django.db.models import (
     Sum,
@@ -25,10 +24,7 @@ class BaseProductManager(models.Manager):
     and provides consistent query patterns across all product categories.
     """
 
-    def get_product_item(
-        self,
-        item_id: int
-    ) -> Any:
+    def get_product_item(self, item_id):
         """
         Retrieve a single product by its ID.
 
@@ -38,11 +34,7 @@ class BaseProductManager(models.Manager):
         """
         return self.get(pk=item_id)
 
-    def get_product_list(
-        self,
-        filters: dict[str, Any],
-        ordering: str
-    ) -> Any:
+    def get_product_list(self, filters, ordering):
         """
         Retrieve a filtered and ordered list of products.
 
@@ -53,15 +45,13 @@ class BaseProductManager(models.Manager):
         """
         # Apply filters to the base queryset
         qs = self.filter(filters)
+
         # Get optimized product data with annotations
         raw_products = self._get_raw_products(qs, ordering)
+
         return raw_products
 
-    def _get_raw_products(
-        self,
-        qs: Any,
-        ordering: str
-    ) -> Any:
+    def _get_raw_products(self, qs, ordering):
         """
         This method takes a filtered queryset and adds optimized database
         queries with select_related, prefetch_related, and annotations.
@@ -77,6 +67,7 @@ class BaseProductManager(models.Manager):
             'rating': '-average_rating',   # Sort by highest rating first
             'in_stock': '-inventory__quantity',  # Sort by stock level first
         }
+
         # Get the database field name for ordering
         ordering_criteria = ordering_map[ordering]
 
@@ -145,11 +136,7 @@ class BaseAttributesManager(models.Manager):
     for specific product types (e.g., only earwear, only neckwear).
     """
 
-    def get_attributes_count(
-        self,
-        filters: dict[str, Any],
-        category: str
-    ) -> Any:
+    def get_attributes_count(self, filters, category):
         qs = self.get_queryset()
 
         # Only use category if it is a valid, non-empty string
@@ -161,6 +148,7 @@ class BaseAttributesManager(models.Manager):
                 .annotate(count=Count(category))
                 .filter(count__gt=0)
             )
+
         else:
             # If no valid category, just return all attributes with count=0
             return (

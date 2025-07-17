@@ -1,4 +1,3 @@
-from typing import Any
 from rest_framework import serializers
 
 from src.accounts.models.user_profile import UserProfile
@@ -7,15 +6,9 @@ from src.accounts.models.user_profile import UserProfile
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        exclude: list[str] = [
-            'user'
-        ]
+        exclude = ['user']
 
-    def update(
-        self,
-        instance: UserProfile,
-        validated_data: dict[str, Any]
-    ) -> UserProfile:
+    def update(self, instance, validated_data):
         user = instance
 
         profile, _ = UserProfile.objects.get_or_create(user=user)

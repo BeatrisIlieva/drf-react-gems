@@ -1,4 +1,3 @@
-from typing import Any, Optional
 from django.contrib.contenttypes.models import ContentType
 
 from rest_framework import viewsets, status
@@ -6,7 +5,6 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny
-from rest_framework.request import Request
 
 from src.wishlists.models import Wishlist
 from src.wishlists.serializers import WishlistSerializer
@@ -34,9 +32,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
     # Allow both authenticated and guest users to access wishlist
     permission_classes = [AllowAny]
 
-    def get_queryset(
-        self
-    ) -> Any:
+    def get_queryset(self):
         """
         This method filters wishlist items based on whether the request
         is from an authenticated user or guest user. It uses the
@@ -55,12 +51,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
             # Return empty queryset if user identification fails
             return Wishlist.objects.none()
 
-    def create(
-        self,
-        request: Request,
-        *args: Any,
-        **kwargs: Any
-    ) -> Response:
+    def create(self, request, *args, **kwargs):
         """
         This method adds a new item to the user's wishlist after validating
         the request data and ensuring the item doesn't already exist.
@@ -94,12 +85,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
         methods=['delete'],
         url_path='remove/(?P<content_type_name>[^/.]+)/(?P<object_id>[^/.]+)'
     )
-    def remove_item(
-        self,
-        request: Request,
-        content_type_name: Optional[str] = None,
-        object_id: Optional[str] = None
-    ) -> Response:
+    def remove_item(self, request, content_type_name=None, object_id=None):
         """
         This custom action removes a specific wishlist item based on
         content type name and object ID. It validates the parameters
@@ -114,8 +100,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
                 content_type = ContentType.objects.get(model=content_type_name)
 
                 # Convert object_id string to integer
-                object_id_int: int = int(
-                    object_id) if object_id is not None else 0
+                object_id_int = int(object_id) if object_id is not None else 0
             except (ContentType.DoesNotExist, ValueError):
                 # Handle invalid content type or object ID
                 return Response(
@@ -138,10 +123,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
         methods=['get'],
         url_path='count'
     )
-    def get_wishlist_count(
-        self,
-        request: Request
-    ) -> Response:
+    def get_wishlist_count(self, request):
         """
         This custom action returns the number of items in the user's
         wishlist, useful for displaying wishlist count in the UI.
@@ -151,7 +133,7 @@ class WishlistViewSet(viewsets.ModelViewSet):
             user_filters = WishlistService.get_user_identifier(request)
 
             # Count wishlist items for the user
-            count: int = Wishlist.objects.filter(**user_filters).count()
+            count = Wishlist.objects.filter(**user_filters).count()
 
             # Return count in response
             return Response({'count': count}, status=status.HTTP_200_OK)

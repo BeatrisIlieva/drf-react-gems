@@ -11,13 +11,12 @@ Validators included:
 - EmailOrUsernameValidator: Validates either email or username format
 """
 
-from typing import Any
-import re
-
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator as DjangoEmailValidator
 from django.utils.deconstruct import deconstructible
 from django.utils.translation import gettext as _
+
+import re
 
 
 @deconstructible
@@ -28,31 +27,24 @@ class OnlyDigitsValidator:
     This validator is used for fields like phone numbers where only
     digits are allowed. 
     """
-
     # Default error message for this validator
-    DEFAULT_MESSAGE: str = 'This field can contain only digits.'
+    DEFAULT_MESSAGE = 'This field can contain only digits.'
 
-    def __init__(
-        self,
-        message: None | str = None
-    ) -> None:
+    def __init__(self, message=None):
         """
         Initialize the validator with an optional custom message.
         """
         self.message = message
 
     @property
-    def message(self) -> str:
+    def message(self):
         """
         Get the current error message.
         """
         return self.__message
 
     @message.setter
-    def message(
-        self,
-        value: None | str = None
-    ) -> None:
+    def message(self, value=None):
         """
         Set the error message, using default if None is provided.
         """
@@ -61,10 +53,7 @@ class OnlyDigitsValidator:
         else:
             self.__message = value
 
-    def __call__(
-        self,
-        value: str
-    ) -> None:
+    def __call__(self, value):
         """
         Validate that the value contains only digits.
 
@@ -78,8 +67,6 @@ class OnlyDigitsValidator:
         Raises:
             ValidationError: If the value contains non-digit characters
         """
-        # Check if the string contains only digits
-        # isdigit() returns True if all characters are digits
         if not value.isdigit():
             raise ValidationError(self.__message)
 
@@ -92,31 +79,24 @@ class NameValidator:
     This validator is used for name fields (first name, last name, city, country)
     and allows letters, hyphens, apostrophes, and spaces. 
     """
-
     # Default error message for this validator
-    DEFAULT_MESSAGE: str = 'This field can contain only letters, hyphens, apostrophes and spaces.'
+    DEFAULT_MESSAGE = 'This field can contain only letters, hyphens, apostrophes and spaces.'
 
-    def __init__(
-        self,
-        message: None | str = None
-    ) -> None:
+    def __init__(self, message=None):
         """
         Initialize the validator with an optional custom message.
         """
         self.message = message
 
     @property
-    def message(self) -> str:
+    def message(self):
         """
         Get the current error message.
         """
         return self.__message
 
     @message.setter
-    def message(
-        self,
-        value: None | str
-    ) -> None:
+    def message(self, value=None):
         """
         Set the error message, using default if None is provided.
         """
@@ -125,10 +105,7 @@ class NameValidator:
         else:
             self.__message = value
 
-    def __call__(
-        self,
-        value: str
-    ) -> None:
+    def __call__(self, value):
         """
         Validate that the value contains only valid name characters.
 
@@ -142,16 +119,13 @@ class NameValidator:
         Raises:
             ValidationError: If the value contains invalid characters
         """
-        # Normalize different types of apostrophes to standard apostrophe
-        normalized: str = value.replace("'", "'")
+        normalized = value.replace("'", "'")
 
-        # Check each character in the normalized string
         for char in normalized:
-            # Allow letters, apostrophes, hyphens, and spaces
             if not (
-                char.isalpha() or      # Letters (a-z, A-Z)
-                char in "'-" or        # Apostrophes and hyphens
-                char.isspace()         # Spaces
+                char.isalpha() or
+                char in "'-" or
+                char.isspace()
             ):
                 raise ValidationError(self.__message)
 
@@ -164,14 +138,10 @@ class UsernameValidator:
     This validator ensures usernames are 3-30 characters long and contain
     only letters, numbers, and underscores. 
     """
-
     # Default error message for this validator
-    DEFAULT_MESSAGE: str = 'Username must be 3-30 characters long and contain only letters, numbers, and underscores.'
+    DEFAULT_MESSAGE = 'Username must be 3-30 characters long and contain only letters, numbers, and underscores.'
 
-    def __init__(
-        self,
-        message: str | None = None
-    ) -> None:
+    def __init__(self, message=None):
         """
         Initialize the validator with an optional custom message.
 
@@ -181,7 +151,7 @@ class UsernameValidator:
         self.message = message
 
     @property
-    def message(self) -> str:
+    def message(self):
         """
         Get the current error message.
 
@@ -191,10 +161,7 @@ class UsernameValidator:
         return self.__message
 
     @message.setter
-    def message(
-        self,
-        value: None | str = None
-    ) -> None:
+    def message(self, value=None):
         """
         Set the error message, using default if None is provided.
 
@@ -206,10 +173,7 @@ class UsernameValidator:
         else:
             self.__message = value
 
-    def __call__(
-        self,
-        value: str
-    ) -> None:
+    def __call__(self, value):
         """
         Validate that the value follows username format rules.
 
@@ -236,14 +200,10 @@ class EmailOrUsernameValidator:
     their email address or username. It first tries to validate as an email,
     then as a username if email validation fails.
     """
-
     # Default error message for this validator
-    DEFAULT_MESSAGE: str = 'Please enter a valid email address or username.'
+    DEFAULT_MESSAGE = 'Please enter a valid email address or username.'
 
-    def __init__(
-        self,
-        message: str | None = None
-    ) -> None:
+    def __init__(self, message=None):
         """
         Initialize the validator with an optional custom message.
 
@@ -253,7 +213,7 @@ class EmailOrUsernameValidator:
         self.message = message
 
     @property
-    def message(self) -> str:
+    def message(self):
         """
         Get the current error message.
 
@@ -263,10 +223,7 @@ class EmailOrUsernameValidator:
         return self.__message
 
     @message.setter
-    def message(
-        self,
-        value: str | None = None
-    ) -> None:
+    def message(self, value=None):
         """
         Set the error message, using default if None is provided.
 
@@ -278,10 +235,7 @@ class EmailOrUsernameValidator:
         else:
             self.__message = value
 
-    def __call__(
-        self,
-        value: str
-    ) -> None:
+    def __call__(self, value):
         """
         Validate that the value is either a valid email or username.
 
@@ -295,21 +249,17 @@ class EmailOrUsernameValidator:
         Raises:
             ValidationError: If the value is neither a valid email nor username
         """
-        # Create Django's email validator instance
-        django_email_validator: DjangoEmailValidator = DjangoEmailValidator()
-        is_email: bool = False
+        django_email_validator = DjangoEmailValidator()
 
-        # Try to validate as email first
+        is_email = False
+
         try:
             django_email_validator(value)
             is_email = True
         except ValidationError:
-            # If email validation fails, continue to username validation
             pass
 
-        # Try to validate as username using the same pattern as UsernameValidator
-        is_username: Any = re.match(r'^[A-Za-z0-9_]{3,30}$', value)
+        is_username = re.match(r'^[A-Za-z0-9_]{3,30}$', value)
 
-        # If neither email nor username validation passes, raise error
         if not (is_email or is_username):
             raise ValidationError(self.__message)

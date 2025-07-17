@@ -7,14 +7,12 @@ Key features:
 - Ensures all order creation steps are performed atomically (all succeed or all fail)
 """
 
-from typing import Any
 from django.db import transaction
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
-from rest_framework.request import Request
 
 from src.orders.serializers import OrderCreateSerializer, OrderGroupSerializer
 from src.orders.services import OrderService
@@ -37,18 +35,11 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
     """
     serializer_class = OrderGroupSerializer
 
-    def get_queryset(
-        self
-    ) -> Any:
+    def get_queryset(self):
         # Returns all orders for the current user
         return OrderService.get_user_orders(self.request.user)
 
-    def list(
-        self,
-        request: Request,
-        *args: Any,
-        **kwargs: Any
-    ) -> Response:
+    def list(self, request, *args, **kwargs):
         # Returns a grouped list of all orders for the current user
         grouped_orders = OrderService.get_user_orders_grouped(request.user)
 
@@ -69,10 +60,7 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
     )
     # Ensures all DB operations succeed or fail together (no partial orders)
     @transaction.atomic
-    def create_from_shopping_bag(
-        self,
-        request: Request
-    ) -> Response:
+    def create_from_shopping_bag(self, request):
         """
         Custom endpoint to create an order from the user's shopping bag.
 
@@ -83,6 +71,7 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
         """
         # Handles order creation from the user's shopping bag
         serializer = OrderCreateSerializer(data=request.data)
+
         if serializer.is_valid():
             try:
                 # Process the order using validated payment data
@@ -108,6 +97,7 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
                         'total_items': len(orders),
                         'total_price': total_price
                     }, status=status.HTTP_201_CREATED)
+
                 else:
                     # No orders were created (should not happen in normal flow)
                     return Response({
@@ -120,6 +110,7 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
                     {'error': str(e)},
                     status=status.HTTP_400_BAD_REQUEST
                 )
+
         else:
             # Handles serializer validation errors (e.g., missing fields)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
