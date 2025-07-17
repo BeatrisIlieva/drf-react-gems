@@ -26,7 +26,7 @@ export const useRegister = fieldConfig => {
         return true;
     };
 
-    const handleAuthResponse = async (authData, formData) => {
+    const handleAuthResponse = async authData => {
         if (authData?.access) {
             userLoginHandler(authData);
 

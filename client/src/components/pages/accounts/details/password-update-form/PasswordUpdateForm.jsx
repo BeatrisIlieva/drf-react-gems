@@ -9,7 +9,6 @@ import styles from './PasswordUpdateForm.module.scss';
 export const PasswordUpdateForm = ({ onSuccess }) => {
     const { formProps, fieldConfig, newPasswordValue, handleNewPasswordChange } =
         usePasswordUpdateForm(onSuccess);
-
     const {
         formData,
         validateField,
@@ -18,13 +17,10 @@ export const PasswordUpdateForm = ({ onSuccess }) => {
         submitAction,
         isSubmitting,
         formRef,
-        registerInput,
     } = formProps;
-
     return (
         <section className={styles['password-update-form']}>
             <h2>Change Password</h2>
-
             <form ref={formRef} action={submitAction}>
                 <InputField
                     getInputClassName={getInputClassName}
@@ -33,10 +29,8 @@ export const PasswordUpdateForm = ({ onSuccess }) => {
                     validateField={validateField}
                     fieldName="currentPassword"
                     type="password"
-                    registerInput={registerInput}
                     fieldConfig={fieldConfig}
                 />
-
                 <InputField
                     getInputClassName={getInputClassName}
                     fieldData={formData.newPassword}
@@ -44,12 +38,9 @@ export const PasswordUpdateForm = ({ onSuccess }) => {
                     validateField={validateField}
                     fieldName="newPassword"
                     type="password"
-                    registerInput={registerInput}
                     fieldConfig={fieldConfig}
                 />
-
                 <PasswordValidator password={newPasswordValue} />
-
                 <div className={styles['button-group']}>
                     <Button
                         title="Save"

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,7 +16,6 @@ export const InputField = ({
     handleBlur,
     fieldName,
     type,
-    registerInput,
     required,
     fieldConfig,
 }) => {
@@ -33,17 +32,6 @@ export const InputField = ({
 
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const inputRef = useRef(null);
-
-    useEffect(() => {
-        if (registerInput && fieldName) {
-            registerInput(fieldName, inputRef.current);
-        }
-        return () => {
-            if (registerInput && fieldName) {
-                registerInput(fieldName, null);
-            }
-        };
-    }, [registerInput, fieldName]);
 
     return (
         <div className="field">
