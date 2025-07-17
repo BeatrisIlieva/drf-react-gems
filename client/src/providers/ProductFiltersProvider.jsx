@@ -115,7 +115,7 @@ export const ProductFiltersProvider = ({ children }) => {
         fetchColors();
         fetchMetals();
         fetchStones();
-    }, [fetchCollections, fetchColors, fetchMetals, fetchStones, categoryName]);
+    }, [fetchCollections, fetchColors, fetchMetals, fetchStones, categoryName, displayFilters]);
 
     const contextValue = useMemo(
         () => ({
