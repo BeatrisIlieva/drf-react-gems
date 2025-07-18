@@ -2,7 +2,9 @@
 
 import django.core.validators
 import django.db.models.deletion
-import src.products.validators.comment
+from django.core.validators import MaxLengthValidator
+from django.db import migrations, models
+from src.products.constants import ReviewFieldLengths
 from django.conf import settings
 from django.db import migrations, models
 
@@ -150,7 +152,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('rating', models.IntegerField(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')])),
-                ('comment', models.TextField(max_length=300, validators=[src.products.validators.comment.validate_comment_length])),
+                ('comment', models.TextField(max_length=300, validators=[MaxLengthValidator(ReviewFieldLengths.MAX_COMMENT_LENGTH)])),
                 ('approved', models.BooleanField(default=False)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('object_id', models.PositiveIntegerField()),
