@@ -109,11 +109,14 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
 
     def get_related_products(self, obj):
         color_id = obj.color_id
+        current_product_type = type(obj)
+        related_products = []
 
-        def serialize_products_of_type(model_class, is_current_type):
+        def serialize_products_of_type(model_class):
+            # Only include products from other types
+            if model_class == current_product_type:
+                return []
             products = model_class.objects.filter(color_id=color_id)
-            if is_current_type:
-                products = products.exclude(id=obj.id)
             result = []
             for product in products:
                 result.append({
@@ -122,16 +125,11 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
                     'product_type': f'{model_class.__name__.lower()}s',
                 })
             return result
-        current_product_type = type(obj)
-        related_products = []
-        related_products.extend(serialize_products_of_type(
-            Earwear, current_product_type == Earwear))
-        related_products.extend(serialize_products_of_type(
-            Neckwear, current_product_type == Neckwear))
-        related_products.extend(serialize_products_of_type(
-            Fingerwear, current_product_type == Fingerwear))
-        related_products.extend(serialize_products_of_type(
-            Wristwear, current_product_type == Wristwear))
+
+        related_products.extend(serialize_products_of_type(Earwear))
+        related_products.extend(serialize_products_of_type(Neckwear))
+        related_products.extend(serialize_products_of_type(Fingerwear))
+        related_products.extend(serialize_products_of_type(Wristwear))
 
         return related_products[:6]
 
