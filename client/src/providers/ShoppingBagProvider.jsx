@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import { useShoppingBag } from '../api/shoppingBagApi';
 
@@ -17,6 +17,7 @@ export const ShoppingBagProvider = ({ children }) => {
     const guestId = getGuestData();
 
     const navigate = useNavigate();
+    const location = useLocation();
     const [isDeleting, setIsDeleting] = useState(false);
     const [loading, setLoading] = useState(true);
 
@@ -107,6 +108,51 @@ export const ShoppingBagProvider = ({ children }) => {
         setShoppingBagTotalPrice,
     ]);
 
+    useEffect(() => {
+        let mounted = true;
+        const syncWithBackend = async () => {
+            try {
+                const itemsResponse = await getItems();
+                if (mounted) {
+                    setShoppingBagItems(itemsResponse);
+                }
+            } catch {
+                if (mounted) {
+                    setShoppingBagItems([]);
+                }
+            }
+        };
+        syncWithBackend();
+        return () => {
+            mounted = false;
+        };
+    }, [location.pathname, getItems, setShoppingBagItems]);
+
+    useEffect(() => {
+        // Always keep the count in sync with the items array
+        setShoppingBagItemsCount(
+            Array.isArray(shoppingBagItems)
+                ? shoppingBagItems.reduce((sum, item) => sum + (item.quantity || 0), 0)
+                : 0
+        );
+    }, [shoppingBagItems, setShoppingBagItemsCount]);
+
+    useEffect(() => {
+        // Always keep the total price in sync with the items array
+        setShoppingBagTotalPrice(
+            Array.isArray(shoppingBagItems)
+                ? shoppingBagItems.reduce(
+                      (sum, item) =>
+                          sum +
+                          (typeof item.totalPrice === 'string'
+                              ? parseFloat(item.totalPrice)
+                              : item.totalPrice || 0),
+                      0
+                  )
+                : 0
+        );
+    }, [shoppingBagItems, setShoppingBagTotalPrice]);
+
     const deleteShoppingBagHandler = useCallback(
         async id => {
             setIsDeleting(true);
@@ -160,9 +206,18 @@ export const ShoppingBagProvider = ({ children }) => {
     );
 
     const createShoppingBagItemHandler = useCallback(
-        async inventory => {
+        async inventoryInput => {
+            // Accept either an inventory ID or an object with inventory and quantity
+            let inventory, quantity;
+            if (typeof inventoryInput === 'object' && inventoryInput !== null) {
+                inventory = inventoryInput.inventory || inventoryInput.id || inventoryInput;
+                quantity = inventoryInput.quantity || 1;
+            } else {
+                inventory = inventoryInput;
+                quantity = 1;
+            }
             try {
-                await createItem(inventory);
+                await createItem({ inventory, quantity });
 
                 const [itemsResponse, countResponse, priceResponse] = await Promise.all([
                     getItems(),

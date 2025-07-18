@@ -494,3 +494,8 @@ The `python manage.py setup_database` command (run during installation) will:
 This project is licensed under the MIT License.
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
+
+celery -A src worker --loglevel=info
+
+celery -A src beat --loglevel=info

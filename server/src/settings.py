@@ -57,16 +57,17 @@ PROJECT_APPS = [
 ]
 
 INSTALLED_APPS = [
-    # Unfold - Custom Django admin interface for better UX
     'unfold',
     'unfold.contrib.filters',
     'unfold.contrib.forms',
 
-    # Cloudinary - Cloud-based media file storage
+
     'cloudinary',
     'cloudinary_storage',
 
-    # Django's built-in applications
+    'django_celery_beat',
+
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -74,7 +75,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Third-party applications
+
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
@@ -208,7 +209,14 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Cloudinary configuration
 cloudinary.config(
-    cloud_name='dpgvbozrb',      
-    api_key='356773277236827',    
-    api_secret='Txaakp6bHutRt-Aw2ocf-dx7aMA'  
+    cloud_name='dpgvbozrb',
+    api_key='356773277236827',
+    api_secret='Txaakp6bHutRt-Aw2ocf-dx7aMA'
 )
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE

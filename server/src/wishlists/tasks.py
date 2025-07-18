@@ -11,10 +11,8 @@ def cleanup_expired_wishlists():
     # cutoff_date = timezone.now() - timedelta(days=2)
     cutoff_date = timezone.now() - timedelta(seconds=15) # For testing, set to 30 seconds
 
-    expired_wishlists = Wishlist.objects.filter(
+    Wishlist.objects.filter(
         user__isnull=True,
         created_at__lt=cutoff_date,
-    )
+    ).delete()
 
-    for wishlist in expired_wishlists:
-        wishlist.delete()

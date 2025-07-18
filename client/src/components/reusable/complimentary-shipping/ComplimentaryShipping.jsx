@@ -21,9 +21,7 @@ export const ComplimentaryShipping = () => {
                 <section className={styles['content']}>
                     <h4>Complimentary Two-Day Shipping</h4>
                     <p>
-                        Your order should arrive in two business days if placed by 3PM ET on
-                        weekdays or if placed by 12PM ET on Saturday. Orders placed on Sunday should
-                        arrive on Wednesday.{' '}
+                        Your order will be completed within two days of being placed—no matter which day you order. We’re always working to get your gems to you as quickly as possible!
                     </p>
                 </section>
             </Popup>

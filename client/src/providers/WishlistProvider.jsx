@@ -1,5 +1,7 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
+import { useLocation } from 'react-router';
+
 import { useWishlist } from '../api/wishlistApi';
 
 import { useGuest } from '../hooks/useGuest';
@@ -13,6 +15,7 @@ export const WishlistProvider = ({ children }) => {
     const [wishlistItemsCount, setWishlistItemsCount] = usePersistedState('wishlist-count', 0);
     const [wishlistItems, setWishlistItems] = usePersistedState('wishlist-items', []);
     const { getGuestData } = useGuest();
+    const location = useLocation();
     const guestId = getGuestData();
 
     const { getItems, createItem, deleteItem } = useWishlist();
@@ -173,6 +176,42 @@ export const WishlistProvider = ({ children }) => {
             mounted = false;
         };
     }, [userId, getItems, guestId, setWishlistItems, setWishlistItemsCount]);
+
+    useEffect(() => {
+        let mounted = true;
+        const syncWithBackend = async () => {
+            try {
+                const response = await getItems();
+                const transformedItems = response.map(item => ({
+                    ...item.productInfo,
+                    contentType: item.contentType,
+                    objectId: item.objectId,
+                    wishlistId: item.id,
+                    categoryName: `${item.contentType}s`,
+                }));
+                setWishlistItems(transformedItems);
+                setWishlistItemsCount(transformedItems.length);
+            } catch {
+                if (mounted) {
+                    setWishlistItems([]);
+                    setWishlistItemsCount(0);
+                }
+            }
+        };
+        syncWithBackend();
+        return () => {
+            mounted = false;
+        };
+    }, [location.pathname, getItems, setWishlistItems, setWishlistItemsCount]);
+
+    // useEffect(() => {
+    //     // Always keep the count in sync with the items array
+    //     setWishlistItemsCount(
+    //         Array.isArray(wishlistItems)
+    //             ? wishlistItems.length
+    //             : 0
+    //     );
+    // }, [wishlistItems, setWishlistItemsCount]);
 
     const refreshWishlist = useCallback(async () => {
         try {
