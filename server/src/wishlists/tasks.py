@@ -8,8 +8,8 @@ from src.wishlists.models import Wishlist
 
 @shared_task
 def cleanup_expired_wishlists():
-    # cutoff_date = timezone.now() - timedelta(days=2)
-    cutoff_date = timezone.now() - timedelta(seconds=15) # For testing, set to 30 seconds
+    cutoff_date = timezone.now() - timedelta(days=2)
+    # cutoff_date = timezone.now() - timedelta(seconds=15) # For testing
 
     Wishlist.objects.filter(
         user__isnull=True,

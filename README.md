@@ -55,6 +55,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 -   [Installation](#installation)
 -   [Database Population](#database-population)
+-   [Background Tasks with Celery](#background-tasks-with-celery)
 
 ---
 
@@ -64,63 +65,63 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 **The application is implemented using Django Framework:**
 
--   Complete Django configuration with DRF, JWT, CORS, and database settings (`server/src/settings.py`)
+-   Complete Django configuration with DRF, JWT, CORS, and database settings [server/src/settings.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/settings.py)
 
 **The application has 11 page components:**
 
--   [Home page](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/home/Home.jsx)
--   [Product list page](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/product-list/ProductList.jsx)
--   [Product item page](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/product-item/ProductItem.jsx)
--   [Shopping bag page](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/shopping-bag/ShoppingBag.jsx)
--   [Wishlist page](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/wishlist/Wishlist.jsx)
--   [Checkout page](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/checkout/Checkout.jsx)
--   [Payment page](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/payment/Payment.jsx)
--   [Order confirmation page](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/order-confirmation/OrderConfirmation.jsx)
--   [Login page](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/login/Login.jsx)
--   [Register page](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/register/Register.jsx)
--   [Accounts page](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/accounts/Accounts.jsx)
+-   Home page [client/src/components/pages/home/Home.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/home/Home.jsx)
+-   Product list page [client/src/components/pages/product-list/ProductList.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/product-list/ProductList.jsx)
+-   Product item page [client/src/components/pages/product-item/ProductItem.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/product-item/ProductItem.jsx)
+-   Shopping bag page [client/src/components/pages/shopping-bag/ShoppingBag.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/shopping-bag/ShoppingBag.jsx)
+-   Wishlist page [client/src/components/pages/wishlist/Wishlist.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/wishlist/Wishlist.jsx)
+-   Checkout page [client/src/components/pages/checkout/Checkout.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/checkout/Checkout.jsx)
+-   Payment page [client/src/components/pages/payment/Payment.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/payment/Payment.jsx)
+-   Order confirmation page [client/src/components/pages/order-confirmation/OrderConfirmation.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/order-confirmation/OrderConfirmation.jsx)
+-   Login page [client/src/components/pages/login/Login.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/login/Login.jsx)
+-   Register page [client/src/components/pages/register/Register.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/register/Register.jsx)
+-   Accounts page [client/src/components/pages/accounts/Accounts.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/accounts/Accounts.jsx)
 
 **The application has 15 independent class-based views:**
 
--   [BaseProductListView](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
--   [BaseProductItemView](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
--   [BaseAttributeView](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
--   [AsyncBaseAttributeView](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
--   [OrderViewSet](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/orders/views.py)
--   [ShoppingBagViewSet](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/shopping_bags/views.py)
--   [WishlistViewSet](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/wishlists/views.py)
--   [ReviewViewSet](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/review.py)
--   [UserRegisterView](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
--   [UserLoginView](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
--   [UserLogoutView](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
--   [PasswordChangeView](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
--   [UserDeleteView](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
--   [UserProfileView](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_profile.py)
--   [PhotoUploadView](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_photo.py)
+-   BaseProductListView [server/src/products/views/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
+-   BaseProductItemView [server/src/products/views/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
+-   BaseAttributeView [server/src/products/views/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
+-   AsyncBaseAttributeView [server/src/products/views/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
+-   OrderViewSet [server/src/orders/views.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/orders/views.py)
+-   ShoppingBagViewSet [server/src/shopping_bags/views.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/shopping_bags/views.py)
+-   WishlistViewSet [server/src/wishlists/views.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/wishlists/views.py)
+-   ReviewViewSet [server/src/products/views/review.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/review.py)
+-   UserRegisterView [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
+-   UserLoginView [server/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
+-   UserLogoutView [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
+-   PasswordChangeView [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
+-   UserDeleteView [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
+-   UserProfileView [server/src/accounts/views/user_profile.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_profile.py)
+-   PhotoUploadView [server/src/accounts/views/user_photo.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_photo.py)
 
 **The application has 12 independent models:**
 
--   [UserCredential](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/models/user_credential.py)
--   [Order](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/orders/models.py)
--   [BaseProduct](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/base.py)
--   [Collection](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/product.py)
--   [Color](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/product.py)
--   [Metal](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/product.py)
--   [Stone](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/product.py)
--   [Inventory](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/inventory.py)
--   [Size](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/inventory.py)
--   [Review](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/review.py)
--   [ShoppingBag](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/shopping_bags/models.py)
--   [Wishlist](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/wishlists/models.py)
+-   UserCredential [server/src/accounts/models/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/models/user_credential.py)
+-   Order [server/src/orders/models.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/orders/models.py)
+-   BaseProduct [server/src/products/models/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/base.py)
+-   Collection [server/src/products/models/product.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/product.py)
+-   Color [server/src/products/models/product.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/product.py)
+-   Metal [server/src/products/models/product.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/product.py)
+-   Stone [server/src/products/models/product.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/product.py)
+-   Inventory [server/src/products/models/inventory.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/inventory.py)
+-   Size [server/src/products/models/inventory.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/inventory.py)
+-   Review [server/src/products/models/review.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/review.py)
+-   ShoppingBag [server/src/shopping_bags/models.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/shopping_bags/models.py)
+-   Wishlist [server/src/wishlists/models.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/wishlists/models.py)
 
 **The application has 6 forms (implemented with DRF serializers and React components):**
 
--   [User registration form](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/serializers/user_credential.py)
--   [User login form](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/serializers/user_credential.py)
--   [Password change form](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/serializers/user_credential.py)
--   [Product review form](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/serializers/review.py)
--   [Delivery information form](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/serializers/user_profile.py)
--   [Payment form](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/orders/serializers.py)
+-   User registration form [server/src/accounts/serializers/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/serializers/user_credential.py)
+-   User login form [server/src/accounts/serializers/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/serializers/user_credential.py)
+-   Password change form [server/src/accounts/serializers/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/serializers/user_credential.py)
+-   Delivery information form [server/src/accounts/serializers/user_profile.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/serializers/user_profile.py)
+-   Payment form [server/src/orders/serializers.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/orders/serializers.py)
+-   Product review form [server/src/products/serializers/review.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/serializers/review.py)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -130,19 +131,19 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 -   Database configuration with PostgreSQL 13+
 
-**Data Normalization:** The database is organized to keep information tidy and avoid repeating the same data in different places. It follows the main rules of database design:
+**Data Normalization:** The database is organized to avoid repeating the same data in different places. It follows the main rules of database design:
 
 -   **First Normal Form (1NF):** Each table has columns that hold just one piece of information (no lists or groups in a single cell). For example, the `products_color` table has a column for the color name, and each row is a single color.
--   **Second Normal Form (2NF):** All details in a table are linked only to that table's main ID. For example, in the `products_inventory` table, the amount in stock and the price are linked to a specific product and size, so there’s no confusion or extra copies.
+-   **Second Normal Form (2NF):** All details in a table are linked only to that table's main ID. For example, in the `products_inventory` table, the amount in stock and the price are linked to a specific product and size.
 -   **Third Normal Form (3NF):** There are no “hidden” connections between details. For example, product features like color, metal, and stone are always stored in their own tables and linked by ID, so if we change a color’s name, it updates everywhere at once.
 
 **Entity Relationship Diagram:**
 
 ![ERD](https://res.cloudinary.com/dpgvbozrb/image/upload/v1752592187/ERD.pgerd_w6i0a3.png)
 
-**Multiple storage systems are utilized:**
+**Cloudinary is used to store user profile photos:**
 
--   Cloudinary: [User profile photos are stored in Cloudinary](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/models/user_photo.py)
+-   UserPhoto: [server/src/accounts/models/user_photo.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/models/user_photo.py)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -163,10 +164,10 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 **The application has login/register/logout/delete account functionality:**
 
 -   Complete JWT-based authentication system
--   [UserRegisterView](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
--   [UserLoginView](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
--   [UserLogoutView](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
--   [UserDeleteView](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
+-   UserRegisterView [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
+-   UserLoginView [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
+-   UserLogoutView [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
+-   UserDeleteView [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -177,9 +178,9 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   Anonymous users can browse products and use guest shopping cart/wishlist
 
 > **Note:**  
-> Guest users can add items to their shopping bag and wishlist, with each guest’s data isolated using a unique guest ID. All modifications—adding, removing, or updating items—are performed via API requests to the backend, which centrally enforces inventory validation and business rules. The frontend uses quantity information from the backend to prevent users from adding more items than are available or removing more than they have in their bag. When a guest registers or logs in, their shopping bag and wishlist are migrated to their new account, with checks to prevent duplicate items.
+> Guest users can add, remove, and update items in their shopping bag and wishlist, with each guest’s data kept separate using a unique guest ID. The backend validates all changes, preventing users from adding more items than are available or removing more than they have in their bag. When a guest registers or logs in, their shopping bag and wishlist are merged into their new account.
 >
-> This approach ensures data integrity, a smooth user experience, and prevents errors related to unavailable inventory.
+> The project includes background functionality (using Celery and Redis) to automatically clean up old guest shopping bags and wishlists. However, this feature is only enabled and testable in a local environment—not in production or deployment.
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -218,7 +219,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   Custom admin methods (e.g., product links)
 -   Custom permissions for review moderation
 
-[See implementation](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/admin.py)
+See implementation: [server/src/products/admin.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/admin.py)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -238,7 +239,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 #### **Reviewer Group (Review Moderation):**
 
--   Can approve, and disapprove customer reviews for products they have purchased.
+-   Can approve, and disapprove customer reviews for products they have purchased
 -   Access to Product Reviews section
 
 **User roles are managed from the admin site:**
@@ -251,23 +252,21 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 **Automated Setup:**
 
--   [All admin groups and their associated users are created automatically by a management command ](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/management/commands/create_roles.py)
+-   All admin groups and their associated users are created automatically by a management command: [server/src/accounts/management/commands/create_roles.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/management/commands/create_roles.py)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ### Exception Handling and Data Validation
 
-**Comprehensive exception handling and data validation is implemented:**
-
 -   **Server-side:**
 
-    -   Password validation: [All password changes and registrations are validated using custom logic to enforce strong password policies.](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/validators/password.py)
-    -   Payment & order validation: [All payment details (card number, expiry, CVV, cardholder name) are validated using regex and business rules before processing orders.](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/orders/services.py)
-    -   Model & serializer validation: All user input is validated at the serializer and model level, ensuring only valid data is saved to the database.
+    -   Password validation: [server/src/accounts/validators/password.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/validators/password.py)
+    -   Payment & order validation: [server/src/orders/services.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/orders/services.py)
+    -   Model validation: [server/src/accounts/validators/model.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/validators/models.py)
 
 -   **Client-side:**
     -   Real-time form validation: All forms (registration, login, delivery, payment, password update, etc.) provide instant feedback as users type, using custom React hooks and validation helpers.
-    -   Visual feedback with green/red/blue states: Input fields dynamically change color to indicate validation state (green for valid, red for invalid, blue for focus).
+    -   Visual feedback: Input fields dynamically change color to indicate validation state (green for valid, red for invalid, blue for focus).
     -   Server-side error integration: Any validation errors returned from the backend are mapped to the correct form fields and displayed to the user in real time.
 
 ## 2. Bonus Features
@@ -288,7 +287,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 **Asynchronous views are implemented to optimize user experience and server efficiency for product attribute filtering.**
 
 -   Asynchronous endpoints allow the backend to handle multiple filter and product data requests concurrently, reducing wait times for users.
--   Implementation example: [AsyncBaseAttributeView](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
+-   AsyncBaseAttributeView: [server/src/products/views/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -307,7 +306,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 -   **User photo:** Handles user profile pictures with cloud storage and automatic optimization.
 
--   **Automatic profile and photo creation:** [Django signals ensure that every new user automatically gets a profile and photo record.](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/signals.py)
+-   **Automatic profile and photo creation using signals:** [server/src/accounts/signals.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/signals.py)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -379,7 +378,7 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 
 ---
 
-## 🚀 Quick Start
+## 4. Quick Start
 
 ### Installation
 
@@ -489,13 +488,33 @@ The `python manage.py setup_database` command (run during installation) will:
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
-## 📝 License
+### Background Tasks with Celery
+
+> **Note:**  
+> This functionality is for local testing and demo purposes only. It is not enabled in production or deployment.
+
+**Task Details**
+
+-   **Shopping bag cleanup:** Deletes guest shopping bags older than 2 days and restores their inventory [server/src/shopping_bags/tasks.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/shopping_bags/tasks.py)
+-   **Wishlist cleanup:** Deletes guest wishlists older than 2 days [server/src/wishlists/tasks.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/wishlists/tasks.py)
+-   **Order completion:** Marks orders as completed if they are still pending after 2 days [server/src/orders/tasks.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/orders/tasks.py)
+
+#### How to Run Locally
+
+1. Start Redis on your machine.
+2. In one terminal, run:
+    ```bash
+    celery -A src worker --loglevel=info
+    ```
+3. In another terminal, run:
+    ```bash
+    celery -A src beat --loglevel=info
+    ```
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
+## License
 
 This project is licensed under the MIT License.
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
-
-
-celery -A src worker --loglevel=info
-
-celery -A src beat --loglevel=info

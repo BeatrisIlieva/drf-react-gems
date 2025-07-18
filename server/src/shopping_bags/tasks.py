@@ -10,8 +10,8 @@ from src.shopping_bags.models import ShoppingBag
 
 @shared_task
 def cleanup_expired_bags():
-    # cutoff_date = timezone.now() - timedelta(days=2)
-    cutoff_date = timezone.now() - timedelta(seconds=15) # For testing, set to 30 seconds
+    cutoff_date = timezone.now() - timedelta(days=2)
+    # cutoff_date = timezone.now() - timedelta(seconds=15) # For testing
 
     expired_bags = ShoppingBag.objects.filter(
         user__isnull=True,
