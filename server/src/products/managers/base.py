@@ -65,7 +65,6 @@ class BaseProductManager(models.Manager):
             'price_asc': 'min_price',      # Sort by lowest price first
             'price_desc': '-max_price',    # Sort by highest price first
             'rating': '-average_rating',   # Sort by highest rating first
-            'in_stock': '-inventory__quantity',  # Sort by stock level first
         }
 
         # Get the database field name for ordering
