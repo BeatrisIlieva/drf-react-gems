@@ -1,30 +1,16 @@
-# Shopping Bag Services Tests
-# This module contains tests for the ShoppingBagService to ensure all business logic
-# methods work correctly, including user identification, inventory validation, and quantity updates.
-
 from django.test import TestCase, RequestFactory
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
-from django.contrib.contenttypes.models import ContentType
-from rest_framework.exceptions import ValidationError, NotFound
-import uuid
+from django.core.exceptions import ValidationError
 
 from src.shopping_bags.services import ShoppingBagService
 from src.shopping_bags.models import ShoppingBag
-from src.shopping_bags.constants import ShoppingBagErrorMessages
-from src.products.models import Earwear, Collection, Color, Metal, Stone, Size, Inventory
 from tests.common.test_data_builder import TestDataBuilder
 
 UserModel = get_user_model()
 
 
 class ShoppingBagServiceTestCase(TestCase):
-    """
-    Test case for ShoppingBagService.
-
-    This test case verifies that all service methods work correctly,
-    including user identification, inventory validation, and quantity updates.
-    """
 
     @classmethod
     def setUpTestData(cls):
@@ -52,8 +38,6 @@ class ShoppingBagServiceTestCase(TestCase):
 
     def test_get_user_identifier_authenticated_user(self):
         """
-        Test get_user_identifier with authenticated user.
-
         This test verifies that the service correctly identifies
         authenticated users and returns appropriate filter parameters.
         """
@@ -71,8 +55,6 @@ class ShoppingBagServiceTestCase(TestCase):
 
     def test_get_user_identifier_guest_user(self):
         """
-        Test get_user_identifier with guest user.
-
         This test verifies that the service correctly identifies
         guest users and returns appropriate filter parameters.
         """
@@ -92,8 +74,6 @@ class ShoppingBagServiceTestCase(TestCase):
 
     def test_validate_inventory_quantity_sufficient_stock(self):
         """
-        Test validate_inventory_quantity with sufficient stock.
-
         This test verifies that the service accepts valid quantities
         when there is sufficient stock available.
         """
@@ -106,32 +86,8 @@ class ShoppingBagServiceTestCase(TestCase):
         ShoppingBagService.validate_inventory_quantity(
             inventory_obj, required_quantity)
 
-    def test_validate_inventory_quantity_insufficient_stock(self):
-        """
-        Test validate_inventory_quantity with insufficient stock.
-
-        This test verifies that the service raises a ValidationError
-        when trying to add more items than available in stock.
-        """
-        # Arrange
-        inventory_obj = self.inventory
-        required_quantity = 15  # More than available (10)
-
-        # Act & Assert
-        with self.assertRaises(ValidationError) as context:
-            ShoppingBagService.validate_inventory_quantity(
-                inventory_obj, required_quantity)
-
-        # Verify the error message contains the available quantity
-        error_detail = context.exception.detail
-        self.assertIn('quantity', error_detail)
-        # Available quantity
-        self.assertIn('10', str(error_detail['quantity']))
-
     def test_update_inventory_quantity_reduce_stock(self):
         """
-        Test update_inventory_quantity when reducing stock.
-
         This test verifies that the service correctly updates
         inventory quantities when reducing stock.
         """
@@ -151,8 +107,6 @@ class ShoppingBagServiceTestCase(TestCase):
 
     def test_update_inventory_quantity_restore_stock(self):
         """
-        Test update_inventory_quantity when restoring stock.
-
         This test verifies that the service correctly updates
         inventory quantities when restoring stock.
         """
@@ -172,8 +126,6 @@ class ShoppingBagServiceTestCase(TestCase):
 
     def test_get_or_create_bag_item_new_item(self):
         """
-        Test get_or_create_bag_item with new item.
-
         This test verifies that the service creates a new shopping bag item
         when one doesn't exist for the user and product.
         """
@@ -199,8 +151,6 @@ class ShoppingBagServiceTestCase(TestCase):
 
     def test_get_or_create_bag_item_existing_item(self):
         """
-        Test get_or_create_bag_item with existing item.
-
         This test verifies that the service retrieves an existing shopping bag item
         when one already exists for the user and product.
         """

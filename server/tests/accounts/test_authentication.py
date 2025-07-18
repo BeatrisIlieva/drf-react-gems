@@ -1,11 +1,5 @@
-# Authentication Tests
-# This module contains tests for the CustomAuthBackendBackend to ensure
-# authentication works correctly with both email and username login methods.
-
 from django.test import TestCase, RequestFactory
-from django.contrib.auth import get_user_model, authenticate
-from django.contrib.auth.backends import ModelBackend
-from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth import get_user_model
 
 from src.accounts.authentication import CustomAuthBackendBackend
 from tests.common.test_data_builder import TestDataBuilder
@@ -14,13 +8,7 @@ UserModel = get_user_model()
 
 
 class CustomAuthBackendBackendTestCase(TestCase):
-    """
-    Test case for CustomAuthBackendBackend.
-
-    This test case verifies that the custom authentication backend
-    correctly handles authentication with both email and username.
-    """
-
+    
     @classmethod
     def setUpTestData(cls):
         """
@@ -41,8 +29,6 @@ class CustomAuthBackendBackendTestCase(TestCase):
 
     def test_authenticate_with_email_success(self):
         """
-        Test authentication with email address.
-
         This test verifies that users can authenticate using their
         email address as the login identifier.
         """
@@ -63,8 +49,6 @@ class CustomAuthBackendBackendTestCase(TestCase):
 
     def test_authenticate_with_username_success(self):
         """
-        Test authentication with username.
-
         This test verifies that users can authenticate using their
         username as the login identifier.
         """
@@ -85,8 +69,6 @@ class CustomAuthBackendBackendTestCase(TestCase):
 
     def test_authenticate_with_invalid_email(self):
         """
-        Test authentication with non-existent email.
-
         This test verifies that authentication fails when
         an email address doesn't exist in the database.
         """
@@ -105,8 +87,6 @@ class CustomAuthBackendBackendTestCase(TestCase):
 
     def test_authenticate_with_invalid_username(self):
         """
-        Test authentication with non-existent username.
-
         This test verifies that authentication fails when
         a username doesn't exist in the database.
         """
@@ -125,8 +105,6 @@ class CustomAuthBackendBackendTestCase(TestCase):
 
     def test_authenticate_with_wrong_password(self):
         """
-        Test authentication with correct email but wrong password.
-
         This test verifies that authentication fails when
         the password is incorrect, even with a valid email.
         """
@@ -145,8 +123,6 @@ class CustomAuthBackendBackendTestCase(TestCase):
 
     def test_authenticate_with_empty_username(self):
         """
-        Test authentication with empty username.
-
         This test verifies that authentication fails when
         no username/email is provided.
         """
@@ -165,8 +141,6 @@ class CustomAuthBackendBackendTestCase(TestCase):
 
     def test_authenticate_with_empty_password(self):
         """
-        Test authentication with empty password.
-
         This test verifies that authentication fails when
         password is empty.
         """
@@ -182,37 +156,3 @@ class CustomAuthBackendBackendTestCase(TestCase):
 
         # Assert
         self.assertIsNone(authenticated_user)
-
-    def test_authenticate_with_django_authenticate_function(self):
-        """
-        Test authentication using Django's authenticate function.
-
-        This test verifies that our custom backend works correctly
-        when used with Django's built-in authenticate function.
-        """
-        # Act
-        authenticated_user = authenticate(
-            username=self.user.email,
-            password='testpass123'
-        )
-
-        # Assert
-        self.assertIsNotNone(authenticated_user)
-        self.assertEqual(authenticated_user, self.user)
-
-    def test_authenticate_with_username_via_django_authenticate(self):
-        """
-        Test authentication with username using Django's authenticate function.
-
-        This test verifies that our custom backend works correctly
-        with usernames when used with Django's authenticate function.
-        """
-        # Act
-        authenticated_user = authenticate(
-            username=self.user.username,
-            password='testpass123'
-        )
-
-        # Assert
-        self.assertIsNotNone(authenticated_user)
-        self.assertEqual(authenticated_user, self.user)

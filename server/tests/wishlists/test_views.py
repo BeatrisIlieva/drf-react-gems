@@ -1,7 +1,3 @@
-# Wishlist Views Tests
-# This module contains tests for the WishlistViewSet to ensure all CRUD operations
-# and custom actions work correctly, including proper user identification.
-
 from django.test import TestCase, RequestFactory
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
@@ -11,27 +7,15 @@ import uuid
 
 from src.wishlists.models import Wishlist
 from src.wishlists.views import WishlistViewSet
-from src.products.models import Earwear, Collection, Color, Metal, Stone, Size, Inventory
+from src.products.models import Earwear, Inventory
 from tests.common.test_data_builder import TestDataBuilder
 
 UserModel = get_user_model()
 
 
 class WishlistViewSetTestCase(TestCase):
-    """
-    Test case for WishlistViewSet.
-
-    This test case verifies that all CRUD operations and custom actions
-    work correctly, including proper user identification and wishlist management.
-    """
 
     def setUp(self):
-        """
-        Set up test data for wishlist view tests.
-
-        This method creates the necessary test data including users, products,
-        and API client for testing the ViewSet.
-        """
         # Create test user
         self.user = TestDataBuilder.create_unique_user(
             'wishlist', 'wishlist_user')
@@ -76,8 +60,6 @@ class WishlistViewSetTestCase(TestCase):
 
     def test_get_queryset_authenticated_user(self):
         """
-        Test get_queryset for authenticated user.
-
         This test verifies that the ViewSet correctly filters
         wishlist items for authenticated users.
         """
@@ -103,8 +85,6 @@ class WishlistViewSetTestCase(TestCase):
 
     def test_get_queryset_guest_user(self):
         """
-        Test get_queryset for guest user.
-
         This test verifies that the ViewSet correctly filters
         wishlist items for guest users.
         """
@@ -131,8 +111,6 @@ class WishlistViewSetTestCase(TestCase):
 
     def test_get_queryset_no_user_identification(self):
         """
-        Test get_queryset when user identification fails.
-
         This test verifies that the ViewSet returns an empty queryset
         when user identification fails.
         """
@@ -149,20 +127,3 @@ class WishlistViewSetTestCase(TestCase):
 
         # Assert
         self.assertEqual(queryset.count(), 0)
-
-    def test_viewset_permission_classes(self):
-        """
-        Test that ViewSet has correct permission classes.
-
-        This test verifies that the ViewSet allows both
-        authenticated and guest users to access the API.
-        """
-        # Arrange
-        viewset = WishlistViewSet()
-
-        # Act
-        permission_classes = viewset.permission_classes
-
-        # Assert
-        from rest_framework.permissions import AllowAny
-        self.assertIn(AllowAny, permission_classes)

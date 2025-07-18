@@ -31,12 +31,7 @@ SECRET_KEY = 'django-insecure--3tgzk2%%qtoj@iz7(-ag90sm&4g&(x+xdy%e4&bn#p6*n)83x
 
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    '[::1]',
-    'testserver',  # Required for Django test client; see note above
-]
+ALLOWED_HOSTS = []
 
 # CORS (Cross-Origin Resource Sharing) configuration
 # This allows the React frontend to make API calls
@@ -141,7 +136,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'src.wsgi.application'
 
 AUTHENTICATION_BACKENDS = [
-    # Custom authentication backend for enhanced user management
+    # Custom authentication backend
     'src.accounts.authentication.CustomAuthBackendBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
@@ -213,7 +208,7 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Cloudinary configuration
 cloudinary.config(
-    cloud_name='dpgvbozrb',      # Your Cloudinary cloud name
-    api_key='356773277236827',    # Your Cloudinary API key
-    api_secret='Txaakp6bHutRt-Aw2ocf-dx7aMA'  # Your Cloudinary API secret
+    cloud_name='dpgvbozrb',      
+    api_key='356773277236827',    
+    api_secret='Txaakp6bHutRt-Aw2ocf-dx7aMA'  
 )

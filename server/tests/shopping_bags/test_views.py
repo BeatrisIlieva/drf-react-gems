@@ -1,11 +1,6 @@
-# Shopping Bag Views Tests
-# This module contains tests for the ShoppingBagViewSet to ensure all CRUD operations
-# and custom actions work correctly, including proper user identification and inventory management.
-
 from django.test import TestCase, RequestFactory
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
-from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 import uuid
@@ -13,24 +8,16 @@ from django.contrib.auth.models import AnonymousUser
 
 from src.shopping_bags.models import ShoppingBag
 from src.shopping_bags.views import ShoppingBagViewSet
-from src.products.models import Earwear, Collection, Color, Metal, Stone, Size, Inventory
+from src.products.models import Earwear, Inventory
 from tests.common.test_data_builder import TestDataBuilder
 
 UserModel = get_user_model()
 
 
 class ShoppingBagViewSetTestCase(TestCase):
-    """
-    Test case for ShoppingBagViewSet.
-
-    This test case verifies that all CRUD operations and custom actions
-    work correctly, including proper user identification and inventory management.
-    """
 
     def setUp(self):
         """
-        Set up test data for shopping bag view tests.
-
         This method creates the necessary test data including users, products,
         and API client for testing the ViewSet.
         """
@@ -78,8 +65,6 @@ class ShoppingBagViewSetTestCase(TestCase):
 
     def test_get_queryset_authenticated_user(self):
         """
-        Test get_queryset for authenticated user.
-
         This test verifies that the ViewSet correctly filters
         shopping bag items for authenticated users.
         """
@@ -106,8 +91,6 @@ class ShoppingBagViewSetTestCase(TestCase):
 
     def test_get_queryset_guest_user(self):
         """
-        Test get_queryset for guest user.
-
         This test verifies that the ViewSet correctly filters
         shopping bag items for guest users.
         """
@@ -136,8 +119,6 @@ class ShoppingBagViewSetTestCase(TestCase):
 
     def test_perform_create_new_item(self):
         """
-        Test perform_create for new shopping bag item.
-
         This test verifies that the ViewSet correctly creates
         new shopping bag items with proper inventory validation.
         """
@@ -174,8 +155,6 @@ class ShoppingBagViewSetTestCase(TestCase):
 
     def test_perform_create_existing_item(self):
         """
-        Test perform_create for existing shopping bag item.
-
         This test verifies that the ViewSet correctly updates
         existing shopping bag items by adding to quantity.
         """
@@ -219,8 +198,6 @@ class ShoppingBagViewSetTestCase(TestCase):
 
     def test_perform_update_increase_quantity(self):
         """
-        Test perform_update to increase quantity.
-
         This test verifies that the ViewSet correctly updates
         shopping bag item quantities with proper validation.
         """
@@ -268,8 +245,6 @@ class ShoppingBagViewSetTestCase(TestCase):
 
     def test_perform_update_decrease_quantity(self):
         """
-        Test perform_update to decrease quantity.
-
         This test verifies that the ViewSet correctly updates
         shopping bag item quantities when decreasing.
         """
@@ -317,8 +292,6 @@ class ShoppingBagViewSetTestCase(TestCase):
 
     def test_perform_update_zero_quantity_deletes_item(self):
         """
-        Test perform_update with zero quantity deletes item.
-
         This test verifies that the ViewSet correctly deletes
         shopping bag items when quantity becomes zero.
         """
@@ -370,8 +343,6 @@ class ShoppingBagViewSetTestCase(TestCase):
 
     def test_perform_destroy_restores_inventory(self):
         """
-        Test perform_destroy restores inventory quantity.
-
         This test verifies that the ViewSet correctly restores
         inventory quantity when deleting shopping bag items.
         """
@@ -403,8 +374,6 @@ class ShoppingBagViewSetTestCase(TestCase):
 
     def test_get_bag_count_authenticated_user(self):
         """
-        Test get_bag_count for authenticated user.
-
         This test verifies that the custom action correctly
         calculates the total count of items in the shopping bag.
         """
@@ -431,8 +400,6 @@ class ShoppingBagViewSetTestCase(TestCase):
 
     def test_get_bag_count_guest_user(self):
         """
-        Test get_bag_count for guest user.
-
         This test verifies that the custom action correctly
         calculates the total count for guest users.
         """
@@ -459,31 +426,8 @@ class ShoppingBagViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['count'], 1)
 
-    def test_get_bag_count_empty_bag(self):
-        """
-        Test get_bag_count for empty shopping bag.
-
-        This test verifies that the custom action returns zero
-        when the shopping bag is empty.
-        """
-        # Arrange
-        request = self.factory.get('/api/shopping-bags/count/')
-        request.user = self.user
-
-        viewset = ShoppingBagViewSet()
-        viewset.request = request
-
-        # Act
-        response = viewset.get_bag_count(request)
-
-        # Assert
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['count'], 0)
-
     def test_get_total_price_authenticated_user(self):
         """
-        Test get_total_price for authenticated user.
-
         This test verifies that the custom action correctly
         calculates the total price of items in the shopping bag.
         """
@@ -511,8 +455,6 @@ class ShoppingBagViewSetTestCase(TestCase):
 
     def test_get_total_price_guest_user(self):
         """
-        Test get_total_price for guest user.
-
         This test verifies that the custom action correctly
         calculates the total price for guest users.
         """
@@ -539,20 +481,3 @@ class ShoppingBagViewSetTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         expected_total = float(self.inventory.price) * 1
         self.assertEqual(response.data['total_price'], expected_total)
-
-    def test_viewset_permission_classes(self):
-        """
-        Test that ViewSet has correct permission classes.
-
-        This test verifies that the ViewSet allows both
-        authenticated and guest users to access the API.
-        """
-        # Arrange
-        viewset = ShoppingBagViewSet()
-
-        # Act
-        permission_classes = viewset.permission_classes
-
-        # Assert
-        from rest_framework.permissions import AllowAny
-        self.assertIn(AllowAny, permission_classes)

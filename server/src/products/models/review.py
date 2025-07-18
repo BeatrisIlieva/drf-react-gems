@@ -2,9 +2,9 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from django.core.validators import MaxLengthValidator
 
 from src.products.constants import ReviewFieldLengths
-from src.products.validators.comment import validate_comment_length
 
 User = get_user_model()
 
@@ -54,11 +54,9 @@ class Review(models.Model):
         choices=RATING_CHOICES,
     )
 
-    # validators=[validate_comment_length] enforces max_length at model level
     comment = models.TextField(
-        max_length=ReviewFieldLengths.MAX_COMMENT_LENGTH,
-        blank=False,
-        validators=[validate_comment_length],
+        validators=[
+            MaxLengthValidator(ReviewFieldLengths.MAX_COMMENT_LENGTH),],
     )
 
     # Only approved reviews are displayed publicly

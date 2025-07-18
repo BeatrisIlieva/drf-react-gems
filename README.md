@@ -276,9 +276,9 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 ### Testing Implementation
 
-**The project includes around 130 automated tests, ensuring robust quality and reliability across all backend features.**
+**The project includes around 80 automated tests.**
 
--   Shows 85%+ coverage (`coverage run manage.py test && coverage report`)
+-   Shows 80%+ coverage (`coverage run manage.py test && coverage report`)
 -   Runs all tests (`python manage.py test`)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>

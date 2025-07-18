@@ -8,8 +8,6 @@ UserModel = get_user_model()
 
 class ShoppingBag(models.Model):
     """
-    ShoppingBag model represents items in a user's shopping cart.
-
     This model uses GenericForeignKey to support different types of inventory items
     (earwear, necklaces, rings, etc.) without needing separate models for each type.
 

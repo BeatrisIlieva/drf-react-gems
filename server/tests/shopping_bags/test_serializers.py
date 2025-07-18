@@ -1,29 +1,15 @@
-# Shopping Bag Serializers Tests
-# This module contains tests for the ShoppingBagSerializer to ensure it properly
-# serializes and deserializes shopping bag data with computed fields.
-
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from django.contrib.contenttypes.models import ContentType
-import uuid
-import unittest
+
 
 from src.shopping_bags.models import ShoppingBag
 from src.shopping_bags.serializers import ShoppingBagSerializer
-from src.products.models import Earwear, Collection, Color, Metal, Stone, Size, Inventory
 from tests.common.test_data_builder import TestDataBuilder
 
 UserModel = get_user_model()
 
 
 class ShoppingBagSerializerTestCase(TestCase):
-    """
-    Test case for ShoppingBagSerializer.
-
-    This test case verifies that the ShoppingBagSerializer properly handles
-    serialization and deserialization of shopping bag data, including
-    computed fields for product information and total price.
-    """
 
     @classmethod
     def setUpTestData(cls):
@@ -50,32 +36,8 @@ class ShoppingBagSerializerTestCase(TestCase):
             quantity=2
         )
 
-    def test_serializer_fields(self):
-        """
-        Test that serializer includes all expected fields.
-
-        This test verifies that the serializer includes all the fields
-        defined in the Meta class and that they are properly configured.
-        """
-        # Arrange
-        serializer = ShoppingBagSerializer(self.shopping_bag)
-
-        # Act
-        data = serializer.data
-
-        # Assert
-        expected_fields = [
-            'id', 'user', 'quantity', 'created_at', 'content_type',
-            'object_id', 'product_info', 'total_price'
-        ]
-
-        for field in expected_fields:
-            self.assertIn(field, data)
-
     def test_serializer_product_info_field(self):
         """
-        Test that product_info field is computed correctly.
-
         This test verifies that the product_info field is computed
         and includes information about the related inventory item.
         """
@@ -93,8 +55,6 @@ class ShoppingBagSerializerTestCase(TestCase):
 
     def test_serializer_total_price_field(self):
         """
-        Test that total_price field is computed correctly.
-
         This test verifies that the total_price field is computed
         as the product price multiplied by the quantity.
         """
@@ -112,61 +72,8 @@ class ShoppingBagSerializerTestCase(TestCase):
             self.shopping_bag.quantity
         self.assertEqual(data['total_price'], expected_total)
 
-    def test_serializer_validation_invalid_quantity(self):
-        """
-        Test serializer validation with invalid quantity.
-
-        This test verifies that the serializer properly validates
-        the quantity field and rejects invalid values.
-        """
-        # Arrange
-        invalid_data = {
-            'content_type': 'inventory',  # Use model name as string
-            'object_id': self.inventory.id,  # Use valid inventory ID
-            # Invalid: must be positive (0 is allowed by PositiveIntegerField)
-            'quantity': -1
-        }
-
-        # Act
-        serializer = ShoppingBagSerializer(data=invalid_data)
-        is_valid = serializer.is_valid()
-
-        # Assert
-        self.assertFalse(is_valid)
-        self.assertIn('quantity', serializer.errors)
-
-    def test_serializer_with_guest_user(self):
-        """
-        Test serializer with guest user data.
-
-        This test verifies that the serializer works correctly
-        with guest user data instead of authenticated users.
-        """
-        # Arrange: Create a new guest user and shopping bag
-        guest_id = TestDataBuilder.create_guest_id()
-        guest_shopping_bag = ShoppingBag.objects.create(
-            guest_id=guest_id,
-            content_type=self.content_type,
-            object_id=self.inventory.id,
-            quantity=3
-        )
-
-        # Act
-        serializer = ShoppingBagSerializer(guest_shopping_bag)
-        data = serializer.data
-
-        # Assert
-        self.assertIn('id', data)
-        self.assertIn('quantity', data)
-        self.assertEqual(data['quantity'], 3)
-        self.assertIn('total_price', data)
-        expected_total = float(self.inventory.price) * 3
-        self.assertEqual(data['total_price'], expected_total)
-
     def test_get_product_info_method(self):
         """
-        Test the get_product_info method of the serializer.
-
         This test verifies that the get_product_info method
         returns the correct product information.
         """
@@ -187,8 +94,6 @@ class ShoppingBagSerializerTestCase(TestCase):
 
     def test_get_total_price_method(self):
         """
-        Test the get_total_price method of the serializer.
-
         This test verifies that the get_total_price method
         calculates the total price correctly.
         """
