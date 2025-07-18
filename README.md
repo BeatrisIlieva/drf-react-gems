@@ -470,6 +470,8 @@ npm install
 npm start
 ```
 
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
 ### Database Population
 
 The `python manage.py setup_database` command (run during installation) will:
