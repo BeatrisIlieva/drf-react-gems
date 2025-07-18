@@ -14,11 +14,10 @@ export const useShoppingBag = () => {
     const { isAuthenticated } = useAuth();
 
     const createItem = useCallback(
-        async ({ contentType, objectId, quantity }) => {
+        async ({ inventory, quantity }) => {
             const data = {
-                content_type: contentType,
-                object_id: objectId,
-                quantity: quantity,
+                inventory,
+                quantity,
             };
             try {
                 const response = await post(`${baseUrl}/`, {
@@ -52,16 +51,15 @@ export const useShoppingBag = () => {
     );
 
     const updateItem = useCallback(
-        async ({ contentType, objectId, quantity, id }) => {
+        async ({ inventory, quantity, id }) => {
             if (quantity <= 0) {
                 await deleteItem(id);
                 return { success: true };
             }
 
             const data = {
-                content_type: contentType,
-                object_id: objectId,
-                quantity: quantity,
+                inventory,
+                quantity,
             };
 
             try {

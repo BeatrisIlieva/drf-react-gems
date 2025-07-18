@@ -56,9 +56,6 @@ class ShoppingBagViewSetTestCase(TestCase):
             object_id=self.earwear.id
         )
 
-        # Get content type for inventory
-        self.content_type = ContentType.objects.get_for_model(Inventory)
-
         # Create API client
         self.client = APIClient()
         self.factory = RequestFactory()
@@ -71,8 +68,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         # Arrange
         shopping_bag = ShoppingBag.objects.create(
             user=self.user,
-            content_type=self.content_type,
-            object_id=self.inventory.id,
+            inventory=self.inventory,
             quantity=2
         )
 
@@ -97,8 +93,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         # Arrange
         shopping_bag = ShoppingBag.objects.create(
             guest_id=self.guest_id,
-            content_type=self.content_type,
-            object_id=self.inventory.id,
+            inventory=self.inventory,
             quantity=1
         )
 
@@ -133,8 +128,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         class MockSerializer:
             def __init__(self, inventory):
                 self.validated_data = {
-                    'content_type': ContentType.objects.get_for_model(Inventory),
-                    'object_id': inventory.id,
+                    'inventory': inventory,
                     'quantity': 2
                 }
                 self.instance = None
@@ -161,8 +155,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         # Arrange
         existing_bag = ShoppingBag.objects.create(
             user=self.user,
-            content_type=self.content_type,
-            object_id=self.inventory.id,
+            inventory=self.inventory,
             quantity=1
         )
 
@@ -176,8 +169,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         class MockSerializer:
             def __init__(self, inventory):
                 self.validated_data = {
-                    'content_type': ContentType.objects.get_for_model(Inventory),
-                    'object_id': inventory.id,
+                    'inventory': inventory,
                     'quantity': 2
                 }
                 self.instance = None
@@ -204,8 +196,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         # Arrange
         shopping_bag = ShoppingBag.objects.create(
             user=self.user,
-            content_type=self.content_type,
-            object_id=self.inventory.id,
+            inventory=self.inventory,
             quantity=1
         )
 
@@ -251,8 +242,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         # Arrange
         shopping_bag = ShoppingBag.objects.create(
             user=self.user,
-            content_type=self.content_type,
-            object_id=self.inventory.id,
+            inventory=self.inventory,
             quantity=3
         )
 
@@ -298,8 +288,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         # Arrange
         shopping_bag = ShoppingBag.objects.create(
             user=self.user,
-            content_type=self.content_type,
-            object_id=self.inventory.id,
+            inventory=self.inventory,
             quantity=2
         )
 
@@ -337,7 +326,7 @@ class ShoppingBagViewSetTestCase(TestCase):
             id=shopping_bag.id).exists())
 
         # Refresh inventory from db and check quantity
-        inventory = Inventory.objects.get(id=shopping_bag.object_id)
+        inventory = Inventory.objects.get(id=self.inventory.id)
         inventory.refresh_from_db()
         self.assertEqual(inventory.quantity, 10)  # Original quantity restored
 
@@ -349,8 +338,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         # Arrange
         shopping_bag = ShoppingBag.objects.create(
             user=self.user,
-            content_type=self.content_type,
-            object_id=self.inventory.id,
+            inventory=self.inventory,
             quantity=3
         )
 
@@ -380,8 +368,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         # Arrange
         ShoppingBag.objects.create(
             user=self.user,
-            content_type=self.content_type,
-            object_id=self.inventory.id,
+            inventory=self.inventory,
             quantity=2
         )
 
@@ -406,8 +393,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         # Arrange
         ShoppingBag.objects.create(
             guest_id=self.guest_id,
-            content_type=self.content_type,
-            object_id=self.inventory.id,
+            inventory=self.inventory,
             quantity=1
         )
 
@@ -434,8 +420,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         # Arrange
         ShoppingBag.objects.create(
             user=self.user,
-            content_type=self.content_type,
-            object_id=self.inventory.id,
+            inventory=self.inventory,
             quantity=2
         )
 
@@ -461,8 +446,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         # Arrange
         ShoppingBag.objects.create(
             guest_id=self.guest_id,
-            content_type=self.content_type,
-            object_id=self.inventory.id,
+            inventory=self.inventory,
             quantity=1
         )
 

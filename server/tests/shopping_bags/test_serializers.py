@@ -26,13 +26,11 @@ class ShoppingBagSerializerTestCase(TestCase):
         cls.earwear = cls.shared_data['earwear']
         cls.size = cls.shared_data['size']
         cls.inventory = cls.shared_data['inventory']
-        cls.content_type = cls.shared_data['inventory_content_type']
 
         # Create test shopping bag item
         cls.shopping_bag = ShoppingBag.objects.create(
             user=cls.user,
-            content_type=cls.content_type,
-            object_id=cls.inventory.id,
+            inventory=cls.inventory,
             quantity=2
         )
 

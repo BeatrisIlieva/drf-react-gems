@@ -45,12 +45,8 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
             ).select_related(
                 # select_related() performs a SQL JOIN to fetch related objects
                 # This reduces the number of database queries
-                'content_type',
+                'inventory',
                 'user'
-            ).prefetch_related(
-                # prefetch_related() performs a separate query to fetch related objects
-                # This is used for GenericForeignKey relationships
-                'inventory'
             )
         except ValidationError:
             # Return empty queryset if user identification fails
@@ -65,21 +61,16 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
         # Get user identification filters
         user_filters = ShoppingBagService.get_user_identifier(self.request)
         validated_data = serializer.validated_data
-        content_type = validated_data['content_type']
-        object_id = validated_data['object_id']
+        inventory = validated_data['inventory']
         quantity_to_add = validated_data['quantity']
 
         # Get the inventory object and validate stock availability
-        inventory_obj = ShoppingBagService.get_inventory_object(
-            content_type, object_id
-        )
         ShoppingBagService.validate_inventory_quantity(
-            inventory_obj, quantity_to_add)
+            inventory, quantity_to_add)
 
         # Create filters for finding existing bag item
         filters = {
-            'content_type': content_type,
-            'object_id': object_id,
+            'inventory': inventory,
             **user_filters
         }
 
@@ -94,14 +85,14 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
             new_total_quantity = bag_item.quantity + quantity_to_add
             # Re-validate to ensure we don't exceed stock
             ShoppingBagService.validate_inventory_quantity(
-                inventory_obj, quantity_to_add
+                inventory, quantity_to_add
             )
             bag_item.quantity = new_total_quantity
             bag_item.save(update_fields=['quantity'])
 
         # Update inventory quantity (reduce available stock)
         ShoppingBagService.update_inventory_quantity(
-            inventory_obj, quantity_to_add
+            inventory, quantity_to_add
         )
 
         # Set the instance for the serializer
@@ -123,9 +114,7 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
             return self.perform_destroy(instance)
 
         # Get inventory object for validation
-        inventory_obj = ShoppingBagService.get_inventory_object(
-            instance.content_type, instance.object_id
-        )
+        inventory = instance.inventory
 
         # Calculate the change in quantity
         quantity_delta = new_quantity - instance.quantity
@@ -133,12 +122,12 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
         # If adding more items, validate stock availability
         if quantity_delta > 0:
             ShoppingBagService.validate_inventory_quantity(
-                inventory_obj, quantity_delta
+                inventory, quantity_delta
             )
 
         # Update inventory quantity
         ShoppingBagService.update_inventory_quantity(
-            inventory_obj, quantity_delta
+            inventory, quantity_delta
         )
 
         # Save the updated instance
@@ -151,13 +140,11 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
         the corresponding inventory quantity.
         """
         # Get inventory object to restore quantity
-        inventory_obj = ShoppingBagService.get_inventory_object(
-            instance.content_type, instance.object_id
-        )
+        inventory = instance.inventory
 
         # Restore inventory quantity (add back to available stock)
         ShoppingBagService.update_inventory_quantity(
-            inventory_obj, -instance.quantity
+            inventory, -instance.quantity
         )
 
         # Delete the shopping bag item
@@ -206,7 +193,7 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
 
             # Get all bag items with their inventory information
             bag_items = ShoppingBag.objects.filter(**user_filters).select_related(
-                'content_type'
+                'inventory'
             )
 
             # Calculate total price by summing (price * quantity) for each item

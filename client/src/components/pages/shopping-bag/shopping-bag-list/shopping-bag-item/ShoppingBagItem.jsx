@@ -12,14 +12,7 @@ import { formatPrice } from '../../../../../utils/formatPrice';
 
 import styles from './ShoppingBagItem.module.scss';
 
-export const ShoppingBagItem = ({
-    quantity,
-    totalPrice,
-    productInfo,
-    id,
-    contentType,
-    objectId,
-}) => {
+export const ShoppingBagItem = ({ quantity, totalPrice, productInfo, id, inventory }) => {
     const { deleteShoppingBagHandler, isDeleting } = useShoppingBagContext();
     const { addToWishlist, isInWishlist } = useWishlistContext();
     const { refreshProduct } = useProductItemContext();
@@ -119,8 +112,7 @@ export const ShoppingBagItem = ({
                 <QuantitySelector
                     quantity={quantity}
                     id={id}
-                    contentType={contentType}
-                    objectId={objectId}
+                    inventory={inventory}
                     availableQuantity={productInfo.availableQuantity}
                 />
             </span>

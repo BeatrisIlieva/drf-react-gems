@@ -4,11 +4,9 @@ from django.contrib.auth import get_user_model
 from src.accounts.utils import (
     migrate_guest_bag_to_user,
     migrate_guest_wishlist_to_user,
-    migrate_guest_data_to_user
 )
 from src.shopping_bags.models import ShoppingBag
 from src.wishlists.models import Wishlist
-from src.products.models import Earwear,  Inventory
 from tests.common.test_data_builder import TestDataBuilder
 
 UserModel = get_user_model()
@@ -52,8 +50,7 @@ class AccountsUtilsTestCase(TestCase):
         # Arrange
         guest_bag_item = ShoppingBag.objects.create(
             guest_id=self.guest_id,
-            content_type=self.content_type,
-            object_id=self.inventory.id,
+            inventory=self.inventory,
             quantity=2
         )
 
@@ -73,8 +70,7 @@ class AccountsUtilsTestCase(TestCase):
         # Arrange: Create guest shopping bag items
         guest_bag_item = ShoppingBag.objects.create(
             guest_id=self.guest_id,
-            content_type=self.content_type,
-            object_id=self.inventory.id,
+            inventory=self.inventory,
             quantity=2
         )
 

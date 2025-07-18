@@ -8,7 +8,7 @@ import { useShoppingBagContext } from '../../../../../../contexts/ShoppingBagCon
 
 import styles from './QuantitySelector.module.scss';
 
-export const QuantitySelector = ({ quantity, id, objectId, contentType, availableQuantity }) => {
+export const QuantitySelector = ({ quantity, id, inventory, availableQuantity }) => {
     const { updateItem } = useShoppingBag();
     const { refreshShoppingBag } = useShoppingBagContext();
     const [isUpdating, setIsUpdating] = useState(false);
@@ -29,8 +29,7 @@ export const QuantitySelector = ({ quantity, id, objectId, contentType, availabl
         setIsUpdating(true);
         try {
             await updateItem({
-                contentType,
-                objectId,
+                inventory,
                 quantity: newQuantity,
                 id,
             });

@@ -17,9 +17,7 @@ export const SizeList = () => {
                             selectedSize === item.size.id ? styles['selected'] : ''
                         } ${notSelectedSizeError === true ? styles['error'] : ''}`.trim()}
                         disabled={item.quantity === 0}
-                        onClick={() =>
-                            setSelectedSizeHandler(item.size.id, item.contentType, item.objectId)
-                        }
+                        onClick={() => setSelectedSizeHandler(item.size.id, item.id)}
                     >
                         {item.size.name}
                     </button>

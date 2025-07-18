@@ -19,8 +19,8 @@ export const OrderProductItem = ({ product }) => {
     const [isLoadingReview, setIsLoadingReview] = useState(false);
 
     const productInfo = product.productInfo;
-    const contentType = product.productContentType || product.product_content_type;
-    const objectId = product.productObjectId || product.product_object_id;
+    const contentType = product.productContentType;
+    const objectId = product.productObjectId;
 
     useEffect(() => {
         const loadReview = async () => {
@@ -66,8 +66,6 @@ export const OrderProductItem = ({ product }) => {
                 <div className={styles['product-info']}>
                     <h4>{`${productInfo.collection} ${productInfo.category}`}</h4>
                     <p>{`${productInfo.color} ${productInfo.stone} set in ${productInfo.metal}`}</p>
-                    <p>Size: {productInfo.size}</p>
-                    <p>Quantity: {product.quantity}</p>
                 </div>
             </div>
 

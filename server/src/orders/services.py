@@ -1,6 +1,6 @@
 from django.db import transaction
 
-from rest_framework.exceptions import ValidationError, NotFound
+from rest_framework.exceptions import ValidationError
 
 from datetime import datetime
 import re
@@ -112,16 +112,6 @@ class OrderService:
         return UserIdentificationService.get_user_identifier(request)
 
     @staticmethod
-    def get_inventory_object(content_type, object_id):
-        # Retrieves the product instance (inventory) for a given content type and object ID
-        try:
-            return content_type.get_object_for_this_type(pk=object_id)
-
-        except content_type.model_class().DoesNotExist:
-            raise NotFound('Product not found')
-
-    @staticmethod
-    # Ensures all DB operations succeed or fail together (no partial orders)
     @transaction.atomic
     def process_order_from_shopping_bag(user, payment_data):
         # Validates payment data before processing
@@ -130,8 +120,6 @@ class OrderService:
         shopping_bag_items = ShoppingBag.objects.filter(
             user=user
         ).select_related(
-            'content_type'
-        ).prefetch_related(
             'inventory'
         )
 
@@ -144,8 +132,7 @@ class OrderService:
         for bag_item in shopping_bag_items:
             order = Order.objects.create(
                 user=user,
-                content_type=bag_item.content_type,
-                object_id=bag_item.object_id,
+                inventory=bag_item.inventory,
                 quantity=bag_item.quantity,
                 order_group=order_group,
             )
@@ -161,26 +148,37 @@ class OrderService:
         return Order.objects.filter(
             user=user
         ).select_related(
-            'content_type',
+            'inventory',
             'user'
-        ).prefetch_related(
-            'inventory'
         ).order_by(
             '-created_at'
         )
 
     @staticmethod
     def get_user_orders_grouped(user):
-        # Groups orders by order_group (all products purchased together)
+        """
+        Groups orders by order_group, but only includes one entry per unique product (not per inventory/size).
+        The order group total is still calculated as the sum of all order items in the group.
+        Do not modify the order objects (do not set quantity to None).
+        """
         orders = OrderService.get_user_orders(user)
         grouped_orders = {}
 
         for order in orders:
             order_group_str = str(order.order_group)
             if order_group_str not in grouped_orders:
-                grouped_orders[order_group_str] = []
-            grouped_orders[order_group_str].append(order)
-
+                grouped_orders[order_group_str] = {}
+            # Use (product_content_type, product_object_id) as the unique key
+            inventory = order.inventory
+            product = getattr(inventory, 'product', None)
+            if not product:
+                continue
+            product_key = (product._meta.model_name, product.id)
+            if product_key not in grouped_orders[order_group_str]:
+                grouped_orders[order_group_str][product_key] = order
+        # Convert dicts to lists for serializer compatibility
+        for group in grouped_orders:
+            grouped_orders[group] = list(grouped_orders[group].values())
         return grouped_orders
 
     @staticmethod
@@ -189,7 +187,7 @@ class OrderService:
         orders = Order.objects.filter(
             user=user,
             order_group=order_group_id
-        ).prefetch_related('inventory')
+        ).select_related('inventory')
         total = 0.0
 
         for order in orders:

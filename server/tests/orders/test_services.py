@@ -3,7 +3,7 @@ from unittest.mock import patch
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
-from rest_framework.exceptions import ValidationError, NotFound
+from rest_framework.exceptions import ValidationError
 
 from src.orders.models import Order
 from src.orders.services import PaymentValidationService, OrderService
@@ -116,9 +116,6 @@ class OrderServiceTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        """
-        Set up shared test data for all test methods in this class.
-        """
         cls.shared_data = TestDataBuilder.create_shared_data()
         cls.user = cls.shared_data['user']
         cls.collection = cls.shared_data['collection']
@@ -128,19 +125,12 @@ class OrderServiceTest(TestCase):
         cls.earwear = cls.shared_data['earwear']
         cls.size = cls.shared_data['size']
         cls.inventory = cls.shared_data['inventory']
-        cls.content_type = cls.shared_data['earwear_content_type']
 
     def test_process_order_from_shopping_bag(self):
-        """
-        Test that process_order_from_shopping_bag creates orders correctly.
-        """
-        # Arrange: Create shopping bag items
-        user = TestDataBuilder.create_authenticated_user(
-            '_order_user', '_order_user')
+        user = TestDataBuilder.create_authenticated_user('_order_user', '_order_user')
         ShoppingBag.objects.create(
             user=user,
-            content_type=self.content_type,
-            object_id=self.earwear.id,
+            inventory=self.inventory,
             quantity=2
         )
         payment_data = {
@@ -149,19 +139,12 @@ class OrderServiceTest(TestCase):
             'cvv': '123',
             'expiry_date': '12/30',
         }
-
-        # Act
-        orders = OrderService.process_order_from_shopping_bag(
-            user, payment_data)
-
-        # Assert
+        orders = OrderService.process_order_from_shopping_bag(user, payment_data)
         self.assertEqual(len(orders), 1)
         order = orders[0]
         self.assertEqual(order.user, user)
         self.assertEqual(order.quantity, 2)
-        self.assertEqual(order.object_id, self.earwear.id)
-
-        # Verify shopping bag was cleared
+        self.assertEqual(order.inventory, self.inventory)
         self.assertFalse(ShoppingBag.objects.filter(user=user).exists())
 
     def test_process_order_from_empty_shopping_bag(self):
@@ -183,32 +166,21 @@ class OrderServiceTest(TestCase):
             OrderService.process_order_from_shopping_bag(user, payment_data)
 
     def test_get_user_orders_and_grouped(self):
-        """
-        Test that get_user_orders_and_grouped returns correct data structure.
-        """
-        # Arrange: Create some orders for the user
-        user = TestDataBuilder.create_authenticated_user(
-            '_grouped_user', '_grouped_user')
+        user = TestDataBuilder.create_authenticated_user('_grouped_user', '_grouped_user')
         order1 = Order.objects.create(
             user=user,
-            content_type=self.content_type,
-            object_id=self.earwear.id,
+            inventory=self.inventory,
             quantity=1,
             status='PE'
         )
         order2 = Order.objects.create(
             user=user,
-            content_type=self.content_type,
-            object_id=self.earwear.id,
+            inventory=self.inventory,
             quantity=2,
             status='CO'
         )
-
-        # Act
         orders = OrderService.get_user_orders(user)
         grouped = OrderService.get_user_orders_grouped(user)
-
-        # Assert
         self.assertEqual(orders.count(), 2)
         self.assertIn(str(order1.order_group), grouped)
         self.assertIn(str(order2.order_group), grouped)

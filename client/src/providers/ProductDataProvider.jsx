@@ -55,24 +55,46 @@ export const ProductDataProvider = ({
         loadProduct();
     }, [categoryName, productId, getProductItem, productData]);
 
+    const updateSelectedInventoryHandler = (inventoryId) => {
+        setSelectedInventory({
+            quantity: 1,
+            inventory: inventoryId,
+        });
+    };
+
+    const setSelectedSizeHandler = useCallback(
+        (size, inventoryId) => {
+            if (selectedSize === null) {
+                setSelectedSize(size);
+                setNotSelectedSizeError(false);
+                updateSelectedInventoryHandler(inventoryId);
+            } else if (selectedSize === size) {
+                setSelectedSize(null);
+                setNotSelectedSizeError(null);
+                setSelectedInventory(null);
+            } else {
+                setSelectedSize(size);
+                setNotSelectedSizeError(false);
+                updateSelectedInventoryHandler(inventoryId);
+            }
+        },
+        [selectedSize]
+    );
+
     const createShoppingBagHandler = useCallback(async () => {
         if (selectedSize === null) {
             setNotSelectedSizeError(true);
-
             return false;
         }
-
         try {
             await createShoppingBagItemHandler(selectedInventory);
-
             if (product && selectedInventory) {
                 setProduct(prevProduct => {
                     if (!prevProduct) return null;
-
                     const updatedProduct = {
                         ...prevProduct,
                         inventory: prevProduct.inventory.map(item => {
-                            if (item.id === selectedInventory.objectId) {
+                            if (item.id === selectedInventory.inventory) {
                                 return {
                                     ...item,
                                     quantity: Math.max(
@@ -84,16 +106,13 @@ export const ProductDataProvider = ({
                             return item;
                         }),
                     };
-
                     return updatedProduct;
                 });
             }
-
             setSelectedSize(null);
             setSelectedInventory(null);
             refreshShoppingBag();
             openMiniBagPopup();
-
             return true;
         } catch (error) {
             return false;
@@ -106,33 +125,6 @@ export const ProductDataProvider = ({
         refreshShoppingBag,
         openMiniBagPopup,
     ]);
-
-    const updateSelectedInventoryHandler = (contentType, objectId) => {
-        setSelectedInventory({
-            quantity: 1,
-            contentType,
-            objectId,
-        });
-    };
-
-    const setSelectedSizeHandler = useCallback(
-        (size, contentType, objectId) => {
-            if (selectedSize === null) {
-                setSelectedSize(size);
-                setNotSelectedSizeError(false);
-                updateSelectedInventoryHandler(contentType, objectId);
-            } else if (selectedSize === size) {
-                setSelectedSize(null);
-                setNotSelectedSizeError(null);
-                setSelectedInventory(null);
-            } else {
-                setSelectedSize(size);
-                setNotSelectedSizeError(false);
-                updateSelectedInventoryHandler(contentType, objectId);
-            }
-        },
-        [selectedSize]
-    );
 
     const isSoldOut = useMemo(() => {
         if (!product || !product.inventory || product.inventory.length === 0) {

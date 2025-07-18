@@ -1,7 +1,6 @@
 from django.test import TestCase, RequestFactory
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
-from django.core.exceptions import ValidationError
 
 from src.shopping_bags.services import ShoppingBagService
 from src.shopping_bags.models import ShoppingBag
@@ -134,8 +133,7 @@ class ShoppingBagServiceTestCase(TestCase):
             '_new_item', '_new_item')
         filters = {
             'user': user,
-            'content_type': self.content_type,
-            'object_id': self.inventory.id
+            'inventory': self.inventory
         }
         defaults = {'quantity': 2}
 
@@ -147,7 +145,7 @@ class ShoppingBagServiceTestCase(TestCase):
         self.assertTrue(created)
         self.assertEqual(bag_item.user, user)
         self.assertEqual(bag_item.quantity, 2)
-        self.assertEqual(bag_item.object_id, self.inventory.id)
+        self.assertEqual(bag_item.inventory, self.inventory)
 
     def test_get_or_create_bag_item_existing_item(self):
         """
@@ -160,14 +158,12 @@ class ShoppingBagServiceTestCase(TestCase):
         # Create existing bag item
         existing_item = ShoppingBag.objects.create(
             user=user,
-            content_type=self.content_type,
-            object_id=self.inventory.id,
+            inventory=self.inventory,
             quantity=1
         )
         filters = {
             'user': user,
-            'content_type': self.content_type,
-            'object_id': self.inventory.id
+            'inventory': self.inventory
         }
         defaults = {'quantity': 3}
 
