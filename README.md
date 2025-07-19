@@ -274,7 +274,7 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 
 ### Testing Implementation
 
-**The project includes around 80 automated tests.**
+**The project includes around 70+ automated tests.**
 
 -   Shows 80%+ coverage (`coverage run manage.py test && coverage report`)
 -   Runs all tests (`python manage.py test`)
