@@ -13,8 +13,8 @@ export const RelatedProducts = () => {
         <section className={styles['related-products']}>
             <h4>You may also like</h4>
             <ul>
-                {products.map(product => (
-                    <li key={product.id} className={styles['related-product']}>
+                {products.map((product, index) => (
+                    <li key={`related-product-${index}`} className={styles['related-product']}>
                         <Link to={`/products/${product.productType}/${product.id}`}>
                             <img src={product.firstImage} alt={`Related product ${product.id}`} />
                         </Link>
