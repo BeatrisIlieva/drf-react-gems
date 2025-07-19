@@ -1,0 +1,32 @@
+.checkout-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2em;
+    font-size: 1.1em;
+    letter-spacing: 0.02em;
+
+    @media (min-width: 900px) {
+        padding-inline: 6em;
+    }
+
+    h2 {
+        margin-bottom: 0;
+        text-transform: uppercase;
+    }
+
+    div {
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+        gap: 0.25em;
+
+        span {
+            opacity: 0.4;
+
+            &.active {
+                opacity: 1;
+            }
+        }
+    }
+}

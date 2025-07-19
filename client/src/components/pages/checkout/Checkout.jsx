@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router';
 
-import { Button } from '../../reusable/button/Button';
-import { CheckoutHeader } from '../../reusable/checkout-header/CheckoutHeader';
+import { CheckoutHeader } from '../../common/checkout-header/CheckoutHeader';
 import { ComplimentaryShipping } from '../../reusable/complimentary-shipping/ComplimentaryShipping';
 import { Delivery } from '../../reusable/delivery/Delivery';
 import { OrderSummary } from '../../reusable/order-summary/OrderSummary';
@@ -34,7 +33,7 @@ export const Checkout = () => {
 
     return (
         <PaddedContainer backgroundColor="lightest-grey">
-            <CheckoutHeader title="Checkout" activePath="Shipping" inactivePath="Payment" />
+            <CheckoutHeader />
             <section className={styles['checkout']}>
                 <div className={styles['wrapper-left']}>
                     <ShadowBox>

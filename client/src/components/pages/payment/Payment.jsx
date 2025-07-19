@@ -1,3 +1,4 @@
+import { CheckoutHeader } from '../../common/checkout-header/CheckoutHeader';
 import { Delivery } from '../../reusable/delivery/Delivery';
 import { OrderSummary } from '../../reusable/order-summary/OrderSummary';
 import { PaddedContainer } from '../../reusable/padded-container/PaddedContainer';
@@ -14,6 +15,7 @@ export const Payment = () => {
 
     return (
         <PaddedContainer backgroundColor="lightest-grey">
+            <CheckoutHeader />
             <section className={styles['checkout']}>
                 <div className={styles['wrapper-left']}>
                     <ShippingInformation />
