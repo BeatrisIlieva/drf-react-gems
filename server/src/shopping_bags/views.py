@@ -1,5 +1,5 @@
 from django.db import transaction
-from django.db.models import Sum
+from django.db.models import Sum, F
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -191,17 +191,9 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
             # Get user identification filters
             user_filters = ShoppingBagService.get_user_identifier(request)
 
-            # Get all bag items with their inventory information
-            bag_items = ShoppingBag.objects.filter(**user_filters).select_related(
-                'inventory'
-            )
-
-            # Calculate total price by summing (price * quantity) for each item
-            total_price = sum(
-                float(item.inventory.price) * item.quantity
-                for item in bag_items
-                if item.inventory and hasattr(item.inventory, 'price')
-            )
+            total_price = ShoppingBag.objects.filter(**user_filters).aggregate(
+                total=Sum(F('inventory__price') * F('quantity'))
+            )['total'] or 0
 
             return Response({
                 'total_price': round(total_price, 2)

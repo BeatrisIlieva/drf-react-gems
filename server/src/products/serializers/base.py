@@ -126,10 +126,10 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
                 })
             return result
 
+        related_products.extend(serialize_products_of_type(Wristwear))
         related_products.extend(serialize_products_of_type(Earwear))
         related_products.extend(serialize_products_of_type(Neckwear))
         related_products.extend(serialize_products_of_type(Fingerwear))
-        related_products.extend(serialize_products_of_type(Wristwear))
 
         return related_products[:6]
 

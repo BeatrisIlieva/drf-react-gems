@@ -28,9 +28,6 @@ import { MiniBagPopup } from './components/reusable/user-action/mini-bag-popup/M
 
 import styles from './App.module.scss';
 
-console.log(import.meta.env.NODE_ENV);
-console.log(import.meta.env.VITE_APP_SERVER_URL);
-
 function App() {
     const { isMiniBagPopupOpen, toggleMiniBagPopupOpen } = useShoppingBagContext();
     return (
