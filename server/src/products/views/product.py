@@ -42,7 +42,6 @@ from src.products.views.base import (
     BaseAttributeView,
     BaseProductItemView,
     BaseProductListView,
-    AsyncBaseAttributeView
 )
 
 from rest_framework.views import APIView
@@ -111,26 +110,6 @@ class MetalRetrieveView(BaseAttributeView):
 
 
 class StoneRetrieveView(BaseAttributeView):
-    model = Stone
-    serializer_class = StoneSerializer
-
-
-class AsyncCollectionRetrieveView(AsyncBaseAttributeView):
-    model = Collection
-    serializer_class = CollectionSerializer
-
-
-class AsyncColorRetrieveView(AsyncBaseAttributeView):
-    model = Color
-    serializer_class = ColorSerializer
-
-
-class AsyncMetalRetrieveView(AsyncBaseAttributeView):
-    model = Metal
-    serializer_class = MetalSerializer
-
-
-class AsyncStoneRetrieveView(AsyncBaseAttributeView):
     model = Stone
     serializer_class = StoneSerializer
 

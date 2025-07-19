@@ -6,11 +6,6 @@ from src.products.views.product import (
     ColorRetrieveView,
     MetalRetrieveView,
     StoneRetrieveView,
-    # Async views for improved performance
-    AsyncCollectionRetrieveView,
-    AsyncColorRetrieveView,
-    AsyncMetalRetrieveView,
-    AsyncStoneRetrieveView
 )
 from src.products.views.product import (
     EarwearItemView,
@@ -71,19 +66,6 @@ urlpatterns = [
     ),
     path(
         'metals/', MetalRetrieveView.as_view(), name='metal-retrieve'
-    ),
-    # Asynchronous attribute views for improved performance
-    path(
-        'stones/async/', AsyncStoneRetrieveView.as_view(), name='stone-retrieve-async'
-    ),
-    path(
-        'colors/async/', AsyncColorRetrieveView.as_view(), name='color-retrieve-async'
-    ),
-    path(
-        'collections/async/', AsyncCollectionRetrieveView.as_view(), name='collection-retrieve-async'
-    ),
-    path(
-        'metals/async/', AsyncMetalRetrieveView.as_view(), name='metal-retrieve-async'
     ),
     path('<str:category>/<int:pk>/all-reviews/', ProductAllReviewsView.as_view(), name='product-all-reviews'),
 ]
