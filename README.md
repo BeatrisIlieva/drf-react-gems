@@ -49,7 +49,6 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   [Object-Oriented Design](#object-oriented-design)
 -   [User Interface](#user-interface)
 -   [User Experience](#user-experience)
--   [Source Control System](#source-control-system)
 
 ### 4. Quick Start
 
@@ -362,17 +361,6 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 -   **Accessible and intuitive navigation:** The application uses clear navigation patterns and accessible controls.
 
 -   **Consistent user experience:** All interactive elements, from buttons to forms and popups, follow a unified style and behavior.
-
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
-
----
-
-### Source Control System
-
-**GitHub source control system is used for version control**
-
--   GitHub repository
--   Complete project history with 450+ commits over 4 months
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
