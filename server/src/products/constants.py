@@ -8,6 +8,10 @@ class InventoryFiledLengths:
     PRICE_DECIMAL_PLACES = 2
 
 
+class InventoryDefaults:
+    QUANTITY = 5
+
+
 class ReviewErrorMessages:
     ERROR_INVALID_CONTENT_TYPE_OR_ID = 'Invalid content type or object ID'
 

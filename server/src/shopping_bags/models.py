@@ -1,21 +1,15 @@
+from src.products.models.inventory import Inventory
 from django.db import models
 from django.contrib.auth import get_user_model
 
 UserModel = get_user_model()
 
-from src.products.models.inventory import Inventory
 
 class ShoppingBag(models.Model):
     class Meta:
         unique_together = [
-            # For authenticated users: user + inventory must be unique
             (
                 'user',
-                'inventory'
-            ),
-            # For guest users: guest_id + inventory must be unique
-            (
-                'guest_id',
                 'inventory'
             ),
         ]
@@ -32,12 +26,6 @@ class ShoppingBag(models.Model):
         null=True,
         blank=True,
         on_delete=models.CASCADE,
-    )
-
-    guest_id = models.UUIDField(
-        null=True,
-        blank=True,
-        db_index=True
     )
 
     inventory = models.ForeignKey(

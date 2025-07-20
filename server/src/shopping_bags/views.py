@@ -5,7 +5,6 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
-from rest_framework.permissions import AllowAny
 
 from src.shopping_bags.models import ShoppingBag
 from src.shopping_bags.serializers import ShoppingBagSerializer
@@ -30,7 +29,6 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
     serializer_class = ShoppingBagSerializer
     # AllowAny permission allows both authenticated and guest users to access the API
     # This is necessary since shopping bags work for both user types
-    permission_classes = [AllowAny]
 
     def get_queryset(self):
         """
@@ -55,8 +53,7 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
     @transaction.atomic
     def perform_create(self, serializer):
         """
-        This method handles the creation of shopping bag items with proper inventory
-        validation and quantity updates. It uses atomic transactions to ensure data consistency.
+        This method handles the creation of shopping bag items.
         """
         # Get user identification filters
         user_filters = ShoppingBagService.get_user_identifier(self.request)
@@ -90,19 +87,13 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
             bag_item.quantity = new_total_quantity
             bag_item.save(update_fields=['quantity'])
 
-        # Update inventory quantity (reduce available stock)
-        ShoppingBagService.update_inventory_quantity(
-            inventory, quantity_to_add
-        )
-
         # Set the instance for the serializer
         serializer.instance = bag_item
 
     @transaction.atomic
     def perform_update(self, serializer):
         """
-        This method handles updating shopping bag item quantities with proper
-        inventory validation. If quantity becomes 0 or negative, it deletes the item.
+        This method handles updating shopping bag item quantities.
         """
         instance = self.get_object()
         new_quantity = serializer.validated_data.get(
@@ -125,11 +116,6 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
                 inventory, quantity_delta
             )
 
-        # Update inventory quantity
-        ShoppingBagService.update_inventory_quantity(
-            inventory, quantity_delta
-        )
-
         # Save the updated instance
         serializer.save()
 
@@ -139,13 +125,6 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
         This method handles the deletion of shopping bag items and restores
         the corresponding inventory quantity.
         """
-        # Get inventory object to restore quantity
-        inventory = instance.inventory
-
-        # Restore inventory quantity (add back to available stock)
-        ShoppingBagService.update_inventory_quantity(
-            inventory, -instance.quantity
-        )
 
         # Delete the shopping bag item
         instance.delete()

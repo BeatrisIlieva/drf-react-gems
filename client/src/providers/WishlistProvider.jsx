@@ -1,10 +1,7 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-import { useLocation } from 'react-router';
-
 import { useWishlist } from '../api/wishlistApi';
 
-import { useGuest } from '../hooks/useGuest';
 import usePersistedState from '../hooks/usePersistedState';
 
 import { UserContext } from '../contexts/UserContext';
@@ -14,15 +11,56 @@ export const WishlistProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [wishlistItemsCount, setWishlistItemsCount] = usePersistedState('wishlist-count', 0);
     const [wishlistItems, setWishlistItems] = usePersistedState('wishlist-items', []);
-    const { getGuestData } = useGuest();
-    const location = useLocation();
-    const guestId = getGuestData();
+    const [shouldReload, setShouldReload] = useState(false);
 
     const { getItems, createItem, deleteItem } = useWishlist();
     const { id: userId } = useContext(UserContext);
 
+    useEffect(() => {
+        if (wishlistItems.length > 0 && userId) {
+            for (const item of wishlistItems) {
+                createItem({ content_type: item.contentType, object_id: item.objectId });
+            }
+
+            setShouldReload(true);
+        }
+    }, [userId]);
+
     const addToWishlist = useCallback(
-        async (contentType, objectId) => {
+        async (
+            contentType,
+            objectId,
+            collectionName = null,
+            firstImage = null,
+            secondImage = null,
+            colorName = null,
+            stoneName = null,
+            metalName = null,
+            minPrice = null,
+            maxPrice = null,
+            averageRating = null
+        ) => {
+            if (!userId) {
+                const data = {
+                    categoryName: `${contentType}s`,
+                    contentType,
+                    objectId,
+                    id: objectId,
+                    collectionName,
+                    firstImage,
+                    secondImage,
+                    colorName,
+                    stoneName,
+                    metalName,
+                    minPrice,
+                    maxPrice,
+                    averageRating,
+                };
+                setWishlistItems(prev => [data, ...prev]);
+                setWishlistItemsCount(prev => prev + 1);
+
+                return;
+            }
             try {
                 const requestData = {
                     content_type: contentType,
@@ -53,10 +91,13 @@ export const WishlistProvider = ({ children }) => {
     const removeFromWishlist = useCallback(
         async (contentType, objectId) => {
             try {
-                const success = await deleteItem({
-                    content_type: contentType,
-                    object_id: objectId,
-                });
+                let success = true;
+                if (userId) {
+                    success = await deleteItem({
+                        content_type: contentType,
+                        object_id: objectId,
+                    });
+                }
 
                 if (success) {
                     setWishlistItems(prev =>
@@ -116,14 +157,38 @@ export const WishlistProvider = ({ children }) => {
     );
 
     const handleWishlistToggle = useCallback(
-        async (categoryName, id) => {
+        async (
+            categoryName,
+            id,
+            collectionName = null,
+            firstImage = null,
+            secondImage = null,
+            colorName = null,
+            stoneName = null,
+            metalName = null,
+            minPrice = null,
+            maxPrice = null,
+            averageRating = null
+        ) => {
             const category = categoryName?.slice(0, categoryName?.length - 1);
 
             if (category && id) {
                 if (isInWishlist(category, id)) {
                     await removeFromWishlist(category, id);
                 } else {
-                    await addToWishlist(category, id);
+                    await addToWishlist(
+                        category,
+                        id,
+                        collectionName,
+                        firstImage,
+                        secondImage,
+                        colorName,
+                        stoneName,
+                        metalName,
+                        minPrice,
+                        maxPrice,
+                        averageRating
+                    );
                 }
             }
         },
@@ -133,14 +198,12 @@ export const WishlistProvider = ({ children }) => {
     useEffect(() => {
         let mounted = true;
 
-        const loadWishlist = async () => {
-            if (!userId && !guestId) {
-                setWishlistItems([]);
-                setWishlistItemsCount(0);
-                setLoading(false);
-                return;
-            }
+        if (!userId) {
+            setLoading(false);
+            return;
+        }
 
+        const loadWishlist = async () => {
             setLoading(true);
             try {
                 const response = await getItems();
@@ -175,45 +238,23 @@ export const WishlistProvider = ({ children }) => {
         return () => {
             mounted = false;
         };
-    }, [userId, getItems, guestId, setWishlistItems, setWishlistItemsCount]);
+    }, [userId, getItems, setWishlistItems, setWishlistItemsCount, shouldReload]);
 
     useEffect(() => {
-        let mounted = true;
-        const syncWithBackend = async () => {
-            try {
-                const response = await getItems();
-                const transformedItems = response.map(item => ({
-                    ...item.productInfo,
-                    contentType: item.contentType,
-                    objectId: item.objectId,
-                    wishlistId: item.id,
-                    categoryName: `${item.contentType}s`,
-                }));
-                setWishlistItems(transformedItems);
-                setWishlistItemsCount(transformedItems.length);
-            } catch {
-                if (mounted) {
-                    setWishlistItems([]);
-                    setWishlistItemsCount(0);
-                }
-            }
-        };
-        syncWithBackend();
-        return () => {
-            mounted = false;
-        };
-    }, [location.pathname, getItems, setWishlistItems, setWishlistItemsCount]);
+        if (!userId) {
+            setWishlistItems([]);
+            setWishlistItemsCount(0);
+        }
+    }, [userId, setWishlistItemsCount, setWishlistItems]);
 
-    // useEffect(() => {
-    //     // Always keep the count in sync with the items array
-    //     setWishlistItemsCount(
-    //         Array.isArray(wishlistItems)
-    //             ? wishlistItems.length
-    //             : 0
-    //     );
-    // }, [wishlistItems, setWishlistItemsCount]);
+    useEffect(() => {
+        setWishlistItemsCount(Array.isArray(wishlistItems) ? wishlistItems.length : 0);
+    }, [wishlistItems, setWishlistItemsCount]);
 
     const refreshWishlist = useCallback(async () => {
+        if (!userId) {
+            return;
+        }
         try {
             const response = await getItems();
             if (response && Array.isArray(response)) {

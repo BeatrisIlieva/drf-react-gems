@@ -5,6 +5,7 @@ import { Icon } from '../../../../../reusable/icon/Icon';
 import { useShoppingBag } from '../../../../../../api/shoppingBagApi';
 
 import { useShoppingBagContext } from '../../../../../../contexts/ShoppingBagContext';
+import { useUserContext } from '../../../../../../contexts/UserContext';
 
 import styles from './QuantitySelector.module.scss';
 
@@ -13,11 +14,7 @@ export const QuantitySelector = ({ quantity, id, inventory, availableQuantity })
     const { refreshShoppingBag } = useShoppingBagContext();
     const [isUpdating, setIsUpdating] = useState(false);
     const [localQuantity, setLocalQuantity] = useState(quantity);
-
-    const totalAvailableQuantity =
-        typeof availableQuantity === 'string'
-            ? parseInt(availableQuantity, 10) + quantity
-            : availableQuantity + quantity;
+    const { id: userId } = useUserContext();
 
     useEffect(() => {
         setLocalQuantity(quantity);
@@ -28,14 +25,19 @@ export const QuantitySelector = ({ quantity, id, inventory, availableQuantity })
 
         setIsUpdating(true);
         try {
-            await updateItem({
-                inventory,
-                quantity: newQuantity,
-                id,
-            });
+            if (userId) {
+                await updateItem({
+                    inventory,
+                    quantity: newQuantity,
+                    id,
+                });
+            }
             setLocalQuantity(newQuantity);
-
-            refreshShoppingBag();
+            if (userId) {
+                refreshShoppingBag();
+            } else {
+                refreshShoppingBag(id, newQuantity);
+            }
         } catch (err) {
             console(err.message);
             setLocalQuantity(quantity);
@@ -54,7 +56,11 @@ export const QuantitySelector = ({ quantity, id, inventory, availableQuantity })
         } else {
             handleQuantityChange(0);
             setTimeout(() => {
-                refreshShoppingBag();
+                if (userId) {
+                    refreshShoppingBag();
+                } else {
+                    refreshShoppingBag(id, 0);
+                }
             }, 100);
         }
     };
@@ -67,7 +73,7 @@ export const QuantitySelector = ({ quantity, id, inventory, availableQuantity })
             <span>{localQuantity}</span>
             <button
                 onClick={incrementQuantity}
-                disabled={isUpdating || localQuantity >= totalAvailableQuantity}
+                disabled={isUpdating || localQuantity >= availableQuantity}
             >
                 <Icon name="plus" />
             </button>

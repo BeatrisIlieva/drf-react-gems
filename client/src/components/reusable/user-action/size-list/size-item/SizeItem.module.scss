@@ -1,0 +1,25 @@
+@use '../../../../../styles/variables' as vars;
+
+.size-item {
+    display: flex;
+
+    button {
+        flex-grow: 1;
+        border: 0.1em solid vars.$medium-grey;
+        text-align: center;
+        padding: 0.5em;
+        cursor: pointer;
+    }
+
+    button.selected {
+        border-color: vars.$black;
+    }
+
+    button:not(.sold-out).error {
+        border-color: vars.$red;
+    }
+
+    button.sold-out {
+        opacity: 0.5;
+    }
+}

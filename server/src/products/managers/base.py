@@ -1,10 +1,5 @@
 from django.db import models
 from django.db.models import (
-    Sum,
-    Case,
-    Value,
-    BooleanField,
-    When,
     Min,
     Max,
     Avg,
@@ -96,21 +91,10 @@ class BaseProductManager(models.Manager):
             )
             # Annotations add calculated fields to each product
             .annotate(
-                # Sum all inventory quantities for this product
-                total_quantity=Sum('inventory__quantity'),
                 # Find the lowest price for this product
                 min_price=Min('inventory__price'),
                 # Find the highest price for this product
                 max_price=Max('inventory__price'),
-                # Determine if product is sold out (no stock)
-                is_sold_out=Case(
-                    When(
-                        total_quantity=0,
-                        then=Value(True)
-                    ),
-                    default=Value(False),
-                    output_field=BooleanField(),
-                ),
                 # Calculate average rating from approved reviews
                 average_rating=Avg('review__rating', distinct=True),
             )

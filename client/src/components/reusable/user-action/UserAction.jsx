@@ -27,7 +27,6 @@ export const UserAction = ({
         inventory,
         createShoppingBagHandler,
         notSelectedSizeError,
-        isSoldOut,
         productId,
         selectedSize,
     } = useProductItemContext();
@@ -85,7 +84,6 @@ export const UserAction = ({
 
             <ProductActions
                 productId={productId}
-                isSoldOut={isSoldOut}
                 isAddingToBag={isAdding}
                 createShoppingBagHandler={handleAddToBag}
                 categoryName={propCategoryName}

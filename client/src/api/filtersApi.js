@@ -8,18 +8,8 @@ import { HOST } from '../constants/host';
 
 const baseUrl = `${HOST}/api/products`;
 
-const USE_ASYNC_FILTERS = true;
-
 export const useFilters = () => {
     const { get } = useApi();
-
-    /**
-     * Fetches filter data from the backend.
-     * Tries the async endpoint first (if enabled), falls back to sync if async fails.
-     *
-     * @param {Object} params - Filter params
-     * @returns {Promise<Object>} - Filter data in camelCase keys
-     */
     const getFilters = useCallback(
         async ({
             categoryName,
@@ -48,23 +38,14 @@ export const useFilters = () => {
 
             const queryString = params.toString();
 
-            let fullUrl = `${baseUrl}/${entityName}/async/?${queryString}`;
+            let fullUrl = `${baseUrl}/${entityName}/?${queryString}`;
 
             try {
-                if (USE_ASYNC_FILTERS) {
-                    const response = await get(fullUrl);
-                    return keysToCamelCase(response);
-                }
+                const response = await get(fullUrl);
+                return keysToCamelCase(response);
             } catch (error) {
-                console.warn('Async filter endpoint failed, falling back to sync:', error);
-                fullUrl = `${baseUrl}/${entityName}/?${queryString}`;
-                try {
-                    const response = await get(fullUrl);
-                    return keysToCamelCase(response);
-                } catch (syncError) {
-                    console.error('Both async and sync filter endpoints failed:', syncError);
-                    throw syncError;
-                }
+                console.error('Error fetching filters:', error);
+                return null;
             }
         },
         [get]

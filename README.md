@@ -281,15 +281,6 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
-### Asynchronous Views
-
-**Asynchronous views are implemented to optimize user experience and server efficiency for product attribute filtering.**
-
--   Asynchronous endpoints allow the backend to handle multiple filter and product data requests concurrently, reducing wait times for users.
--   AsyncBaseAttributeView: [server/src/products/views/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
-
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
-
 ### REST API Implementation
 
 -   The backend utilizes DRF API views and serializers to provide all features to the React frontend, rather than using Django’s traditional HTML templates.

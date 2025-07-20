@@ -1,14 +1,12 @@
-import { useCallback, useContext, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { useAuthRefresh } from './useAuthRefresh';
-import { useGuest } from './useGuest';
 
-import { UserContext } from '../contexts/UserContext';
+import { useUserContext } from '../contexts/UserContext';
 
 export const useApi = () => {
-    const { access, refresh } = useContext(UserContext);
+    const { access, refresh } = useUserContext();
     const { authRefresh } = useAuthRefresh();
-    const { getGuestData } = useGuest();
 
     const request = useCallback(
         async (
@@ -27,11 +25,6 @@ export const useApi = () => {
                     'Content-Type': contentType,
                 },
             };
-
-            const currentGuestId = getGuestData();
-            if (currentGuestId) {
-                options.headers['Guest-Id'] = currentGuestId;
-            }
 
             if (accessRequired) {
                 options.headers.Authorization = `Bearer ${access}`;
@@ -96,7 +89,6 @@ export const useApi = () => {
 
                         await new Promise(resolve => setTimeout(resolve, 50));
 
-                        const newGuestId = getGuestData();
                         const retryOptions = {
                             method: options.method,
                             headers: {
@@ -114,10 +106,6 @@ export const useApi = () => {
                             } catch (e) {
                                 console.error('Failed to parse auth data:', e);
                             }
-                        }
-
-                        if (newGuestId) {
-                            retryOptions.headers['Guest-Id'] = newGuestId;
                         }
 
                         if (options.body) {
@@ -182,7 +170,7 @@ export const useApi = () => {
 
             return json;
         },
-        [access, refresh, authRefresh, getGuestData]
+        [access, refresh, authRefresh]
     );
 
     return useMemo(

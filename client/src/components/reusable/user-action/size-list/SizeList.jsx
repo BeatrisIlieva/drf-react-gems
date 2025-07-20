@@ -1,27 +1,18 @@
+import { SizeItem } from './size-item/SizeItem';
+
 import { useProductItemContext } from '../../../../contexts/ProductItemContext';
 
 import styles from './SizeList.module.scss';
 
 export const SizeList = () => {
-    const { inventory, selectedSize, setSelectedSizeHandler, notSelectedSizeError } =
-        useProductItemContext();
+    const { inventory } = useProductItemContext();
 
     const items = Array.isArray(inventory) ? inventory : [];
 
     return (
         <ul className={styles['size-list']}>
             {items.map(item => (
-                <li key={item.id}>
-                    <button
-                        className={`${item.quantity === 0 ? styles['sold-out'] : ''} ${
-                            selectedSize === item.size.id ? styles['selected'] : ''
-                        } ${notSelectedSizeError === true ? styles['error'] : ''}`.trim()}
-                        disabled={item.quantity === 0}
-                        onClick={() => setSelectedSizeHandler(item.size.id, item.id)}
-                    >
-                        {item.size.name}
-                    </button>
-                </li>
+                <SizeItem key={item.id} item={item} />
             ))}
         </ul>
     );

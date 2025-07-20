@@ -14,7 +14,6 @@ import styles from './Login.module.scss';
 export const Login = () => {
     const { fieldConfig, initialValues } = FORM_CONFIGS.login;
     const { handleSubmit, invalidCredentials } = useLogin(fieldConfig);
-    console.log(invalidCredentials)
 
     const formProps = useForm(initialValues, {
         onSubmit: handleSubmit,

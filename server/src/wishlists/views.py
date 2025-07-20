@@ -4,7 +4,6 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
-from rest_framework.permissions import AllowAny
 
 from src.wishlists.models import Wishlist
 from src.wishlists.serializers import WishlistSerializer
@@ -28,9 +27,6 @@ class WishlistViewSet(viewsets.ModelViewSet):
 
     # Use WishlistSerializer for data serialization
     serializer_class = WishlistSerializer
-
-    # Allow both authenticated and guest users to access wishlist
-    permission_classes = [AllowAny]
 
     def get_queryset(self):
         """

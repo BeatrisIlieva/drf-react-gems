@@ -70,5 +70,3 @@ class BaseAttributeView(FilterMixin, RetrieveAPIView, BaseProductView):
         return Response({
             'results': serializer.data,
         })
-
-

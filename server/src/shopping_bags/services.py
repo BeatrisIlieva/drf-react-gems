@@ -1,12 +1,10 @@
-from django.db import transaction
-from django.db.models import F
-
 from rest_framework.exceptions import ValidationError, NotFound
 
 from src.shopping_bags.models import ShoppingBag
 from src.common.services import UserIdentificationService
 from src.shopping_bags.constants import ShoppingBagErrorMessages
 from src.products.models.inventory import Inventory
+
 
 class ShoppingBagService:
     """
@@ -41,14 +39,6 @@ class ShoppingBagService:
             raise ValidationError({
                 'quantity': ShoppingBagErrorMessages.INSUFFICIENT_STOCK.format(quantity=inventory_obj.quantity)
             })
-
-    @staticmethod
-    # Ensures all inventory changes in this function are applied together, or none at all, to prevent inconsistent stock counts.
-    @transaction.atomic
-    def update_inventory_quantity(inventory_obj, delta):
-        inventory_obj.quantity = F('quantity') - delta
-        inventory_obj.save(update_fields=['quantity'])
-        inventory_obj.refresh_from_db()
 
     @staticmethod
     def get_or_create_bag_item(filters, defaults):

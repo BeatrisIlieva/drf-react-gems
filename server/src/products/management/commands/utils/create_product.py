@@ -59,11 +59,9 @@ def create_product(product_data):
     product_ct = ContentType.objects.get_for_model(model_class)
 
     for size in sizes:
-        quantity = random.randint(0, 3)
 
         Inventory.objects.create(
             size=size,
-            quantity=quantity,
             price=current_price,
             content_type=product_ct,
             object_id=product.id,

@@ -3,20 +3,21 @@ import { Icon } from '../../icon/Icon';
 
 import { useCategoryName } from '../../../../hooks/useCategoryName';
 
+import { useProductItemContext } from '../../../../contexts/ProductItemContext';
 import { useWishlistContext } from '../../../../contexts/WishlistContext';
 
 import styles from './ProductActions.module.scss';
 
 export const ProductActions = ({
     productId,
-    isSoldOut,
     isAddingToBag,
     createShoppingBagHandler,
     categoryName: propCategoryName,
-    hideWishlistButton = false, // New prop to hide wishlist button
+    hideWishlistButton = false,
 }) => {
     const { categoryName: contextCategoryName } = useCategoryName();
     const { isInWishlist, handleWishlistToggle } = useWishlistContext();
+    const { isSoldOut } = useProductItemContext();
 
     const categoryName = propCategoryName || contextCategoryName;
     const category = categoryName?.slice(0, categoryName?.length - 1);
@@ -39,7 +40,7 @@ export const ProductActions = ({
                 color={getAddToBagColor()}
                 callbackHandler={createShoppingBagHandler}
                 actionType="button"
-                disabled={isSoldOut || isAddingToBag}
+                disabled={isAddingToBag || isSoldOut}
                 buttonGrow="1"
                 className={isAddingToBag ? 'animate-pulse' : ''}
             />

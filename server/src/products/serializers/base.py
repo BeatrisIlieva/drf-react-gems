@@ -44,7 +44,6 @@ class BaseProductListSerializer(serializers.ModelSerializer):
             'color__name',
             'stone__name',
             'metal__name',
-            'is_sold_out',
             'average_rating',
             'min_price',
             'max_price'

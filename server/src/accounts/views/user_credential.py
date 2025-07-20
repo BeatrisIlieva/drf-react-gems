@@ -26,7 +26,6 @@ from src.accounts.serializers.user_credential import (
     PasswordChangeSerializer,
 )
 from src.accounts.constants import UserErrorMessages
-from src.accounts.utils import migrate_guest_data_to_user
 
 UserModel = get_user_model()
 
@@ -49,10 +48,6 @@ class UserRegisterView(CreateAPIView):
 
         # Issue JWT refresh and access tokens for the new user
         refresh = RefreshToken.for_user(user)
-
-        # Migrate any guest data (e.g., shopping cart) to the new user
-        guest_id = request.headers.get('Guest-Id')
-        migrate_guest_data_to_user(user, guest_id)
 
         # Return tokens and user info to the frontend
 
@@ -102,10 +97,6 @@ class UserLoginView(APIView):
                 {'error': UserErrorMessages.INCORRECT_CREDENTIALS},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
-
-        # Migrate guest data if present
-        guest_id = request.headers.get('Guest-Id')
-        migrate_guest_data_to_user(user, guest_id)
 
         # Issue JWT tokens
         refresh = RefreshToken.for_user(user)

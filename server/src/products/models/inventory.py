@@ -3,7 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.validators import MinValueValidator
 from django.db import models
 
-from src.products.constants import InventoryFiledLengths
+from src.products.constants import InventoryDefaults, InventoryFiledLengths
 from src.products.mixins import NameFieldMixin
 
 
@@ -28,7 +28,9 @@ class Inventory(models.Model):
     class Meta:
         ordering = ['id']
 
-    quantity = models.PositiveIntegerField()
+    quantity = models.PositiveIntegerField(
+        default=InventoryDefaults.QUANTITY,
+    )
 
     price = models.DecimalField(
         max_digits=InventoryFiledLengths.PRICE_MAX_DIGITS,

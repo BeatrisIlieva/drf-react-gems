@@ -40,11 +40,6 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',  # React development server
 ]
 
-# Additional CORS headers that are allowed
-# 'Guest-Id' is a custom header for guest user identification
-CORS_ALLOW_HEADERS = list(default_headers) + [
-    'Guest-Id',  # Custom header for guest user tracking
-]
 
 # Custom Django applications in this project
 PROJECT_APPS = [

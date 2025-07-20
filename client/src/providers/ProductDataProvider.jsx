@@ -21,6 +21,7 @@ export const ProductDataProvider = ({
         refreshShoppingBag,
         shoppingBagItemsCount,
         openMiniBagPopup,
+        shoppingBagItems,
     } = useShoppingBagContext();
 
     const categoryName = propCategoryName || urlCategoryName;
@@ -55,7 +56,7 @@ export const ProductDataProvider = ({
         loadProduct();
     }, [categoryName, productId, getProductItem, productData]);
 
-    const updateSelectedInventoryHandler = (inventoryId) => {
+    const updateSelectedInventoryHandler = inventoryId => {
         setSelectedInventory({
             quantity: 1,
             inventory: inventoryId,
@@ -87,7 +88,7 @@ export const ProductDataProvider = ({
             return false;
         }
         try {
-            await createShoppingBagItemHandler(selectedInventory);
+            await createShoppingBagItemHandler(selectedInventory, product, categoryName);
             if (product && selectedInventory) {
                 setProduct(prevProduct => {
                     if (!prevProduct) return null;
@@ -126,13 +127,26 @@ export const ProductDataProvider = ({
         openMiniBagPopup,
     ]);
 
-    const isSoldOut = useMemo(() => {
-        if (!product || !product.inventory || product.inventory.length === 0) {
-            return false;
-        }
+    useEffect(() => {
+        setSelectedSize(null);
+        setNotSelectedSizeError(false);
+        setSelectedInventory(null);
+    }, [productId, categoryName]);
 
-        return product.inventory.every(item => item.quantity === 0);
-    }, [product]);
+    const isSoldOut = useMemo(() => {
+        if (!product || !product.inventory) return false;
+
+        const result = product.inventory.every(item => {
+            return (
+                item.quantity ===
+                shoppingBagItems.filter(
+                    bagItem => bagItem.id === item.id || bagItem.inventory === item.id
+                )[0]?.quantity
+            );
+        });
+
+        return result;
+    }, [product, shoppingBagItems]);
 
     const refreshProduct = useCallback(async () => {
         try {

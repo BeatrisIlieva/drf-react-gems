@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from 'react-router';
 import { Icon } from '../../icon/Icon';
 import { Stars } from '../../stars/Stars';
 import { StyledTextBlock } from '../../styled-text-block/StyledTextBlock';
-import { InventoryState } from './inventory-state/InventoryState';
 import { ToggleImageButtons } from './toggle-image-buttons/ToggleImageButtons';
 
 import { useCategoryName } from '../../../../hooks/useCategoryName';
@@ -21,7 +20,6 @@ export const ProductCard = ({
     collectionName,
     firstImage,
     secondImage,
-    isSoldOut,
     colorName,
     stoneName,
     metalName,
@@ -58,7 +56,6 @@ export const ProductCard = ({
                     collectionName,
                     firstImage,
                     secondImage,
-                    isSoldOut,
                     colorName,
                     stoneName,
                     metalName,
@@ -75,7 +72,6 @@ export const ProductCard = ({
             collectionName,
             firstImage,
             secondImage,
-            isSoldOut,
             colorName,
             stoneName,
             metalName,
@@ -97,7 +93,21 @@ export const ProductCard = ({
         <article className={styles['product-card']}>
             <div className={styles['wrapper']}>
                 <button
-                    onClick={() => handleWishlistToggle(`${category}s`, id)}
+                    onClick={() =>
+                        handleWishlistToggle(
+                            `${category}s`,
+                            id,
+                            collectionName,
+                            firstImage,
+                            secondImage,
+                            colorName,
+                            stoneName,
+                            metalName,
+                            minPrice,
+                            maxPrice,
+                            averageRating
+                        )
+                    }
                     className={styles['wishlist-button']}
                     aria-label={isItemInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
                 >
@@ -119,7 +129,7 @@ export const ProductCard = ({
                         alt={collectionName}
                         onClick={navigateToProductItem}
                     />
-                    {isWishlistPage && !isSoldOut && (
+                    {isWishlistPage && (
                         <button onClick={handleMoveToBag} className={styles['add-to-bag-button']}>
                             <span>Move to Bag</span>
                         </button>
@@ -127,10 +137,6 @@ export const ProductCard = ({
                 </div>
 
                 <footer>
-                    <InventoryState
-                        positive={isSoldOut}
-                        label={isSoldOut ? 'Sold Out' : 'In Stock'}
-                    />
                     <ToggleImageButtons
                         selectedIndex={selectedImageIndex}
                         onSelect={setSelectedImageIndex}

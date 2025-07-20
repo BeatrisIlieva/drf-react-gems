@@ -38,7 +38,6 @@ class WishlistSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'user',
-            'guest_id',
             'created_at',
             'content_type',
             'object_id',
@@ -49,7 +48,6 @@ class WishlistSerializer(serializers.ModelSerializer):
             'id',
             'created_at',
             'user',
-            'guest_id',
             'product_info',
         ]
 

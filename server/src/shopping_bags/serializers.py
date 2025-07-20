@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from src.products.models.inventory import Inventory
 from src.shopping_bags.models import ShoppingBag
 from src.common.mixins import InventoryMixin
 
@@ -17,7 +18,8 @@ class ShoppingBagSerializer(serializers.ModelSerializer):
     - Provides read-only fields for computed values
     """
 
-    inventory = serializers.PrimaryKeyRelatedField(queryset=ShoppingBag._meta.get_field('inventory').related_model.objects.all())
+    # inventory = serializers.PrimaryKeyRelatedField(queryset=ShoppingBag._meta.get_field('inventory').related_model.objects.all())
+    inventory = serializers.PrimaryKeyRelatedField(queryset=Inventory.objects.all())
     product_info = serializers.SerializerMethodField()
     total_price = serializers.SerializerMethodField()
 

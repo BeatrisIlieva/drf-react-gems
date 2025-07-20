@@ -24,12 +24,6 @@ class Wishlist(models.Model):
                 'content_type',
                 'object_id'
             ),
-            # Prevents guest users from adding the same item twice
-            (
-                'guest_id',
-                'content_type',
-                'object_id'
-            ),
         ]
 
         ordering = ['-created_at']
@@ -46,15 +40,6 @@ class Wishlist(models.Model):
         null=True,
         blank=True,
         on_delete=models.CASCADE,
-    )
-
-    # UUID field for guest user identification
-    # Nullable and blank to support authenticated users
-    # db_index=True for efficient querying of guest wishlists
-    guest_id = models.UUIDField(
-        null=True,
-        blank=True,
-        db_index=True
     )
 
     # ForeignKey to ContentType for generic relationships
