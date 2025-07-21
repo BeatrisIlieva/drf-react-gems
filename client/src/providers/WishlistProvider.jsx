@@ -11,20 +11,64 @@ export const WishlistProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [wishlistItemsCount, setWishlistItemsCount] = usePersistedState('wishlist-count', 0);
     const [wishlistItems, setWishlistItems] = usePersistedState('wishlist-items', []);
-    const [shouldReload, setShouldReload] = useState(false);
+    const migratedItemsData = JSON.parse(localStorage.getItem('migratedWishlist'));
+    const migratedItems = migratedItemsData;
 
     const { getItems, createItem, deleteItem } = useWishlist();
     const { id: userId } = useContext(UserContext);
 
-    useEffect(() => {
-        if (wishlistItems.length > 0 && userId) {
-            for (const item of wishlistItems) {
-                createItem({ content_type: item.contentType, object_id: item.objectId });
+    const loadWishlist = useCallback(async () => {
+        setLoading(true);
+        try {
+            const response = await getItems();
+            if (response && Array.isArray(response)) {
+                const transformedItems = response.map(item => ({
+                    ...item.productInfo,
+                    contentType: item.contentType,
+                    objectId: item.objectId,
+                    wishlistId: item.id,
+                    categoryName: `${item.contentType}s`,
+                }));
+                setWishlistItems(transformedItems);
+                setWishlistItemsCount(transformedItems.length);
             }
-
-            setShouldReload(true);
+        } catch {
+            setWishlistItems([]);
+            setWishlistItemsCount(0);
+        } finally {
+            setLoading(false);
         }
-    }, [userId]);
+    }, [getItems, setWishlistItems, setWishlistItemsCount]);
+
+    const migrateItemsToWishlist = useCallback(async () => {
+        for (const item of wishlistItems) {
+            const requestData = {
+                content_type: item.contentType,
+                object_id: item.objectId,
+            };
+            await createItem(requestData);
+        }
+    }, [createItem, wishlistItems]);
+
+    useEffect(() => {
+        if (userId && !migratedItems) {
+            migrateItemsToWishlist().then(() => {
+                localStorage.setItem('migratedWishlist', true);
+                loadWishlist();
+            });
+        }
+    }, [loadWishlist, migrateItemsToWishlist, userId, migratedItems]);
+
+    useEffect(() => {
+        if (!userId) {
+            setWishlistItems([]);
+            setWishlistItemsCount(0);
+            setLoading(false);
+            return;
+        }
+
+        loadWishlist();
+    }, [userId, setWishlistItems, setWishlistItemsCount, loadWishlist]);
 
     const addToWishlist = useCallback(
         async (
@@ -59,7 +103,7 @@ export const WishlistProvider = ({ children }) => {
                 setWishlistItems(prev => [data, ...prev]);
                 setWishlistItemsCount(prev => prev + 1);
 
-                return;
+                return true;
             }
             try {
                 const requestData = {
@@ -194,58 +238,6 @@ export const WishlistProvider = ({ children }) => {
         },
         [addToWishlist, removeFromWishlist, isInWishlist]
     );
-
-    useEffect(() => {
-        let mounted = true;
-
-        if (!userId) {
-            setLoading(false);
-            return;
-        }
-
-        const loadWishlist = async () => {
-            setLoading(true);
-            try {
-                const response = await getItems();
-                if (response && Array.isArray(response) && mounted) {
-                    const transformedItems = response.map(item => ({
-                        ...item.productInfo,
-                        contentType: item.contentType,
-                        objectId: item.objectId,
-                        wishlistId: item.id,
-                        categoryName: `${item.contentType}s`,
-                    }));
-                    setWishlistItems(transformedItems);
-                    setWishlistItemsCount(transformedItems.length);
-                } else if (mounted) {
-                    setWishlistItems([]);
-                    setWishlistItemsCount(0);
-                }
-            } catch {
-                if (mounted) {
-                    setWishlistItems([]);
-                    setWishlistItemsCount(0);
-                }
-            } finally {
-                if (mounted) {
-                    setLoading(false);
-                }
-            }
-        };
-
-        loadWishlist();
-
-        return () => {
-            mounted = false;
-        };
-    }, [userId, getItems, setWishlistItems, setWishlistItemsCount, shouldReload]);
-
-    useEffect(() => {
-        if (!userId) {
-            setWishlistItems([]);
-            setWishlistItemsCount(0);
-        }
-    }, [userId, setWishlistItemsCount, setWishlistItems]);
 
     useEffect(() => {
         setWishlistItemsCount(Array.isArray(wishlistItems) ? wishlistItems.length : 0);

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { use, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useParams } from 'react-router';
 
@@ -6,6 +6,7 @@ import { useProductItem } from '../api/productItemApi';
 
 import { ProductItemContext } from '../contexts/ProductItemContext';
 import { useShoppingBagContext } from '../contexts/ShoppingBagContext';
+import { useUserContext } from '../contexts/UserContext';
 
 export const ProductDataProvider = ({
     children,
@@ -16,6 +17,7 @@ export const ProductDataProvider = ({
 }) => {
     const { getProductItem } = useProductItem();
     const { categoryName: urlCategoryName, productId: urlProductId } = useParams();
+    const { id: userId } = useUserContext();
     const {
         createShoppingBagItemHandler,
         refreshShoppingBag,
@@ -149,6 +151,7 @@ export const ProductDataProvider = ({
     }, [product, shoppingBagItems]);
 
     const refreshProduct = useCallback(async () => {
+        if (!userId) return;
         try {
             const response = await getProductItem({
                 categoryName,

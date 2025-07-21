@@ -11,40 +11,36 @@ import { useShoppingBagContext } from '../../../contexts/ShoppingBagContext';
 import styles from './ShoppingBag.module.scss';
 
 export const ShoppingBag = () => {
-    const { shoppingBagItems, continueCheckoutHandler, loading } = useShoppingBagContext();
+    const { shoppingBagItems, continueCheckoutHandler } = useShoppingBagContext();
 
     return (
         <>
-            {!loading && (
-                <>
-                    {shoppingBagItems.length > 0 ? (
-                        <PaddedContainer backgroundColor="white">
-                            <section className={styles['shopping-bag']}>
-                                <h2>Shopping Bag</h2>
-                                <div className={styles['wrapper']}>
-                                    <div className={styles['wrapper-left']}>
-                                        <Delivery fontSize={1.4} />
-                                        <ShoppingBagList />
-                                    </div>
+            {shoppingBagItems.length > 0 ? (
+                <PaddedContainer backgroundColor="white">
+                    <section className={styles['shopping-bag']}>
+                        <h2>Shopping Bag</h2>
+                        <div className={styles['wrapper']}>
+                            <div className={styles['wrapper-left']}>
+                                <Delivery fontSize={1.4} />
+                                <ShoppingBagList />
+                            </div>
 
-                                    <OrderSummary>
-                                        <Button
-                                            title={'Continue Checkout'}
-                                            color={'black'}
-                                            actionType={'button'}
-                                            callbackHandler={continueCheckoutHandler}
-                                            buttonGrow="1"
-                                        />
+                            <OrderSummary>
+                                <Button
+                                    title={'Continue Checkout'}
+                                    color={'black'}
+                                    actionType={'button'}
+                                    callbackHandler={continueCheckoutHandler}
+                                    buttonGrow="1"
+                                />
 
-                                        <ComplimentaryShipping />
-                                    </OrderSummary>
-                                </div>
-                            </section>
-                        </PaddedContainer>
-                    ) : (
-                        <EmptyList title="Shopping Bag" />
-                    )}
-                </>
+                                <ComplimentaryShipping />
+                            </OrderSummary>
+                        </div>
+                    </section>
+                </PaddedContainer>
+            ) : (
+                <EmptyList title="Shopping Bag" />
             )}
         </>
     );

@@ -28,11 +28,23 @@ export const ShoppingBagItem = ({ quantity, totalPrice, productInfo, id, invento
     const moveToWishListHandler = async () => {
         if (isMovingToWishlist || isDeleting || isItemInWishlist) return;
 
+        console.log(productInfo);
+
         setIsMovingToWishlist(true);
         try {
             const categoryValue = category.endsWith('s') ? category.slice(0, -1) : category;
 
-            const success = await addToWishlist(categoryValue, productId);
+            const success = await addToWishlist(
+                categoryValue,
+                productId,
+                productInfo.collection,
+                productInfo.firstImage,
+                productInfo.secondImage,
+                productInfo.color,
+                productInfo.stone,
+                productInfo.metal,
+                productInfo.price
+            );
             if (success) {
                 await deleteShoppingBagHandler(id);
 

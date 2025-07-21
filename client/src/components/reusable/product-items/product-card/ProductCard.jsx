@@ -135,18 +135,21 @@ export const ProductCard = ({
                         </button>
                     )}
                 </div>
-
-                <footer>
-                    <ToggleImageButtons
-                        selectedIndex={selectedImageIndex}
-                        onSelect={setSelectedImageIndex}
-                    />
-                </footer>
+                {secondImage && (
+                    <footer>
+                        <ToggleImageButtons
+                            selectedIndex={selectedImageIndex}
+                            onSelect={setSelectedImageIndex}
+                        />
+                    </footer>
+                )}
             </div>
             <div className={styles['product-info']}>
                 <StyledTextBlock text={`${collectionName} ${capitalizedCategoryName}`} />
                 <StyledTextBlock
-                    text={`${formattedMinPrice} - ${formattedMaxPrice}`}
+                    text={
+                        maxPrice ? `${formattedMinPrice} - ${formattedMaxPrice}` : formattedMinPrice
+                    }
                     isLighter={true}
                 />
                 <StyledTextBlock

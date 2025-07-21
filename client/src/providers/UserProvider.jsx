@@ -16,6 +16,8 @@ export const UserProvider = ({ children }) => {
 
     const userLogoutHandler = useCallback(() => {
         setAuthData({});
+        localStorage.setItem('migratedShoppingBag', false);
+        localStorage.setItem('migratedWishlist', false);
     }, [setAuthData]);
 
     const contextValue = useMemo(
