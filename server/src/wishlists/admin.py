@@ -33,4 +33,4 @@ class WishlistAdmin(admin.ModelAdmin):
     search_fields = ('user__username',)
     readonly_fields = ('created_at', 'product_info')
     ordering = ('-created_at',)
-    exclude = ('content_type', 'object_id', 'guest_id')
+    exclude = ('content_type', 'object_id')

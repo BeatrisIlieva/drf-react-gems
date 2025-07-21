@@ -12,31 +12,13 @@ from src.wishlists.constants import WishlistErrorMessages
 
 
 class WishlistViewSet(viewsets.ModelViewSet):
-    """
-    This ViewSet provides CRUD operations for wishlist items and supports
-    both authenticated users and guest users. It includes custom actions
-    for removing items and getting wishlist count.
-
-    Key Features:
-    - Full CRUD operations for wishlist items
-    - Support for both authenticated and guest users
-    - Custom actions for item removal and count retrieval
-    - Proper error handling and validation
-    - User identification through WishlistService
-    """
 
     # Use WishlistSerializer for data serialization
     serializer_class = WishlistSerializer
 
     def get_queryset(self):
-        """
-        This method filters wishlist items based on whether the request
-        is from an authenticated user or guest user. It uses the
-        WishlistService to determine user identification and returns
-        appropriate filtered queryset.
-        """
         try:
-            # Get user identification filters (user or guest_id)
+            # Get user identification filters
             user_filters = WishlistService.get_user_identifier(self.request)
 
             # Filter wishlist items by user and optimize with select_related

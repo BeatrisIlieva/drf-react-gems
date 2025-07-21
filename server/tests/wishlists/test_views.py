@@ -3,7 +3,6 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.contenttypes.models import ContentType
 from rest_framework.test import APIClient
-import uuid
 
 from src.wishlists.models import Wishlist
 from src.wishlists.views import WishlistViewSet
@@ -19,9 +18,6 @@ class WishlistViewSetTestCase(TestCase):
         # Create test user
         self.user = TestDataBuilder.create_unique_user(
             'wishlist', 'wishlist_user')
-
-        # Create test guest ID
-        self.guest_id = uuid.uuid4()
 
         # Create test product data using unique builder
         product_data = TestDataBuilder.create_unique_product_data(
@@ -82,48 +78,3 @@ class WishlistViewSetTestCase(TestCase):
         # Assert
         self.assertIn(wishlist_item, queryset)
         self.assertEqual(queryset.count(), 1)
-
-    def test_get_queryset_guest_user(self):
-        """
-        This test verifies that the ViewSet correctly filters
-        wishlist items for guest users.
-        """
-        # Arrange
-        wishlist_item = Wishlist.objects.create(
-            guest_id=self.guest_id,
-            content_type=self.content_type,
-            object_id=self.earwear.id
-        )
-
-        request = self.factory.get('/api/wishlists/')
-        request.user = AnonymousUser()
-        request.META['HTTP_GUEST_ID'] = str(self.guest_id)
-
-        viewset = WishlistViewSet()
-        viewset.request = request
-
-        # Act
-        queryset = viewset.get_queryset()
-
-        # Assert
-        self.assertIn(wishlist_item, queryset)
-        self.assertEqual(queryset.count(), 1)
-
-    def test_get_queryset_no_user_identification(self):
-        """
-        This test verifies that the ViewSet returns an empty queryset
-        when user identification fails.
-        """
-        # Arrange
-        request = self.factory.get('/api/wishlists/')
-        request.user = AnonymousUser()
-        # No Guest-Id header
-
-        viewset = WishlistViewSet()
-        viewset.request = request
-
-        # Act
-        queryset = viewset.get_queryset()
-
-        # Assert
-        self.assertEqual(queryset.count(), 0)

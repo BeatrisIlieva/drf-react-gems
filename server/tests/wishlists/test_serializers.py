@@ -18,7 +18,6 @@ class WishlistSerializerTestCase(TestCase):
         """
         cls.shared_data = TestDataBuilder.create_shared_data()
         cls.user = cls.shared_data['user']
-        cls.guest_id = cls.shared_data['guest_id']
         cls.collection = cls.shared_data['collection']
         cls.color = cls.shared_data['color']
         cls.metal = cls.shared_data['metal']
@@ -50,30 +49,6 @@ class WishlistSerializerTestCase(TestCase):
         self.assertIn('product_info', data)
         self.assertIsNotNone(data['product_info'])
         # The product_info should contain information about the earwear
-        self.assertIsInstance(data['product_info'], dict)
-
-    def test_serializer_with_guest_user(self):
-        """
-        This test verifies that the serializer works correctly
-        with guest user data instead of authenticated users.
-        """
-        # Arrange: Create a new guest user and wishlist item
-        guest_id = TestDataBuilder.create_guest_id()
-        guest_wishlist_item = Wishlist.objects.create(
-            guest_id=guest_id,
-            content_type=self.content_type,
-            object_id=self.earwear.id
-        )
-
-        # Act
-        serializer = WishlistSerializer(guest_wishlist_item)
-        data = serializer.data
-
-        # Assert
-        self.assertIn('id', data)
-        self.assertIn('guest_id', data)
-        self.assertEqual(str(data['guest_id']), str(guest_id))
-        self.assertIn('product_info', data)
         self.assertIsInstance(data['product_info'], dict)
 
     def test_get_product_info_method(self):

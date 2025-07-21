@@ -12,7 +12,6 @@ class ShoppingBagService:
     including user identification, inventory validation, and quantity management.
 
     Key Responsibilities:
-    - User identification (authenticated vs guest users)
     - Inventory object retrieval and validation
     - Stock quantity validation
     - Atomic database operations for inventory updates

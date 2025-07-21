@@ -7,7 +7,6 @@ Key features:
 - JWT token issuance and blacklisting
 - Password change for authenticated users
 - Account deletion for authenticated users
-- Guest data migration on registration/login
 """
 
 from django.contrib.auth import get_user_model, authenticate
@@ -67,7 +66,6 @@ class UserLoginView(APIView):
     """
     - Accepts email or username and password.
     - Authenticates the user and issues JWT tokens.
-    - Migrates guest data if present.
     - Allows any user to attempt login.
     """
     permission_classes = [AllowAny]

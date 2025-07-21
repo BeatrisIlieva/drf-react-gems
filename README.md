@@ -177,9 +177,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   Anonymous users can browse products and use guest shopping cart/wishlist
 
 > **Note:**  
-> Guest users can add, remove, and update items in their shopping bag and wishlist, with each guest’s data kept separate using a unique guest ID. The backend validates all changes, preventing users from adding more items than are available or removing more than they have in their bag. When a guest registers or logs in, their shopping bag and wishlist are merged into their new account.
->
-> The project includes background functionality (using Celery and Redis) to automatically clean up old guest shopping bags and wishlists. However, this feature is only enabled and testable in a local environment—not in production or deployment.
+> Guest users can add, remove, and update items in their shopping bag and wishlist, with each guest’s data kept in Local Storage. When a guest registers or logs in, their shopping bag and wishlist are merged into their new account.
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -274,9 +272,9 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 
 ### Testing Implementation
 
-**The project includes around 70+ automated tests.**
+**The project includes around 59 automated tests.**
 
--   Shows 80%+ coverage (`coverage run manage.py test && coverage report`)
+-   Shows 84% coverage (`coverage run manage.py test && coverage report`)
 -   Runs all tests (`python manage.py test`)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
@@ -474,9 +472,7 @@ The `python manage.py setup_database` command (run during installation) will:
 
 **Task Details**
 
--   **Shopping bag cleanup:** Deletes guest shopping bags older than 2 days and restores their inventory [server/src/shopping_bags/tasks.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/shopping_bags/tasks.py)
--   **Wishlist cleanup:** Deletes guest wishlists older than 2 days [server/src/wishlists/tasks.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/wishlists/tasks.py)
--   **Order completion:** Marks orders as completed if they are still pending after 2 days [server/src/orders/tasks.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/orders/tasks.py)
+-   **Order completion:** Marks orders as completed after 2 days [server/src/orders/tasks.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/orders/tasks.py)
 
 #### How to Run Locally
 

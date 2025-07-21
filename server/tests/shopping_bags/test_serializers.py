@@ -18,7 +18,6 @@ class ShoppingBagSerializerTestCase(TestCase):
         """
         cls.shared_data = TestDataBuilder.create_shared_data()
         cls.user = cls.shared_data['user']
-        cls.guest_id = cls.shared_data['guest_id']
         cls.collection = cls.shared_data['collection']
         cls.color = cls.shared_data['color']
         cls.metal = cls.shared_data['metal']

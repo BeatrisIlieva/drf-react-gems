@@ -54,12 +54,8 @@ class TestDataBuilder:
         earwear_content_type = ContentType.objects.get_for_model(Earwear)
         inventory_content_type = ContentType.objects.get_for_model(Inventory)
 
-        # Create guest ID
-        guest_id = uuid.uuid4()
-
         return {
             'user': user,
-            'guest_id': guest_id,
             'collection': collection,
             'color': color,
             'metal': metal,
@@ -82,10 +78,6 @@ class TestDataBuilder:
             username=username,
             password='AuthUserPass123!'
         )
-
-    @classmethod
-    def create_guest_id(cls):
-        return uuid.uuid4()
 
     @classmethod
     def create_product_with_inventory(cls, product_name='Test Product', price=100.00):

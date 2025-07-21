@@ -15,28 +15,13 @@ from src.shopping_bags.constants import ShoppingBagErrorMessages
 class ShoppingBagViewSet(viewsets.ModelViewSet):
     """
     This ViewSet provides full CRUD operations for shopping bag items and additional
-    custom actions for getting bag count and total price. It supports both authenticated
-    and guest users through the UserIdentificationService.
-
-    Key Features:
-    - Full CRUD operations for shopping bag items
-    - Automatic inventory validation and updates
-    - Support for both authenticated and guest users
-    - Custom actions for bag count and total price
-    - Atomic transactions for data consistency
+    custom actions for getting bag count and total price. 
     """
 
     serializer_class = ShoppingBagSerializer
-    # AllowAny permission allows both authenticated and guest users to access the API
-    # This is necessary since shopping bags work for both user types
 
     def get_queryset(self):
-        """
-        This method filters shopping bag items based on the user (authenticated or guest)
-        and includes related objects for efficient database queries.
-        """
         try:
-            # Get user identification filters (user_id for authenticated, guest_id for guests)
             user_filters = ShoppingBagService.get_user_identifier(self.request)
             return ShoppingBag.objects.filter(
                 **user_filters

@@ -125,13 +125,6 @@ export const ShoppingBagProvider = ({ children }) => {
         loadShoppingBag,
     ]);
 
-    // useEffect(() => {
-    //     if (!userId) {
-    //         return;
-    //     }
-    //     loadShoppingBag();
-    // }, [loadShoppingBag, userId]);
-
     useEffect(() => {
         setShoppingBagItemsCount(
             Array.isArray(shoppingBagItems)

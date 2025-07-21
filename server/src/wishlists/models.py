@@ -9,14 +9,6 @@ UserModel = get_user_model()
 
 class Wishlist(models.Model):
     class Meta:
-        """
-        Model metadata and constraints.
-
-        unique_together constraints ensure that:
-        1. Authenticated users cannot have duplicate items in their wishlist
-        2. Guest users cannot have duplicate items in their wishlist
-        3. Items are ordered by creation date (newest first)
-        """
         unique_together = [
             # Prevents authenticated users from adding the same item twice
             (
@@ -32,9 +24,6 @@ class Wishlist(models.Model):
         auto_now_add=True,
     )
 
-    # ForeignKey to UserModel for authenticated users
-    # Nullable and blank to support guest users
-    # CASCADE ensures wishlist items are deleted when user is deleted
     user = models.ForeignKey(
         to=UserModel,
         null=True,
@@ -50,8 +39,6 @@ class Wishlist(models.Model):
         on_delete=models.CASCADE,
     )
 
-    # PositiveIntegerField for the specific product ID
-    # Must be positive to ensure valid object references
     object_id = models.PositiveIntegerField()
 
     # GenericForeignKey to the actual product object
@@ -63,5 +50,5 @@ class Wishlist(models.Model):
     )
 
     def __str__(self):
-        user_info = self.user.email if self.user else f"Guest: {self.guest_id}"
+        user_info = self.user.email
         return f'{user_info} - {self.product}'

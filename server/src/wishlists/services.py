@@ -6,21 +6,8 @@ from src.wishlists.constants import WishlistErrorMessages
 
 
 class WishlistService:
-    """
-    This service provides methods for managing wishlist items including:
-    - User identification for both authenticated and guest users
-    - Product validation and retrieval
-    - Wishlist item creation, retrieval, and deletion
-    - Duplicate item checking
-    """
-
     @staticmethod
     def get_user_identifier(request):
-        """
-        This method delegates to UserIdentificationService to determine
-        whether the request is from an authenticated user or guest user
-        and returns appropriate filter parameters.
-        """
         return UserIdentificationService.get_user_identifier(request)
 
     @staticmethod
@@ -42,7 +29,7 @@ class WishlistService:
         Check if a wishlist item already exists for the user.
 
         This method prevents duplicate items in the wishlist by checking
-        if the user (authenticated or guest) already has the specific
+        if the user already has the specific
         product in their wishlist.
         """
         return Wishlist.objects.filter(
@@ -79,7 +66,7 @@ class WishlistService:
     def get_wishlist_item(user_filters, content_type, object_id):
         """
         This method finds and returns a specific wishlist item for the user
-        (authenticated or guest) and the specified product.
+        and the specified product.
         """
         try:
             item = Wishlist.objects.get(

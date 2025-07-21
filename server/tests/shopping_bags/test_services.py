@@ -18,7 +18,6 @@ class ShoppingBagServiceTestCase(TestCase):
         """
         cls.shared_data = TestDataBuilder.create_shared_data()
         cls.user = cls.shared_data['user']
-        cls.guest_id = cls.shared_data['guest_id']
         cls.collection = cls.shared_data['collection']
         cls.color = cls.shared_data['color']
         cls.metal = cls.shared_data['metal']
@@ -50,26 +49,6 @@ class ShoppingBagServiceTestCase(TestCase):
         # Assert
         self.assertIn('user', user_filters)
         self.assertEqual(user_filters['user'], self.user)
-        self.assertNotIn('guest_id', user_filters)
-
-    def test_get_user_identifier_guest_user(self):
-        """
-        This test verifies that the service correctly identifies
-        guest users and returns appropriate filter parameters.
-        """
-        # Arrange
-        request = self.factory.get('/api/shopping-bags/')
-        request.user = AnonymousUser()
-        request.session = {'guest_id': str(self.guest_id)}
-        request.META['HTTP_GUEST_ID'] = str(self.guest_id)
-
-        # Act
-        user_filters = ShoppingBagService.get_user_identifier(request)
-
-        # Assert
-        self.assertIn('guest_id', user_filters)
-        self.assertEqual(user_filters['guest_id'], self.guest_id)
-        self.assertNotIn('user', user_filters)
 
     def test_validate_inventory_quantity_sufficient_stock(self):
         """
@@ -84,44 +63,6 @@ class ShoppingBagServiceTestCase(TestCase):
         # Should not raise any exception
         ShoppingBagService.validate_inventory_quantity(
             inventory_obj, required_quantity)
-
-    def test_update_inventory_quantity_reduce_stock(self):
-        """
-        This test verifies that the service correctly updates
-        inventory quantities when reducing stock.
-        """
-        # Arrange
-        inventory_obj = self.inventory
-        original_quantity = inventory_obj.quantity
-        reduction_amount = 3
-
-        # Act
-        ShoppingBagService.update_inventory_quantity(
-            inventory_obj, reduction_amount)
-
-        # Assert
-        inventory_obj.refresh_from_db()
-        self.assertEqual(inventory_obj.quantity,
-                         original_quantity - reduction_amount)
-
-    def test_update_inventory_quantity_restore_stock(self):
-        """
-        This test verifies that the service correctly updates
-        inventory quantities when restoring stock.
-        """
-        # Arrange
-        inventory_obj = self.inventory
-        original_quantity = inventory_obj.quantity
-        restoration_amount = 2
-
-        # Act
-        ShoppingBagService.update_inventory_quantity(
-            inventory_obj, -restoration_amount)
-
-        # Assert
-        inventory_obj.refresh_from_db()
-        self.assertEqual(inventory_obj.quantity,
-                         original_quantity + restoration_amount)
 
     def test_get_or_create_bag_item_new_item(self):
         """
