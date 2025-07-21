@@ -175,7 +175,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   Anonymous users can browse products and use guest shopping cart/wishlist
 
 > **Note:**  
-> Guest users can add, remove, and update items in their shopping bag and wishlist, with each guest’s data kept in Local Storage. When a guest registers or logs in, their shopping bag and wishlist are merged into their new account.
+> Guest users can add, remove, and update items in their shopping bag and wishlist, with each guest’s data kept in Local Storage. When a guest registers or logs in, their shopping bag and wishlist are merged into their account.
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -202,17 +202,13 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   Custom Navigation: Organized sidebar with collapsible sections for Users & Groups, Products, Product Attributes, and Reviews
 -   Permission-Based Access: Different admin sections visible based on user permissions
 
-**The admin interface includes custom options like:**
+**The admin interface includes 5 custom options:**
 
 -   List filters (e.g., by stone and color)
 -   List display with image previews
 -   Ordering of records
 -   Search fields for product attributes
--   Fieldsets for organized editing
 -   Inline editing of related inventory
--   Readonly and editable fields for reviews
--   Custom admin methods (e.g., product links)
--   Custom permissions for review moderation
 
 See implementation: [server/src/products/admin.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/admin.py)
 
