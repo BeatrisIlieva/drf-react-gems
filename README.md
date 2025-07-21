@@ -42,7 +42,6 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   [REST API Implementation](#rest-api-implementation)
 -   [Django User Extension](#django-user-extension)
 -   [Deployment](#deployment)
--   [Additional Functionality](#additional-functionality)
 
 ### 3. Additional Requirements
 
@@ -444,7 +443,7 @@ The `python manage.py setup_database` command (run during installation) will:
 ### Background Tasks with Celery
 
 > **Note:**  
-> This functionality is for local testing and demo purposes only. It is not enabled in production or deployment.
+> This functionality is for local testing only. It is not enabled in production or deployment.
 
 **Task Details**
 
