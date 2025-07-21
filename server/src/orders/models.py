@@ -2,9 +2,9 @@ from django.db import models
 from django.contrib.auth import get_user_model
 import uuid
 from src.orders.choices import OrderStatusChoices
-from src.products.models.inventory import Inventory
 
 UserModel = get_user_model()
+
 
 class Order(models.Model):
     """
@@ -48,7 +48,7 @@ class Order(models.Model):
     )
 
     inventory = models.ForeignKey(
-        Inventory,
+        to='products.Inventory',
         on_delete=models.CASCADE,
         related_name='orders',
         help_text="The inventory item (size/variation) being ordered."

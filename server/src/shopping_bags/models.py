@@ -1,4 +1,3 @@
-from src.products.models.inventory import Inventory
 from django.db import models
 from django.contrib.auth import get_user_model
 
@@ -29,7 +28,7 @@ class ShoppingBag(models.Model):
     )
 
     inventory = models.ForeignKey(
-        Inventory,
+        to='products.Inventory',
         on_delete=models.CASCADE,
         related_name='shopping_bag_items',
     )

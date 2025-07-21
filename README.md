@@ -80,12 +80,11 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   Register page [client/src/components/pages/register/Register.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/register/Register.jsx)
 -   Accounts page [client/src/components/pages/accounts/Accounts.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/accounts/Accounts.jsx)
 
-**The application has 15 independent class-based views:**
+**The application has 14 independent class-based views:**
 
 -   BaseProductListView [server/src/products/views/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
 -   BaseProductItemView [server/src/products/views/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
 -   BaseAttributeView [server/src/products/views/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
--   AsyncBaseAttributeView [server/src/products/views/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
 -   OrderViewSet [server/src/orders/views.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/orders/views.py)
 -   ShoppingBagViewSet [server/src/shopping_bags/views.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/shopping_bags/views.py)
 -   WishlistViewSet [server/src/wishlists/views.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/wishlists/views.py)
@@ -185,7 +184,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 **The private part of the application is accessible only to authenticated users and admins:**
 
--   Access to checkout, account management, and order history requires authentication.
+-   Access to checkout, account management, order history, and permanent storage of shopping bag and wishlist requires authentication.
 
 **Review Moderation & Approval System:**
 
@@ -200,17 +199,17 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 **Custom Django admin with Unfold framework:**
 
--   Unfold Framework: [Admin interface with custom themes, and styling](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/unfold.py)
+-   Unfold Framework: Admin interface with custom themes, and styling [server/src/unfold.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/unfold.py)
 -   Custom Navigation: Organized sidebar with collapsible sections for Users & Groups, Products, Product Attributes, and Reviews
 -   Permission-Based Access: Different admin sections visible based on user permissions
 
-**The admin interface includes more than 5 custom options:**
+**The admin interface includes custom options like:**
 
--   Custom list filters (e.g., by stone and color)
--   Custom list display with image previews
--   Custom ordering of records
--   Custom search fields for product attributes
--   Custom fieldsets for organized editing
+-   List filters (e.g., by stone and color)
+-   List display with image previews
+-   Ordering of records
+-   Search fields for product attributes
+-   Fieldsets for organized editing
 -   Inline editing of related inventory
 -   Readonly and editable fields for reviews
 -   Custom admin methods (e.g., product links)
@@ -224,28 +223,20 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 
 **3 admin groups with different permission levels are implemented:**
 
-#### **Superuser (Full CRUD Access):**
+#### **Superuser:**
 
 -   Complete system administration with all CRUD operations
 -   Full access to all admin sections including Users & Groups
 
-#### **Inventory Group (Product Management):**
+#### **Inventory Group:**
 
 -   Full CRUD access to products, inventory, and attributes
 -   Access to Products and Product Attributes sections
 
-#### **Reviewer Group (Review Moderation):**
+#### **Reviewer Group:**
 
 -   Can approve, and disapprove customer reviews for products they have purchased
 -   Access to Product Reviews section
-
-**User roles are managed from the admin site:**
-
--   Django admin interface for role management
-
-**Role management is secure and error-safe:**
-
--   Proper permission checks and error handling
 
 **Automated Setup:**
 
@@ -262,9 +253,9 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
     -   Model validation: [server/src/accounts/validators/model.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/validators/models.py)
 
 -   **Client-side:**
-    -   Real-time form validation: All forms (registration, login, delivery, payment, password update, etc.) provide instant feedback as users type, using custom React hooks and validation helpers.
-    -   Visual feedback: Input fields dynamically change color to indicate validation state (green for valid, red for invalid, blue for focus).
-    -   Server-side error integration: Any validation errors returned from the backend are mapped to the correct form fields and displayed to the user in real time.
+    -   Real-time form validation: All forms (registration, login, delivery, payment, password update, etc.) provide instant feedback as users type, using custom React hooks and validation helpers
+    -   Visual feedback: Input fields dynamically change color to indicate validation state (green for valid, red for invalid, blue for focus)
+    -   Server-side error integration: Any validation errors returned from the backend are mapped to the correct form fields and displayed to the user in real time
 
 ## 2. Bonus Features
 
@@ -272,7 +263,7 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 
 ### Testing Implementation
 
-**The project includes around 59 automated tests.**
+**The project includes 59 automated tests.**
 
 -   Shows 84% coverage (`coverage run manage.py test && coverage report`)
 -   Runs all tests (`python manage.py test`)
@@ -281,18 +272,17 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 
 ### REST API Implementation
 
--   The backend utilizes DRF API views and serializers to provide all features to the React frontend, rather than using Django’s traditional HTML templates.
--   All business logic—including authentication, products, shopping bag, wishlist, orders, and reviews—is exposed through RESTful API endpoints.
+-   The backend utilizes DRF API views and serializers to provide all features to the React frontend
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ### Django User Extension
 
--   **Custom user model:** Uses email as the primary login identifier, with unique username and additional fields for marketing consent.
+-   **Custom user model:** Uses email as the primary login identifier, with unique username and additional fields for marketing consent
 
--   **User profile:** Stores personal and shipping information in a dedicated profile model linked one-to-one with the user.
+-   **User profile:** Stores personal and shipping information in a dedicated profile model linked one-to-one with the user
 
--   **User photo:** Handles user profile pictures with cloud storage and automatic optimization.
+-   **User photo:** Handles user profile pictures with cloud storage
 
 -   **Automatic profile and photo creation using signals:** [server/src/accounts/signals.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/signals.py)
 
@@ -306,11 +296,7 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 
 ### Additional Functionality
 
--   **Polymorphic product relationships:**
-    The products app uses Django's `GenericForeignKey` and `GenericRelation` to enable flexible, polymorphic relationships between products, inventory, and reviews.
-    -   In `base.py`, all product types inherit from `BaseProduct`, which defines generic relations to both inventory and reviews, allowing any product (Earwear, Neckwear, Fingerwear, Wristwear) to be linked to multiple inventory records and reviews without duplicating code.
-    -   In `inventory.py`, the `Inventory` model uses `GenericForeignKey` to associate stock and pricing with any product type, supporting size variations and centralized inventory management.
-    -   In `product.py`, each product category inherits this structure, making it easy to add new product types or attributes.
+-   **Polymorphic product relationships:** All product categories inherit from an abstract base product model [server/src/products/models/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/base.py), allowing shared fields. Instead of creating separate inventory and review models for each product type, the inventory [server/src/products/models/inventory.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/inventory.py) and review [server/src/products/models/review.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/review.py) models use Django’s GenericForeignKey to relate to any product category. This design enables a single inventory and review system for all product types defined in [product.py].
 
 **Design rationale:**
 Dedicated models for each product category (Earwear, Neckwear, etc.) allow the backend to efficiently query and manage each category without filtering a single large product table. This improves performance, keeps the codebase organized, and makes it easy to add category-specific features in the future. `GenericForeignKey` and `GenericRelation` are used to maintain flexible, DRY relationships for inventory and reviews across all categories.
@@ -321,21 +307,19 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 
 ### Object-Oriented Design
 
--   **Data encapsulation:** Business logic and data validation are encapsulated within dedicated service classes and model managers.
+-   **Data encapsulation:** Business logic and data validation are encapsulated within dedicated service classes and model managers
 
--   **Exception handling:** Error handling is implemented using try-except blocks and DRF exception classes, particularly for authentication and business-critical operations.
+-   **Exception handling:** Error handling is implemented using try-except blocks and DRF exception classes, particularly for authentication and business-critical operations
 
--   **Inheritance, abstraction, and polymorphism:** Product models leverage inheritance and abstract base classes, while polymorphic relationships are managed using Django's GenericForeignKey.
+-   **Inheritance, abstraction, and polymorphism:** Product models leverage inheritance and abstract base classes, while polymorphic relationships are managed using Django's GenericForeignKey
 
--   **Cohesion and loose coupling:** Each Django app (accounts, products, orders, shopping_bags, wishlists, common) encapsulates a distinct business domain, promoting strong cohesion and loose coupling across the backend.
+-   **Cohesion and loose coupling:** Each Django app (accounts, products, orders, shopping_bags and wishlists) encapsulates a distinct business domain. Django apps are primarily independent from each other
 
--   **Code quality and readability:** All code adheres to PEP 8 (Python) and uses ESLint/Prettier (JavaScript) for consistent formatting and clear naming conventions.
+-   **Code quality and readability:** All code adheres to PEP 8 (Python) and uses ESLint/Prettier (JavaScript) for consistent formatting
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ### User Interface
-
--   **Custom design system:** All components use a consistent SCSS-based design system, ensuring visual harmony.
 
 -   **Responsive design:** The UI is fully responsive, adapting to different screen sizes and devices.
 
@@ -344,8 +328,6 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ### User Experience
-
--   **Real-time feedback:** Forms provide instant validation feedback, with clear visual cues for valid, invalid, and focused states.
 
 -   **Accessible and intuitive navigation:** The application uses clear navigation patterns and accessible controls.
 
@@ -441,9 +423,9 @@ VITE_APP_SERVER_URL=http://localhost:8000  # (will be replaced with your deploye
 #### 5. Frontend setup
 
 ```bash
-cd ../client
+cd client
 npm install
-npm start
+npm run dev
 ```
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
@@ -452,7 +434,7 @@ npm start
 
 The `python manage.py setup_database` command (run during installation) will:
 
--   Create all jewelry products with categories, collections, colors, metals, and stones
+-   Create all products with categories, collections, colors, metals, stones and inventories
 -   Add customer reviews with ratings and comments
 -   Create admin users with different roles and permissions
 -   Create a superuser with full system access
