@@ -184,7 +184,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 **The private part of the application is accessible only to authenticated users and admins:**
 
--   Access to checkout, account management, order history, and permanent storage of shopping bag and wishlist requires authentication.
+-   Access to checkout, account management, order history, and permanent storage of shopping bag and wishlist requires authentication
 
 **Review Moderation & Approval System:**
 
@@ -294,15 +294,6 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
-### Additional Functionality
-
--   **Polymorphic product relationships:** All product categories inherit from an abstract base product model [server/src/products/models/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/base.py), allowing shared fields. Instead of creating separate inventory and review models for each product type, the inventory [server/src/products/models/inventory.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/inventory.py) and review [server/src/products/models/review.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/review.py) models use Django’s GenericForeignKey to relate to any product category. This design enables a single inventory and review system for all product types defined in [product.py].
-
-**Design rationale:**
-Dedicated models for each product category (Earwear, Neckwear, etc.) allow the backend to efficiently query and manage each category without filtering a single large product table. This improves performance, keeps the codebase organized, and makes it easy to add category-specific features in the future. `GenericForeignKey` and `GenericRelation` are used to maintain flexible, DRY relationships for inventory and reviews across all categories.
-
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
-
 ## 3. Additional Requirements
 
 ### Object-Oriented Design
@@ -311,7 +302,10 @@ Dedicated models for each product category (Earwear, Neckwear, etc.) allow the b
 
 -   **Exception handling:** Error handling is implemented using try-except blocks and DRF exception classes, particularly for authentication and business-critical operations
 
--   **Inheritance, abstraction, and polymorphism:** Product models leverage inheritance and abstract base classes, while polymorphic relationships are managed using Django's GenericForeignKey
+-   **Inheritance, abstraction, and polymorphism:** All product categories inherit from an abstract base product model [server/src/products/models/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/base.py), allowing shared fields. Instead of creating separate inventory and review models for each product type, the inventory [server/src/products/models/inventory.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/inventory.py) and review [server/src/products/models/review.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/review.py) models use Django’s GenericForeignKey to relate to any product category. This design enables a single inventory and review system for all product types defined in [server/src/products/models/product.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/product.py).
+
+    > **Design rationale:**  
+    > `GenericForeignKey` allows us to have dedicated models for each product category (Earwear, Neckwear, etc.), so the backend can query and manage each category without filtering a single large product table.
 
 -   **Cohesion and loose coupling:** Each Django app (accounts, products, orders, shopping_bags and wishlists) encapsulates a distinct business domain. Django apps are primarily independent from each other
 
