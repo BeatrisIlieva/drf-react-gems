@@ -32,6 +32,7 @@ SECRET_KEY = 'django-insecure--3tgzk2%%qtoj@iz7(-ag90sm&4g&(x+xdy%e4&bn#p6*n)83x
 DEBUG = True
 
 ALLOWED_HOSTS = []
+# CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1']
 
 # CORS (Cross-Origin Resource Sharing) configuration
 # This allows the React frontend to make API calls
@@ -209,9 +210,36 @@ cloudinary.config(
     api_secret='Txaakp6bHutRt-Aw2ocf-dx7aMA'
 )
 
-CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+
+CELERY_BROKER_URL = 'redis://:lEeckez5Ky0LccvJ2jsQpLkbFjJ0ilVJ@redis-13706.c55.eu-central-1-1.ec2.redns.redis-cloud.com:13706/0'
+CELERY_RESULT_BACKEND = 'redis://:lEeckez5Ky0LccvJ2jsQpLkbFjJ0ilVJ@redis-13706.c55.eu-central-1-1.ec2.redns.redis-cloud.com:13706/0'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+# CELERY_BROKER_URL = 'redis://localhost:6379/0'
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_TIMEZONE = TIME_ZONE
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'djangogems@gmail.com'
+EMAIL_HOST_PASSWORD = 'vanp usmt sqct ecgm'
+DEFAULT_FROM_EMAIL = 'djangogems@gmail.com'
+SERVER_EMAIL = 'djangogems@gmail.com'
+
+
+# CELERY_BROKER_URL = 'redis://localhost:6379'
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_TIMEZONE = TIME_ZONE
