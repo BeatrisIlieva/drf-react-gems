@@ -18,7 +18,7 @@ from src.products.models.review import Review
 
 
 class Command(BaseCommand):
-    help = 'Setup roles: superuser, Inventory group/user, Reviewer group/user'
+    help = 'Setup roles: superuser, Inventory group/user, Order group/user'
 
     def handle(self, *args, **kwargs):
         User = get_user_model()
@@ -57,8 +57,8 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.WARNING(
                         f'Permission {codename} not found.'))
 
-        # === Create Reviewer group with review approval permissions ===
-        reviewer_group, _ = Group.objects.get_or_create(name='Reviewer')
+        # === Create Order group with review approval permissions ===
+        order_group, _ = Group.objects.get_or_create(name='Order')
 
         # Add review-related permissions only
         review_content_type = ContentType.objects.get_for_model(Review)
@@ -74,9 +74,9 @@ class Command(BaseCommand):
                     # For standard permissions, use the model name
                     perm = Permission.objects.get(
                         codename=perm_codename, content_type=review_content_type)
-                reviewer_group.permissions.add(perm)
+                order_group.permissions.add(perm)
                 self.stdout.write(self.style.SUCCESS(
-                    f'Added {perm_codename} permission to Reviewer group.'))
+                    f'Added {perm_codename} permission to Order group.'))
             except Permission.DoesNotExist:
                 self.stdout.write(self.style.WARNING(
                     f'Permission {perm_codename} not found.'))
@@ -95,17 +95,17 @@ class Command(BaseCommand):
         inventory_user.groups.add(inventory_group)
 
         # === Create Reviewer staff user ===
-        reviewer_user, created = User.objects.get_or_create(
-            email='reviewer_user@mail.com',
-            username='reviewer_user',
+        order_user, created = User.objects.get_or_create(
+            email='order_user@mail.com',
+            username='order_user',
             defaults={'is_staff': True}
         )
 
         if created:
-            reviewer_user.set_password('!1Aabb')
-            reviewer_user.save()
-            self.stdout.write(self.style.SUCCESS('Reviewer user created.'))
-        reviewer_user.groups.add(reviewer_group)
+            order_user.set_password('!1Aabb')
+            order_user.save()
+            self.stdout.write(self.style.SUCCESS('Order user created.'))
+        order_user.groups.add(order_group)
 
         # === Create Superuser ===
         if not User.objects.filter(email='super_user@mail.com').exists():

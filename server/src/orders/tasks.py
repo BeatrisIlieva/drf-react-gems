@@ -9,8 +9,8 @@ from src.orders.choices import OrderStatusChoices
 
 @shared_task
 def complete_old_orders():
-    cutoff = timezone.now() - timedelta(days=2)
-    # cutoff = timezone.now() - timedelta(seconds=30) # For testing
+    cutoff = timezone.now() - timedelta(days=1)
+    # cutoff = timezone.now() - timedelta(seconds=30)
 
     Order.objects.filter(
         status=OrderStatusChoices.PENDING,

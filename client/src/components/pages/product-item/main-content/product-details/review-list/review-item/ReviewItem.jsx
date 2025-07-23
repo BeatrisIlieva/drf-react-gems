@@ -1,7 +1,10 @@
 import { useState } from 'react';
+
 import { Stars } from '../../../../../../reusable/stars/Stars';
-import { useAuth } from '../../../../../../../hooks/useAuth';
+
 import { useReviewApi } from '../../../../../../../api/reviewApi';
+
+import { useAuth } from '../../../../../../../hooks/useAuth';
 
 import styles from './ReviewItem.module.scss';
 
@@ -9,7 +12,6 @@ export const ReviewItem = ({ review, onReviewUpdated }) => {
     const { permissions } = useAuth();
     const { approveReview, unapproveReview } = useReviewApi();
     const [isUpdating, setIsUpdating] = useState(false);
-
 
     const isReviewer = permissions?.includes('products.approve_review');
 
@@ -52,7 +54,6 @@ export const ReviewItem = ({ review, onReviewUpdated }) => {
             <span>
                 <span>
                     {review.photoUrl ? (
-
                         <img src={review.photoUrl} alt={`${review.userFullName}`} />
                     ) : (
                         <img

@@ -21,11 +21,11 @@ export const MiniBagPopup = ({ isOpen, onClose }) => {
         continueCheckoutHandler,
     } = useShoppingBagContext();
 
-    useEffect(() => {
-        if (shoppingBagItemsCount === 0 && isOpen) {
-            onClose();
-        }
-    }, [shoppingBagItemsCount, isOpen, onClose]);
+    // useEffect(() => {
+    //     if (shoppingBagItemsCount === 0 && isOpen) {
+    //         onClose();
+    //     }
+    // }, [shoppingBagItemsCount, isOpen, onClose]);
 
     const navigateToShoppingBag = () => {
         navigate('/user/shopping-bag');

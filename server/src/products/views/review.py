@@ -6,11 +6,11 @@ from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 
+from src.common.permissions import IsOrderManager
 from src.products.models.review import Review
 from src.products.serializers.review import ReviewSerializer
 from src.products.serializers.review_management import ReviewManagementSerializer
 from src.products.constants import ReviewErrorMessages
-from src.common.permissions import IsReviewer
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
@@ -98,9 +98,21 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
         Regular users can only update their own reviews.
         Reviewers can update any review and change approval status.
+        When a regular user updates a review, it becomes unapproved again.
         """
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(
+            instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
 
-        return super().update(request, *args, **kwargs)
+        # If the user is not a reviewer, set approved to False
+        if not request.user.has_perm('products.approve_review'):
+            serializer.save(approved=False)
+        else:
+            serializer.save()
+
+        return Response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
         """
@@ -168,7 +180,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-    @action(detail=True, methods=['post'], permission_classes=[IsReviewer])
+    @action(detail=True, methods=['post'], permission_classes=[IsOrderManager])
     def approve(self, request, pk=None):
         """
         Approve a review (reviewers only).
@@ -193,7 +205,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-    @action(detail=True, methods=['post'], permission_classes=[IsReviewer])
+    @action(detail=True, methods=['post'], permission_classes=[IsOrderManager])
     def unapprove(self, request, pk=None):
         """
         Unapprove a review (reviewers only).
@@ -217,7 +229,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-    @action(detail=False, methods=['get'], permission_classes=[IsReviewer])
+    @action(detail=False, methods=['get'], permission_classes=[IsOrderManager])
     def pending(self, request):
         """
         Get all pending (unapproved) reviews (reviewers only).

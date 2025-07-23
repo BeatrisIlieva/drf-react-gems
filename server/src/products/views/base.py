@@ -2,21 +2,17 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView, RetrieveAPIView
-from rest_framework.views import APIView
 
 
 from src.products.mixins import FilterMixin
-
-
-class BaseProductView(APIView):
-    permission_classes = [AllowAny]
 
 
 class ProductPagination(PageNumberPagination):
     page_size = 8
 
 
-class BaseProductListView(FilterMixin, ListAPIView, BaseProductView):
+class BaseProductListView(FilterMixin, ListAPIView):
+    permission_classes = [AllowAny]
     pagination_class = ProductPagination
 
     def list(self, request, *args, **kwargs):
@@ -42,7 +38,9 @@ class BaseProductListView(FilterMixin, ListAPIView, BaseProductView):
         return self.model.objects.get_product_list(filters, ordering)
 
 
-class BaseProductItemView(RetrieveAPIView, BaseProductView):
+class BaseProductItemView(RetrieveAPIView):
+    permission_classes = [AllowAny]
+
     def get(self, request, *args, **kwargs):
         pk = kwargs.get('pk')
         product = self.model.objects.get_product_item(pk)
@@ -53,7 +51,9 @@ class BaseProductItemView(RetrieveAPIView, BaseProductView):
         })
 
 
-class BaseAttributeView(FilterMixin, RetrieveAPIView, BaseProductView):
+class BaseAttributeView(FilterMixin, RetrieveAPIView):
+    permission_classes = [AllowAny]
+
     def get(self, request, *args, **kwargs):
         # Singularize category if it ends with 's'
         category = self.request.query_params.get('category', '')

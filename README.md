@@ -9,7 +9,7 @@
 [![JWT](https://img.shields.io/badge/JWT%20Authentication-green.svg)](https://jwt.io/)
 [![Azure](https://img.shields.io/badge/Azure%20Deployment-blue.svg)](https://azure.microsoft.com/)
 
-A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Features user authentication, product management, shopping cart functionality, wishlist system, and secure payment processing.
+A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Features user authentication, product management, shopping cart functionality, wishlist system, and secure payment processing, and asynchronous background tasks using Celery and Redis.
 
 <p align="center">
   <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.45.11_e0m7vo.png" width="260" />
@@ -39,9 +39,11 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 -   [Testing Implementation](#testing-implementation)
 -   [Asynchronous Views](#asynchronous-views)
+-   [Background Tasks with Celery and Redis](#background-tasks-with-celery-and-redis)
 -   [REST API Implementation](#rest-api-implementation)
 -   [Django User Extension](#django-user-extension)
 -   [Deployment](#deployment)
+-   [Additional Functionality](#additional-functionality)
 
 ### 3. Additional Requirements
 
@@ -78,6 +80,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   Login page [client/src/components/pages/login/Login.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/login/Login.jsx)
 -   Register page [client/src/components/pages/register/Register.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/register/Register.jsx)
 -   Accounts page [client/src/components/pages/accounts/Accounts.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/accounts/Accounts.jsx)
+-   Admin page [client/src/components/pages/admin/Admin.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/admin/Admin.jsx)
 
 **The application has 14 independent class-based views:**
 
@@ -185,12 +188,12 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 -   Access to checkout, account management, order history, and permanent storage of shopping bag and wishlist requires authentication
 
+-   Access to the Admin page is available only to admins in the Order group. From there, they can send reminders to users about their abandoned shopping bags.
+
 **Review Moderation & Approval System:**
 
 -   **Regular users** can only see reviews that have been approved on a product item page
--   **Reviewers** (users in the "reviewer" group with the `products.approve_review` permission) can see all reviews (approved and unapproved) for a product
--   **Backend**: A dedicated DRF endpoint `/api/products/<category>/<pk>/all-reviews/` returns all reviews for a product, accessible only to reviewers
--   **Frontend**: The UI conditionally fetches and displays all reviews for reviewers, and only approved reviews for regular users. Approve/unapprove buttons are visible only to reviewers
+-   **Order users** (users in the "order" group with the `products.approve_review` permission) can see all reviews (approved and unapproved) for a product
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -228,7 +231,7 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 -   Full CRUD access to products, inventory, and attributes
 -   Access to Products and Product Attributes sections
 
-#### **Reviewer Group:**
+#### **Order Group:**
 
 -   Can approve, and disapprove customer reviews for products they have purchased
 -   Access to Product Reviews section
@@ -263,7 +266,20 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 -   Shows 84% coverage (`coverage run manage.py test && coverage report`)
 -   Runs all tests (`python manage.py test`)
 
+### Asynchronous Views
+
+**Shopping Bag Reminder System:**
+
+-   An asynchronous view `notify_users_they_have_uncompleted_orders` allows Order group admins to send reminder emails for shopping bags older than one day. Implemented with Celery: [server/src/common/views.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/common/views.py)
+-   The `ShoppingBagReminderInfoView` provides insights into abandoned carts
+
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
+### Background Tasks with Celery and Redis
+
+-   **User Greeting Email:** Sent asynchronously on registration: [server/src/accounts/signals.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/signals.py)
+-   **Order Completion:** Scheduled task marks old orders as completed: [server/src/orders/tasks.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/orders/tasks.py)
+-   **Review Approval Notification:** Emails sent on review approval: [server/src/products/signals.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/signals.py)
 
 ### REST API Implementation
 
@@ -285,7 +301,7 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 
 ### Deployment
 
--   Azure App Service deployment is implemented
+-   Deployed on Azure App Service with Redis Cloud for background tasks.
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -386,9 +402,18 @@ python manage.py migrate
 
 # Populate database with products, reviews, and roles
 python manage.py setup_database
+```
 
+---
+
+-   Start Redis on your machine or use Redis Cloud
+-   Production-Like Mode (Procfile): To mimic the Azure App Service deployment environment, use `honcho` to run all processes defined in the [Procfile](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/Procfile):
+
+---
+
+```bash
 # Start the backend server
-python manage.py runserver
+export PORT=8000 && honcho start
 ```
 
 ---
@@ -432,30 +457,7 @@ The `python manage.py setup_database` command (run during installation) will:
 
 -   Super User: `super_user@mail.com` | `!1Aabb`
 -   Inventory User: `inventory_user@mail.com` | `!1Aabb`
--   Reviewer User: `reviewer_user@mail.com` | `!1Aabb`
-
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
-
-### Background Tasks with Celery
-
-> **Note:**  
-> This functionality is for local testing only. It is not enabled in production or deployment.
-
-**Task Details**
-
--   **Order completion:** Marks orders as completed after 2 days [server/src/orders/tasks.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/orders/tasks.py)
-
-#### How to Run Locally
-
-1. Start Redis on your machine.
-2. In one terminal, run:
-    ```bash
-    celery -A src worker --loglevel=info
-    ```
-3. In another terminal, run:
-    ```bash
-    celery -A src beat --loglevel=info
-    ```
+-   Order User: `order_user@mail.com` | `!1Aabb`
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 

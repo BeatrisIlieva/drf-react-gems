@@ -9,6 +9,7 @@ It provides:
 - Review management endpoints for products
 """
 
+from src.common.permissions import IsOrderManager
 from src.products.models.product import (
     Color,
     Metal,
@@ -51,7 +52,6 @@ from src.products.models.review import Review
 from src.products.serializers.review import ReviewSerializer
 from django.contrib.contenttypes.models import ContentType
 from rest_framework import status
-from rest_framework.permissions import BasePermission
 
 
 class EarwearListView(BaseProductListView):
@@ -114,17 +114,8 @@ class StoneRetrieveView(BaseAttributeView):
     serializer_class = StoneSerializer
 
 
-class IsReviewer(BasePermission):
-    """
-    Allows access only to users with the products.approve_review permission.
-    """
-
-    def has_permission(self, request, view):
-        return request.user and request.user.has_perm('products.approve_review')
-
-
 class ProductAllReviewsView(APIView):
-    permission_classes = [IsAuthenticated, IsReviewer]
+    permission_classes = [IsAuthenticated, IsOrderManager]
 
     def get(self, request, category, pk):
         # Map category to model

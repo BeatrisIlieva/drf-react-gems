@@ -127,6 +127,7 @@ export const ProductDataProvider = ({
         product,
         refreshShoppingBag,
         openMiniBagPopup,
+        categoryName
     ]);
 
     useEffect(() => {

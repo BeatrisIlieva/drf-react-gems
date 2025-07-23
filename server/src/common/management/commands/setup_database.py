@@ -56,7 +56,7 @@ class Command(BaseCommand):
             self.stdout.write(
                 '   • Inventory User: inventory_user@mail.com | !1Aabb')
             self.stdout.write(
-                '   • Reviewer User: reviewer_user@mail.com | !1Aabb')
+                '   • Order User: order_user@mail.com | !1Aabb')
 
         except Exception as e:
             self.stdout.write(

@@ -14,7 +14,6 @@ from pathlib import Path
 from datetime import timedelta
 
 from django.utils.translation import gettext_lazy as _
-from corsheaders.defaults import default_headers
 
 # Import custom Unfold configuration for admin interface customization
 from .unfold import UNFOLD
@@ -57,12 +56,12 @@ INSTALLED_APPS = [
     'unfold.contrib.filters',
     'unfold.contrib.forms',
 
+    'daphne',  # command to run `daphne -b 0.0.0.0 -p 8000 src.asgi:application`
 
     'cloudinary',
     'cloudinary_storage',
 
     'django_celery_beat',
-
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -71,12 +70,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
 ] + PROJECT_APPS
+
+ASGI_APPLICATION = 'src.asgi.application'
 
 # Django REST Framework configuration
 REST_FRAMEWORK = {
@@ -210,7 +210,6 @@ cloudinary.config(
     api_secret='Txaakp6bHutRt-Aw2ocf-dx7aMA'
 )
 
-
 CELERY_BROKER_URL = 'redis://:lEeckez5Ky0LccvJ2jsQpLkbFjJ0ilVJ@redis-13706.c55.eu-central-1-1.ec2.redns.redis-cloud.com:13706/0'
 CELERY_RESULT_BACKEND = 'redis://:lEeckez5Ky0LccvJ2jsQpLkbFjJ0ilVJ@redis-13706.c55.eu-central-1-1.ec2.redns.redis-cloud.com:13706/0'
 CELERY_ACCEPT_CONTENT = ['application/json']
@@ -218,13 +217,6 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-
-# CELERY_BROKER_URL = 'redis://localhost:6379/0'
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-# CELERY_ACCEPT_CONTENT = ['application/json']
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_RESULT_SERIALIZER = 'json'
-# CELERY_TIMEZONE = TIME_ZONE
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -235,11 +227,3 @@ EMAIL_HOST_USER = 'djangogems@gmail.com'
 EMAIL_HOST_PASSWORD = 'vanp usmt sqct ecgm'
 DEFAULT_FROM_EMAIL = 'djangogems@gmail.com'
 SERVER_EMAIL = 'djangogems@gmail.com'
-
-
-# CELERY_BROKER_URL = 'redis://localhost:6379'
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379'
-# CELERY_ACCEPT_CONTENT = ['application/json']
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_RESULT_SERIALIZER = 'json'
-# CELERY_TIMEZONE = TIME_ZONE

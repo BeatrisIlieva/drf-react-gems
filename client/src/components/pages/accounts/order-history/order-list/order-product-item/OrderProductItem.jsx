@@ -55,6 +55,9 @@ export const OrderProductItem = ({ product }) => {
 
     return (
         <div className={styles['order-product-item']}>
+            {existingReview && (
+                <p className={existingReview.approved ? styles['approved'] : styles['unapproved']}>{existingReview.approved ? 'approved' : 'waiting for approval'}</p>
+            )}
             <div className={styles['product-details']}>
                 <div className={styles['thumbnail']} onClick={navigateToProductItem}>
                     <img

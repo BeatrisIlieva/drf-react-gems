@@ -2,6 +2,7 @@
 
 .padded-container {
     padding: var(--layout-inline-padding);
+    flex-grow: 1;
 }
 
 .padded-container--white {

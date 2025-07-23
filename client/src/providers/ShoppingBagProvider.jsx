@@ -42,13 +42,11 @@ export const ShoppingBagProvider = ({ children }) => {
     }, []);
     const closeMiniBagPopup = useCallback(() => setIsMiniBagPopupOpen(false), []);
 
-    useEffect(() => {}, [isMiniBagPopupOpen]);
-
     useEffect(() => {
-        if (shoppingBagItemsCount === 0 && isMiniBagPopupOpen) {
+        if (shoppingBagItemsCount === 0 && isMiniBagPopupOpen && !loading && !isDeleting) {
             closeMiniBagPopup();
         }
-    }, [shoppingBagItemsCount, isMiniBagPopupOpen, closeMiniBagPopup]);
+    }, [shoppingBagItemsCount, isMiniBagPopupOpen, closeMiniBagPopup, loading, isDeleting]);
 
     const loadShoppingBag = useCallback(async () => {
         setLoading(true);

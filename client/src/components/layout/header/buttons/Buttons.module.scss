@@ -1,5 +1,9 @@
 @use '../../../../styles/variables' as vars;
 
+.admin-icon {
+    font-size: 1.5em;
+}
+
 .buttons {
     display: flex;
     gap: 1.4em;

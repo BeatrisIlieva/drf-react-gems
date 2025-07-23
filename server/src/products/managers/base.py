@@ -67,11 +67,7 @@ class BaseProductManager(models.Manager):
 
         # Return optimized queryset with all related data
         return (
-            # select_related fetches foreign key relationships in a single query
-            # This prevents N+1 queries when accessing collection data
-            qs.select_related(
-                'collection',
-            )
+            qs
             # prefetch_related fetches many-to-many and reverse foreign key relationships
             # This prevents N+1 queries when accessing inventory and review data
             .prefetch_related(
@@ -79,7 +75,6 @@ class BaseProductManager(models.Manager):
                 'review'
             )
             # values() specifies which fields to include in the result
-            # This reduces memory usage and query time
             .values(
                 'id',
                 'collection__name',

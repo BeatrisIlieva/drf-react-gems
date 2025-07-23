@@ -7,6 +7,27 @@
     padding: 1rem;
     border: 1px solid vars.$light-grey;
     background: vars.$white;
+    position: relative;
+
+    & > p {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-transform: uppercase;
+        text-wrap: nowrap;
+        background-color: vars.$white;
+        z-index: 1;
+        padding: 0.5em;
+
+        &.approved {
+            color: vars.$green;
+        }
+
+        &.unapproved {
+            color: vars.$blue;
+        }
+    }
 
     .product-details {
         display: flex;
@@ -29,6 +50,7 @@
 
         .product-info {
             flex: 1;
+            margin-top: 1em;
 
             h4 {
                 margin: 0 0 0.5rem 0;

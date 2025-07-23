@@ -14,6 +14,7 @@ import { ScrollToTop } from './components/layout/scroll-to-top/ScrollToTop';
 import { Accounts } from './components/pages/accounts/Accounts';
 import { Details } from './components/pages/accounts/details/Details';
 import { OrderHistory } from './components/pages/accounts/order-history/OrderHistory';
+import { AdminPage } from './components/pages/admin/Admin';
 import { Checkout } from './components/pages/checkout/Checkout';
 import { Home } from './components/pages/home/Home';
 import { Login } from './components/pages/login/Login';
@@ -59,6 +60,7 @@ function App() {
                     <Route path="/user/shopping-bag" element={<ShoppingBag />} />
                     <Route path="/user/wishlist" element={<Wishlist />} />
                     <Route element={<AuthGuard />}>
+                        <Route path="/admin-page" element={<AdminPage />} />
                         <Route path="/my-account" element={<Accounts />}>
                             <Route index element={<Navigate to="details" replace />} />
                             <Route path="details" element={<Details />} />
