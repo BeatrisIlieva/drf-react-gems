@@ -12,7 +12,7 @@ import { useShoppingBagContext } from './contexts/ShoppingBagContext';
 import { Footer } from './components/layout/footer/Footer';
 import { Header } from './components/layout/header/Header';
 import { ScrollToTop } from './components/layout/scroll-to-top/ScrollToTop';
-import { Page404 } from './components/pages/Page404/Page404';
+import { Page404 } from './components/pages/page404/Page404';
 import { Accounts } from './components/pages/accounts/Accounts';
 import { Details } from './components/pages/accounts/details/Details';
 import { OrderHistory } from './components/pages/accounts/order-history/OrderHistory';
