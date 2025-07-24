@@ -1,44 +1,31 @@
-"""
-Django Settings Configuration for DRF React Gems E-commerce Platform
-
-Key Features:
-- JWT Authentication for API security
-- CORS configuration for React frontend integration
-- Cloudinary for media file storage
-- Custom user model 
-- PostgreSQL database for data storage
-- Custom password validation rules
-"""
-
+import os
 from pathlib import Path
 from datetime import timedelta
 
 from django.utils.translation import gettext_lazy as _
 
-# Import custom Unfold configuration for admin interface customization
+from decouple import config
+
+# Import Unfold configuration for admin interface customization
 from .unfold import UNFOLD
 
 # Cloudinary imports for cloud-based media file storage
-# Cloudinary provides CDN capabilities and automatic image optimization
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure--3tgzk2%%qtoj@iz7(-ag90sm&4g&(x+xdy%e4&bn#p6*n)83x'
+SECRET_KEY = os.getenv('SECRET_KEY', config('SECRET_KEY'))
 
-DEBUG = True
+DEBUG = os.getenv('DEBUG', config('DEBUG')) == 'True'
 
-ALLOWED_HOSTS = []
-# CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', config('ALLOWED_HOSTS')).split(',')
 
-# CORS (Cross-Origin Resource Sharing) configuration
-# This allows the React frontend to make API calls
-# to this Django backend without browser security restrictions
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',  # React development server
-]
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    'CSRF_TRUSTED_ORIGINS', config('CSRF_TRUSTED_ORIGINS', [])).split(',')
+
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', config('CORS_ALLOWED_ORIGINS')).split(',')
 
 
 # Custom Django applications in this project
@@ -99,7 +86,6 @@ SIMPLE_JWT = {
 }
 
 MIDDLEWARE = [
-    # CORS middleware must come first to handle cross-origin requests
     'corsheaders.middleware.CorsMiddleware',
 
     'django.middleware.security.SecurityMiddleware',
@@ -141,11 +127,11 @@ AUTHENTICATION_BACKENDS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'django_react_gems_db',
-        'USER': 'postgres',
-        'PASSWORD': 'S@3ana3a',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME', config('DB_NAME')),
+        'USER': os.getenv('DB_USER', config('DB_USER')),
+        'PASSWORD': os.getenv('DB_PASS', config('DB_PASS')),
+        'HOST': os.getenv('DB_HOST', config('DB_HOST')),
+        'PORT': os.getenv('DB_PORT', config('DB_PORT')),
     }
 }
 
@@ -205,13 +191,13 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Cloudinary configuration
 cloudinary.config(
-    cloud_name='dpgvbozrb',
-    api_key='356773277236827',
-    api_secret='Txaakp6bHutRt-Aw2ocf-dx7aMA'
+    cloud_name=os.getenv('CLOUD_NAME', config('CLOUD_NAME')),
+    api_key=os.getenv('CLOUD_API_KEY', config('CLOUD_API_KEY')),
+    api_secret=os.getenv('CLOUD_API_SECRET', config('CLOUD_API_SECRET')),
 )
 
-CELERY_BROKER_URL = 'redis://:lEeckez5Ky0LccvJ2jsQpLkbFjJ0ilVJ@redis-13706.c55.eu-central-1-1.ec2.redns.redis-cloud.com:13706/0'
-CELERY_RESULT_BACKEND = 'redis://:lEeckez5Ky0LccvJ2jsQpLkbFjJ0ilVJ@redis-13706.c55.eu-central-1-1.ec2.redns.redis-cloud.com:13706/0'
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', config('CELERY_BROKER_URL'))
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', config('CELERY_RESULT_BACKEND'))
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -224,6 +210,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_HOST_USER = 'djangogems@gmail.com'
-EMAIL_HOST_PASSWORD = 'vanp usmt sqct ecgm'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', config('EMAIL_HOST_PASSWORD'))
 DEFAULT_FROM_EMAIL = 'djangogems@gmail.com'
 SERVER_EMAIL = 'djangogems@gmail.com'
