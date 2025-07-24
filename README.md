@@ -393,11 +393,12 @@ CLOUD_API_KEY=your_api_key                         # REQUIRED: From your Cloudin
 CLOUD_API_SECRET=your_api_secret                   # REQUIRED: From your Cloudinary account
 
 # Redis (Celery)
-CELERY_BROKER_URL=redis://localhost:6379/0         # OK for local (requires Redis installed)
-CELERY_RESULT_BACKEND=redis://localhost:6379/0     # OK for local (requires Redis installed)
+CELERY_BROKER_URL=redis://localhost:6379/0         # OK for local
+CELERY_RESULT_BACKEND=redis://localhost:6379/0     # OK for local
 
 # Email Service
-EMAIL_HOST_PASSWORD=your-SMTP-app-password         # REQUIRED: Generate app password in your Google Account settings
+EMAIL_HOST_PASSWORD=your-SMTP-app-password         # REQUIRED: Generate app password in your 
+                                                     Google Account settings
 ```
 
 ---
