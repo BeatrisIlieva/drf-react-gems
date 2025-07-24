@@ -10,7 +10,7 @@
 [![Azure](https://img.shields.io/badge/Azure%20Deployment-blue.svg)](https://azure.microsoft.com/)
 [![Redis](https://img.shields.io/badge/Redis-6+-red.svg)](https://redis.io/)
 
-A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Features user authentication, product management, shopping cart functionality, wishlist system, secure payment processing, and asynchronous background tasks using Celery and Redis.
+A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Features user authentication, shopping cart and wishlist functionality, secure payment processing, order history and asynchronous email notifications using Celery and Redis.
 
 <p align="center">
   <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.45.11_e0m7vo.png" width="260" />
@@ -257,15 +257,17 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
     -   Visual feedback: Input fields dynamically change color to indicate validation state (green for valid, red for invalid, blue for focus)
     -   Server-side error integration: Any validation errors returned from the backend are mapped to the correct form fields and displayed to the user in real time
 
-## 2. Bonus Features
-
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
+## 2. Bonus Features
 
 ### Testing Implementation
 
 **The project includes 59 automated tests.**
 
 -   Shows 84% coverage (`coverage run manage.py test && coverage report`)
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ### Asynchronous View
 
@@ -280,6 +282,8 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 -   **User Greeting Email:** Sent asynchronously on registration: [server/src/accounts/signals.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/signals.py)
 -   **Order Completion:** Scheduled task marks old orders as completed: [server/src/orders/tasks.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/orders/tasks.py)
 -   **Review Approval Notification:** Emails sent on review approval: [server/src/products/signals.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/signals.py)
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ### REST API Implementation
 
