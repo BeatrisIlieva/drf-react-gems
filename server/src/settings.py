@@ -3,16 +3,14 @@ from pathlib import Path
 from datetime import timedelta
 
 from django.utils.translation import gettext_lazy as _
-
 from decouple import config
-
-# Import Unfold configuration for admin interface customization
-from .unfold import UNFOLD
 
 # Cloudinary imports for cloud-based media file storage
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+
+from .unfold import UNFOLD
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -43,7 +41,7 @@ INSTALLED_APPS = [
     'unfold',
     'unfold.contrib.filters',
     'unfold.contrib.forms',
-
+    
     'daphne',  # command to run `daphne -b 0.0.0.0 -p 8000 src.asgi:application`
 
     'cloudinary',
@@ -173,22 +171,31 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-
+# Static files configuration
 STATIC_URL = 'static/'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-STATICFILES_DIRS = (
+STATICFILES_DIRS = [
     BASE_DIR / 'static',
-)
+]
+
+# This setting is required for cloudinary_storage compatibility
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+# Modern Django storage configuration
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'mediafiles/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# This makes Cloudinary the default storage for media files
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Cloudinary configuration
 cloudinary.config(
