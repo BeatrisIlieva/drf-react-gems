@@ -23,11 +23,13 @@ export const Buttons = () => {
     return (
         <ul className={styles['buttons']}>
             {isReviewer ? (
-                <li>
-                    <Link to="/admin-page" className={styles['admin-icon']}>
-                        <FontAwesomeIcon icon={faClipboardUser} />
-                    </Link>
-                </li>
+                <>
+                    <li>
+                        <Link to="/admin-page" className={styles['admin-icon']}>
+                            <FontAwesomeIcon icon={faClipboardUser} />
+                        </Link>
+                    </li>
+                </>
             ) : (
                 <>
                     <li>

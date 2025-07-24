@@ -25,7 +25,12 @@ export const useLogin = fieldConfig => {
             if (next) {
                 navigate(next);
             } else {
-                navigate('/my-account/details');
+                const isReviewer = authData.permissions.includes('products.approve_review');
+                if (isReviewer) {
+                    navigate('/admin-page');
+                } else {
+                    navigate('/my-account/details');
+                }
             }
             return { success: true };
         }

@@ -6,6 +6,19 @@
     gap: 2em;
     align-items: center;
     flex-grow: 1;
+
+    header {
+        position: relative;
+
+        button {
+            top: -1em;
+            right: -100%;
+        }
+    }
+
+    & > p {
+        opacity: 0.6;
+    }
 }
 
 .button-wrapper {

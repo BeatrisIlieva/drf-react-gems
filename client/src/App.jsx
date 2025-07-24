@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router';
 
+import { AdminGuard } from './guards/AdminGuard';
 import { AuthGuard } from './guards/AuthGuard';
 
 import { ProductFiltersProvider } from './providers/ProductFiltersProvider';
@@ -31,6 +32,7 @@ import styles from './App.module.scss';
 
 function App() {
     const { isMiniBagPopupOpen, toggleMiniBagPopupOpen } = useShoppingBagContext();
+    
     return (
         <div className={styles['app']}>
             <Header />
@@ -60,7 +62,9 @@ function App() {
                     <Route path="/user/shopping-bag" element={<ShoppingBag />} />
                     <Route path="/user/wishlist" element={<Wishlist />} />
                     <Route element={<AuthGuard />}>
-                        <Route path="/admin-page" element={<AdminPage />} />
+                        <Route element={<AdminGuard />}>
+                            <Route path="/admin-page" element={<AdminPage />} />
+                        </Route>
                         <Route path="/my-account" element={<Accounts />}>
                             <Route index element={<Navigate to="details" replace />} />
                             <Route path="details" element={<Details />} />
