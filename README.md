@@ -12,6 +12,8 @@
 
 A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Features user authentication, shopping cart and wishlist functionality, secure payment processing, order history and asynchronous email notifications using Celery and Redis.
 
+🌟 **Explore the Live Application: [https://drf-react-gems.web.app](https://drf-react-gems.web.app/)** 
+
 <p align="center">
   <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.45.11_e0m7vo.png" width="260" />
   &nbsp;
@@ -398,7 +400,7 @@ CELERY_RESULT_BACKEND=redis://localhost:6379/0     # OK for local
 
 # Email Service
 EMAIL_HOST_PASSWORD=your-SMTP-app-password         # REQUIRED: Generate app password in your 
-                                                     Google Account settings
+                                                   # Google Account settings
 ```
 
 ---
