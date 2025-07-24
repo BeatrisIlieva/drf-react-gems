@@ -135,9 +135,9 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 **Data Normalization:** The database is organized to avoid repeating the same data in different places. It follows the main rules of database design:
 
--   **First Normal Form (1NF):** Each table has columns that hold just one piece of information (no lists or groups in a single cell). For example, the `products_color` table has a column for the color name, and each row is a single color.
--   **Second Normal Form (2NF):** All details in a table are linked only to that table's main ID. For example, in the `products_inventory` table, the amount in stock and the price are linked to a specific product and size.
--   **Third Normal Form (3NF):** There are no “hidden” connections between details. For example, product features like color, metal, and stone are always stored in their own tables and linked by ID, so if we change a color’s name, it updates everywhere at once.
+-   **First Normal Form (1NF):** Each table has columns that hold just one piece of information (no lists or groups in a single cell). For example, the `products_color` table has a column for the color name, and each row is a single color
+-   **Second Normal Form (2NF):** All details in a table are linked only to that table's main ID. For example, in the `products_inventory` table, the amount in stock and the price are linked to a specific product and size
+-   **Third Normal Form (3NF):** There are no “hidden” connections between details. For example, product features like color, metal, and stone are always stored in their own tables and linked by ID
 
 **Entity Relationship Diagram:**
 
@@ -180,7 +180,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   Anonymous users can browse products and use guest shopping cart/wishlist
 
 > **Note:**  
-> Guest users can add, remove, and update items in their shopping bag and wishlist, with each guest’s data kept in Local Storage. When a guest registers or logs in, their shopping bag and wishlist are merged into their account.
+> Guest users can add, remove, and update items in their shopping bag and wishlist, with each guest’s data kept in `Local Storage`. When a guest registers or logs in, their shopping bag and wishlist are merged into their account.
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -190,7 +190,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 -   Access to checkout, account management, order history, and permanent storage of shopping bag and wishlist requires authentication
 
--   Access to the Admin page is available only to admins in the Order group. From there, they can send reminders to users about their abandoned shopping bags.
+-   Access to the Admin page is available only to admins in the Order group. From there, they can send reminders to users about their abandoned shopping bags
 
 **Review Moderation & Approval System:**
 
@@ -238,7 +238,7 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 -   Can approve, and disapprove customer reviews for products they have purchased
 -   Access to Product Reviews section
 
-**Automated Setup:**
+##### **Automated Setup:**
 
 -   All admin groups and their associated users are created automatically by a management command: [server/src/accounts/management/commands/create_roles.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/management/commands/create_roles.py)
 
@@ -305,7 +305,7 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 
 ### Deployment
 
--   Deployed on Azure App Service with Redis Cloud for background tasks.
+-   Deployed on Azure App Service with Redis Cloud for background tasks
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
