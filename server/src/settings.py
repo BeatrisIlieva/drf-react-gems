@@ -65,21 +65,15 @@ INSTALLED_APPS = [
 
 ASGI_APPLICATION = 'src.asgi.application'
 
-# Django REST Framework configuration
 REST_FRAMEWORK = {
-    # Authentication classes define how users are authenticated
-    # JWT (JSON Web Token) authentication is used for stateless API authentication
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-    # Permission classes define default access control
-    # IsAuthenticated means all API endpoints require authentication by default
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
 
-# JWT (JSON Web Token) configuration
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
     'REFRESH_TOKEN_LIFETIME': timedelta(weeks=1),
@@ -168,7 +162,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Custom user model
 AUTH_USER_MODEL = 'accounts.UserCredential'
 
 LANGUAGE_CODE = 'en-us'
