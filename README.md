@@ -8,8 +8,9 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-13+-blue.svg)](https://www.postgresql.org/)
 [![JWT](https://img.shields.io/badge/JWT%20Authentication-green.svg)](https://jwt.io/)
 [![Azure](https://img.shields.io/badge/Azure%20Deployment-blue.svg)](https://azure.microsoft.com/)
+[![Redis](https://img.shields.io/badge/Redis-6+-red.svg)](https://redis.io/)
 
-A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Features user authentication, product management, shopping cart functionality, wishlist system, and secure payment processing, and asynchronous background tasks using Celery and Redis.
+A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Features user authentication, product management, shopping cart functionality, wishlist system, secure payment processing, and asynchronous background tasks using Celery and Redis.
 
 <p align="center">
   <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.45.11_e0m7vo.png" width="260" />
@@ -265,14 +266,12 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 **The project includes 59 automated tests.**
 
 -   Shows 84% coverage (`coverage run manage.py test && coverage report`)
--   Runs all tests (`python manage.py test`)
 
-### Asynchronous Views
+### Asynchronous View
 
 **Shopping Bag Reminder System:**
 
--   An asynchronous view `notify_users_they_have_uncompleted_orders` allows Order group admins to send reminder emails for shopping bags older than one day. Implemented with Celery: [server/src/common/views.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/common/views.py)
--   The `ShoppingBagReminderInfoView` provides insights into abandoned carts
+-   An asynchronous view `notify_users_they_have_uncompleted_orders` allows Order group admins to send reminder emails for shopping bags older than one day. This function is triggered by a button on the admin page within the web application (not the admin interface), requiring Order group permissions after login. Implemented with Celery: [server/src/common/views.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/common/views.py)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -296,7 +295,7 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 
 -   **User photo:** Handles user profile pictures with cloud storage
 
--   **Automatic profile and photo creation using signals:** [server/src/accounts/signals.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/signals.py)
+-   **Automatic profile and photo creation using signals:** When a UserCredential is created, Django signals automatically create corresponding UserProfile and UserPhoto database objects with the same primary key as the UserCredential model, establishing one-to-one relationships [server/src/accounts/signals.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/signals.py)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -327,17 +326,17 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 
 ### User Interface
 
--   **Responsive design:** The UI is fully responsive, adapting to different screen sizes and devices.
+-   **Responsive design:** The UI is fully responsive, adapting to different screen sizes and devices
 
--   **Component-based architecture:** The frontend is built with reusable, modular React components.
+-   **Component-based architecture:** The frontend is built with reusable, modular React components
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ### User Experience
 
--   **Accessible and intuitive navigation:** The application uses clear navigation patterns and accessible controls.
+-   **Accessible and intuitive navigation:** The application uses clear navigation patterns and accessible controls
 
--   **Consistent user experience:** All interactive elements, from buttons to forms and popups, follow a unified style and behavior.
+-   **Consistent user experience:** All interactive elements, from buttons to forms and popups, follow a unified style and behavior
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -358,45 +357,61 @@ cd drf-react-gems
 
 #### 2. Backend environment variables
 
--   Copy `.env.example` to `.env` in the `server/` directory:
-    ```bash
-    cp server/.env.example server/.env
-    ```
--   Edit `server/.env` and set your own secret key, database credentials, and Cloudinary credentials.
+-   Create `.env` in the `server/` directory:
 
-**Example `server/.env.example`:**
+```bash
+cd server
+touch .env
+```
+
+-   Example settings for LOCAL DEVELOPMENT ONLY
 
 ```env
-# Django settings
-SECRET_KEY=your-django-secret-key
-DEBUG=True
-ALLOWED_HOSTS=localhost,127.0.0.1,[::1],testserver
+# Django Configuration
+SECRET_KEY=your-secret-key                         # REQUIRED: Generate new Django secret key
+DEBUG=True                                         # OK for local
 
-# Database settings
-DB_NAME=django_react_gems_db
-DB_USER=postgres
-DB_PASSWORD=your-db-password
-DB_HOST=127.0.0.1
-DB_PORT=5432
+# Local Development URLs
+ALLOWED_HOSTS=localhost,127.0.0.1                  # OK for local
+CORS_ALLOWED_ORIGINS=http://localhost:5173         # OK for local
+CSRF_TRUSTED_ORIGINS=http://localhost:5173         # OK for local
 
-# Cloudinary settings
-CLOUDINARY_CLOUD_NAME=your-cloud-name
-CLOUDINARY_API_KEY=your-api-key
-CLOUDINARY_API_SECRET=your-api-secret
+# Database (PostgreSQL)
+DB_NAME=your_database_name                         # REQUIRED: Your PostgreSQL database name
+DB_USER=your_username                              # REQUIRED: Your PostgreSQL username
+DB_PASS=your_password                              # REQUIRED: Your PostgreSQL password
+DB_HOST=127.0.0.1                                  # OK for local
+DB_PORT=5432                                       # OK for local
+
+# Cloudinary (Media Storage)
+CLOUD_NAME=your_cloud_name                         # REQUIRED: From your Cloudinary account
+CLOUD_API_KEY=your_api_key                         # REQUIRED: From your Cloudinary account
+CLOUD_API_SECRET=your_api_secret                   # REQUIRED: From your Cloudinary account
+
+# Redis (Celery)
+CELERY_BROKER_URL=redis://localhost:6379/0         # OK for local (requires Redis installed)
+CELERY_RESULT_BACKEND=redis://localhost:6379/0     # OK for local (requires Redis installed)
+
+# Email Service
+EMAIL_HOST_PASSWORD=your-SMTP-app-password         # REQUIRED: Generate app password in your Google Account settings
 ```
 
 ---
 
 #### 3. Backend setup
 
+**Prerequisites:**
+
+-   Make sure you have PostgreSQL installed and running
+-   Create a PostgreSQL database (use any method you prefer: pgAdmin, command line, etc.)
+-   Update your .env file with your database name, username, and password
+-   Make sure you have Redis available (use any method you prefer: Docker, Redis Cloud, etc.)
+
 ```bash
 cd server
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-
-# Create PostgreSQL database
-createdb drf_react_gems_db
 
 # Run migrations
 python manage.py migrate
@@ -407,8 +422,7 @@ python manage.py setup_database
 
 ---
 
--   Start Redis on your machine or use Redis Cloud
--   Production-Like Mode (Procfile): To mimic the Azure App Service deployment environment, use `honcho` to run all processes defined in the [Procfile](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/Procfile):
+**Use `honcho` to run all processes defined in the [Procfile]**(https://github.com/beatrisilieva/drf-react-gems/blob/main/server/Procfile):
 
 ---
 
@@ -421,16 +435,17 @@ export PORT=8000 && honcho start
 
 #### 4. Frontend environment variables
 
--   Copy `.env.example` to `.env.development` in the `client/` directory:
-    ```bash
-    cp client/.env.example client/.env.development
-    ```
--   Edit `client/.env.development` and set your backend server URL.
+-   Create `.env` in the `client/` directory:
 
-**Example `client/.env.example`:**
+```bash
+cd client
+touch .env.development
+```
 
-```env
-VITE_APP_SERVER_URL=http://localhost:8000  # (will be replaced with your deployed server URL)
+-   Example settings for LOCAL DEVELOPMENT ONLY
+
+```env.development
+VITE_APP_SERVER_URL=http://localhost:8000
 ```
 
 ---
