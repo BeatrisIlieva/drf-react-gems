@@ -40,7 +40,7 @@ export const ShoppingBag = () => {
                     </section>
                 </PaddedContainer>
             ) : (
-                <EmptyList title="Shopping Bag" />
+                <EmptyList title="Your Shopping bag is empty." />
             )}
         </>
     );

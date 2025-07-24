@@ -67,7 +67,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 -   Complete Django configuration with DRF, JWT, CORS, and database settings [server/src/settings.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/settings.py)
 
-**The application has 12 page components:**
+**The application has 13 page components:**
 
 -   Home page [client/src/components/pages/home/Home.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/home/Home.jsx)
 -   Product list page [client/src/components/pages/product-list/ProductList.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/product-list/ProductList.jsx)
@@ -81,6 +81,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   Register page [client/src/components/pages/register/Register.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/register/Register.jsx)
 -   Accounts page [client/src/components/pages/accounts/Accounts.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/accounts/Accounts.jsx)
 -   Admin page [client/src/components/pages/admin/Admin.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/admin/Admin.jsx)
+-   404 page [client/src/components/pages/page404/Page404.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/page404/Page404.jsx])
 
 **The application has 14 independent class-based views:**
 

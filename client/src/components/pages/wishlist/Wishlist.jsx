@@ -35,7 +35,7 @@ export const Wishlist = () => {
                             <ProductItems products={wishlistItems} onMoveToBag={handleMoveToBag} />
                         </section>
                     ) : (
-                        <EmptyList title="Wishlist" />
+                        <EmptyList title="Your Wishlist is empty." />
                     )}
                 </>
             )}

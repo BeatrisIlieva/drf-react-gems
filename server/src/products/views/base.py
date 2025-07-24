@@ -2,7 +2,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView, RetrieveAPIView
-
+from rest_framework import status
 
 from src.products.mixins import FilterMixin
 
@@ -55,18 +55,34 @@ class BaseAttributeView(FilterMixin, RetrieveAPIView):
     permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
-        # Singularize category if it ends with 's'
-        category = self.request.query_params.get('category', '')
-        if isinstance(category, list):
-            category = category[0] if category else ''
-        if not isinstance(category, str):
-            category = ''
-        if category.endswith('s') and len(category) > 1:
-            category = category[:-1]
-        filters = self._get_filters_for_attributes(category)
-        data = self.model.objects.get_attributes_count(filters, category)
-        serializer = self.get_serializer(data, many=True)
+        try:
 
-        return Response({
-            'results': serializer.data,
-        })
+            category = self.request.query_params.get('category', '')
+
+            if isinstance(category, list):
+                category = category[0] if category else ''
+            if not isinstance(category, str):
+                category = ''
+            if category.endswith('s') and len(category) > 1:
+                category = category[:-1]
+
+            valid_categories = ['earwear',
+                                'neckwear', 'fingerwear', 'wristwear']
+            if category and category not in valid_categories:
+                return Response(
+                    {'error': 'Invalid category'},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            filters = self._get_filters_for_attributes(category)
+            data = self.model.objects.get_attributes_count(filters, category)
+            serializer = self.get_serializer(data, many=True)
+
+            return Response({'results': serializer.data})
+
+        except Exception as e:
+
+            return Response(
+                {'error': 'Resource not found'},
+                status=status.HTTP_404_NOT_FOUND
+            )

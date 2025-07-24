@@ -12,6 +12,7 @@ import { useShoppingBagContext } from './contexts/ShoppingBagContext';
 import { Footer } from './components/layout/footer/Footer';
 import { Header } from './components/layout/header/Header';
 import { ScrollToTop } from './components/layout/scroll-to-top/ScrollToTop';
+import { Page404 } from './components/pages/Page404/Page404';
 import { Accounts } from './components/pages/accounts/Accounts';
 import { Details } from './components/pages/accounts/details/Details';
 import { OrderHistory } from './components/pages/accounts/order-history/OrderHistory';
@@ -32,7 +33,7 @@ import styles from './App.module.scss';
 
 function App() {
     const { isMiniBagPopupOpen, toggleMiniBagPopupOpen } = useShoppingBagContext();
-    
+
     return (
         <div className={styles['app']}>
             <Header />
@@ -74,6 +75,7 @@ function App() {
                         <Route path="/user/payment" element={<Payment />} />
                         <Route path="/user/order-confirmation" element={<OrderConfirmation />} />
                     </Route>
+                    <Route path="*" element={<Page404 />} />
                 </Routes>
             </main>
             <MiniBagPopup isOpen={isMiniBagPopupOpen} onClose={toggleMiniBagPopupOpen} />

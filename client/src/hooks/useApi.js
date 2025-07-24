@@ -1,5 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
+import { useNavigate } from 'react-router';
+
 import { useAuthRefresh } from './useAuthRefresh';
 
 import { useUserContext } from '../contexts/UserContext';
@@ -7,6 +9,7 @@ import { useUserContext } from '../contexts/UserContext';
 export const useApi = () => {
     const { access, refresh } = useUserContext();
     const { authRefresh } = useAuthRefresh();
+    const navigate = useNavigate();
 
     const request = useCallback(
         async (
@@ -155,6 +158,11 @@ export const useApi = () => {
                         console.error('Token refresh failed:', refreshError);
                         throw refreshError;
                     }
+                }
+
+                if (response.status === 404) {
+                    navigate('/page-not-found', { replace: true });
+                    return;
                 }
 
                 const error = new Error(

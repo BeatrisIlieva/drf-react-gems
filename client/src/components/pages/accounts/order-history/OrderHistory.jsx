@@ -48,7 +48,7 @@ export const OrderHistory = () => {
                             </section>
                         </PaddedContainer>
                     ) : (
-                        <EmptyList title="Order History" />
+                        <EmptyList title="You have no orders yet." />
                     )}
                 </>
             )}

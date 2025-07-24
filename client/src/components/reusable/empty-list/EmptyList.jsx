@@ -6,7 +6,7 @@ export const EmptyList = ({ title }) => {
     return (
         <div className={styles['empty-bag-container']}>
             <div className={styles['empty-bag-message']}>
-                <h3>Your {title} is empty</h3>
+                <h3>{title}</h3>
                 <p>Browse our categories below to discover beautiful pieces for your collection</p>
             </div>
             <ShopByCategory />
