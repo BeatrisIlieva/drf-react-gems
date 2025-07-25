@@ -54,7 +54,7 @@ export const useAuthRefresh = () => {
                 }
 
                 const data = await response.json();
-
+                
                 if (data.access) {
                     localStorage.setItem(
                         'auth',

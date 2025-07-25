@@ -25,8 +25,6 @@ export const ReviewForm = ({
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
 
-    console.log(existingReview);
-
     useEffect(() => {
         if (existingReview) {
             setRating(existingReview.rating);
