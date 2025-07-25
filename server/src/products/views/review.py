@@ -177,7 +177,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
             # No review found for this user and product
             return Response(
                 {'error': ReviewErrorMessages.ERROR_REVIEW_NOT_FOUND},
-                status=status.HTTP_404_NOT_FOUND
+                status=status.HTTP_204_NO_CONTENT
             )
 
     @action(detail=True, methods=['post'], permission_classes=[IsOrderManager])
