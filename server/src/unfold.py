@@ -3,11 +3,12 @@ from django.templatetags.static import static
 from django.utils.translation import gettext_lazy as _
 
 UNFOLD = {
+    'SITE_URL': 'https://drf-react-gems.web.app',
     'SITE_DROPDOWN': [
         {
             'icon': 'diamond',
             'title': _('DRF-React-TS Gems'),
-            'link': '/',
+            'link': 'https://drf-react-gems.web.app',
         },
     ],
     'THEME': 'light',

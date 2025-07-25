@@ -12,7 +12,7 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 app.conf.beat_schedule = {
     'complete_old_orders_task': {
         'task': 'src.orders.tasks.complete_old_orders',
-        'schedule': 79200,
+        'schedule': 10800,
         # 'schedule': 30, # For testing
     },
 }
