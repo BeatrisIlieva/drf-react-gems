@@ -15,6 +15,8 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 🌟 **Explore the Live Application: [https://drf-react-gems.web.app](https://drf-react-gems.web.app/)**
 
+🌟 **Explore the Admin Panel: [https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net/admin](https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net/admin)**
+
 <p align="center">
   <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.45.11_e0m7vo.png" width="260" />
   &nbsp;
@@ -209,6 +211,8 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   Unfold Framework: Admin interface with custom themes, and styling [server/src/unfold.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/unfold.py)
 -   Custom Navigation: Organized sidebar with collapsible sections for Users & Groups, Products, Product Attributes, and Reviews
 -   Permission-Based Access: Different admin sections visible based on user permissions
+
+**To access the Admin Panel visit: [https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net/admin](https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net/admin)**
 
 **The admin interface includes 5 custom options:**
 
