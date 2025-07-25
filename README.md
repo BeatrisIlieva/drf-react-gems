@@ -7,12 +7,13 @@
 [![DRF](https://img.shields.io/badge/Django%20REST%20Framework-3.14+-orange.svg)](https://www.django-rest-framework.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-13+-blue.svg)](https://www.postgresql.org/)
 [![JWT](https://img.shields.io/badge/JWT%20Authentication-green.svg)](https://jwt.io/)
-[![Azure](https://img.shields.io/badge/Azure%20Deployment-blue.svg)](https://azure.microsoft.com/)
+[![Azure](https://img.shields.io/badge/Azure-blue.svg)](https://azure.microsoft.com/)
 [![Redis](https://img.shields.io/badge/Redis-6+-red.svg)](https://redis.io/)
+[![Firebase](https://img.shields.io/badge/Firebase-orange.svg)](https://firebase.google.com/)
 
 A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Features user authentication, shopping cart and wishlist functionality, secure payment processing, order history and asynchronous email notifications using Celery and Redis.
 
-🌟 **Explore the Live Application: [https://drf-react-gems.web.app](https://drf-react-gems.web.app/)** 
+🌟 **Explore the Live Application: [https://drf-react-gems.web.app](https://drf-react-gems.web.app/)**
 
 <p align="center">
   <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.45.11_e0m7vo.png" width="260" />
@@ -307,7 +308,8 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 
 ### Deployment
 
--   Deployed on Azure App Service with Redis Cloud for background tasks
+-   **Backend:** Deployed on Azure with Redis Cloud for background tasks
+-   **Frontend:** Deployed on Firebase
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -399,7 +401,7 @@ CELERY_BROKER_URL=redis://localhost:6379/0         # OK for local
 CELERY_RESULT_BACKEND=redis://localhost:6379/0     # OK for local
 
 # Email Service
-EMAIL_HOST_PASSWORD=your-SMTP-app-password         # REQUIRED: Generate app password in your 
+EMAIL_HOST_PASSWORD=your-SMTP-app-password         # REQUIRED: Generate app password in your
                                                    # Google Account settings
 ```
 
