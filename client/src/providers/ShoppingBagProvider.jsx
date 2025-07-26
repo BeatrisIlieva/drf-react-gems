@@ -19,6 +19,7 @@ export const ShoppingBagProvider = ({ children }) => {
     const navigate = useNavigate();
     const migratedItemsData = JSON.parse(localStorage.getItem('migratedShoppingBag'));
     const migratedItems = migratedItemsData;
+    const [isMigrating, setIsMigrating] = useState(false);
 
     const [isDeleting, setIsDeleting] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -84,13 +85,22 @@ export const ShoppingBagProvider = ({ children }) => {
     ]);
 
     const migrateItemsToShoppingBag = useCallback(async () => {
-        for (const item of shoppingBagItems) {
-            await createItem({ inventory: item.id, quantity: item.quantity });
+        setIsMigrating(true);
+        try {
+            const promises = shoppingBagItems.map(item =>
+                createItem({ inventory: item.id, quantity: item.quantity })
+            );
+
+            await Promise.all(promises);
+        } catch (err) {
+            console.log(err.message);
+        } finally {
+            setIsMigrating(false);
         }
     }, [createItem, shoppingBagItems]);
 
     useEffect(() => {
-        if (userId && !migratedItems) {
+        if (userId && !migratedItems && !isMigrating) {
             migrateItemsToShoppingBag().then(() => {
                 localStorage.setItem('migratedShoppingBag', true);
                 loadShoppingBag();
@@ -103,6 +113,7 @@ export const ShoppingBagProvider = ({ children }) => {
         migratedItems,
         loadShoppingBag,
         migrateItemsToShoppingBag,
+        isMigrating,
     ]);
 
     useEffect(() => {
