@@ -8,7 +8,10 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
 from src.accounts.constants import UserErrorMessages
-from src.accounts.validators.models import UsernameValidator, EmailOrUsernameValidator
+from src.accounts.validators.models import (
+    UsernameValidator,
+    EmailOrUsernameValidator,
+)
 
 UserModel = get_user_model()
 
@@ -20,6 +23,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     Inherits from ModelSerializer, which automatically generates fields based on the User model.
     Handles validation and creation of new user instances, including password hashing and email consent.
     """
+
     # Password field: write_only means it won't be returned in API responses.
     # trim_whitespace=False ensures passwords are not altered by removing spaces.
     password = serializers.CharField(write_only=True, trim_whitespace=False)
@@ -30,7 +34,12 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         # Fields to include in the API (must match model fields or serializer fields)
-        fields = ['email', 'username', 'password', 'agreed_to_emails']
+        fields = [
+            'email',
+            'username',
+            'password',
+            'agreed_to_emails',
+        ]
 
     def validate_password(self, value):
         validate_password(value)
@@ -54,7 +63,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         """
         if not value:
             raise serializers.ValidationError(
-                UserErrorMessages.AGREED_TO_EMAILS)
+                UserErrorMessages.AGREED_TO_EMAILS
+            )
 
         return value
 
@@ -75,6 +85,7 @@ class UserLoginRequestSerializer(serializers.Serializer):
     Uses a plain Serializer (not ModelSerializer) because login does not create or update model instances.
     Accepts either email or username and a password.
     """
+
     email_or_username = serializers.CharField()
     password = serializers.CharField()
 
@@ -96,6 +107,7 @@ class UserLoginResponseSerializer(serializers.Serializer):
 
     Returns authentication tokens and a message after successful login.
     """
+
     refresh = serializers.CharField()
     access = serializers.CharField()
     message = serializers.CharField()
@@ -107,6 +119,7 @@ class UserLogoutRequestSerializer(serializers.Serializer):
 
     Accepts a refresh token to invalidate the session.
     """
+
     refresh = serializers.CharField()
 
 
@@ -116,6 +129,7 @@ class UserLogoutResponseSerializer(serializers.Serializer):
 
     Returns a message confirming logout.
     """
+
     message = serializers.CharField()
 
 
@@ -125,10 +139,13 @@ class PasswordChangeSerializer(serializers.Serializer):
 
     Handles validation of current and new passwords.
     """
+
     current_password = serializers.CharField(
-        write_only=True, trim_whitespace=False)
+        write_only=True, trim_whitespace=False
+    )
     new_password = serializers.CharField(
-        write_only=True, trim_whitespace=False)
+        write_only=True, trim_whitespace=False
+    )
 
     def validate_current_password(self, value):
         """
@@ -138,7 +155,8 @@ class PasswordChangeSerializer(serializers.Serializer):
 
         if not user.check_password(value):
             raise serializers.ValidationError(
-                UserErrorMessages.INCORRECT_PASSWORD)
+                UserErrorMessages.INCORRECT_PASSWORD
+            )
 
         return value
 
@@ -156,7 +174,9 @@ class PasswordChangeSerializer(serializers.Serializer):
         """
         if attrs['current_password'] == attrs['new_password']:
             raise serializers.ValidationError(
-                {"new_password": UserErrorMessages.NEW_PASSWORD_SAME_AS_CURRENT}
+                {
+                    "new_password": UserErrorMessages.NEW_PASSWORD_SAME_AS_CURRENT
+                }
             )
 
         return attrs

@@ -13,8 +13,5 @@ def complete_old_orders():
     # cutoff = timezone.now() - timedelta(seconds=30)
 
     Order.objects.filter(
-        status=OrderStatusChoices.PENDING,
-        created_at__lt=cutoff
-    ).update(
-        status=OrderStatusChoices.COMPLETED
-    )
+        status=OrderStatusChoices.PENDING, created_at__lt=cutoff
+    ).update(status=OrderStatusChoices.COMPLETED)

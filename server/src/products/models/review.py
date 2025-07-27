@@ -38,7 +38,7 @@ class Review(models.Model):
         unique_together = (
             'user',
             'content_type',
-            'object_id'
+            'object_id',
         )
 
         # Custom permission for approving reviews
@@ -46,7 +46,7 @@ class Review(models.Model):
         permissions = [
             (
                 'approve_review',
-                'Can approve reviews'
+                'Can approve reviews',
             ),
         ]
 
@@ -56,7 +56,10 @@ class Review(models.Model):
 
     comment = models.TextField(
         validators=[
-            MaxLengthValidator(ReviewFieldLengths.MAX_COMMENT_LENGTH),],
+            MaxLengthValidator(
+                ReviewFieldLengths.MAX_COMMENT_LENGTH,
+            ),
+        ],
     )
 
     # Only approved reviews are displayed publicly

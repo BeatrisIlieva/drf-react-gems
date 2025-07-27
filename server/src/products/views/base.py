@@ -27,9 +27,11 @@ class BaseProductListView(FilterMixin, ListAPIView):
 
         serializer = self.get_serializer(data, many=True)
 
-        return Response({
-            'products': serializer.data,
-        })
+        return Response(
+            {
+                'products': serializer.data,
+            }
+        )
 
     def _get_products_data(self):
         filters = self._get_filters_for_product()
@@ -44,11 +46,16 @@ class BaseProductItemView(RetrieveAPIView):
     def get(self, request, *args, **kwargs):
         pk = kwargs.get('pk')
         product = self.model.objects.get_product_item(pk)
-        serializer = self.get_serializer(product, context={'request': request})
+        serializer = self.get_serializer(
+            product,
+            context={'request': request},
+        )
 
-        return Response({
-            'product': serializer.data,
-        })
+        return Response(
+            {
+                'product': serializer.data,
+            }
+        )
 
 
 class BaseAttributeView(FilterMixin, RetrieveAPIView):
@@ -66,12 +73,16 @@ class BaseAttributeView(FilterMixin, RetrieveAPIView):
             if category.endswith('s') and len(category) > 1:
                 category = category[:-1]
 
-            valid_categories = ['earwear',
-                                'neckwear', 'fingerwear', 'wristwear']
+            valid_categories = [
+                'earwear',
+                'neckwear',
+                'fingerwear',
+                'wristwear',
+            ]
             if category and category not in valid_categories:
                 return Response(
                     {'error': 'Invalid category'},
-                    status=status.HTTP_404_NOT_FOUND
+                    status=status.HTTP_404_NOT_FOUND,
                 )
 
             filters = self._get_filters_for_attributes(category)
@@ -84,5 +95,5 @@ class BaseAttributeView(FilterMixin, RetrieveAPIView):
 
             return Response(
                 {'error': 'Resource not found'},
-                status=status.HTTP_404_NOT_FOUND
+                status=status.HTTP_404_NOT_FOUND,
             )

@@ -20,6 +20,7 @@ class WishlistService:
         """
         try:
             return content_type.get_object_for_this_type(pk=object_id)
+
         except content_type.model_class().DoesNotExist:
             raise NotFound(WishlistErrorMessages.PRODUCT_NOT_FOUND)
 
@@ -35,7 +36,7 @@ class WishlistService:
         return Wishlist.objects.filter(
             content_type=content_type,
             object_id=object_id,
-            **user_filters
+            **user_filters,
         ).exists()
 
     @staticmethod
@@ -46,9 +47,16 @@ class WishlistService:
         2. The user doesn't already have this item in their wishlist
         """
         # Check if item already exists to prevent duplicates
-        if WishlistService.check_item_exists(user_filters, content_type, object_id):
+        if WishlistService.check_item_exists(
+            user_filters,
+            content_type,
+            object_id,
+        ):
             raise ValidationError(
-                {'detail': WishlistErrorMessages.ITEM_ALREADY_EXISTS})
+                {
+                    'detail': WishlistErrorMessages.ITEM_ALREADY_EXISTS,
+                }
+            )
 
         # Validate that the product exists
         WishlistService.get_product_object(content_type, object_id)
@@ -57,7 +65,7 @@ class WishlistService:
         created_item = Wishlist.objects.create(
             content_type=content_type,
             object_id=object_id,
-            **user_filters
+            **user_filters,
         )
 
         return created_item
@@ -72,9 +80,10 @@ class WishlistService:
             item = Wishlist.objects.get(
                 content_type=content_type,
                 object_id=object_id,
-                **user_filters
+                **user_filters,
             )
             return item
+
         except Wishlist.DoesNotExist:
             raise NotFound(WishlistErrorMessages.ITEM_NOT_FOUND)
 
@@ -86,7 +95,9 @@ class WishlistService:
         """
         # Get the wishlist item (this will raise NotFound if it doesn't exist)
         wishlist_item = WishlistService.get_wishlist_item(
-            user_filters, content_type, object_id
+            user_filters,
+            content_type,
+            object_id,
         )
 
         # Delete the item

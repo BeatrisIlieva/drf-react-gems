@@ -13,7 +13,12 @@ from rest_framework import serializers
 
 from src.products.serializers.inventory import InventorySerializer
 from src.products.serializers.review import ReviewSerializer
-from src.products.models.product import Earwear, Neckwear, Fingerwear, Wristwear
+from src.products.models.product import (
+    Earwear,
+    Neckwear,
+    Fingerwear,
+    Wristwear,
+)
 
 
 class BaseProductListSerializer(serializers.ModelSerializer):
@@ -46,7 +51,7 @@ class BaseProductListSerializer(serializers.ModelSerializer):
             'metal__name',
             'average_rating',
             'min_price',
-            'max_price'
+            'max_price',
         ]
         depth = 2
 
@@ -55,15 +60,24 @@ class AverageRatingField(serializers.Field):
     def to_representation(self, value):
         # Always calculate average from approved reviews only
         # This ensures consistency across all users
-        avg = value.review.filter(approved=True).aggregate(
-            avg=Avg('rating'))['avg'] or 0
+        avg = (
+            value.review.filter(
+                approved=True,
+            ).aggregate(
+                avg=Avg('rating'),
+            )['avg']
+            or 0
+        )
 
         return round(avg, 2)
 
 
 class RelatedProductSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ['id', 'first_image']
+        fields = [
+            'id',
+            'first_image',
+        ]
         model = None
 
 
@@ -100,6 +114,7 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
         class DynamicRelatedProductSerializer(RelatedProductSerializer):
             class Meta(RelatedProductSerializer.Meta):
                 model = model_class
+
         serializer = DynamicRelatedProductSerializer(
             related_products, many=True
         )
@@ -115,14 +130,18 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
             # Only include products from other types
             if model_class == current_product_type:
                 return []
-            products = model_class.objects.filter(color_id=color_id)
+            products = model_class.objects.filter(
+                color_id=color_id,
+            )
             result = []
             for product in products:
-                result.append({
-                    'id': product.id,
-                    'first_image': product.first_image,
-                    'product_type': f'{model_class.__name__.lower()}s',
-                })
+                result.append(
+                    {
+                        'id': product.id,
+                        'first_image': product.first_image,
+                        'product_type': f'{model_class.__name__.lower()}s',
+                    }
+                )
             return result
 
         related_products.extend(serialize_products_of_type(Wristwear))
@@ -137,4 +156,8 @@ class BaseAttributesSerializer(serializers.ModelSerializer):
     count = serializers.IntegerField()
 
     class Meta:
-        fields = ['id', 'name', 'count']
+        fields = [
+            'id',
+            'name',
+            'count',
+        ]

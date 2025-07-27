@@ -12,7 +12,7 @@ from src.products.models import (
     Fingerwear,
     Neckwear,
     Review,
-    Wristwear
+    Wristwear,
 )
 
 
@@ -37,7 +37,7 @@ sample_reviews = [
     "Feels personal and thoughtfully made. It really shows that it’s crafted with intention.",
     "This piece has a timeless design that fits any style, whether minimal or bold.",
     "Matches beautifully with other accessories, and the quality is consistent across the board.",
-    "It arrived ready to gift, with care in every detail — from the item itself to the packaging."
+    "It arrived ready to gift, with care in every detail — from the item itself to the packaging.",
 ]
 
 
@@ -45,24 +45,17 @@ class Command(BaseCommand):
     help = 'Creating products'
 
     def handle(self, *args, **options):
-        os.environ.setdefault(
-            'DJANGO_SETTINGS_MODULE',
-            'src.settings'
-        )
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'src.settings')
 
         django.setup()
 
-        self.stdout.write(self.style.SUCCESS(
-            'Starting creating reviews...'
-        ))
+        self.stdout.write(self.style.SUCCESS('Starting creating reviews...'))
 
         created_users = self.create_fake_users()
         self.create_fake_reviews(created_users)
 
         self.stdout.write(
-            self.style.SUCCESS(
-                'All reviews created successfully.'
-            )
+            self.style.SUCCESS('All reviews created successfully.')
         )
 
     def create_fake_users(self):
@@ -74,7 +67,7 @@ class Command(BaseCommand):
                 'password': '!1Aabb',
                 'first_name': 'Simon',
                 'last_name': 'Smith',
-                'photo': 'image/upload/v1748258755/boy2_aijwxt_rqfolu.jpg'
+                'photo': 'image/upload/v1748258755/boy2_aijwxt_rqfolu.jpg',
             },
             {
                 'username': 'Ava',
@@ -82,7 +75,7 @@ class Command(BaseCommand):
                 'password': '!1Aabb',
                 'first_name': 'Ava',
                 'last_name': 'Johnson',
-                'photo': 'image/upload/v1748258753/3d-illustration-cute-little-girl-with-backpack-her-hands_fxkmfo_nflhb4.jpg'
+                'photo': 'image/upload/v1748258753/3d-illustration-cute-little-girl-with-backpack-her-hands_fxkmfo_nflhb4.jpg',
             },
             {
                 'username': 'Sophia',
@@ -90,7 +83,7 @@ class Command(BaseCommand):
                 'password': '!1Aabb',
                 'first_name': 'Sophia',
                 'last_name': 'Brown',
-                'photo': 'image/upload/v1748258753/3d-illustration-cute-little-girl-hat-jacket_bdlvpk_qo4b95.jpg'
+                'photo': 'image/upload/v1748258753/3d-illustration-cute-little-girl-hat-jacket_bdlvpk_qo4b95.jpg',
             },
             {
                 'username': 'Michael',
@@ -98,7 +91,7 @@ class Command(BaseCommand):
                 'password': '!1Aabb',
                 'first_name': 'Michael',
                 'last_name': 'Clark',
-                'photo': 'image/upload/v1748258754/little-boy-cap-with-backpack-street-3d-rendering_i2mw52_frkquw.jpg'
+                'photo': 'image/upload/v1748258754/little-boy-cap-with-backpack-street-3d-rendering_i2mw52_frkquw.jpg',
             },
             {
                 'username': 'Emma',
@@ -106,7 +99,7 @@ class Command(BaseCommand):
                 'password': '!1Aabb',
                 'first_name': 'Emma',
                 'last_name': 'Watson',
-                'photo': 'image/upload/v1748258754/girl2_rjcjz2_y54zla.jpg'
+                'photo': 'image/upload/v1748258754/girl2_rjcjz2_y54zla.jpg',
             },
             {
                 'username': 'Olivia',
@@ -114,7 +107,7 @@ class Command(BaseCommand):
                 'password': '!1Aabb',
                 'first_name': 'Olivia',
                 'last_name': 'Smith',
-                'photo': 'image/upload/v1748258753/3d-illustration-cute-little-girl-bokeh-background_wyylpf_seqqgg.jpg'
+                'photo': 'image/upload/v1748258753/3d-illustration-cute-little-girl-bokeh-background_wyylpf_seqqgg.jpg',
             },
             {
                 'username': 'William',
@@ -122,7 +115,7 @@ class Command(BaseCommand):
                 'password': '!1Aabb',
                 'first_name': 'William',
                 'last_name': 'Lewis',
-                'photo': 'image/upload/v1748258753/boy1_cli59g_czbmce.jpg'
+                'photo': 'image/upload/v1748258753/boy1_cli59g_czbmce.jpg',
             },
             {
                 'username': 'Isabella',
@@ -130,9 +123,8 @@ class Command(BaseCommand):
                 'password': '!1Aabb',
                 'first_name': 'Isabella',
                 'last_name': 'Jones',
-                'photo': 'image/upload/v1748258753/girl1_lclcth_lqhndu.jpg'
+                'photo': 'image/upload/v1748258753/girl1_lclcth_lqhndu.jpg',
             },
-
             {
                 'username': 'Mia',
                 'email': 'mia.davis@mail.com',
@@ -163,10 +155,7 @@ class Command(BaseCommand):
 
         for item in users_data:
             user, created = UserModel.objects.get_or_create(
-                email=item['email'],
-                defaults={
-                    'username': item['username']
-                }
+                email=item['email'], defaults={'username': item['username']}
             )
 
             if created:
@@ -209,7 +198,7 @@ class Command(BaseCommand):
 
                 shuffled_users = users.copy()
                 random.shuffle(shuffled_users)
-                
+
                 first_six_users = shuffled_users[:6]
 
                 for user in first_six_users:

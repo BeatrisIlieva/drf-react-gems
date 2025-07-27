@@ -20,7 +20,8 @@ def create_related_user_models(sender, instance, created, **kwargs):
         UserPhoto.objects.get_or_create(user=instance)
 
         html_message = render_to_string(
-            'mailer/registration-greeting.html', {'user': instance})
+            'mailer/registration-greeting.html', {'user': instance}
+        )
         plain_message = strip_tags(html_message)
 
         _send_email.delay(

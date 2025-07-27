@@ -10,12 +10,7 @@ It provides:
 """
 
 from src.common.permissions import IsOrderManager
-from src.products.models.product import (
-    Color,
-    Metal,
-    Stone,
-    Collection
-)
+from src.products.models.product import Color, Metal, Stone, Collection
 
 from src.products.serializers.product import (
     CollectionSerializer,
@@ -29,15 +24,10 @@ from src.products.serializers.product import (
     StoneSerializer,
     WristwearItemSerializer,
     WristwearListSerializer,
-    FingerwearListSerializer
+    FingerwearListSerializer,
 )
 
-from src.products.models import (
-    Earwear,
-    Neckwear,
-    Wristwear,
-    Fingerwear
-)
+from src.products.models import Earwear, Neckwear, Wristwear, Fingerwear
 
 from src.products.views.base import (
     BaseAttributeView,
@@ -119,7 +109,13 @@ class ProductAllReviewsView(APIView):
 
     def get(self, request, category, pk):
         # Map category to model
-        from src.products.models.product import Earwear, Neckwear, Fingerwear, Wristwear
+        from src.products.models.product import (
+            Earwear,
+            Neckwear,
+            Fingerwear,
+            Wristwear,
+        )
+
         model_map = {
             'earwear': Earwear,
             'neckwear': Neckwear,
@@ -128,15 +124,22 @@ class ProductAllReviewsView(APIView):
         }
         model = model_map.get(category.lower())
         if not model:
-            return Response({'detail': 'Invalid category.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'detail': 'Invalid category.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         try:
             product = model.objects.get(pk=pk)
         except model.DoesNotExist:
-            return Response({'detail': 'Product not found.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {'detail': 'Product not found.'},
+                status=status.HTTP_404_NOT_FOUND,
+            )
         # Get all reviews for this product
         content_type = ContentType.objects.get_for_model(model)
         reviews = Review.objects.filter(
-            content_type=content_type, object_id=product.id).order_by('-created_at')
+            content_type=content_type, object_id=product.id
+        ).order_by('-created_at')
         serializer = ReviewSerializer(reviews, many=True)
 
         return Response({'reviews': serializer.data})

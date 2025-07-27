@@ -16,7 +16,7 @@ from src.products.views.product import (
     NeckwearListView,
     WristwearItemView,
     WristwearListView,
-    ProductAllReviewsView
+    ProductAllReviewsView,
 )
 from src.products.views.review import ReviewViewSet
 
@@ -25,47 +25,69 @@ router.register(r'reviews', ReviewViewSet, basename='review')
 
 
 urlpatterns = [
+    path('', include(router.urls)),
     path(
-        '', include(router.urls)
+        'earwears/',
+        include(
+            [
+                path('', EarwearListView.as_view(), name='earwear-list'),
+                path(
+                    '<int:pk>/', EarwearItemView.as_view(), name='earwear-item'
+                ),
+            ]
+        ),
     ),
     path(
-        'earwears/', include([
-            path('', EarwearListView.as_view(), name='earwear-list'),
-            path('<int:pk>/', EarwearItemView.as_view(), name='earwear-item'),
-        ])
+        'fingerwears/',
+        include(
+            [
+                path('', FingerwearListView.as_view(), name='fingerwear-list'),
+                path(
+                    '<int:pk>/',
+                    FingerwearItemView.as_view(),
+                    name='fingerwear-item',
+                ),
+            ]
+        ),
     ),
     path(
-        'fingerwears/', include([
-            path('', FingerwearListView.as_view(), name='fingerwear-list'),
-            path('<int:pk>/',
-                 FingerwearItemView.as_view(), name='fingerwear-item'),
-        ])
+        'neckwears/',
+        include(
+            [
+                path('', NeckwearListView.as_view(), name='neckwear-list'),
+                path(
+                    '<int:pk>/',
+                    NeckwearItemView.as_view(),
+                    name='neckwear-item',
+                ),
+            ]
+        ),
     ),
     path(
-        'neckwears/', include([
-            path('', NeckwearListView.as_view(), name='neckwear-list'),
-            path('<int:pk>/', NeckwearItemView.as_view(), name='neckwear-item'),
-        ])
-    ),
-    path(
-        'wristwears/', include([
-            path('', WristwearListView.as_view(), name='wristwear-list'),
-            path('<int:pk>/',
-                 WristwearItemView.as_view(), name='wristwear-item'),
-        ])
+        'wristwears/',
+        include(
+            [
+                path('', WristwearListView.as_view(), name='wristwear-list'),
+                path(
+                    '<int:pk>/',
+                    WristwearItemView.as_view(),
+                    name='wristwear-item',
+                ),
+            ]
+        ),
     ),
     # Synchronous attribute views (existing)
+    path('stones/', StoneRetrieveView.as_view(), name='stone-retrieve'),
+    path('colors/', ColorRetrieveView.as_view(), name='color-retrieve'),
     path(
-        'stones/', StoneRetrieveView.as_view(), name='stone-retrieve'
+        'collections/',
+        CollectionRetrieveView.as_view(),
+        name='collection-retrieve',
     ),
+    path('metals/', MetalRetrieveView.as_view(), name='metal-retrieve'),
     path(
-        'colors/', ColorRetrieveView.as_view(), name='color-retrieve'
+        '<str:category>/<int:pk>/all-reviews/',
+        ProductAllReviewsView.as_view(),
+        name='product-all-reviews',
     ),
-    path(
-        'collections/', CollectionRetrieveView.as_view(), name='collection-retrieve'
-    ),
-    path(
-        'metals/', MetalRetrieveView.as_view(), name='metal-retrieve'
-    ),
-    path('<str:category>/<int:pk>/all-reviews/', ProductAllReviewsView.as_view(), name='product-all-reviews'),
 ]

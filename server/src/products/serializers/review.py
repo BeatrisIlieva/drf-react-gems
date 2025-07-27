@@ -22,7 +22,7 @@ class ReviewSerializer(serializers.ModelSerializer):
     user_full_name = serializers.SerializerMethodField()
     content_type = serializers.SlugRelatedField(
         slug_field='model',
-        queryset=ContentType.objects.all()
+        queryset=ContentType.objects.all(),
     )
 
     class Meta:
@@ -37,20 +37,21 @@ class ReviewSerializer(serializers.ModelSerializer):
             'object_id',
             'photo_url',
             'user_full_name',
-            'approved'
+            'approved',
         ]
         read_only_fields = [
             'user',
             'created_at',
             'photo_url',
             'user_full_name',
-            'approved'
+            'approved',
         ]
 
     def get_photo_url(self, obj):
         try:
             if obj.user.userphoto.photo:
                 return cloudinary_url(obj.user.userphoto.photo.public_id)[0]
+
         except Exception:
             pass
 
@@ -58,8 +59,12 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     def get_user_full_name(self, obj):
         try:
-            if obj.user.userprofile.first_name and obj.user.userprofile.last_name:
+            if (
+                obj.user.userprofile.first_name
+                and obj.user.userprofile.last_name
+            ):
                 return f'{obj.user.userprofile.first_name} {obj.user.userprofile.last_name}'
+
         except Exception:
             pass
 

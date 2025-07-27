@@ -19,11 +19,20 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='order',
             name='inventory',
-            field=models.ForeignKey(help_text='The inventory item (size/variation) being ordered.', on_delete=django.db.models.deletion.CASCADE, related_name='orders', to='products.inventory'),
+            field=models.ForeignKey(
+                help_text='The inventory item (size/variation) being ordered.',
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='orders',
+                to='products.inventory',
+            ),
         ),
         migrations.AddField(
             model_name='order',
             name='user',
-            field=models.ForeignKey(help_text='The user who placed the order.', on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                help_text='The user who placed the order.',
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

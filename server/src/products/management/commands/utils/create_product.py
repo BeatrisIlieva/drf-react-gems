@@ -11,7 +11,7 @@ from src.products.models import (
     Earwear,
     Fingerwear,
     Neckwear,
-    Wristwear
+    Wristwear,
 )
 
 categories_mapper = {
@@ -24,13 +24,9 @@ categories_mapper = {
 
 def create_product(product_data):
 
-    collection = Collection.objects.get(
-        name=product_data['collection']
-    )
+    collection = Collection.objects.get(name=product_data['collection'])
 
-    metal = Metal.objects.get(
-        name=product_data['material']
-    )
+    metal = Metal.objects.get(name=product_data['material'])
 
     first_image = product_data['first_image']
     second_image = product_data['second_image']

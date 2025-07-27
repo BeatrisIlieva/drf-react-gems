@@ -25,7 +25,7 @@ class UserCredential(AbstractBaseUser, PermissionsMixin):
         unique=True,
         error_messages={
             'unique': UserErrorMessages.EMAIL_UNIQUE,  # Custom error message
-        }
+        },
     )
 
     # Username field for display purposes
@@ -37,7 +37,7 @@ class UserCredential(AbstractBaseUser, PermissionsMixin):
         ],
         error_messages={
             'unique': UserErrorMessages.USERNAME_UNIQUE,  # Custom error message
-        }
+        },
     )
 
     # This tracks whether the user has agreed to receive marketing emails

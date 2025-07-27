@@ -8,9 +8,7 @@ class Command(BaseCommand):
     help = 'Setup database with products, reviews, and roles'
 
     def handle(self, *args, **options):
-        self.stdout.write(
-            self.style.SUCCESS('🚀 Starting database setup...')
-        )
+        self.stdout.write(self.style.SUCCESS('🚀 Starting database setup...'))
 
         try:
             self.stdout.write(
@@ -46,17 +44,12 @@ class Command(BaseCommand):
                     '\n🎉 Database setup completed successfully!'
                 )
             )
+            self.stdout.write(self.style.SUCCESS('🔑 Admin credentials:'))
+            self.stdout.write('   • Super User: super_user@mail.com | !1Aabb')
             self.stdout.write(
-                self.style.SUCCESS(
-                    '🔑 Admin credentials:'
-                )
+                '   • Inventory User: inventory_user@mail.com | !1Aabb'
             )
-            self.stdout.write(
-                '   • Super User: super_user@mail.com | !1Aabb')
-            self.stdout.write(
-                '   • Inventory User: inventory_user@mail.com | !1Aabb')
-            self.stdout.write(
-                '   • Order User: order_user@mail.com | !1Aabb')
+            self.stdout.write('   • Order User: order_user@mail.com | !1Aabb')
 
         except Exception as e:
             self.stdout.write(

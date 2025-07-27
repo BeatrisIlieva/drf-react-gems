@@ -10,9 +10,12 @@ class OrderAdmin(admin.ModelAdmin):
     def product_display(self, obj):
         if obj.inventory:
             product = getattr(obj.inventory, 'product', None)
+
             if product:
                 return str(product)
+
             return str(obj.inventory)
+
         return '-'
 
     product_display.short_description = 'Product'
@@ -20,13 +23,18 @@ class OrderAdmin(admin.ModelAdmin):
     def product_info(self, obj):
         if obj.inventory:
             product = getattr(obj.inventory, 'product', None)
+
             if product:
                 app_label = product._meta.app_label
                 model_name = product._meta.model_name
                 url = reverse(
-                    f'admin:{app_label}_{model_name}_change', args=[product.id])
+                    f'admin:{app_label}_{model_name}_change', args=[product.id]
+                )
+
                 return format_html('<a href="{}">{}</a>', url, str(product))
+
             return str(obj.inventory)
+
         return '-'
 
     product_info.short_description = 'Product'
@@ -39,7 +47,7 @@ class OrderAdmin(admin.ModelAdmin):
         'status',
         'quantity',
         'created_at',
-        'order_group'
+        'order_group',
     )
     list_filter = ('status', 'created_at')
     search_fields = ('user__username', 'order_group')

@@ -26,7 +26,7 @@ class InventorySerializer(serializers.ModelSerializer):
             'quantity',
             'price',
             'content_type',
-            'object_id'
+            'object_id',
         ]
         depth = 2
 

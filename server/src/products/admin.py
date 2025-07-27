@@ -13,7 +13,7 @@ from src.products.models import (
     Metal,
     Stone,
     Size,
-    Inventory
+    Inventory,
 )
 from src.products.models.review import Review
 
@@ -56,7 +56,11 @@ class StoneListFilter(admin.SimpleListFilter):
         return [(s.id, s.name) for s in Stone.objects.all()]
 
     def queryset(self, request, queryset):
-        return queryset.filter(stone__id=self.value()) if self.value() else queryset
+        return (
+            queryset.filter(stone__id=self.value())
+            if self.value()
+            else queryset
+        )
 
 
 class ColorListFilter(admin.SimpleListFilter):
@@ -67,7 +71,11 @@ class ColorListFilter(admin.SimpleListFilter):
         return [(c.id, c.name) for c in Color.objects.all()]
 
     def queryset(self, request, queryset):
-        return queryset.filter(color__id=self.value()) if self.value() else queryset
+        return (
+            queryset.filter(color__id=self.value())
+            if self.value()
+            else queryset
+        )
 
 
 class InventoryInline(GenericTabularInline):
@@ -87,12 +95,7 @@ class BaseProductAdmin(admin.ModelAdmin):
         'created_at',
     )
 
-    list_filter = (
-        StoneListFilter,
-        ColorListFilter,
-        'collection',
-        'metal'
-    )
+    list_filter = (StoneListFilter, ColorListFilter, 'collection', 'metal')
 
     ordering = (
         'created_at',
@@ -108,32 +111,30 @@ class BaseProductAdmin(admin.ModelAdmin):
     )
 
     fieldsets = (
-        ('Images',
-         {
-             'fields': (
-                 'first_image',
-                 'second_image'
-             )
-         }),
-        ('Material and Design',
-         {
-             'fields': (
-                 'collection',
-                 'metal',
-                 'stone',
-                 'color',
-             )
-         }),
+        ('Images', {'fields': ('first_image', 'second_image')}),
+        (
+            'Material and Design',
+            {
+                'fields': (
+                    'collection',
+                    'metal',
+                    'stone',
+                    'color',
+                )
+            },
+        ),
     )
 
     def first_picture(self, obj):
         return format_html(
-            '<img src="{}" width="100" height="100" style="object-fit: cover;" />', obj.first_image
+            '<img src="{}" width="100" height="100" style="object-fit: cover;" />',
+            obj.first_image,
         )
 
     def second_picture(self, obj):
         return format_html(
-            '<img src="{}" width="100" height="100" style="object-fit: cover;" />', obj.second_image
+            '<img src="{}" width="100" height="100" style="object-fit: cover;" />',
+            obj.second_image,
         )
 
 
@@ -159,26 +160,51 @@ class FingerwearAdmin(BaseProductAdmin):
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'user', 'rating', 'approved', 'created_at', 'product_link']
-    list_filter = ['approved', 'rating', 'created_at',]
-    search_fields = ['user__email', 'user__userprofile__first_name', 'user__userprofile__last_name', 'comment']
+    list_display = [
+        '__str__',
+        'user',
+        'rating',
+        'approved',
+        'created_at',
+        'product_link',
+    ]
+    list_filter = [
+        'approved',
+        'rating',
+        'created_at',
+    ]
+    search_fields = [
+        'user__email',
+        'user__userprofile__first_name',
+        'user__userprofile__last_name',
+        'comment',
+    ]
     list_editable = ['approved']
-    readonly_fields = ['user', 'rating', 'comment', 'created_at', 'content_type', 'object_id', 'product']
+    readonly_fields = [
+        'user',
+        'rating',
+        'comment',
+        'created_at',
+        'content_type',
+        'object_id',
+        'product',
+    ]
     ordering = ['-created_at']
-    
+
     def product_link(self, obj):
         if obj.product:
             return format_html(
                 '<a href="/admin/products/{}/{}/change/">{}</a>',
                 obj.content_type.model,
                 obj.object_id,
-                str(obj.product)
+                str(obj.product),
             )
         return '-'
+
     product_link.short_description = 'Product'
-    
+
     def has_add_permission(self, request):
         return False
-    
+
     def has_delete_permission(self, request, obj=None):
         return request.user.is_superuser

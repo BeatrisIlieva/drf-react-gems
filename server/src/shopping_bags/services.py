@@ -35,9 +35,13 @@ class ShoppingBagService:
     @staticmethod
     def validate_inventory_quantity(inventory_obj, required_quantity):
         if required_quantity > inventory_obj.quantity:
-            raise ValidationError({
-                'quantity': ShoppingBagErrorMessages.INSUFFICIENT_STOCK.format(quantity=inventory_obj.quantity)
-            })
+            raise ValidationError(
+                {
+                    'quantity': ShoppingBagErrorMessages.INSUFFICIENT_STOCK.format(
+                        quantity=inventory_obj.quantity
+                    )
+                }
+            )
 
     @staticmethod
     def get_or_create_bag_item(filters, defaults):

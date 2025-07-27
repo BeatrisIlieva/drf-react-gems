@@ -24,7 +24,8 @@ class ReviewManagementSerializer(ReviewSerializer):
         # Inherit all fields from parent and add approved
         fields = ReviewSerializer.Meta.fields + ['approved']
         read_only_fields = ReviewSerializer.Meta.read_only_fields + [
-            'approved']
+            'approved'
+        ]
 
     def to_representation(self, instance):
         """

@@ -15,6 +15,7 @@ class NameFieldMixin(models.Model):
     The mixin uses the NAME_MAX_LENGTH constant from the constants module,
     ensuring consistency across the application.
     """
+
     NAME_MAX_LENGTH = NameFieldLengths.NAME_MAX_LENGTH
 
     class Meta:
@@ -95,7 +96,8 @@ class FilterMixin:
         if params['collections']:
             # Filter by collection_id in the specified collections list
             filters &= Q(
-                **{f'{category}__collection_id__in': params['collections']})
+                **{f'{category}__collection_id__in': params['collections']}
+            )
 
         return filters
 

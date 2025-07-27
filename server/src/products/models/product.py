@@ -3,13 +3,13 @@ from src.products.managers import (
     EarwearManager,
     NeckwearManager,
     WristwearManager,
-    FingerwearManager
+    FingerwearManager,
 )
 from src.products.managers.product import (
     CollectionManager,
     ColorManager,
     MetalManager,
-    StoneManager
+    StoneManager,
 )
 from src.products.mixins import NameFieldMixin
 

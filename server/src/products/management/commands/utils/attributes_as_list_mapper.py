@@ -16,7 +16,7 @@ attributes_as_list_mapper = {
         'Bracelet',
         'Lilium',
         'Myosotis',
-        'Drop'
+        'Drop',
     ],
     Metal: [
         'Yellow Gold',
@@ -42,5 +42,5 @@ attributes_as_list_mapper = {
         'Red',
         'White',
         'Yellow',
-    ]
+    ],
 }

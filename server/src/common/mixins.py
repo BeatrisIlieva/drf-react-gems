@@ -39,19 +39,19 @@ class InventoryMixin:
         # This ensures consistent data structure across the application
 
         return {
-            'product_id': product.id,                    # Unique product identifier
+            'product_id': product.id,  # Unique product identifier
             # Product collection name
             'collection': str(product.collection),
             # Product price as float
             'price': float(inventory.price),
-            'first_image': product.first_image,         # First product image
-            'available_quantity': inventory.quantity,    # Available stock
+            'first_image': product.first_image,  # First product image
+            'available_quantity': inventory.quantity,  # Available stock
             # Product size (if any)
             'size': str(getattr(inventory, 'size', '')),
-            'metal': str(product.metal.name),           # Metal type
-            'stone': str(product.stone.name),           # Stone type
-            'color': str(product.color.name),           # Color
-            'category': model_name,                     # Product category
+            'metal': str(product.metal.name),  # Metal type
+            'stone': str(product.stone.name),  # Stone type
+            'color': str(product.color.name),  # Color
+            'category': model_name,  # Product category
         }
 
     @staticmethod

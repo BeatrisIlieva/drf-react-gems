@@ -15,7 +15,7 @@ from src.shopping_bags.constants import ShoppingBagErrorMessages
 class ShoppingBagViewSet(viewsets.ModelViewSet):
     """
     This ViewSet provides full CRUD operations for shopping bag items and additional
-    custom actions for getting bag count and total price. 
+    custom actions for getting bag count and total price.
     """
 
     serializer_class = ShoppingBagSerializer
@@ -23,13 +23,12 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         try:
             user_filters = ShoppingBagService.get_user_identifier(self.request)
-            return ShoppingBag.objects.filter(
-                **user_filters
-            ).select_related(
+
+            return ShoppingBag.objects.filter(**user_filters).select_related(
                 # select_related() performs a SQL JOIN to fetch related objects
                 # This reduces the number of database queries
                 'inventory',
-                'user'
+                'user',
             )
         except ValidationError:
             # Return empty queryset if user identification fails
@@ -48,18 +47,15 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
 
         # Get the inventory object and validate stock availability
         ShoppingBagService.validate_inventory_quantity(
-            inventory, quantity_to_add)
+            inventory, quantity_to_add
+        )
 
         # Create filters for finding existing bag item
-        filters = {
-            'inventory': inventory,
-            **user_filters
-        }
+        filters = {'inventory': inventory, **user_filters}
 
         # Get or create the bag item
         bag_item, created = ShoppingBagService.get_or_create_bag_item(
-            filters=filters,
-            defaults={'quantity': quantity_to_add}
+            filters=filters, defaults={'quantity': quantity_to_add}
         )
 
         if not created:
@@ -114,11 +110,7 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
         # Delete the shopping bag item
         instance.delete()
 
-    @action(
-        detail=False,
-        methods=['get'],
-        url_path='count'
-    )
+    @action(detail=False, methods=['get'], url_path='count')
     def get_bag_count(self, request):
         """
         Get the total count of items in the shopping bag.
@@ -131,19 +123,25 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
             user_filters = ShoppingBagService.get_user_identifier(request)
 
             # Aggregate the sum of all quantities in the user's bag
-            count = ShoppingBag.objects.filter(**user_filters).aggregate(
-                total=Sum('quantity')
-            )['total'] or 0
+            count = (
+                ShoppingBag.objects.filter(**user_filters).aggregate(
+                    total=Sum('quantity')
+                )['total']
+                or 0
+            )
 
-            return Response({'count': count}, status=status.HTTP_200_OK)
+            return Response(
+                {'count': count},
+                status=status.HTTP_200_OK,
+            )
+
         except ValidationError as e:
-            return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                e.detail,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
-    @action(
-        detail=False,
-        methods=['get'],
-        url_path='total-price'
-    )
+    @action(detail=False, methods=['get'], url_path='total-price')
     def get_total_price(self, request):
         """
         Get the total price of all items in the shopping bag.
@@ -155,17 +153,30 @@ class ShoppingBagViewSet(viewsets.ModelViewSet):
             # Get user identification filters
             user_filters = ShoppingBagService.get_user_identifier(request)
 
-            total_price = ShoppingBag.objects.filter(**user_filters).aggregate(
-                total=Sum(F('inventory__price') * F('quantity'))
-            )['total'] or 0
+            total_price = (
+                ShoppingBag.objects.filter(**user_filters).aggregate(
+                    total=Sum(F('inventory__price') * F('quantity'))
+                )['total']
+                or 0
+            )
 
-            return Response({
-                'total_price': round(total_price, 2)
-            }, status=status.HTTP_200_OK)
+            return Response(
+                {
+                    'total_price': round(total_price, 2),
+                },
+                status=status.HTTP_200_OK,
+            )
         except ValidationError as e:
-            return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                e.detail,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         except Exception:
             # Handle any unexpected errors during price calculation
-            return Response({
-                'error': ShoppingBagErrorMessages.ERROR_TOTAL_PRICE
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                {
+                    'error': ShoppingBagErrorMessages.ERROR_TOTAL_PRICE,
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )

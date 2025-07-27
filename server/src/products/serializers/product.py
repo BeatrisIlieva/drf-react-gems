@@ -16,13 +16,13 @@ from src.products.models.product import (
     Stone,
     Wristwear,
     Fingerwear,
-    Collection
+    Collection,
 )
 
 from src.products.serializers.base import (
     BaseAttributesSerializer,
     BaseProductItemSerializer,
-    BaseProductListSerializer
+    BaseProductListSerializer,
 )
 
 

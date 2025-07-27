@@ -12,7 +12,7 @@ from src.products.models import (
     Metal,
     Stone,
     Size,
-    Inventory
+    Inventory,
 )
 from src.products.models.review import Review
 
@@ -23,9 +23,9 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         User = get_user_model()
 
-        self.stdout.write(self.style.SUCCESS(
-            'Starting creating roles and users...'
-        ))
+        self.stdout.write(
+            self.style.SUCCESS('Starting creating roles and users...')
+        )
 
         # === Define model content types ===
         models_permissions = {
@@ -51,11 +51,13 @@ class Command(BaseCommand):
                 codename = f'{action}_{model._meta.model_name}'
                 try:
                     perm = Permission.objects.get(
-                        codename=codename, content_type=content_type)
+                        codename=codename, content_type=content_type
+                    )
                     inventory_group.permissions.add(perm)
                 except Permission.DoesNotExist:
-                    self.stdout.write(self.style.WARNING(
-                        f'Permission {codename} not found.'))
+                    self.stdout.write(
+                        self.style.WARNING(f'Permission {codename} not found.')
+                    )
 
         # === Create Order group with review approval permissions ===
         order_group, _ = Group.objects.get_or_create(name='Order')
@@ -69,23 +71,33 @@ class Command(BaseCommand):
                 # For custom permissions like approve_review, use the exact codename
                 if perm_codename == 'approve_review':
                     perm = Permission.objects.get(
-                        codename=perm_codename, content_type=review_content_type)
+                        codename=perm_codename,
+                        content_type=review_content_type,
+                    )
                 else:
                     # For standard permissions, use the model name
                     perm = Permission.objects.get(
-                        codename=perm_codename, content_type=review_content_type)
+                        codename=perm_codename,
+                        content_type=review_content_type,
+                    )
                 order_group.permissions.add(perm)
-                self.stdout.write(self.style.SUCCESS(
-                    f'Added {perm_codename} permission to Order group.'))
+                self.stdout.write(
+                    self.style.SUCCESS(
+                        f'Added {perm_codename} permission to Order group.'
+                    )
+                )
             except Permission.DoesNotExist:
-                self.stdout.write(self.style.WARNING(
-                    f'Permission {perm_codename} not found.'))
+                self.stdout.write(
+                    self.style.WARNING(
+                        f'Permission {perm_codename} not found.'
+                    )
+                )
 
         # === Create Inventory staff user ===
         inventory_user, created = User.objects.get_or_create(
             email='inventory_user@mail.com',
             username='inventory_user',
-            defaults={'is_staff': True}
+            defaults={'is_staff': True},
         )
 
         if created:
@@ -98,7 +110,7 @@ class Command(BaseCommand):
         order_user, created = User.objects.get_or_create(
             email='order_user@mail.com',
             username='order_user',
-            defaults={'is_staff': True}
+            defaults={'is_staff': True},
         )
 
         if created:
@@ -110,8 +122,10 @@ class Command(BaseCommand):
         # === Create Superuser ===
         if not User.objects.filter(email='super_user@mail.com').exists():
             User.objects.create_superuser(
-                email='super_user@mail.com', password='!1Aabb')
+                email='super_user@mail.com', password='!1Aabb'
+            )
             self.stdout.write(self.style.SUCCESS('Superuser created.'))
 
-        self.stdout.write(self.style.SUCCESS(
-            'All roles and users set up successfully.'))
+        self.stdout.write(
+            self.style.SUCCESS('All roles and users set up successfully.')
+        )

@@ -12,7 +12,9 @@ class ShoppingBagAdmin(admin.ModelAdmin):
             product = getattr(obj.inventory, 'product', None)
             if product:
                 return str(product)
+
             return str(obj.inventory)
+
         return '-'
 
     product_display.short_description = 'Product'
@@ -24,9 +26,12 @@ class ShoppingBagAdmin(admin.ModelAdmin):
                 app_label = product._meta.app_label
                 model_name = product._meta.model_name
                 url = reverse(
-                    f'admin:{app_label}_{model_name}_change', args=[product.id])
+                    f'admin:{app_label}_{model_name}_change', args=[product.id]
+                )
                 return format_html('<a href="{}">{}</a>', url, str(product))
+
             return str(obj.inventory)
+
         return '-'
 
     product_info.short_description = 'Product'

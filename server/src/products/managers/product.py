@@ -4,7 +4,10 @@ These managers inherit from the base managers to provide specialized functionali
 for different product categories while maintaining consistent query patterns.
 """
 
-from src.products.managers.base import BaseAttributesManager, BaseProductManager
+from src.products.managers.base import (
+    BaseAttributesManager,
+    BaseProductManager,
+)
 
 
 class EarwearManager(BaseProductManager):
