@@ -248,6 +248,7 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 
 -   All admin groups and their associated users are created automatically by a management command: [server/src/accounts/management/commands/create_roles.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/management/commands/create_roles.py)
 
+
 | User Type      | Email                     | Password |
 | -------------- | ------------------------- | -------- |
 | Super User     | `super_user@mail.com`     | `!1Aabb` |
