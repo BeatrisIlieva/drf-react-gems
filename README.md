@@ -49,7 +49,6 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   [REST API Implementation](#rest-api-implementation)
 -   [Django User Extension](#django-user-extension)
 -   [Deployment](#deployment)
--   [Additional Functionality](#additional-functionality)
 
 ### 3. Additional Requirements
 
@@ -181,10 +180,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 **Public part is accessible by everyone:**
 
--   Anonymous users can browse products and use guest shopping cart/wishlist
-
-> **Note:**  
-> Guest users can add, remove, and update items in their shopping bag and wishlist, with each guest’s data kept in `Local Storage`. When a guest registers or logs in, their shopping bag and wishlist are merged into their account.
+-   Anonymous users can browse products and use guest shopping cart/wishlist kept in `Local Storage`
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -210,8 +206,6 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   Unfold Framework: Admin interface with custom themes, and styling [server/src/unfold.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/unfold.py)
 -   Custom Navigation: Organized sidebar with collapsible sections for Users & Groups, Products, Product Attributes, and Reviews
 -   Permission-Based Access: Different admin sections visible based on user permissions
-
-**To access the Admin Panel visit: [https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net/admin](https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net/admin)**
 
 **The admin interface includes 5 custom options:**
 
@@ -248,12 +242,13 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 
 -   All admin groups and their associated users are created automatically by a management command: [server/src/accounts/management/commands/create_roles.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/management/commands/create_roles.py)
 
-
 | User Type      | Email                     | Password |
 | -------------- | ------------------------- | -------- |
 | Super User     | `super_user@mail.com`     | `!1Aabb` |
 | Inventory User | `inventory_user@mail.com` | `!1Aabb` |
 | Order User     | `order_user@mail.com`     | `!1Aabb` |
+
+**To access the Admin Panel visit: [https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net/admin](https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net/admin)**
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -282,11 +277,13 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
-### Asynchronous View
+### Asynchronous Views
 
 **Shopping Bag Reminder System:**
 
 -   An asynchronous view `notify_users_they_have_uncompleted_orders` allows Order group admins to send reminder emails for shopping bags older than one day. This function is triggered by a button on the admin page within the web application (not the admin interface), requiring Order group permissions after login. Implemented with Celery: [server/src/common/views.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/common/views.py)
+
+-   An asynchronous view `send_email` responsible for sending email notifications to users via Gmail SMTP using Google App Password authentication
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
