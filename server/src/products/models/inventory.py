@@ -8,7 +8,7 @@ from src.products.mixins import NameFieldMixin
 
 
 class Inventory(models.Model):
-    """    
+    """
     This model manages the inventory levels and pricing for all products
     in the system. It uses Django's GenericForeignKey to work with different
     product types (Earwear, Neckwear, Fingerwear, Wristwear) without needing
@@ -35,9 +35,7 @@ class Inventory(models.Model):
     price = models.DecimalField(
         max_digits=InventoryFiledLengths.PRICE_MAX_DIGITS,
         decimal_places=InventoryFiledLengths.PRICE_DECIMAL_PLACES,
-        validators=[
-            MinValueValidator(0)  # Ensures price is not negative
-        ]
+        validators=[MinValueValidator(0)],  # Ensures price is not negative
     )
 
     size = models.ForeignKey(
@@ -49,7 +47,7 @@ class Inventory(models.Model):
     # content_type stores which model the inventory is for (Earwear, Neckwear, etc.)
     content_type = models.ForeignKey(
         ContentType,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
 
     # object_id stores the specific product's ID
@@ -60,7 +58,7 @@ class Inventory(models.Model):
     # The 'product' name makes it easy to access the related product
     product = GenericForeignKey(
         'content_type',
-        'object_id'
+        'object_id',
     )
 
     def __str__(self):
@@ -77,4 +75,5 @@ class Size(NameFieldMixin):
     The model is simple but essential for inventory management, allowing
     the same product to have different stock levels and prices for different sizes.
     """
+
     pass

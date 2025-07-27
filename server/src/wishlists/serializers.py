@@ -25,7 +25,7 @@ class WishlistSerializer(serializers.ModelSerializer):
     # The 'model' field returns the model name (e.g., 'earwear', 'necklace')
     content_type = serializers.SlugRelatedField(
         slug_field='model',
-        queryset=ContentType.objects.all()
+        queryset=ContentType.objects.all(),
     )
 
     # SerializerMethodField for product_info allows us to include additional
@@ -65,11 +65,16 @@ class WishlistSerializer(serializers.ModelSerializer):
         # Calculate average rating from approved reviews only
         # Uses Django's aggregation to get the average rating
         # Returns 0 if no approved reviews exist
-        avg_rating = product.review.filter(
-            approved=True
-        ).aggregate(
-            avg=Avg('rating')
-        )['avg'] or 0
+        avg_rating = (
+            product.review.filter(
+                approved=True,
+            ).aggregate(
+                avg=Avg(
+                    'rating',
+                )
+            )['avg']
+            or 0
+        )
 
         # Get all inventory items for the product
         inventory_items = product.inventory.all()
@@ -85,7 +90,7 @@ class WishlistSerializer(serializers.ModelSerializer):
         # Determine if product is sold out
         # Checks if any inventory items have quantity > 0
         is_sold_out = not inventory_items.filter(
-            quantity__gt=0
+            quantity__gt=0,
         ).exists()
 
         # Return comprehensive product information

@@ -21,10 +21,12 @@ DEBUG = os.getenv('DEBUG', config('DEBUG')) == 'True'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', config('ALLOWED_HOSTS')).split(',')
 
 CSRF_TRUSTED_ORIGINS = os.getenv(
-    'CSRF_TRUSTED_ORIGINS', config('CSRF_TRUSTED_ORIGINS', [])).split(',')
+    'CSRF_TRUSTED_ORIGINS', config('CSRF_TRUSTED_ORIGINS', [])
+).split(',')
 
 CORS_ALLOWED_ORIGINS = os.getenv(
-    'CORS_ALLOWED_ORIGINS', config('CORS_ALLOWED_ORIGINS')).split(',')
+    'CORS_ALLOWED_ORIGINS', config('CORS_ALLOWED_ORIGINS')
+).split(',')
 
 
 # Custom Django applications in this project
@@ -41,21 +43,16 @@ INSTALLED_APPS = [
     'unfold',
     'unfold.contrib.filters',
     'unfold.contrib.forms',
-    
     'daphne',  # command to run `daphne -b 0.0.0.0 -p 8000 src.asgi:application`
-
     'cloudinary',
     'cloudinary_storage',
-
     'django_celery_beat',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
@@ -80,11 +77,8 @@ SIMPLE_JWT = {
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-
     'django.middleware.security.SecurityMiddleware',
-
     'whitenoise.middleware.WhiteNoiseMiddleware',
-
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -98,9 +92,7 @@ ROOT_URLCONF = 'src.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            BASE_DIR / 'templates'
-        ],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -206,13 +198,14 @@ cloudinary.config(
 
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', config('CELERY_BROKER_URL'))
 CELERY_RESULT_BACKEND = os.getenv(
-    'CELERY_RESULT_BACKEND', config('CELERY_RESULT_BACKEND'))
+    'CELERY_RESULT_BACKEND', config('CELERY_RESULT_BACKEND')
+)
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-CELERY_BROKER_POOL_LIMIT = 2 
+CELERY_BROKER_POOL_LIMIT = 2
 CELERY_RESULT_BACKEND_CONNECTION_RETRY_ON_STARTUP = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -222,6 +215,7 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_HOST_USER = 'djangogems@gmail.com'
 EMAIL_HOST_PASSWORD = os.getenv(
-    'EMAIL_HOST_PASSWORD', config('EMAIL_HOST_PASSWORD'))
+    'EMAIL_HOST_PASSWORD', config('EMAIL_HOST_PASSWORD')
+)
 DEFAULT_FROM_EMAIL = 'djangogems@gmail.com'
 SERVER_EMAIL = 'djangogems@gmail.com'

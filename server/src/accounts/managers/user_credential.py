@@ -44,7 +44,8 @@ class UserCredentialManager(BaseUserManager):
             ValueError: If email is not provided
         """
         if not email:
-            raise ValueError("The given email must be set")
+            raise ValueError('The given email must be set')
+
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.password = make_password(password)
@@ -113,8 +114,8 @@ class UserCredentialManager(BaseUserManager):
                 username='john_doe'
             )
         """
-        extra_fields.setdefault("is_staff", False)
-        extra_fields.setdefault("is_superuser", False)
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_superuser', False)
 
         return self._create_user(email, password, **extra_fields)
 
@@ -134,8 +135,8 @@ class UserCredentialManager(BaseUserManager):
         Returns:
             Saved UserCredential object
         """
-        extra_fields.setdefault("is_staff", False)
-        extra_fields.setdefault("is_superuser", False)
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_superuser', False)
 
         return await self._acreate_user(email, password, **extra_fields)
 
@@ -165,12 +166,14 @@ class UserCredentialManager(BaseUserManager):
                 password='admin_password'
             )
         """
-        extra_fields.setdefault("is_staff", True)
-        extra_fields.setdefault("is_superuser", True)
-        if extra_fields.get("is_staff") is not True:
-            raise ValueError("Superuser must have is_staff=True.")
-        if extra_fields.get("is_superuser") is not True:
-            raise ValueError("Superuser must have is_superuser=True.")
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
 
         return self._create_user(email, password, **extra_fields)
 
@@ -193,18 +196,27 @@ class UserCredentialManager(BaseUserManager):
         Raises:
             ValueError: If is_staff or is_superuser is not True
         """
-        extra_fields.setdefault("is_staff", True)
-        extra_fields.setdefault("is_superuser", True)
-        if extra_fields.get("is_staff") is not True:
-            raise ValueError("Superuser must have is_staff=True.")
-        if extra_fields.get("is_superuser") is not True:
-            raise ValueError("Superuser must have is_superuser=True.")
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
 
         return await self._acreate_user(email, password, **extra_fields)
 
     acreate_superuser.alters_data = True
 
-    def with_perm(self, perm, is_active=True, include_superusers=True, backend=None, obj=None):
+    def with_perm(
+        self,
+        perm,
+        is_active=True,
+        include_superusers=True,
+        backend=None,
+        obj=None,
+    ):
         """
         Return users with the specified permission.
 
@@ -227,20 +239,24 @@ class UserCredentialManager(BaseUserManager):
         """
         if backend is None:
             backends = auth._get_backends(return_tuples=True)
+
             if len(backends) == 1:
                 backend, _ = backends[0]
             else:
                 raise ValueError(
-                    "You have multiple authentication backends configured and "
-                    "therefore must provide the `backend` argument."
+                    'You have multiple authentication backends configured and '
+                    'therefore must provide the `backend` argument.'
                 )
+
         elif not isinstance(backend, str):
             raise TypeError(
-                "backend must be a dotted import path string (got %r)." % backend
+                'backend must be a dotted import path string (got %r).'
+                % backend
             )
         else:
             backend = auth.load_backend(backend)
-        if hasattr(backend, "with_perm"):
+
+        if hasattr(backend, 'with_perm'):
             return backend.with_perm(
                 perm,
                 is_active=is_active,

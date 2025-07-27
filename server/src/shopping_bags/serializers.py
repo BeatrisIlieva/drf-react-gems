@@ -19,7 +19,9 @@ class ShoppingBagSerializer(serializers.ModelSerializer):
     """
 
     # inventory = serializers.PrimaryKeyRelatedField(queryset=ShoppingBag._meta.get_field('inventory').related_model.objects.all())
-    inventory = serializers.PrimaryKeyRelatedField(queryset=Inventory.objects.all())
+    inventory = serializers.PrimaryKeyRelatedField(
+        queryset=Inventory.objects.all()
+    )
     product_info = serializers.SerializerMethodField()
     total_price = serializers.SerializerMethodField()
 
@@ -39,7 +41,7 @@ class ShoppingBagSerializer(serializers.ModelSerializer):
             'created_at',
             'user',
             'product_info',
-            'total_price'
+            'total_price',
         ]
         depth = 3
 

@@ -33,6 +33,7 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
     - Uses @action to add a custom endpoint (not standard CRUD)
     - Uses @transaction.atomic to ensure all DB changes for order creation are all-or-nothing
     """
+
     serializer_class = OrderGroupSerializer
 
     def get_queryset(self):
@@ -46,9 +47,7 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
         serializer_data = []
         # Each group is a set of products purchased together
         for _, orders in grouped_orders.items():
-            serializer_data.append({
-                'orders': orders
-            })
+            serializer_data.append({'orders': orders})
 
         serializer = OrderGroupSerializer(serializer_data, many=True)
         return Response(serializer.data)
@@ -56,7 +55,7 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
     @action(
         detail=False,  # This action is not for a single order, but for the collection
         methods=['post'],  # Only POST requests are allowed
-        url_path='create-from-bag'  # URL will be /orders/create-from-bag/
+        url_path='create-from-bag',  # URL will be /orders/create-from-bag/
     )
     # Ensures all DB operations succeed or fail together (no partial orders)
     @transaction.atomic
@@ -76,8 +75,7 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
             try:
                 # Process the order using validated payment data
                 orders = OrderService.process_order_from_shopping_bag(
-                    user=request.user,
-                    payment_data=serializer.validated_data
+                    user=request.user, payment_data=serializer.validated_data
                 )
 
                 if orders:
@@ -87,30 +85,38 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
                         order_group_str, request.user
                     )
 
-                    group_serializer = OrderGroupSerializer({
-                        'orders': orders
-                    })
+                    group_serializer = OrderGroupSerializer({'orders': orders})
 
-                    return Response({
-                        'message': OrderStatusMessages.STATUS_CREATED,
-                        'order': group_serializer.data,
-                        'total_items': len(orders),
-                        'total_price': total_price
-                    }, status=status.HTTP_201_CREATED)
+                    return Response(
+                        {
+                            'message': OrderStatusMessages.STATUS_CREATED,
+                            'order': group_serializer.data,
+                            'total_items': len(orders),
+                            'total_price': total_price,
+                        },
+                        status=status.HTTP_201_CREATED,
+                    )
 
                 else:
                     # No orders were created (should not happen in normal flow)
-                    return Response({
-                        'message': OrderStatusMessages.STATUS_NO_ORDERS,
-                    }, status=status.HTTP_400_BAD_REQUEST)
+                    return Response(
+                        {
+                            'message': OrderStatusMessages.STATUS_NO_ORDERS,
+                        },
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
 
             except ValidationError as e:
                 # Handles validation errors (e.g., invalid payment, empty bag)
                 return Response(
-                    {'error': str(e)},
-                    status=status.HTTP_400_BAD_REQUEST
+                    {
+                        'error': str(e),
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
                 )
 
         else:
             # Handles serializer validation errors (e.g., missing fields)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                serializer.errors, status=status.HTTP_400_BAD_REQUEST
+            )

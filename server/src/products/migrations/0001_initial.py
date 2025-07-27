@@ -19,7 +19,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Collection',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('name', models.CharField(max_length=30, unique=True)),
             ],
             options={
@@ -29,7 +37,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Color',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('name', models.CharField(max_length=30, unique=True)),
             ],
             options={
@@ -39,7 +55,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Metal',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('name', models.CharField(max_length=30, unique=True)),
             ],
             options={
@@ -49,7 +73,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Size',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('name', models.CharField(max_length=30, unique=True)),
             ],
             options={
@@ -59,7 +91,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Stone',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('name', models.CharField(max_length=30, unique=True)),
             ],
             options={
@@ -69,12 +109,41 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Inventory',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('quantity', models.PositiveIntegerField(default=5)),
-                ('price', models.DecimalField(decimal_places=2, max_digits=7, validators=[django.core.validators.MinValueValidator(0)])),
+                (
+                    'price',
+                    models.DecimalField(
+                        decimal_places=2,
+                        max_digits=7,
+                        validators=[
+                            django.core.validators.MinValueValidator(0)
+                        ],
+                    ),
+                ),
                 ('object_id', models.PositiveIntegerField()),
-                ('content_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contenttypes.contenttype')),
-                ('size', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.size')),
+                (
+                    'content_type',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='contenttypes.contenttype',
+                    ),
+                ),
+                (
+                    'size',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='products.size',
+                    ),
+                ),
             ],
             options={
                 'ordering': ['id'],
@@ -83,14 +152,46 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Neckwear',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('first_image', models.URLField(unique=True)),
                 ('second_image', models.URLField(unique=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('collection', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.collection')),
-                ('color', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.color')),
-                ('metal', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.metal')),
-                ('stone', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.stone')),
+                (
+                    'collection',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='products.collection',
+                    ),
+                ),
+                (
+                    'color',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='products.color',
+                    ),
+                ),
+                (
+                    'metal',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='products.metal',
+                    ),
+                ),
+                (
+                    'stone',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='products.stone',
+                    ),
+                ),
             ],
             options={
                 'abstract': False,
@@ -99,14 +200,46 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Fingerwear',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('first_image', models.URLField(unique=True)),
                 ('second_image', models.URLField(unique=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('collection', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.collection')),
-                ('color', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.color')),
-                ('metal', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.metal')),
-                ('stone', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.stone')),
+                (
+                    'collection',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='products.collection',
+                    ),
+                ),
+                (
+                    'color',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='products.color',
+                    ),
+                ),
+                (
+                    'metal',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='products.metal',
+                    ),
+                ),
+                (
+                    'stone',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='products.stone',
+                    ),
+                ),
             ],
             options={
                 'abstract': False,
@@ -115,14 +248,46 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Earwear',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('first_image', models.URLField(unique=True)),
                 ('second_image', models.URLField(unique=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('collection', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.collection')),
-                ('color', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.color')),
-                ('metal', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.metal')),
-                ('stone', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.stone')),
+                (
+                    'collection',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='products.collection',
+                    ),
+                ),
+                (
+                    'color',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='products.color',
+                    ),
+                ),
+                (
+                    'metal',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='products.metal',
+                    ),
+                ),
+                (
+                    'stone',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='products.stone',
+                    ),
+                ),
             ],
             options={
                 'abstract': False,
@@ -131,14 +296,46 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Wristwear',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('first_image', models.URLField(unique=True)),
                 ('second_image', models.URLField(unique=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('collection', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.collection')),
-                ('color', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.color')),
-                ('metal', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.metal')),
-                ('stone', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.stone')),
+                (
+                    'collection',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='products.collection',
+                    ),
+                ),
+                (
+                    'color',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='products.color',
+                    ),
+                ),
+                (
+                    'metal',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='products.metal',
+                    ),
+                ),
+                (
+                    'stone',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='products.stone',
+                    ),
+                ),
             ],
             options={
                 'abstract': False,
@@ -147,14 +344,52 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Review',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('rating', models.IntegerField(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')])),
-                ('comment', models.TextField(validators=[django.core.validators.MaxLengthValidator(300)])),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                (
+                    'rating',
+                    models.IntegerField(
+                        choices=[
+                            (1, '1'),
+                            (2, '2'),
+                            (3, '3'),
+                            (4, '4'),
+                            (5, '5'),
+                        ]
+                    ),
+                ),
+                (
+                    'comment',
+                    models.TextField(
+                        validators=[
+                            django.core.validators.MaxLengthValidator(300)
+                        ]
+                    ),
+                ),
                 ('approved', models.BooleanField(default=False)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('object_id', models.PositiveIntegerField()),
-                ('content_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contenttypes.contenttype')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    'content_type',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='contenttypes.contenttype',
+                    ),
+                ),
+                (
+                    'user',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
                 'ordering': ['-created_at'],

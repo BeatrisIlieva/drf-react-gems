@@ -23,7 +23,8 @@ class WishlistViewSet(viewsets.ModelViewSet):
 
             # Filter wishlist items by user and optimize with select_related
             return Wishlist.objects.filter(**user_filters).select_related(
-                'content_type', 'user'
+                'content_type',
+                'user',
             )
         except ValidationError:
             # Return empty queryset if user identification fails
@@ -53,15 +54,21 @@ class WishlistViewSet(viewsets.ModelViewSet):
 
             # Serialize and return response
             response_serializer = self.get_serializer(wishlist_item)
-            return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+            return Response(
+                response_serializer.data,
+                status=status.HTTP_201_CREATED,
+            )
         except ValidationError as e:
             # Return validation error details
-            return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                e.detail,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
     @action(
         detail=False,
         methods=['delete'],
-        url_path='remove/(?P<content_type_name>[^/.]+)/(?P<object_id>[^/.]+)'
+        url_path='remove/(?P<content_type_name>[^/.]+)/(?P<object_id>[^/.]+)',
     )
     def remove_item(self, request, content_type_name=None, object_id=None):
         """
@@ -82,25 +89,28 @@ class WishlistViewSet(viewsets.ModelViewSet):
             except (ContentType.DoesNotExist, ValueError):
                 # Handle invalid content type or object ID
                 return Response(
-                    {'detail': WishlistErrorMessages.ERROR_INVALID_CONTENT_TYPE_OR_ID},
-                    status=status.HTTP_400_BAD_REQUEST
+                    {
+                        'detail': WishlistErrorMessages.ERROR_INVALID_CONTENT_TYPE_OR_ID
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
                 )
 
             # Delete the wishlist item using service
             WishlistService.delete_wishlist_item(
-                user_filters, content_type, object_id_int)
+                user_filters, content_type, object_id_int
+            )
 
             # Return success response with no content
             return Response(status=status.HTTP_204_NO_CONTENT)
+
         except ValidationError as e:
             # Return validation error details
-            return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                e.detail,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
-    @action(
-        detail=False,
-        methods=['get'],
-        url_path='count'
-    )
+    @action(detail=False, methods=['get'], url_path='count')
     def get_wishlist_count(self, request):
         """
         This custom action returns the number of items in the user's
@@ -114,7 +124,14 @@ class WishlistViewSet(viewsets.ModelViewSet):
             count = Wishlist.objects.filter(**user_filters).count()
 
             # Return count in response
-            return Response({'count': count}, status=status.HTTP_200_OK)
+            return Response(
+                {'count': count},
+                status=status.HTTP_200_OK,
+            )
+
         except ValidationError as e:
             # Return validation error details
-            return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                e.detail,
+                status=status.HTTP_400_BAD_REQUEST,
+            )

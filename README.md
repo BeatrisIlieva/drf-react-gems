@@ -13,9 +13,9 @@
 
 A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Features user authentication, shopping cart and wishlist functionality, secure payment processing, order history and asynchronous email notifications using Celery and Redis.
 
-🌟 **Explore the Live Application: [https://drf-react-gems.web.app](https://drf-react-gems.web.app/)**
+**Live Application: [https://drf-react-gems.web.app](https://drf-react-gems.web.app/)**
 
-🌟 **Explore the Admin Panel: [https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net/admin](https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net/admin)**
+**Admin Panel: [https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net/admin](https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net/admin)**
 
 <p align="center">
   <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.45.11_e0m7vo.png" width="260" />
@@ -61,7 +61,6 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 -   [Installation](#installation)
 -   [Database Population](#database-population)
--   [Background Tasks with Celery](#background-tasks-with-celery)
 
 ---
 
@@ -484,9 +483,12 @@ The `python manage.py setup_database` command (run during installation) will:
 
 **Created Admin Users:**
 
--   Super User: `super_user@mail.com` | `!1Aabb`
--   Inventory User: `inventory_user@mail.com` | `!1Aabb`
--   Order User: `order_user@mail.com` | `!1Aabb`
+| User Type | Email | Password |
+|-----------|-------|----------|
+| Super User | `super_user@mail.com` | `!1Aabb` |
+| Inventory User | `inventory_user@mail.com` | `!1Aabb` |
+| Order User | `order_user@mail.com` | `!1Aabb` |
+
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 

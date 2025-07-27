@@ -27,8 +27,7 @@ class DigitRequiredValidator:
     def validate(self, password, user=None):
         if not any(char.isdigit() for char in password):
             raise ValidationError(
-                self.get_error_message(),
-                code='password_no_digit'
+                self.get_error_message(), code='password_no_digit'
             )
 
     def get_error_message(self):
@@ -45,14 +44,13 @@ class UpperCaseLetterRequiredValidator:
     Password validator that requires at least one uppercase letter.
 
     This validator ensures that passwords contain at least one uppercase
-    letter (A-Z). 
+    letter (A-Z).
     """
 
     def validate(self, password, user=None):
         if not any(char.isupper() for char in password):
             raise ValidationError(
-                self.get_error_message(),
-                code='password_no_upper_case_letter'
+                self.get_error_message(), code='password_no_upper_case_letter'
             )
 
     def get_error_message(self):
@@ -76,8 +74,7 @@ class LowerCaseLetterRequiredValidator:
     def validate(self, password, user=None):
         if not any(char.islower() for char in password):
             raise ValidationError(
-                self.get_error_message(),
-                code='password_no_lower_case_letter'
+                self.get_error_message(), code='password_no_lower_case_letter'
             )
 
     def get_error_message(self):
@@ -94,14 +91,13 @@ class NoWhiteSpacesRequiredValidator:
     Password validator that prevents whitespace characters.
 
     This validator ensures that passwords don't contain any whitespace
-    characters. 
+    characters.
     """
 
     def validate(self, password, user=None):
         if any(char.isspace() for char in password):
             raise ValidationError(
-                self.get_error_message(),
-                code='password_no_white_spaces'
+                self.get_error_message(), code='password_no_white_spaces'
             )
 
     def get_error_message(self):
@@ -118,7 +114,7 @@ class SpecialCharRequiredValidator:
     Password validator that requires at least one special character.
 
     This validator ensures that passwords contain at least one special
-    character from the set: !#$%. 
+    character from the set: !#$%.
     """
 
     def validate(self, password, user=None):
@@ -126,8 +122,7 @@ class SpecialCharRequiredValidator:
 
         if not any(char in special_chars for char in password):
             raise ValidationError(
-                self.get_error_message(),
-                code='password_no_special_char'
+                self.get_error_message(), code='password_no_special_char'
             )
 
     def get_error_message(self):

@@ -1,17 +1,12 @@
 from django.db import models
-from django.db.models import (
-    Min,
-    Max,
-    Avg,
-    Count
-)
+from django.db.models import Min, Max, Avg, Count
 
 
 class BaseProductManager(models.Manager):
     """
     Base manager for product models with optimized query methods.
 
-    This manager provides methods for retrieving products using select_related and prefetch_related 
+    This manager provides methods for retrieving products using select_related and prefetch_related
     to minimize database hits and includes annotations for calculated fields like average ratings
     and stock status.
 
@@ -57,9 +52,9 @@ class BaseProductManager(models.Manager):
         # This allows the frontend to use simple names while the database
         # uses optimized field names for sorting
         ordering_map = {
-            'price_asc': 'min_price',      # Sort by lowest price first
-            'price_desc': '-max_price',    # Sort by highest price first
-            'rating': '-average_rating',   # Sort by highest rating first
+            'price_asc': 'min_price',  # Sort by lowest price first
+            'price_desc': '-max_price',  # Sort by highest price first
+            'rating': '-average_rating',  # Sort by highest rating first
         }
 
         # Get the database field name for ordering
@@ -70,10 +65,7 @@ class BaseProductManager(models.Manager):
             qs
             # prefetch_related fetches many-to-many and reverse foreign key relationships
             # This prevents N+1 queries when accessing inventory and review data
-            .prefetch_related(
-                'inventory',
-                'review'
-            )
+            .prefetch_related('inventory', 'review')
             # values() specifies which fields to include in the result
             .values(
                 'id',
@@ -129,7 +121,6 @@ class BaseAttributesManager(models.Manager):
 
         else:
             # If no valid category, just return all attributes with count=0
-            return (
-                qs.values('id', 'name')
-                .annotate(count=models.Value(0, output_field=models.IntegerField()))
+            return qs.values('id', 'name').annotate(
+                count=models.Value(0, output_field=models.IntegerField())
             )

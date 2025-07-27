@@ -30,10 +30,18 @@ class UserErrorMessages:
     USERNAME_UNIQUE = 'A user with this username already exists.'
     AGREED_TO_EMAILS = 'You must agree to receive email updates.'
     INCORRECT_PASSWORD = 'Current password is incorrect.'
-    NEW_PASSWORD_SAME_AS_CURRENT = 'New password must be different from current password.'
+    NEW_PASSWORD_SAME_AS_CURRENT = (
+        'New password must be different from current password.'
+    )
     PASSWORD_NO_DIGIT = 'Your password must contain at least one digit.'
-    PASSWORD_NO_UPPER_CASE_LETTER = 'Your password must contain at least one upper case letter.'
-    PASSWORD_NO_LOWER_CASE_LETTER = 'Your password must contain at least one lower case letter.'
+    PASSWORD_NO_UPPER_CASE_LETTER = (
+        'Your password must contain at least one upper case letter.'
+    )
+    PASSWORD_NO_LOWER_CASE_LETTER = (
+        'Your password must contain at least one lower case letter.'
+    )
     PASSWORD_NO_WHITE_SPACES = 'Your password must not contain white spaces.'
-    PASSWORD_NO_SPECIAL_CHAR = 'Your password must contain at least one special character (!#$%).'
+    PASSWORD_NO_SPECIAL_CHAR = (
+        'Your password must contain at least one special character (!#$%).'
+    )
     INCORRECT_CREDENTIALS = 'Invalid username or password.'

@@ -33,6 +33,7 @@ class UserRegisterView(CreateAPIView):
     """
     Uses a signal to create related UserProfile and UserPhoto models.
     """
+
     queryset = UserModel.objects.all()
     serializer_class = UserRegisterSerializer
     permission_classes = [AllowAny]
@@ -58,7 +59,7 @@ class UserRegisterView(CreateAPIView):
                 'username': user.username,
                 'id': user.pk,
             },
-            status=status.HTTP_201_CREATED
+            status=status.HTTP_201_CREATED,
         )
 
 
@@ -68,6 +69,7 @@ class UserLoginView(APIView):
     - Authenticates the user and issues JWT tokens.
     - Allows any user to attempt login.
     """
+
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
@@ -154,13 +156,14 @@ class PasswordChangeView(APIView):
     - Validates current and new passwords.
     - Saves the new password if validation passes.
     """
+
     permission_classes = [IsAuthenticated]
 
     def patch(self, request):
         # Validate current and new passwords
         serializer = PasswordChangeSerializer(
             data=request.data,
-            context={'request': request}
+            context={'request': request},
         )
 
         if serializer.is_valid():
@@ -168,7 +171,7 @@ class PasswordChangeView(APIView):
 
             return Response(
                 {'message': 'Password changed successfully'},
-                status=status.HTTP_200_OK
+                status=status.HTTP_200_OK,
             )
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -179,6 +182,7 @@ class UserDeleteView(DestroyAPIView):
     - Only accessible to authenticated users.
     - Deletes the user instance associated with the current request.
     """
+
     permission_classes = [IsAuthenticated]
 
     def get_object(self):

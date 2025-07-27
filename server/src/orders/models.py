@@ -22,20 +22,21 @@ class Order(models.Model):
     - user: ForeignKey to the user who placed the order.
     - order_group: UUID to group multiple order items from a single checkout.
     """
+
     class Meta:
         ordering = ['-created_at']
 
     order_group = models.UUIDField(
         default=uuid.uuid4,
         editable=False,
-        help_text="Groups multiple order items from a single checkout event."
+        help_text="Groups multiple order items from a single checkout event.",
     )
 
     status = models.CharField(
         max_length=OrderStatusChoices.max_length(),
         choices=OrderStatusChoices.choices,
         default=OrderStatusChoices.PENDING,
-        help_text="Current status of the order (e.g., pending, completed)."
+        help_text="Current status of the order (e.g., pending, completed).",
     )
 
     quantity = models.PositiveIntegerField(
@@ -43,21 +44,20 @@ class Order(models.Model):
     )
 
     created_at = models.DateTimeField(
-        auto_now_add=True,
-        help_text="Timestamp when the order was created."
+        auto_now_add=True, help_text="Timestamp when the order was created."
     )
 
     inventory = models.ForeignKey(
         to='products.Inventory',
         on_delete=models.CASCADE,
         related_name='orders',
-        help_text="The inventory item (size/variation) being ordered."
+        help_text="The inventory item (size/variation) being ordered.",
     )
 
     user = models.ForeignKey(
         to=UserModel,
         on_delete=models.CASCADE,
-        help_text="The user who placed the order."
+        help_text="The user who placed the order.",
     )
 
     def __str__(self):

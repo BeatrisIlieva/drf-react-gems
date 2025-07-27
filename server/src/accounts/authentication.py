@@ -11,7 +11,9 @@ UserModel = get_user_model()
 
 
 class CustomAuthBackendBackend(ModelBackend):
-    def authenticate(self, request=None, username=None, password=None, **kwargs):
+    def authenticate(
+        self, request=None, username=None, password=None, **kwargs
+    ):
         try:
             # Try to find a user with the provided username/email
             user = UserModel.objects.get(

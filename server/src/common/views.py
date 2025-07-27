@@ -3,6 +3,7 @@ Views and async utilities for common backend operations, including:
 - Sending reminder emails to users with uncompleted shopping bags
 - Providing reviewer-only API to inspect old shopping bag items
 """
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from asgiref.sync import sync_to_async
@@ -22,14 +23,15 @@ from src.common.permissions import IsOrderManager
 UserModel = get_user_model()
 
 
-async def send_email(subject, message, html_message, from_email, recipient_list):
+async def send_email(
+    subject, message, html_message, from_email, recipient_list
+):
     """
     Asynchronously send an email using the configured email backend.
     Uses a Celery task to send the email in the background.
     """
     _send_email.delay(
-        subject, message, html_message,
-        from_email, recipient_list
+        subject, message, html_message, from_email, recipient_list
     )
 
 
@@ -41,15 +43,25 @@ async def notify_users_they_have_uncompleted_orders(request):
     - Returns a JsonResponse with the list of user IDs notified.
     """
     one_day_ago = timezone.now() - timedelta(days=1)
+
     user_ids = await sync_to_async(
         lambda: list(
             ShoppingBag.objects.filter(
-                created_at__lt=one_day_ago
-            ).values_list('user', flat=True).distinct()
+                created_at__lt=one_day_ago,
+            )
+            .values_list(
+                'user',
+                flat=True,
+            )
+            .distinct()
         )
     )()
 
-    users = await sync_to_async(list)(UserModel.objects.filter(id__in=user_ids))
+    users = await sync_to_async(list)(
+        UserModel.objects.filter(
+            id__in=user_ids,
+        )
+    )
 
     html_message = render_to_string('mailer/uncompleted-orders.html')
     plain_message = strip_tags(html_message)
@@ -61,10 +73,12 @@ async def notify_users_they_have_uncompleted_orders(request):
             html_message=html_message,
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=(user.email,),
-        ) for user in users
+        )
+        for user in users
     ]
 
     await asyncio.gather(*email_tasks)
+
     return JsonResponse({'detail': user_ids})
 
 
@@ -74,21 +88,32 @@ class ShoppingBagReminderInfoView(APIView):
     - Only accessible to users with order manager permissions.
     - Returns a list of bag items with user and product info.
     """
+
     permission_classes = [IsOrderManager]
 
     def get(self, request):
         one_day_ago = timezone.now() - timedelta(days=1)
         bag_items = ShoppingBag.objects.filter(
-            created_at__lt=one_day_ago).select_related('user', 'inventory')
+            created_at__lt=one_day_ago
+        ).select_related(
+            'user',
+            'inventory',
+        )
+
         data = [
             {
                 'id': item.id,
                 'created_at': item.created_at,
                 'quantity': item.quantity,
-                'total_price': item.inventory.price * item.quantity if hasattr(item.inventory, 'price') else None,
+                'total_price': (
+                    item.inventory.price * item.quantity
+                    if hasattr(item.inventory, 'price')
+                    else None
+                ),
                 'user_email': item.user.email if item.user else None,
                 'product_info': f'Size: {item.inventory.size} / Price: {item.inventory.price}',
             }
             for item in bag_items
         ]
+
         return Response(data)

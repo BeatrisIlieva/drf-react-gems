@@ -15,7 +15,8 @@ def send_approval_email_notification(sender, instance, created, **kwargs):
         # delay -> comes from the decorator `@shared_task`; the `delay` method informs Celery
         # to put the task into a Redis queue and execute it when there is an available worker
         html_message = render_to_string(
-            'mailer/review-approved.html', {'user': instance.user.username})
+            'mailer/review-approved.html', {'user': instance.user.username}
+        )
         plain_message = strip_tags(html_message)
 
         _send_email.delay(

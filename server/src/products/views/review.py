@@ -9,7 +9,9 @@ from rest_framework.permissions import IsAuthenticated
 from src.common.permissions import IsOrderManager
 from src.products.models.review import Review
 from src.products.serializers.review import ReviewSerializer
-from src.products.serializers.review_management import ReviewManagementSerializer
+from src.products.serializers.review_management import (
+    ReviewManagementSerializer,
+)
 from src.products.constants import ReviewErrorMessages
 
 
@@ -32,9 +34,11 @@ class ReviewViewSet(viewsets.ModelViewSet):
         """
 
         # Check if user is a reviewer and this is a reviewer-specific action
-        if (self.request.user.has_perm('products.approve_review') and
-                self.action in ['approve', 'unapprove', 'pending']):
+        if self.request.user.has_perm(
+            'products.approve_review'
+        ) and self.action in ['approve', 'unapprove', 'pending']:
             return ReviewManagementSerializer
+
         return ReviewSerializer
 
     def get_queryset(self):
@@ -53,7 +57,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
                 'user',
                 'content_type',
                 'user__userprofile',
-                'user__userphoto'
+                'user__userphoto',
             )
         else:
             # Regular users can only see their own reviews
@@ -63,7 +67,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
                 'user',
                 'content_type',
                 'user__userprofile',
-                'user__userphoto'
+                'user__userphoto',
             )
 
     def create(self, request, *args, **kwargs):
@@ -87,10 +91,15 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
             response_serializer = self.get_serializer(review)
 
-            return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+            return Response(
+                response_serializer.data, status=status.HTTP_201_CREATED
+            )
 
         except ValidationError as e:
-            return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                e.detail,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
     def update(self, request, *args, **kwargs):
         """
@@ -103,7 +112,8 @@ class ReviewViewSet(viewsets.ModelViewSet):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(
-            instance, data=request.data, partial=partial)
+            instance, data=request.data, partial=partial
+        )
         serializer.is_valid(raise_exception=True)
 
         # If the user is not a reviewer, set approved to False
@@ -131,14 +141,9 @@ class ReviewViewSet(viewsets.ModelViewSet):
     @action(
         detail=False,
         methods=['get'],
-        url_path='user-review/(?P<content_type_name>[^/.]+)/(?P<object_id>[^/.]+)'
+        url_path='user-review/(?P<content_type_name>[^/.]+)/(?P<object_id>[^/.]+)',
     )
-    def get_user_review(
-        self,
-        request,
-        content_type_name=None,
-        object_id=None
-    ):
+    def get_user_review(self, request, content_type_name=None, object_id=None):
         """
         Custom action to retrieve the current user's review for a specific product.
 
@@ -159,8 +164,10 @@ class ReviewViewSet(viewsets.ModelViewSet):
         except (ContentType.DoesNotExist, ValueError):
             # Invalid content type or object ID
             return Response(
-                {'error': ReviewErrorMessages.ERROR_INVALID_CONTENT_TYPE_OR_ID},
-                status=status.HTTP_400_BAD_REQUEST
+                {
+                    'error': ReviewErrorMessages.ERROR_INVALID_CONTENT_TYPE_OR_ID
+                },
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         try:
@@ -168,16 +175,22 @@ class ReviewViewSet(viewsets.ModelViewSet):
             review = Review.objects.get(
                 user=request.user,
                 content_type=content_type,
-                object_id=object_id_int
+                object_id=object_id_int,
             )
             serializer = self.get_serializer(review)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+
+            return Response(
+                serializer.data,
+                status=status.HTTP_200_OK,
+            )
 
         except Review.DoesNotExist:
             # No review found for this user and product
             return Response(
-                {'error': ReviewErrorMessages.ERROR_REVIEW_NOT_FOUND},
-                status=status.HTTP_204_NO_CONTENT
+                {
+                    'error': ReviewErrorMessages.ERROR_REVIEW_NOT_FOUND,
+                },
+                status=status.HTTP_204_NO_CONTENT,
             )
 
     @action(detail=True, methods=['post'], permission_classes=[IsOrderManager])
@@ -196,13 +209,17 @@ class ReviewViewSet(viewsets.ModelViewSet):
             review.save()
 
             return Response(
-                {'message': 'Review approved successfully'},
-                status=status.HTTP_200_OK
+                {
+                    'message': 'Review approved successfully',
+                },
+                status=status.HTTP_200_OK,
             )
         except Exception as e:
             return Response(
-                {'error': 'Failed to approve review'},
-                status=status.HTTP_400_BAD_REQUEST
+                {
+                    'error': 'Failed to approve review',
+                },
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
     @action(detail=True, methods=['post'], permission_classes=[IsOrderManager])
@@ -220,13 +237,17 @@ class ReviewViewSet(viewsets.ModelViewSet):
             review.save()
 
             return Response(
-                {'message': 'Review unapproved successfully'},
-                status=status.HTTP_200_OK
+                {
+                    'message': 'Review unapproved successfully',
+                },
+                status=status.HTTP_200_OK,
             )
         except Exception as e:
             return Response(
-                {'error': 'Failed to unapprove review'},
-                status=status.HTTP_400_BAD_REQUEST
+                {
+                    'error': 'Failed to unapprove review',
+                },
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
     @action(detail=False, methods=['get'], permission_classes=[IsOrderManager])
@@ -241,9 +262,12 @@ class ReviewViewSet(viewsets.ModelViewSet):
             'user',
             'content_type',
             'user__userprofile',
-            'user__userphoto'
+            'user__userphoto',
         )
 
         serializer = ReviewManagementSerializer(pending_reviews, many=True)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )

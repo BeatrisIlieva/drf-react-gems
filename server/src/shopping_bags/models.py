@@ -7,10 +7,7 @@ UserModel = get_user_model()
 class ShoppingBag(models.Model):
     class Meta:
         unique_together = [
-            (
-                'user',
-                'inventory'
-            ),
+            ('user', 'inventory'),
         ]
         ordering = ['-created_at']
 

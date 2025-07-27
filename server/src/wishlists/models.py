@@ -11,11 +11,7 @@ class Wishlist(models.Model):
     class Meta:
         unique_together = [
             # Prevents authenticated users from adding the same item twice
-            (
-                'user',
-                'content_type',
-                'object_id'
-            ),
+            ('user', 'content_type', 'object_id'),
         ]
 
         ordering = ['-created_at']

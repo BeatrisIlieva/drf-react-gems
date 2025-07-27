@@ -8,18 +8,51 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
             name='Order',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('order_group', models.UUIDField(default=uuid.uuid4, editable=False, help_text='Groups multiple order items from a single checkout event.')),
-                ('status', models.CharField(choices=[('PE', 'Pending'), ('CO', 'Completed')], default='PE', help_text='Current status of the order (e.g., pending, completed).', max_length=2)),
-                ('quantity', models.PositiveIntegerField(help_text='Number of units of the inventory item ordered.')),
-                ('created_at', models.DateTimeField(auto_now_add=True, help_text='Timestamp when the order was created.')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                (
+                    'order_group',
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        help_text='Groups multiple order items from a single checkout event.',
+                    ),
+                ),
+                (
+                    'status',
+                    models.CharField(
+                        choices=[('PE', 'Pending'), ('CO', 'Completed')],
+                        default='PE',
+                        help_text='Current status of the order (e.g., pending, completed).',
+                        max_length=2,
+                    ),
+                ),
+                (
+                    'quantity',
+                    models.PositiveIntegerField(
+                        help_text='Number of units of the inventory item ordered.'
+                    ),
+                ),
+                (
+                    'created_at',
+                    models.DateTimeField(
+                        auto_now_add=True,
+                        help_text='Timestamp when the order was created.',
+                    ),
+                ),
             ],
             options={
                 'ordering': ['-created_at'],
