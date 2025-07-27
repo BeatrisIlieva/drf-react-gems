@@ -248,6 +248,12 @@ See implementation: [server/src/products/admin.py](https://github.com/beatrisili
 
 -   All admin groups and their associated users are created automatically by a management command: [server/src/accounts/management/commands/create_roles.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/management/commands/create_roles.py)
 
+| User Type      | Email                     | Password |
+| -------------- | ------------------------- | -------- |
+| Super User     | `super_user@mail.com`     | `!1Aabb` |
+| Inventory User | `inventory_user@mail.com` | `!1Aabb` |
+| Order User     | `order_user@mail.com`     | `!1Aabb` |
+
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ### Exception Handling and Data Validation
@@ -480,15 +486,6 @@ The `python manage.py setup_database` command (run during installation) will:
 -   Add customer reviews with ratings and comments
 -   Create admin users with different roles and permissions
 -   Create a superuser with full system access
-
-**Created Admin Users:**
-
-| User Type | Email | Password |
-|-----------|-------|----------|
-| Super User | `super_user@mail.com` | `!1Aabb` |
-| Inventory User | `inventory_user@mail.com` | `!1Aabb` |
-| Order User | `order_user@mail.com` | `!1Aabb` |
-
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
