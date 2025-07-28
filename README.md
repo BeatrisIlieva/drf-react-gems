@@ -87,7 +87,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 ### Frontend Implementation
 
--   [The application has 13 page components](https://github.com/beatrisilieva/drf-react-gems/blob/main/docs/forms.md)
+-   [The application has 13 page components](https://github.com/beatrisilieva/drf-react-gems/blob/main/docs/web_pages.md)
 
 -   **Web Page Design:** Custom SCSS modules for component-based styling, ensuring modularity
 
@@ -203,8 +203,6 @@ All admin groups and their associated users are created automatically by a manag
 ### Additional Features
 
 -   **Testing**: 60 automated tests with 84% coverage (`coverage run manage.py test && coverage report`)
-
--   **REST API**: DRF API views and serializers provide all features to the React frontend
 
 -   **Deployment**: Backend on `Azure` with `Redis Cloud`; frontend on `Firebase`
 
