@@ -203,9 +203,9 @@ All admin groups and their associated users are created automatically by a manag
 
 ### Testing
 
--   **62 automated tests with [74% coverage report](https://github.com/beatrisilieva/drf-react-gems/blob/main/docs/coverage-report/index.html)**
+-   **62 automated tests with [74% coverage report](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)**
 
-    [![Coverage](https://img.shields.io/badge/coverage-74%25-green.svg)](https://github.com/beatrisilieva/drf-react-gems/blob/main/docs/coverage-report/index.html)
+    [![Coverage](https://img.shields.io/badge/coverage-74%25-green.svg)](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -214,6 +214,8 @@ All admin groups and their associated users are created automatically by a manag
 -   **Backend**: `Azure` and `Redis Cloud`
 
 -   **Frontend**: `Firebase`
+
+-   **Coverage Report**: `GitHub Pages`
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
