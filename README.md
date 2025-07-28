@@ -209,7 +209,8 @@ All admin groups and their associated users are created automatically by a manag
 
 ### Deployment
 
--   **Backend**: `Azure` and `Redis Cloud`;
+-   **Backend**: `Azure` and `Redis Cloud`
+
 -   **Frontend**: `Firebase`
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
