@@ -39,7 +39,8 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   [Admin Groups](#admin-groups)
 -   [Exception Handling and Data Validation](#exception-handling-and-data-validation)
 -   [Asynchronous Processing](#asynchronous-processing)
--   [Additional Features](#additional-features)
+-   [Testing](#testing)
+-   [Deployment](#deployment)
 -   [Django User Extension](#django-user-extension)
 -   [Object-Oriented Design](#object-oriented-design)
 
@@ -200,11 +201,17 @@ All admin groups and their associated users are created automatically by a manag
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
-### Additional Features
+### Testing
 
--   **Testing**: 60 automated tests with 84% coverage (`coverage run manage.py test && coverage report`)
+-   60 automated tests with 84% coverage (`coverage run manage.py test && coverage report`)
 
--   **Deployment**: Backend on `Azure` with `Redis Cloud`; frontend on `Firebase`
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
+### Deployment
+
+-   **Backend**: `Azure` and `Redis Cloud`
+
+-   **Frontend**: `Firebase`
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
