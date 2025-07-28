@@ -44,7 +44,7 @@ export const ReviewForm = ({
         }
 
         setIsSubmitting(true);
-
+        let response;
         try {
             const reviewData = {
                 rating,
@@ -53,7 +53,7 @@ export const ReviewForm = ({
                 objectId: productId,
             };
 
-            let response;
+            // let response;
             if (existingReview) {
                 response = await updateReview(existingReview.id, reviewData);
             } else {
@@ -69,8 +69,8 @@ export const ReviewForm = ({
             }
 
             setTimeout(() => setSuccess(false), 3000);
-        } catch {
-            setError('Ensure this field has no more than 300 characters.');
+        } catch (err) {
+            setError(err.data.detail || err.data.comment);
         } finally {
             setIsSubmitting(false);
         }

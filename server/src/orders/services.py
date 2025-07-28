@@ -146,10 +146,7 @@ class OrderService:
 
     @staticmethod
     @transaction.atomic
-    def process_order_from_shopping_bag(user, payment_data):
-        # Validates payment data before processing
-        PaymentValidationService.validate_payment_data(payment_data)
-
+    def process_order_from_shopping_bag(user):
         shopping_bag_items = ShoppingBag.objects.filter(
             user=user
         ).select_related('inventory')
@@ -232,6 +229,7 @@ class OrderService:
             user=user,
             order_group=order_group_id,
         ).select_related('inventory')
+        
         total = 0.0
 
         for order in orders:

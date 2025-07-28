@@ -19,13 +19,9 @@ class NameFieldMixin(models.Model):
     NAME_MAX_LENGTH = NameFieldLengths.NAME_MAX_LENGTH
 
     class Meta:
-        # Abstract = True means this model won't create its own database table
-        # It's only used as a base class for other models
         abstract = True
 
     # Standardized name field used across multiple entities
-    # unique=True ensures no duplicate names within the same entity type
-    # max_length uses the constant for consistency
     name = models.CharField(
         max_length=NAME_MAX_LENGTH,
         unique=True,
@@ -45,7 +41,7 @@ class FilterMixin:
     strings and build database queries.
 
     The mixin supports both filtering by product attributes directly
-    and filtering by related inventory attributes,
+    and filtering by related inventory attributes.
     """
 
     def _get_params(self):
@@ -63,76 +59,44 @@ class FilterMixin:
             'collections': self.request.query_params.getlist('collections'),
         }
 
+    def _build_filters(self, params, filter_map):
+        """
+        Build database filters based on provided parameters and filter mapping.
+        """
+        filters = Q()
+
+        for key, value in params.items():
+            if value and key in filter_map:
+                filters &= Q(**{filter_map[key]: value})
+
+        return filters
+
     def _get_filters_for_attributes(self, category):
         """
         Build database filters for attribute-based filtering.
-
-        This method creates Django Q objects for filtering products
-        based on their attributes (color, stone, metal, collection).
-        It's used when filtering products that have these attributes
-        directly (like when viewing a specific product category).
         """
-        # Get the filter parameters from the request
         params = self._get_params()
-        # Initialize an empty Q object to build filters
-        filters = Q()
 
-        # Add color filter if colors are specified
-        if params['colors']:
-            # Filter by color_id in the specified colors list
-            filters &= Q(**{f'{category}__color_id__in': params['colors']})
+        filter_map = {
+            'colors': f'{category}__color_id__in',
+            'stones': f'{category}__stone_id__in',
+            'metals': f'{category}__metal_id__in',
+            'collections': f'{category}__collection_id__in',
+        }
 
-        # Add stone filter if stones are specified
-        if params['stones']:
-            # Filter by stone_id in the specified stones list
-            filters &= Q(**{f'{category}__stone_id__in': params['stones']})
-
-        # Add metal filter if metals are specified
-        if params['metals']:
-            # Filter by metal_id in the specified metals list
-            filters &= Q(**{f'{category}__metal_id__in': params['metals']})
-
-        # Add collection filter if collections are specified
-        if params['collections']:
-            # Filter by collection_id in the specified collections list
-            filters &= Q(
-                **{f'{category}__collection_id__in': params['collections']}
-            )
-
-        return filters
+        return self._build_filters(params, filter_map)
 
     def _get_filters_for_product(self):
         """
         Build database filters for direct product filtering.
-
-        This method creates Django Q objects for filtering products
-        directly by their attributes. It's used when the view is
-        already working with a specific product type and doesn't need
-        the category prefix in the filter.
         """
-        # Get the filter parameters from the request
         params = self._get_params()
-        # Initialize an empty Q object to build filters
-        filters = Q()
 
-        # Add color filter if colors are specified
-        if params['colors']:
-            # Filter by color_id directly on the product
-            filters &= Q(color_id__in=params['colors'])
+        filter_map = {
+            'colors': 'color_id__in',
+            'stones': 'stone_id__in',
+            'metals': 'metal__id__in',
+            'collections': 'collection__id__in',
+        }
 
-        # Add stone filter if stones are specified
-        if params['stones']:
-            # Filter by stone_id directly on the product
-            filters &= Q(stone_id__in=params['stones'])
-
-        # Add metal filter if metals are specified
-        if params['metals']:
-            # Filter by metal_id directly on the product
-            filters &= Q(metal__id__in=params['metals'])
-
-        # Add collection filter if collections are specified
-        if params['collections']:
-            # Filter by collection_id directly on the product
-            filters &= Q(collection__id__in=params['collections'])
-
-        return filters
+        return self._build_filters(params, filter_map)
