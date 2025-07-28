@@ -49,7 +49,7 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
         for _, orders in grouped_orders.items():
             serializer_data.append({'orders': orders})
 
-        serializer = OrderGroupSerializer(serializer_data, many=True)
+        serializer = self.get_serializer(serializer_data, many=True)
         return Response(serializer.data)
 
     @action(
@@ -75,7 +75,7 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
             try:
                 # Process the order using validated payment data
                 orders = OrderService.process_order_from_shopping_bag(
-                    user=request.user, payment_data=serializer.validated_data
+                    user=request.user,
                 )
 
                 if orders:

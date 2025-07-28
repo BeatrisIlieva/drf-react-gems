@@ -1,4 +1,5 @@
 from django.contrib.contenttypes.models import ContentType
+from django.db import IntegrityError
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -98,6 +99,12 @@ class ReviewViewSet(viewsets.ModelViewSet):
         except ValidationError as e:
             return Response(
                 e.detail,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        except IntegrityError:
+            return Response(
+                {'detail': 'You have already reviewed this item.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 

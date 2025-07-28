@@ -5,6 +5,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework import status
 
 from src.products.mixins import FilterMixin
+from src.products.utils import get_valid_categories
 
 
 class ProductPagination(PageNumberPagination):
@@ -63,22 +64,16 @@ class BaseAttributeView(FilterMixin, RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         try:
-
             category = self.request.query_params.get('category', '')
 
-            if isinstance(category, list):
-                category = category[0] if category else ''
             if not isinstance(category, str):
                 category = ''
+                
             if category.endswith('s') and len(category) > 1:
                 category = category[:-1]
 
-            valid_categories = [
-                'earwear',
-                'neckwear',
-                'fingerwear',
-                'wristwear',
-            ]
+            valid_categories = get_valid_categories()
+
             if category and category not in valid_categories:
                 return Response(
                     {'error': 'Invalid category'},
