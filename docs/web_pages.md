@@ -1,0 +1,15 @@
+## 13 page components
+
+-   Home page [client/src/components/pages/home/Home.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/home/Home.jsx)
+-   Product list page [client/src/components/pages/product-list/ProductList.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/product-list/ProductList.jsx)
+-   Product item page [client/src/components/pages/product-item/ProductItem.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/product-item/ProductItem.jsx)
+-   Shopping bag page [client/src/components/pages/shopping-bag/ShoppingBag.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/shopping-bag/ShoppingBag.jsx)
+-   Wishlist page [client/src/components/pages/wishlist/Wishlist.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/wishlist/Wishlist.jsx)
+-   Checkout page [client/src/components/pages/checkout/Checkout.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/checkout/Checkout.jsx)
+-   Payment page [client/src/components/pages/payment/Payment.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/payment/Payment.jsx)
+-   Order confirmation page [client/src/components/pages/order-confirmation/OrderConfirmation.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/order-confirmation/OrderConfirmation.jsx)
+-   Login page [client/src/components/pages/login/Login.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/login/Login.jsx)
+-   Register page [client/src/components/pages/register/Register.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/register/Register.jsx)
+-   Accounts page [client/src/components/pages/accounts/Accounts.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/accounts/Accounts.jsx)
+-   Admin page [client/src/components/pages/admin/Admin.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/admin/Admin.jsx)
+-   404 page [client/src/components/pages/page404/Page404.jsx](https://github.com/beatrisilieva/drf-react-gems/blob/main/client/src/components/pages/page404/Page404.jsx])
