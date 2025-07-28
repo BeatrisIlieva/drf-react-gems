@@ -1,9 +1,3 @@
-# Coverage reports
-.coverage
-coverage_html/
-coverage.xml
-htmlcov/
-
 # Python cache
 __pycache__/
 *.py[cod]
