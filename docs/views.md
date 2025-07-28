@@ -1,0 +1,16 @@
+## 14 independent class-based views:
+
+-   BaseProductListView [server/src/products/views/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
+-   BaseProductItemView [server/src/products/views/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
+-   BaseAttributeView [server/src/products/views/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
+-   OrderViewSet [server/src/orders/views.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/orders/views.py)
+-   ShoppingBagViewSet [server/src/shopping_bags/views.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/shopping_bags/views.py)
+-   WishlistViewSet [server/src/wishlists/views.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/wishlists/views.py)
+-   ReviewViewSet [server/src/products/views/review.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/review.py)
+-   UserRegisterView [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
+-   UserLoginView [server/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
+-   UserLogoutView [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
+-   PasswordChangeView [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
+-   UserDeleteView [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
+-   UserProfileView [server/src/accounts/views/user_profile.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_profile.py)
+-   PhotoUploadView [server/src/accounts/views/user_photo.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_photo.py)
