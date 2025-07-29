@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 
 import { useApi } from '../hooks/useApi';
-import { useAuth } from '../hooks/useAuth';
 
 import { keysToCamelCase } from '../utils/convertToCamelCase';
 
@@ -11,28 +10,27 @@ const baseUrl = `${HOST}/api/accounts/photo`;
 
 export const usePhoto = () => {
     const { get, patch } = useApi();
-    const { isAuthenticated } = useAuth();
 
     const getPhoto = useCallback(async () => {
         try {
             const response = await get(`${baseUrl}/`, {
-                accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated,
+                accessRequired: true,
+                refreshRequired: true,
             });
 
             return keysToCamelCase(response);
         } catch (error) {
             console.error(error);
         }
-    }, [get, isAuthenticated]);
+    }, [get]);
 
     const uploadPhoto = useCallback(
         async photoData => {
             try {
                 const response = await patch(`${baseUrl}/`, {
                     data: photoData,
-                    accessRequired: isAuthenticated,
-                    refreshRequired: isAuthenticated,
+                    accessRequired: true,
+                    refreshRequired: true,
                     contentType: 'multipart/form-data',
                 });
 
@@ -41,7 +39,7 @@ export const usePhoto = () => {
                 console.error(error);
             }
         },
-        [patch, isAuthenticated]
+        [patch]
     );
 
     const deletePhoto = useCallback(async () => {
@@ -51,8 +49,8 @@ export const usePhoto = () => {
 
             const response = await patch(`${baseUrl}/`, {
                 data: formData,
-                accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated,
+                accessRequired: true,
+                refreshRequired: true,
                 contentType: 'multipart/form-data',
             });
 
@@ -60,7 +58,7 @@ export const usePhoto = () => {
         } catch (error) {
             console.error(error);
         }
-    }, [patch, isAuthenticated]);
+    }, [patch]);
 
     return {
         getPhoto,

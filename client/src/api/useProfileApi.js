@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 
 import { useApi } from '../hooks/useApi';
-import { useAuth } from '../hooks/useAuth';
 
 import { keysToCamelCase } from '../utils/convertToCamelCase';
 
@@ -12,13 +11,12 @@ const passwordBaseUrl = `${HOST}/api/accounts/change-password`;
 
 export const useProfile = () => {
     const { get, patch } = useApi();
-    const { isAuthenticated } = useAuth();
 
     const getPersonalInfo = useCallback(async () => {
         try {
             const response = await get(`${profileBaseUrl}/`, {
-                accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated,
+                accessRequired: true,
+                refreshRequired: true,
             });
 
             return keysToCamelCase(response);
@@ -29,15 +27,15 @@ export const useProfile = () => {
                 ...error.data,
             };
         }
-    }, [get, isAuthenticated]);
+    }, [get]);
 
     const updatePersonalInfo = useCallback(
         async personalData => {
             try {
                 const response = await patch(`${profileBaseUrl}/`, {
                     data: personalData,
-                    accessRequired: isAuthenticated,
-                    refreshRequired: isAuthenticated,
+                    accessRequired: true,
+                    refreshRequired: true,
                 });
 
                 return keysToCamelCase(response);
@@ -49,7 +47,7 @@ export const useProfile = () => {
                 };
             }
         },
-        [patch, isAuthenticated]
+        [patch]
     );
 
     const changePassword = useCallback(
@@ -57,8 +55,8 @@ export const useProfile = () => {
             try {
                 const result = await patch(`${passwordBaseUrl}/`, {
                     data: passwordData,
-                    accessRequired: isAuthenticated,
-                    refreshRequired: isAuthenticated,
+                    accessRequired: true,
+                    refreshRequired: true,
                 });
                 return (
                     result || {
@@ -78,7 +76,7 @@ export const useProfile = () => {
                 };
             }
         },
-        [patch, isAuthenticated]
+        [patch]
     );
 
     return {

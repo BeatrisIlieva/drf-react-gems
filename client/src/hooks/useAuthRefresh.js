@@ -6,7 +6,7 @@ let isRefreshing = false;
 let refreshPromise = null;
 
 export const useAuthRefresh = () => {
-    const { userLogoutHandler } = useUserContext();
+    const { userLogoutHandler, setAuthData } = useUserContext();
 
     const authRefresh = useCallback(async () => {
         if (isRefreshing) {
@@ -54,15 +54,15 @@ export const useAuthRefresh = () => {
                 }
 
                 const data = await response.json();
-                
+
                 if (data.access) {
-                    localStorage.setItem(
-                        'auth',
-                        JSON.stringify({
-                            ...authData,
-                            access: data.access,
-                        })
-                    );
+                    const newAuthData = {
+                        ...authData,
+                        access: data.access,
+                    };
+
+                    localStorage.setItem('auth', JSON.stringify(newAuthData));
+                    setAuthData(newAuthData);
                 } else {
                     throw new Error('No access token in response');
                 }
@@ -77,7 +77,7 @@ export const useAuthRefresh = () => {
         })();
 
         return refreshPromise;
-    }, [userLogoutHandler]);
+    }, [userLogoutHandler, setAuthData]);
 
     return {
         authRefresh,

@@ -18,6 +18,13 @@ export const UserProvider = ({ children }) => {
         setAuthData({});
         localStorage.setItem('migratedShoppingBag', false);
         localStorage.setItem('migratedWishlist', false);
+
+        localStorage.setItem('shopping-bag-items', []);
+        localStorage.setItem('shopping-bag-total-price', 0);
+        localStorage.setItem('shopping-bag-count', 0);
+
+        localStorage.setItem('wishlist-items', []);
+        localStorage.setItem('wishlist-count', 0);
     }, [setAuthData]);
 
     const contextValue = useMemo(
@@ -25,8 +32,9 @@ export const UserProvider = ({ children }) => {
             ...authData,
             userLoginHandler,
             userLogoutHandler,
+            setAuthData,
         }),
-        [authData, userLoginHandler, userLogoutHandler]
+        [authData, userLoginHandler, userLogoutHandler, setAuthData]
     );
 
     return <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>;

@@ -90,29 +90,35 @@ export const useApi = () => {
                     try {
                         await authRefresh();
 
-                        await new Promise(resolve => setTimeout(resolve, 50));
-
-                        const retryOptions = {
-                            method: options.method,
-                            headers: {
-                                'Content-Type': options.headers['Content-Type'],
-                            },
-                        };
-
+                        // Get fresh token from localStorage
                         const authDataString = localStorage.getItem('auth');
+                        let freshToken = null;
+
                         if (authDataString) {
                             try {
                                 const authData = JSON.parse(authDataString);
-                                if (authData.access) {
-                                    retryOptions.headers.Authorization = `Bearer ${authData.access}`;
-                                }
+                                freshToken = authData.access;
                             } catch (e) {
                                 console.error('Failed to parse auth data:', e);
                             }
                         }
 
-                        if (options.body) {
-                            retryOptions.body = options.body;
+                        // Reconstruct the retry request properly
+                        const retryOptions = {
+                            method: options.method,
+                            headers: {},
+                            body: options.body,
+                        };
+
+                        // Add authorization header with fresh token
+                        if (freshToken) {
+                            retryOptions.headers.Authorization = `Bearer ${freshToken}`;
+                        }
+
+                        // Only set Content-Type if it's NOT multipart/form-data
+                        // For FormData, the browser will set the correct Content-Type with boundary
+                        if (contentType !== 'multipart/form-data') {
+                            retryOptions.headers['Content-Type'] = contentType;
                         }
 
                         const retryResponse = await fetch(url, retryOptions);
@@ -178,7 +184,7 @@ export const useApi = () => {
 
             return json;
         },
-        [access, refresh, authRefresh]
+        [access, refresh, authRefresh, navigate]
     );
 
     return useMemo(

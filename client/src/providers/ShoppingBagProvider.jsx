@@ -118,10 +118,14 @@ export const ShoppingBagProvider = ({ children }) => {
 
     useEffect(() => {
         if (!userId) {
-            setShoppingBagItems([]);
-            setShoppingBagItemsCount(0);
-            setShoppingBagTotalPrice(0);
-            setLoading(false);
+            const bagItems = localStorage.getItem('shopping-bag-items');
+            setShoppingBagItems(bagItems ? JSON.parse(bagItems) : []);
+
+            const bagCount = localStorage.getItem('shopping-bag-count');
+            setShoppingBagItemsCount(bagCount ? parseInt(bagCount, 10) : 0);
+
+            const bagTotal = localStorage.getItem('shopping-bag-total-price');
+            setShoppingBagTotalPrice(bagTotal ? parseFloat(bagTotal) : 0);
             return;
         }
 
