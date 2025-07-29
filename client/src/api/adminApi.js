@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 
 import { useApi } from '../hooks/useApi';
-import { useAuth } from '../hooks/useAuth';
 
 import { HOST } from '../constants/host';
 
@@ -9,7 +8,6 @@ const baseUrl = `${HOST}/api/common`;
 
 export const useAdmin = () => {
     const { get } = useApi();
-    const { isAuthenticated } = useAuth();
 
     const sendReminder = useCallback(async () => {
         try {
@@ -23,14 +21,14 @@ export const useAdmin = () => {
     const getBagReminderInfo = useCallback(async () => {
         try {
             return await get(`${baseUrl}/admin-bag-info/`, {
-                accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated,
+                accessRequired: true,
+                refreshRequired: true,
             });
         } catch (error) {
             console.error(error);
             return null;
         }
-    }, [get, isAuthenticated]);
+    }, [get]);
 
     return {
         sendReminder,

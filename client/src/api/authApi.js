@@ -3,7 +3,6 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
 
 import { useApi } from '../hooks/useApi';
-import { useAuth } from '../hooks/useAuth';
 
 import { HOST } from '../constants/host';
 
@@ -11,7 +10,6 @@ const baseUrl = `${HOST}/api/accounts`;
 
 export const useAuthentication = () => {
     const { post, del } = useApi();
-    const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
     const register = useCallback(
@@ -53,26 +51,26 @@ export const useAuthentication = () => {
     const logout = useCallback(async () => {
         try {
             await post(`${baseUrl}/logout/`, {
-                accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated,
+                accessRequired: true,
+                refreshRequired: true,
             });
             navigate('/my-account/register');
         } catch (error) {
             console.error(error);
         }
-    }, [post, navigate, isAuthenticated]);
+    }, [post, navigate]);
 
     const deleteUser = useCallback(async () => {
         try {
             const response = await del(`${baseUrl}/delete/`, {
-                accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated,
+                accessRequired: true,
+                refreshRequired: true,
             });
             return response;
         } catch (error) {
             console.error(error);
         }
-    }, [del, isAuthenticated]);
+    }, [del]);
 
     return {
         register,

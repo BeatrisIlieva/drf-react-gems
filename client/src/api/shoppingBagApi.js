@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 
 import { useApi } from '../hooks/useApi';
-import { useAuth } from '../hooks/useAuth';
 
 import { keysToCamelCase } from '../utils/convertToCamelCase';
 
@@ -11,7 +10,6 @@ const baseUrl = `${HOST}/api/shopping-bags`;
 
 export const useShoppingBag = () => {
     const { get, post, put, del } = useApi();
-    const { isAuthenticated } = useAuth();
 
     const createItem = useCallback(
         async ({ inventory, quantity }) => {
@@ -22,8 +20,8 @@ export const useShoppingBag = () => {
             try {
                 const response = await post(`${baseUrl}/`, {
                     data,
-                    accessRequired: isAuthenticated,
-                    refreshRequired: isAuthenticated,
+                    accessRequired: true,
+                    refreshRequired: true,
                 });
 
                 return keysToCamelCase(response);
@@ -31,15 +29,15 @@ export const useShoppingBag = () => {
                 console.error(error);
             }
         },
-        [post, isAuthenticated]
+        [post]
     );
 
     const deleteItem = useCallback(
         async bagItemId => {
             try {
                 const response = del(`${baseUrl}/${bagItemId}/`, {
-                    accessRequired: isAuthenticated,
-                    refreshRequired: isAuthenticated,
+                    accessRequired: true,
+                    refreshRequired: true,
                 });
 
                 return keysToCamelCase(response);
@@ -47,7 +45,7 @@ export const useShoppingBag = () => {
                 console.error(error);
             }
         },
-        [del, isAuthenticated]
+        [del]
     );
 
     const updateItem = useCallback(
@@ -65,8 +63,8 @@ export const useShoppingBag = () => {
             try {
                 const response = await put(`${baseUrl}/${id}/`, {
                     data,
-                    accessRequired: isAuthenticated,
-                    refreshRequired: isAuthenticated,
+                    accessRequired: true,
+                    refreshRequired: true,
                 });
 
                 return keysToCamelCase(response);
@@ -74,47 +72,47 @@ export const useShoppingBag = () => {
                 console.error(error);
             }
         },
-        [put, isAuthenticated, deleteItem]
+        [put, deleteItem]
     );
 
     const getItems = useCallback(async () => {
         try {
             const response = await get(`${baseUrl}/`, {
-                accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated,
+                accessRequired: true,
+                refreshRequired: true,
             });
 
             return keysToCamelCase(response);
         } catch (error) {
             console.error(error);
         }
-    }, [get, isAuthenticated]);
+    }, [get]);
 
     const getCount = useCallback(async () => {
         try {
             const response = await get(`${baseUrl}/count/`, {
-                accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated,
+                accessRequired: true,
+                refreshRequired: true,
             });
 
             return keysToCamelCase(response);
         } catch (error) {
             console.error(error);
         }
-    }, [get, isAuthenticated]);
+    }, [get]);
 
     const getTotalPrice = useCallback(async () => {
         try {
             const response = await get(`${baseUrl}/total-price/`, {
-                accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated,
+                accessRequired: true,
+                refreshRequired: true,
             });
 
             return keysToCamelCase(response);
         } catch (error) {
             console.error(error);
         }
-    }, [get, isAuthenticated]);
+    }, [get]);
 
     return {
         createItem,

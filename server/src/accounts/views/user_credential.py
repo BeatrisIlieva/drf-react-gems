@@ -12,7 +12,7 @@ Key features:
 from django.contrib.auth import get_user_model, authenticate
 
 from rest_framework.generics import CreateAPIView, DestroyAPIView
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -69,7 +69,6 @@ class UserLoginView(APIView):
     - Authenticates the user and issues JWT tokens.
     - Allows any user to attempt login.
     """
-
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
@@ -128,6 +127,8 @@ class UserLogoutView(APIView):
     - Returns a success or error message.
     """
 
+    permission_classes = [AllowAny]
+
     def post(self, request, *args, **kwargs):
         try:
             # Get refresh token from request data
@@ -157,8 +158,6 @@ class PasswordChangeView(APIView):
     - Saves the new password if validation passes.
     """
 
-    permission_classes = [IsAuthenticated]
-
     def patch(self, request):
         # Validate current and new passwords
         serializer = PasswordChangeSerializer(
@@ -182,8 +181,6 @@ class UserDeleteView(DestroyAPIView):
     - Only accessible to authenticated users.
     - Deletes the user instance associated with the current request.
     """
-
-    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         # Return the current user instance for deletion

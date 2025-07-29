@@ -61,8 +61,11 @@ export const WishlistProvider = ({ children }) => {
 
     useEffect(() => {
         if (!userId) {
-            setWishlistItems([]);
-            setWishlistItemsCount(0);
+            const wishlistItems = localStorage.getItem('wishlist-items');
+            setWishlistItems(wishlistItems ? JSON.parse(wishlistItems) : []);
+
+            const wishlistCount = localStorage.getItem('shopping-bag-count');
+            setWishlistItemsCount(wishlistCount ? parseInt(wishlistCount, 10) : 0);
             setLoading(false);
             return;
         }

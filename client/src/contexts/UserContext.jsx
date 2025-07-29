@@ -10,6 +10,7 @@ export const UserContext = createContext({
     isAuthenticated: false,
     userLoginHandler: () => null,
     userLogoutHandler: () => null,
+    setAuthData: () => null,
 });
 
 export const useUserContext = () => {

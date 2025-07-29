@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 
 import { useApi } from '../hooks/useApi';
-import { useAuth } from '../hooks/useAuth';
 
 import { keysToCamelCase } from '../utils/convertToCamelCase';
 import { keysToSnakeCase } from '../utils/convertToSnakeCase';
@@ -12,7 +11,6 @@ const baseUrl = `${HOST}/api/products/reviews`;
 
 export const useReview = () => {
     const { get, post, put, del } = useApi();
-    const { isAuthenticated } = useAuth();
 
     const createReview = useCallback(
         async reviewData => {
@@ -20,8 +18,8 @@ export const useReview = () => {
                 const data = keysToSnakeCase(reviewData);
                 const response = await post(`${baseUrl}/`, {
                     data,
-                    accessRequired: isAuthenticated,
-                    refreshRequired: isAuthenticated,
+                    accessRequired: true,
+                    refreshRequired: true,
                 });
                 return keysToCamelCase(response);
             } catch (error) {
@@ -29,7 +27,7 @@ export const useReview = () => {
                 throw error;
             }
         },
-        [post, isAuthenticated]
+        [post]
     );
 
     const updateReview = useCallback(
@@ -38,8 +36,8 @@ export const useReview = () => {
                 const data = keysToSnakeCase(reviewData);
                 const response = await put(`${baseUrl}/${reviewId}/`, {
                     data,
-                    accessRequired: isAuthenticated,
-                    refreshRequired: isAuthenticated,
+                    accessRequired: true,
+                    refreshRequired: true,
                 });
                 return keysToCamelCase(response);
             } catch (error) {
@@ -47,15 +45,15 @@ export const useReview = () => {
                 throw error;
             }
         },
-        [put, isAuthenticated]
+        [put]
     );
 
     const deleteReview = useCallback(
         async reviewId => {
             try {
                 await del(`${baseUrl}/${reviewId}/`, {
-                    accessRequired: isAuthenticated,
-                    refreshRequired: isAuthenticated,
+                    accessRequired: true,
+                    refreshRequired: true,
                 });
                 return true;
             } catch (error) {
@@ -63,19 +61,15 @@ export const useReview = () => {
                 throw error;
             }
         },
-        [del, isAuthenticated]
+        [del]
     );
 
     const getUserReview = useCallback(
         async (contentType, objectId) => {
-            if (!isAuthenticated) {
-                return null;
-            }
-
             try {
                 const response = await get(`${baseUrl}/user-review/${contentType}/${objectId}/`, {
-                    accessRequired: isAuthenticated,
-                    refreshRequired: isAuthenticated,
+                    accessRequired: true,
+                    refreshRequired: true,
                 });
                 return keysToCamelCase(response);
             } catch (error) {
@@ -89,27 +83,6 @@ export const useReview = () => {
                 throw error;
             }
         },
-        [get, isAuthenticated]
-    );
-
-    const getApprovedReviews = useCallback(
-        async (contentType, objectId) => {
-            try {
-                const response = await get(
-                    `${baseUrl}/?content_type=${contentType}&object_id=${objectId}`,
-                    {
-                        accessRequired: false,
-                        refreshRequired: false,
-                    }
-                );
-                return keysToCamelCase(response);
-            } catch (error) {
-                if (error.status === 404) {
-                    return [];
-                }
-                throw error;
-            }
-        },
         [get]
     );
 
@@ -117,8 +90,8 @@ export const useReview = () => {
         async reviewId => {
             try {
                 const response = await post(`${baseUrl}/${reviewId}/approve/`, {
-                    accessRequired: isAuthenticated,
-                    refreshRequired: isAuthenticated,
+                    accessRequired: true,
+                    refreshRequired: true,
                 });
                 return keysToCamelCase(response);
             } catch (error) {
@@ -126,15 +99,15 @@ export const useReview = () => {
                 throw error;
             }
         },
-        [post, isAuthenticated]
+        [post]
     );
 
     const unapproveReview = useCallback(
         async reviewId => {
             try {
                 const response = await post(`${baseUrl}/${reviewId}/unapprove/`, {
-                    accessRequired: isAuthenticated,
-                    refreshRequired: isAuthenticated,
+                    accessRequired: true,
+                    refreshRequired: true,
                 });
                 return keysToCamelCase(response);
             } catch (error) {
@@ -142,46 +115,16 @@ export const useReview = () => {
                 throw error;
             }
         },
-        [post, isAuthenticated]
+        [post]
     );
-
-    const getPendingReviews = useCallback(async () => {
-        try {
-            const response = await get(`${baseUrl}/pending/`, {
-                accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated,
-            });
-            return keysToCamelCase(response);
-        } catch (error) {
-            console.error('Get pending reviews error:', error);
-            throw error;
-        }
-    }, [get, isAuthenticated]);
-
-    const getAllReviews = useCallback(async () => {
-        try {
-            const response = await get(`${baseUrl}/`, {
-                accessRequired: isAuthenticated,
-                refreshRequired: isAuthenticated,
-            });
-            return keysToCamelCase(response);
-        } catch (error) {
-            console.error('Get all reviews error:', error);
-            throw error;
-        }
-    }, [get, isAuthenticated]);
 
     return {
         createReview,
         updateReview,
         deleteReview,
         getUserReview,
-        getApprovedReviews,
-
         approveReview,
         unapproveReview,
-        getPendingReviews,
-        getAllReviews,
     };
 };
 

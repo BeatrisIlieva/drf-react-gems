@@ -28,8 +28,6 @@ export const ShoppingBagItem = ({ quantity, totalPrice, productInfo, id, invento
     const moveToWishListHandler = async () => {
         if (isMovingToWishlist || isDeleting || isItemInWishlist) return;
 
-        console.log(productInfo);
-
         setIsMovingToWishlist(true);
         try {
             const categoryValue = category.endsWith('s') ? category.slice(0, -1) : category;
