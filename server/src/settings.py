@@ -5,7 +5,6 @@ from datetime import timedelta
 from django.utils.translation import gettext_lazy as _
 from decouple import config
 
-# Cloudinary imports for cloud-based media file storage
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
@@ -45,16 +44,19 @@ INSTALLED_APPS = [
     'unfold',
     'unfold.contrib.filters',
     'unfold.contrib.forms',
-    'daphne',  # command to run `daphne -b 0.0.0.0 -p 8000 src.asgi:application`
+
     'cloudinary',
     'cloudinary_storage',
     'django_celery_beat',
+    'daphne',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
@@ -125,7 +127,6 @@ DATABASES = {
     }
 }
 
-# Password validation rules
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -165,7 +166,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files configuration
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
@@ -173,10 +173,8 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-# This setting is required for cloudinary_storage compatibility
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
-# Modern Django storage configuration
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
@@ -222,14 +220,7 @@ EMAIL_HOST_PASSWORD = os.getenv(
 DEFAULT_FROM_EMAIL = 'djangogems@gmail.com'
 SERVER_EMAIL = 'djangogems@gmail.com'
 
-
-# sentry_sdk.init(
-#     dsn=os.getenv('SENTRY_DSN', config('SENTRY_DSN')),
-#     send_default_pii=True,
-# )
-
 SENTRY_DSN = os.getenv('SENTRY_DSN', config('SENTRY_DSN'))
-
 if SENTRY_DSN:
     sentry_sdk.init(
         dsn=SENTRY_DSN,
