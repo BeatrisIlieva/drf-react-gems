@@ -220,9 +220,7 @@ EMAIL_HOST_PASSWORD = os.getenv(
 DEFAULT_FROM_EMAIL = 'djangogems@gmail.com'
 SERVER_EMAIL = 'djangogems@gmail.com'
 
-SENTRY_DSN = os.getenv('SENTRY_DSN', config('SENTRY_DSN'))
-if SENTRY_DSN:
-    sentry_sdk.init(
-        dsn=SENTRY_DSN,
-        send_default_pii=True,
-    )
+sentry_sdk.init(
+    dsn=os.getenv('SENTRY_DSN', config('SENTRY_DSN')),
+    send_default_pii=True,
+)
