@@ -321,7 +321,8 @@ EMAIL_HOST_PASSWORD=your-SMTP-app-password         # REQUIRED: Generate app pass
 
 # Sentry (Error Monitoring)
 SENTRY_DSN=your_sentry_dsn                         # REQUIRED: From your Sentry project dashboard
-                                                   # Set to empty string if not using: SENTRY_DSN=
+                                                   # Set to empty string if not using: 
+                                                   # SENTRY_DSN=
 ```
 
 ---
