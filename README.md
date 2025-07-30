@@ -292,7 +292,6 @@ touch .env
 ```env
 # Django Configuration
 SECRET_KEY=your-secret-key                         # REQUIRED: Generate new Django secret key
-DEBUG=True                                         # OK for local
 
 # Local Development URLs
 ALLOWED_HOSTS=localhost,127.0.0.1                  # OK for local
@@ -323,6 +322,8 @@ EMAIL_HOST_PASSWORD=your-SMTP-app-password         # REQUIRED: Generate app pass
 SENTRY_DSN=your_sentry_dsn                         # REQUIRED: From your Sentry project dashboard
                                                    # Set to empty string if not using: 
                                                    # SENTRY_DSN=
+
+DEBUG=True                                         # OK for local
 ```
 
 ---
