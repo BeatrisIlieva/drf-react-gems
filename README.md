@@ -10,7 +10,7 @@
 [![Azure](https://img.shields.io/badge/Azure-blue.svg)](https://azure.microsoft.com/)
 [![Redis](https://img.shields.io/badge/Redis-6+-red.svg)](https://redis.io/)
 [![Firebase](https://img.shields.io/badge/Firebase-orange.svg)](https://firebase.google.com/)
-[![Sentry](https://img.shields.io/badge/Sentry-Error%20Monitoring-purple.svg)](https://sentry.io/)
+[![Sentry](https://img.shields.io/badge/Sentry-purple.svg)](https://sentry.io/)
 
 A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Features user authentication, shopping cart and wishlist functionality, secure payment processing, order history and asynchronous email notifications using Celery and Redis.
 
