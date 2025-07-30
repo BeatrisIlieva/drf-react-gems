@@ -10,6 +10,7 @@
 [![Azure](https://img.shields.io/badge/Azure-blue.svg)](https://azure.microsoft.com/)
 [![Redis](https://img.shields.io/badge/Redis-6+-red.svg)](https://redis.io/)
 [![Firebase](https://img.shields.io/badge/Firebase-orange.svg)](https://firebase.google.com/)
+[![Sentry](https://img.shields.io/badge/Sentry-Error%20Monitoring-purple.svg)](https://sentry.io/)
 
 A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Features user authentication, shopping cart and wishlist functionality, secure payment processing, order history and asynchronous email notifications using Celery and Redis.
 
@@ -189,6 +190,8 @@ All admin groups and their associated users are created automatically by a manag
 
     -   `notify_users_they_have_uncompleted_orders` allows Order group admins to send reminder emails for shopping bags older than one day: [server/src/common/views.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/common/views.py)
 
+        -   **Demo:** Access the admin notification page at `https://drf-react-gems.web.app/admin-page` (requires authentication with Order User credentials: `order_user@mail.com` / `!1Aabb`)
+
     -   `send_email` handles email notifications via Gmail SMTP using Google App Password authentication: [server/src/common/views.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/common/views.py)
 
 -   **Background Tasks powered by Celery with Redis:**
@@ -315,6 +318,10 @@ CELERY_RESULT_BACKEND=redis://localhost:6379/0     # OK for local
 # Email Service
 EMAIL_HOST_PASSWORD=your-SMTP-app-password         # REQUIRED: Generate app password in your
                                                    # Google Account settings
+
+# Sentry (Error Monitoring)
+SENTRY_DSN=your_sentry_dsn                         # REQUIRED: From your Sentry project dashboard
+                                                   # Set to empty string if not using: SENTRY_DSN=
 ```
 
 ---
