@@ -79,7 +79,7 @@ async def notify_users_they_have_uncompleted_orders(request):
 
     await asyncio.gather(*email_tasks)
 
-    return JsonResponse({'detail': user_ids})
+    return JsonResponse({'detail': 'Emails have been sent'})
 
 
 class ShoppingBagReminderInfoView(APIView):
