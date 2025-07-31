@@ -206,7 +206,7 @@ All admin groups and their associated users are created automatically by a manag
 
 ### Testing
 
--   **62 automated tests with [74% coverage report](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)**
+-   **64 Unit & Integration tests with [74% coverage report](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)** (`coverage run manage.py test && coverage report`)
 
     [![Coverage](https://img.shields.io/badge/coverage-74%25-green.svg)](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)
 
@@ -320,7 +320,7 @@ EMAIL_HOST_PASSWORD=your-SMTP-app-password         # REQUIRED: Generate app pass
 
 # Sentry (Error Monitoring)
 SENTRY_DSN=your_sentry_dsn                         # REQUIRED: From your Sentry project dashboard
-                                                   # Set to empty string if not using: 
+                                                   # Set to empty string if not using:
                                                    # SENTRY_DSN=
 
 DEBUG=True                                         # OK for local

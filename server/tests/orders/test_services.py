@@ -127,19 +127,14 @@ class OrderServiceTest(TestCase):
         cls.inventory = cls.shared_data['inventory']
 
     def test_process_order_from_shopping_bag(self):
-        user = TestDataBuilder.create_authenticated_user('_order_user', '_order_user')
+        user = TestDataBuilder.create_authenticated_user(
+            '_order_user', '_order_user')
         ShoppingBag.objects.create(
             user=user,
             inventory=self.inventory,
             quantity=2
         )
-        payment_data = {
-            'card_number': '4111 1111 1111 1111',
-            'card_holder_name': 'Test User',
-            'cvv': '123',
-            'expiry_date': '12/30',
-        }
-        orders = OrderService.process_order_from_shopping_bag(user, payment_data)
+        orders = OrderService.process_order_from_shopping_bag(user)
         self.assertEqual(len(orders), 1)
         order = orders[0]
         self.assertEqual(order.user, user)
@@ -154,19 +149,14 @@ class OrderServiceTest(TestCase):
         # Arrange: User with no shopping bag items
         user = TestDataBuilder.create_authenticated_user(
             '_empty_bag', '_empty_bag')
-        payment_data = {
-            'card_number': '4111 1111 1111 1111',
-            'card_holder_name': 'Test User',
-            'cvv': '123',
-            'expiry_date': '12/30',
-        }
 
         # Act & Assert
         with self.assertRaises(ValidationError):
-            OrderService.process_order_from_shopping_bag(user, payment_data)
+            OrderService.process_order_from_shopping_bag(user)
 
     def test_get_user_orders_and_grouped(self):
-        user = TestDataBuilder.create_authenticated_user('_grouped_user', '_grouped_user')
+        user = TestDataBuilder.create_authenticated_user(
+            '_grouped_user', '_grouped_user')
         order1 = Order.objects.create(
             user=user,
             inventory=self.inventory,
