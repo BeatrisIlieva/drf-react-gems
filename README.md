@@ -2,13 +2,14 @@
 
 # 🛍️ DRF React Gems - E-commerce Platform
 
-[![Django](https://img.shields.io/badge/Django-4.2+-green.svg)](https://www.djangoproject.com/)
-[![React](https://img.shields.io/badge/React-18+-blue.svg)](https://reactjs.org/)
-[![DRF](https://img.shields.io/badge/Django%20REST%20Framework-3.14+-orange.svg)](https://www.django-rest-framework.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-13+-blue.svg)](https://www.postgresql.org/)
-[![JWT](https://img.shields.io/badge/JWT%20Authentication-green.svg)](https://jwt.io/)
+[![Django](https://img.shields.io/badge/Django-green.svg)](https://www.djangoproject.com/)
+[![React](https://img.shields.io/badge/React-blue.svg)](https://reactjs.org/)
+[![DRF](https://img.shields.io/badge/Django%20REST%20Framework-red.svg)](https://www.django-rest-framework.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-blue.svg)](https://www.postgresql.org/)
+[![JWT](https://img.shields.io/badge/JWT%20Authentication-gray.svg)](https://jwt.io/)
 [![Azure](https://img.shields.io/badge/Azure-blue.svg)](https://azure.microsoft.com/)
-[![Redis](https://img.shields.io/badge/Redis-6+-red.svg)](https://redis.io/)
+[![Redis](https://img.shields.io/badge/Redis-red.svg)](https://redis.io/)
+[![Cloudinary](https://img.shields.io/badge/Cloudinary-teal.svg)](https://cloudinary.com/)
 [![Firebase](https://img.shields.io/badge/Firebase-orange.svg)](https://firebase.google.com/)
 [![Sentry](https://img.shields.io/badge/Sentry-purple.svg)](https://sentry.io/)
 
