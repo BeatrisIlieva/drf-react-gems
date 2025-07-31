@@ -45,3 +45,7 @@ class UserErrorMessages:
         'Your password must contain at least one special character (!#$%).'
     )
     INCORRECT_CREDENTIALS = 'Invalid username or password.'
+
+
+class PhotoSize:
+    MAX_SIZE = 5

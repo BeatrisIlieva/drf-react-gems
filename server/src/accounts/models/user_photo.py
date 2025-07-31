@@ -9,6 +9,9 @@ from django.db import models
 
 from cloudinary.models import CloudinaryField
 
+from src.accounts.constants import PhotoSize
+from src.accounts.validators.models import FileSizeValidator
+
 UserModel = get_user_model()
 
 
@@ -18,6 +21,9 @@ class UserPhoto(models.Model):
         'image',
         null=True,
         blank=False,
+        validators=[
+            FileSizeValidator(PhotoSize.MAX_SIZE),
+        ],
     )
 
     user = models.OneToOneField(
