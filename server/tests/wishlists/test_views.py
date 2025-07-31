@@ -1,6 +1,5 @@
 from django.test import TestCase, RequestFactory
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import AnonymousUser
 from django.contrib.contenttypes.models import ContentType
 from rest_framework.test import APIClient
 
