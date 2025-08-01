@@ -46,8 +46,9 @@ class InventoryMixinTest(TestCase):
         self.assertEqual(result['product_id'], 1)
         self.assertEqual(result['collection'], "Summer Collection")
         self.assertEqual(result['price'], 150.00)
-        self.assertEqual(result['first_image'],
-                         "https://example.com/image1.jpg")
+        self.assertEqual(
+            result['first_image'], "https://example.com/image1.jpg"
+        )
         self.assertEqual(result['available_quantity'], 10)
         self.assertEqual(result['size'], "Medium")
         self.assertEqual(result['metal'], "Gold")

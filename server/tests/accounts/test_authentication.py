@@ -8,7 +8,7 @@ UserModel = get_user_model()
 
 
 class CustomAuthBackendBackendTestCase(TestCase):
-    
+
     @classmethod
     def setUpTestData(cls):
         """
@@ -23,7 +23,8 @@ class CustomAuthBackendBackendTestCase(TestCase):
         """
         # Create test user
         self.user = TestDataBuilder.create_authenticated_user(
-            'testuser', 'testuser')
+            'testuser', 'testuser'
+        )
         self.user.set_password('testpass123')
         self.user.save()
 
@@ -37,9 +38,7 @@ class CustomAuthBackendBackendTestCase(TestCase):
 
         # Act
         authenticated_user = self.backend.authenticate(
-            request=request,
-            username=self.user.email,
-            password='testpass123'
+            request=request, username=self.user.email, password='testpass123'
         )
 
         # Assert
@@ -59,7 +58,7 @@ class CustomAuthBackendBackendTestCase(TestCase):
         authenticated_user = self.backend.authenticate(
             request=request,
             username=self.user.username,
-            password='testpass123'
+            password='testpass123',
         )
 
         # Assert
@@ -79,7 +78,7 @@ class CustomAuthBackendBackendTestCase(TestCase):
         authenticated_user = self.backend.authenticate(
             request=request,
             username='nonexistent@example.com',
-            password='testpass123'
+            password='testpass123',
         )
 
         # Assert
@@ -95,9 +94,7 @@ class CustomAuthBackendBackendTestCase(TestCase):
 
         # Act
         authenticated_user = self.backend.authenticate(
-            request=request,
-            username='nonexistentuser',
-            password='testpass123'
+            request=request, username='nonexistentuser', password='testpass123'
         )
 
         # Assert
@@ -113,9 +110,7 @@ class CustomAuthBackendBackendTestCase(TestCase):
 
         # Act
         authenticated_user = self.backend.authenticate(
-            request=request,
-            username=self.user.email,
-            password='wrongpassword'
+            request=request, username=self.user.email, password='wrongpassword'
         )
 
         # Assert
@@ -131,9 +126,7 @@ class CustomAuthBackendBackendTestCase(TestCase):
 
         # Act
         authenticated_user = self.backend.authenticate(
-            request=request,
-            username='',
-            password='testpass123'
+            request=request, username='', password='testpass123'
         )
 
         # Assert
@@ -149,9 +142,7 @@ class CustomAuthBackendBackendTestCase(TestCase):
 
         # Act
         authenticated_user = self.backend.authenticate(
-            request=request,
-            username=self.user.email,
-            password=''
+            request=request, username=self.user.email, password=''
         )
 
         # Assert

@@ -6,7 +6,9 @@ from src.common.tasks import _send_email
 
 class TestSendEmailTask(TestCase):
     @patch('src.common.tasks.send_mail')
-    def test_send_mail_calls_django_send_mail_func(self, mock_django_send_mail):
+    def test_send_mail_calls_django_send_mail_func(
+        self, mock_django_send_mail
+    ):
         _send_email(
             subject="Subject",
             message="Message",

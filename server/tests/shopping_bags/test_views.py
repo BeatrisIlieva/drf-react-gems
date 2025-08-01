@@ -21,11 +21,13 @@ class ShoppingBagViewSetTestCase(TestCase):
         """
         # Create test user
         self.user = TestDataBuilder.create_unique_user(
-            'shopping_bag', 'shopping_bag_user')
+            'shopping_bag', 'shopping_bag_user'
+        )
 
         # Create test product data using unique builder
         product_data = TestDataBuilder.create_unique_product_data(
-            'Shopping Bag Test')
+            'Shopping Bag Test'
+        )
         self.collection = product_data['collection']
         self.color = product_data['color']
         self.metal = product_data['metal']
@@ -39,7 +41,7 @@ class ShoppingBagViewSetTestCase(TestCase):
             collection=self.collection,
             color=self.color,
             metal=self.metal,
-            stone=self.stone
+            stone=self.stone,
         )
 
         # Create inventory for the earwear
@@ -48,7 +50,7 @@ class ShoppingBagViewSetTestCase(TestCase):
             price=100.00,
             size=self.size,
             content_type=ContentType.objects.get_for_model(Earwear),
-            object_id=self.earwear.id
+            object_id=self.earwear.id,
         )
 
         # Create API client
@@ -62,9 +64,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         """
         # Arrange
         shopping_bag = ShoppingBag.objects.create(
-            user=self.user,
-            inventory=self.inventory,
-            quantity=2
+            user=self.user, inventory=self.inventory, quantity=2
         )
 
         request = self.factory.get('/api/shopping-bags/')
@@ -95,10 +95,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         # Mock serializer with validated data
         class MockSerializer:
             def __init__(self, inventory):
-                self.validated_data = {
-                    'inventory': inventory,
-                    'quantity': 2
-                }
+                self.validated_data = {'inventory': inventory, 'quantity': 2}
                 self.instance = None
 
         serializer = MockSerializer(self.inventory)
@@ -118,9 +115,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         """
         # Arrange
         existing_bag = ShoppingBag.objects.create(
-            user=self.user,
-            inventory=self.inventory,
-            quantity=1
+            user=self.user, inventory=self.inventory, quantity=1
         )
 
         request = self.factory.post('/api/shopping-bags/')
@@ -132,10 +127,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         # Mock serializer with validated data
         class MockSerializer:
             def __init__(self, inventory):
-                self.validated_data = {
-                    'inventory': inventory,
-                    'quantity': 2
-                }
+                self.validated_data = {'inventory': inventory, 'quantity': 2}
                 self.instance = None
 
         serializer = MockSerializer(self.inventory)
@@ -155,9 +147,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         """
         # Arrange
         shopping_bag = ShoppingBag.objects.create(
-            user=self.user,
-            inventory=self.inventory,
-            quantity=1
+            user=self.user, inventory=self.inventory, quantity=1
         )
 
         request = self.factory.put('/api/shopping-bags/1/')
@@ -197,9 +187,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         """
         # Arrange
         shopping_bag = ShoppingBag.objects.create(
-            user=self.user,
-            inventory=self.inventory,
-            quantity=3
+            user=self.user, inventory=self.inventory, quantity=3
         )
 
         request = self.factory.put('/api/shopping-bags/1/')
@@ -239,9 +227,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         """
         # Arrange
         shopping_bag = ShoppingBag.objects.create(
-            user=self.user,
-            inventory=self.inventory,
-            quantity=2
+            user=self.user, inventory=self.inventory, quantity=2
         )
 
         request = self.factory.put('/api/shopping-bags/1/')
@@ -274,8 +260,9 @@ class ShoppingBagViewSetTestCase(TestCase):
 
         # Assert
         # Item should be deleted
-        self.assertFalse(ShoppingBag.objects.filter(
-            id=shopping_bag.id).exists())
+        self.assertFalse(
+            ShoppingBag.objects.filter(id=shopping_bag.id).exists()
+        )
 
     def test_perform_destroy_restores_inventory(self):
         """
@@ -284,9 +271,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         """
         # Arrange
         shopping_bag = ShoppingBag.objects.create(
-            user=self.user,
-            inventory=self.inventory,
-            quantity=3
+            user=self.user, inventory=self.inventory, quantity=3
         )
 
         request = self.factory.delete('/api/shopping-bags/1/')
@@ -300,8 +285,9 @@ class ShoppingBagViewSetTestCase(TestCase):
 
         # Assert
         # Item should be deleted
-        self.assertFalse(ShoppingBag.objects.filter(
-            id=shopping_bag.id).exists())
+        self.assertFalse(
+            ShoppingBag.objects.filter(id=shopping_bag.id).exists()
+        )
 
     def test_get_bag_count_authenticated_user(self):
         """
@@ -310,9 +296,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         """
         # Arrange
         ShoppingBag.objects.create(
-            user=self.user,
-            inventory=self.inventory,
-            quantity=2
+            user=self.user, inventory=self.inventory, quantity=2
         )
 
         request = self.factory.get('/api/shopping-bags/count/')
@@ -335,9 +319,7 @@ class ShoppingBagViewSetTestCase(TestCase):
         """
         # Arrange
         ShoppingBag.objects.create(
-            user=self.user,
-            inventory=self.inventory,
-            quantity=2
+            user=self.user, inventory=self.inventory, quantity=2
         )
 
         request = self.factory.get('/api/shopping-bags/total-price/')

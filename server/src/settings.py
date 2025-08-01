@@ -44,19 +44,16 @@ INSTALLED_APPS = [
     'unfold',
     'unfold.contrib.filters',
     'unfold.contrib.forms',
-
     'cloudinary',
     'cloudinary_storage',
     'django_celery_beat',
     'daphne',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
@@ -189,7 +186,6 @@ MEDIA_ROOT = BASE_DIR / 'mediafiles/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Cloudinary configuration
 cloudinary.config(
     cloud_name=os.getenv('CLOUD_NAME', config('CLOUD_NAME')),
     api_key=os.getenv('CLOUD_API_KEY', config('CLOUD_API_KEY')),
@@ -213,10 +209,10 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-EMAIL_HOST_USER = 'djangogems@gmail.com'
 EMAIL_HOST_PASSWORD = os.getenv(
     'EMAIL_HOST_PASSWORD', config('EMAIL_HOST_PASSWORD')
 )
+EMAIL_HOST_USER = 'djangogems@gmail.com'
 DEFAULT_FROM_EMAIL = 'djangogems@gmail.com'
 SERVER_EMAIL = 'djangogems@gmail.com'
 

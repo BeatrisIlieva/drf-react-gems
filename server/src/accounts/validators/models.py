@@ -250,7 +250,9 @@ class FileSizeValidator:
     @message.setter
     def message(self, value):
         if value is None:
-            self.__message = f'File size must be less than {self.file_size_limit}MB'
+            self.__message = (
+                f'File size must be less than {self.file_size_limit}MB'
+            )
 
         self.__message = value
 

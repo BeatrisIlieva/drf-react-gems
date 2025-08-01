@@ -2,7 +2,15 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 import uuid
 
-from src.products.models import Collection, Color, Metal, Stone, Size, Earwear, Inventory
+from src.products.models import (
+    Collection,
+    Color,
+    Metal,
+    Stone,
+    Size,
+    Earwear,
+    Inventory,
+)
 
 UserModel = get_user_model()
 
@@ -12,7 +20,7 @@ class TestDataBuilder:
     A utility class for creating shared test data across test classes.
 
     This class provides methods to create common test objects (users, products,
-    collections, etc.) that can be reused across multiple test classes. 
+    collections, etc.) that can be reused across multiple test classes.
     """
 
     @classmethod
@@ -21,7 +29,7 @@ class TestDataBuilder:
         user = UserModel.objects.create_user(
             email='shared_test@example.com',
             username='shared_test_user',
-            password='SharedTestPass123!'
+            password='SharedTestPass123!',
         )
 
         # Create product-related objects
@@ -38,7 +46,7 @@ class TestDataBuilder:
             collection=collection,
             color=color,
             metal=metal,
-            stone=stone
+            stone=stone,
         )
 
         # Create inventory for the earwear
@@ -47,7 +55,7 @@ class TestDataBuilder:
             price=100.00,
             size=size,
             content_type=ContentType.objects.get_for_model(Earwear),
-            object_id=earwear.id
+            object_id=earwear.id,
         )
 
         # Get content types
@@ -74,25 +82,30 @@ class TestDataBuilder:
         username = f'auth_user{username_suffix}_{unique_id}'
 
         return UserModel.objects.create_user(
-            email=email,
-            username=username,
-            password='AuthUserPass123!'
+            email=email, username=username, password='AuthUserPass123!'
         )
 
     @classmethod
-    def create_product_with_inventory(cls, product_name='Test Product', price=100.00):
+    def create_product_with_inventory(
+        cls, product_name='Test Product', price=100.00
+    ):
         unique_id = str(uuid.uuid4())[:4]
         # Create product-related objects
         collection = Collection.objects.create(
-            name=f'{product_name[:10]} Col {unique_id}')
+            name=f'{product_name[:10]} Col {unique_id}'
+        )
         color = Color.objects.create(
-            name=f'{product_name[:10]} Color {unique_id}')
+            name=f'{product_name[:10]} Color {unique_id}'
+        )
         metal = Metal.objects.create(
-            name=f'{product_name[:10]} Metal {unique_id}')
+            name=f'{product_name[:10]} Metal {unique_id}'
+        )
         stone = Stone.objects.create(
-            name=f'{product_name[:10]} Stone {unique_id}')
+            name=f'{product_name[:10]} Stone {unique_id}'
+        )
         size = Size.objects.create(
-            name=f'{product_name[:10]} Size {unique_id}')
+            name=f'{product_name[:10]} Size {unique_id}'
+        )
 
         # Create product
         product = Earwear.objects.create(
@@ -101,7 +114,7 @@ class TestDataBuilder:
             collection=collection,
             color=color,
             metal=metal,
-            stone=stone
+            stone=stone,
         )
 
         # Create inventory
@@ -110,7 +123,7 @@ class TestDataBuilder:
             price=price,
             size=size,
             content_type=ContentType.objects.get_for_model(Earwear),
-            object_id=product.id
+            object_id=product.id,
         )
 
         return {
@@ -125,15 +138,15 @@ class TestDataBuilder:
         }
 
     @classmethod
-    def create_unique_user(cls, email_prefix='test', username_prefix='testuser'):
+    def create_unique_user(
+        cls, email_prefix='test', username_prefix='testuser'
+    ):
         unique_id = str(uuid.uuid4())[:8]
         email = f'{email_prefix}_{unique_id}@example.com'
         username = f'{username_prefix}_{unique_id}'
 
         return UserModel.objects.create_user(
-            email=email,
-            username=username,
-            password='TestPass123!'
+            email=email, username=username, password='TestPass123!'
         )
 
     @classmethod
@@ -141,7 +154,8 @@ class TestDataBuilder:
         unique_id = str(uuid.uuid4())[:4]
 
         collection = Collection.objects.create(
-            name=f'{prefix[:10]} Col {unique_id}')
+            name=f'{prefix[:10]} Col {unique_id}'
+        )
         color = Color.objects.create(name=f'{prefix[:10]} Color {unique_id}')
         metal = Metal.objects.create(name=f'{prefix[:10]} Metal {unique_id}')
         stone = Stone.objects.create(name=f'{prefix[:10]} Stone {unique_id}')

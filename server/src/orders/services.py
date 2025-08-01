@@ -229,7 +229,7 @@ class OrderService:
             user=user,
             order_group=order_group_id,
         ).select_related('inventory')
-        
+
         total = 0.0
 
         for order in orders:

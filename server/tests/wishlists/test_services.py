@@ -36,14 +36,16 @@ class WishlistServiceTestCase(TestCase):
         """
         # Arrange
         user = TestDataBuilder.create_authenticated_user(
-            '_create_item', '_create_item')
+            '_create_item', '_create_item'
+        )
         user_filters = {'user': user}
         content_type = self.content_type
         object_id = self.earwear.id
 
         # Act
         wishlist_item = WishlistService.create_wishlist_item(
-            user_filters, content_type, object_id)
+            user_filters, content_type, object_id
+        )
 
         # Assert
         self.assertIsInstance(wishlist_item, Wishlist)
@@ -58,27 +60,28 @@ class WishlistServiceTestCase(TestCase):
         """
         # Arrange
         user = TestDataBuilder.create_authenticated_user(
-            '_duplicate_item', '_duplicate_item')
+            '_duplicate_item', '_duplicate_item'
+        )
         user_filters = {'user': user}
         content_type = self.content_type
         object_id = self.earwear.id
 
         # Create existing wishlist item
         Wishlist.objects.create(
-            user=user,
-            content_type=content_type,
-            object_id=object_id
+            user=user, content_type=content_type, object_id=object_id
         )
 
         # Act & Assert
         with self.assertRaises(ValidationError) as context:
             WishlistService.create_wishlist_item(
-                user_filters, content_type, object_id)
+                user_filters, content_type, object_id
+            )
 
         # Verify the error message
 
-        self.assertIn(WishlistErrorMessages.ITEM_ALREADY_EXISTS,
-                      str(context.exception))
+        self.assertIn(
+            WishlistErrorMessages.ITEM_ALREADY_EXISTS, str(context.exception)
+        )
 
     def test_delete_wishlist_item_existing_item(self):
         """
@@ -87,21 +90,21 @@ class WishlistServiceTestCase(TestCase):
         """
         # Arrange
         user = TestDataBuilder.create_authenticated_user(
-            '_delete_item', '_delete_item')
+            '_delete_item', '_delete_item'
+        )
         user_filters = {'user': user}
         content_type = self.content_type
         object_id = self.earwear.id
 
         # Create existing wishlist item
         existing_item = Wishlist.objects.create(
-            user=user,
-            content_type=content_type,
-            object_id=object_id
+            user=user, content_type=content_type, object_id=object_id
         )
 
         # Act
         WishlistService.delete_wishlist_item(
-            user_filters, content_type, object_id)
+            user_filters, content_type, object_id
+        )
 
         # Assert
         # Verify the item was deleted
@@ -115,7 +118,8 @@ class WishlistServiceTestCase(TestCase):
         """
         # Arrange
         user = TestDataBuilder.create_authenticated_user(
-            '_delete_nonexistent', '_delete_nonexistent')
+            '_delete_nonexistent', '_delete_nonexistent'
+        )
         user_filters = {'user': user}
         content_type = self.content_type
         object_id = self.earwear.id
@@ -123,9 +127,12 @@ class WishlistServiceTestCase(TestCase):
         # Act & Assert
         with self.assertRaises(NotFound) as context:
             WishlistService.delete_wishlist_item(
-                user_filters, content_type, object_id)
+                user_filters, content_type, object_id
+            )
 
         # Verify the error message
         from src.wishlists.constants import WishlistErrorMessages
-        self.assertEqual(str(context.exception),
-                         WishlistErrorMessages.ITEM_NOT_FOUND)
+
+        self.assertEqual(
+            str(context.exception), WishlistErrorMessages.ITEM_NOT_FOUND
+        )
