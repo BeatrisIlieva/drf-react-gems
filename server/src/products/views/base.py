@@ -68,7 +68,7 @@ class BaseAttributeView(FilterMixin, RetrieveAPIView):
 
             if not isinstance(category, str):
                 category = ''
-                
+
             if category.endswith('s') and len(category) > 1:
                 category = category[:-1]
 

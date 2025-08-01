@@ -21,9 +21,7 @@ class UserCredentialModelTest(TestCase):
 
         # Act
         user = UserModel.objects.create_user(
-            email=email,
-            username=username,
-            password=password
+            email=email, username=username, password=password
         )
 
         # Assert
@@ -44,7 +42,7 @@ class UserProfileModelTest(TestCase):
         user = UserModel.objects.create_user(
             email='relationship_test@example.com',
             username='relationship_test',
-            password='RelPass123!'
+            password='RelPass123!',
         )
         profile, _ = UserProfile.objects.get_or_create(user=user)
         # Update the profile with test data
@@ -70,7 +68,7 @@ class UserPhotoModelTest(TestCase):
         user = UserModel.objects.create_user(
             email='photo_creation_test@example.com',
             username='photo_creation_test',
-            password='PhotoPass123!'
+            password='PhotoPass123!',
         )
 
         # Act

@@ -1,4 +1,3 @@
-
 from unittest.mock import patch
 from django.test import TestCase
 from django.contrib.auth import get_user_model
@@ -20,14 +19,23 @@ class PaymentValidationServiceTest(TestCase):
         Test that valid card numbers pass validation.
         """
         # VISA
-        self.assertTrue(PaymentValidationService.validate_card_number(
-            '4111 1111 1111 1111'))
+        self.assertTrue(
+            PaymentValidationService.validate_card_number(
+                '4111 1111 1111 1111'
+            )
+        )
         # MasterCard Legacy
-        self.assertTrue(PaymentValidationService.validate_card_number(
-            '5100 0000 0000 0000'))
+        self.assertTrue(
+            PaymentValidationService.validate_card_number(
+                '5100 0000 0000 0000'
+            )
+        )
         # MasterCard New
-        self.assertTrue(PaymentValidationService.validate_card_number(
-            '2221 0000 0000 0000'))
+        self.assertTrue(
+            PaymentValidationService.validate_card_number(
+                '2221 0000 0000 0000'
+            )
+        )
 
     def test_validate_card_number_invalid(self):
         """
@@ -35,7 +43,8 @@ class PaymentValidationServiceTest(TestCase):
         """
         with self.assertRaises(ValidationError):
             PaymentValidationService.validate_card_number(
-                '1234 5678 9012 3456')
+                '1234 5678 9012 3456'
+            )
         with self.assertRaises(ValidationError):
             PaymentValidationService.validate_card_number('')
 
@@ -44,11 +53,16 @@ class PaymentValidationServiceTest(TestCase):
         Test that valid card holder names pass validation.
         """
         self.assertTrue(
-            PaymentValidationService.validate_card_holder_name('John Doe'))
+            PaymentValidationService.validate_card_holder_name('John Doe')
+        )
         self.assertTrue(
-            PaymentValidationService.validate_card_holder_name("O'Connor"))
+            PaymentValidationService.validate_card_holder_name("O'Connor")
+        )
         self.assertTrue(
-            PaymentValidationService.validate_card_holder_name('Émilie du Châtelet'))
+            PaymentValidationService.validate_card_holder_name(
+                'Émilie du Châtelet'
+            )
+        )
 
     def test_validate_card_holder_name_invalid(self):
         """
@@ -58,7 +72,8 @@ class PaymentValidationServiceTest(TestCase):
             PaymentValidationService.validate_card_holder_name('')
         with self.assertRaises(ValidationError):
             PaymentValidationService.validate_card_holder_name(
-                'A')  # Too short
+                'A'
+            )  # Too short
         with self.assertRaises(ValidationError):
             PaymentValidationService.validate_card_holder_name('John123')
 
@@ -128,11 +143,10 @@ class OrderServiceTest(TestCase):
 
     def test_process_order_from_shopping_bag(self):
         user = TestDataBuilder.create_authenticated_user(
-            '_order_user', '_order_user')
+            '_order_user', '_order_user'
+        )
         ShoppingBag.objects.create(
-            user=user,
-            inventory=self.inventory,
-            quantity=2
+            user=user, inventory=self.inventory, quantity=2
         )
         orders = OrderService.process_order_from_shopping_bag(user)
         self.assertEqual(len(orders), 1)
@@ -148,7 +162,8 @@ class OrderServiceTest(TestCase):
         """
         # Arrange: User with no shopping bag items
         user = TestDataBuilder.create_authenticated_user(
-            '_empty_bag', '_empty_bag')
+            '_empty_bag', '_empty_bag'
+        )
 
         # Act & Assert
         with self.assertRaises(ValidationError):
@@ -156,18 +171,13 @@ class OrderServiceTest(TestCase):
 
     def test_get_user_orders_and_grouped(self):
         user = TestDataBuilder.create_authenticated_user(
-            '_grouped_user', '_grouped_user')
+            '_grouped_user', '_grouped_user'
+        )
         order1 = Order.objects.create(
-            user=user,
-            inventory=self.inventory,
-            quantity=1,
-            status='PE'
+            user=user, inventory=self.inventory, quantity=1, status='PE'
         )
         order2 = Order.objects.create(
-            user=user,
-            inventory=self.inventory,
-            quantity=2,
-            status='CO'
+            user=user, inventory=self.inventory, quantity=2, status='CO'
         )
         orders = OrderService.get_user_orders(user)
         grouped = OrderService.get_user_orders_grouped(user)

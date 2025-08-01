@@ -31,7 +31,7 @@ class WishlistSerializerTestCase(TestCase):
         cls.wishlist_item = Wishlist.objects.create(
             user=cls.user,
             content_type=cls.content_type,
-            object_id=cls.earwear.id
+            object_id=cls.earwear.id,
         )
 
     def test_serializer_product_info_field(self):
@@ -85,7 +85,8 @@ class WishlistSerializerTestCase(TestCase):
         self.assertIn('average_rating', product_info)
         # Average rating should be a number (could be None if no reviews)
         self.assertIsInstance(
-            product_info['average_rating'], (int, float, type(None)))
+            product_info['average_rating'], (int, float, type(None))
+        )
 
     def test_product_info_price_range(self):
         """
@@ -103,9 +104,11 @@ class WishlistSerializerTestCase(TestCase):
         self.assertIn('max_price', product_info)
         # Price should be a Decimal or number
         self.assertIsInstance(
-            product_info['min_price'], (int, float, Decimal, type(None)))
+            product_info['min_price'], (int, float, Decimal, type(None))
+        )
         self.assertIsInstance(
-            product_info['max_price'], (int, float, Decimal, type(None)))
+            product_info['max_price'], (int, float, Decimal, type(None))
+        )
 
     def test_product_info_sold_out_status(self):
         """
@@ -133,4 +136,5 @@ class WishlistSerializerTestCase(TestCase):
 
         # Act & Assert
         from src.wishlists.models import Wishlist
+
         self.assertEqual(serializer.Meta.model, Wishlist)

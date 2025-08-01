@@ -62,7 +62,8 @@ class ShoppingBagServiceTestCase(TestCase):
         # Act & Assert
         # Should not raise any exception
         ShoppingBagService.validate_inventory_quantity(
-            inventory_obj, required_quantity)
+            inventory_obj, required_quantity
+        )
 
     def test_get_or_create_bag_item_new_item(self):
         """
@@ -71,16 +72,15 @@ class ShoppingBagServiceTestCase(TestCase):
         """
         # Arrange
         user = TestDataBuilder.create_authenticated_user(
-            '_new_item', '_new_item')
-        filters = {
-            'user': user,
-            'inventory': self.inventory
-        }
+            '_new_item', '_new_item'
+        )
+        filters = {'user': user, 'inventory': self.inventory}
         defaults = {'quantity': 2}
 
         # Act
         bag_item, created = ShoppingBagService.get_or_create_bag_item(
-            filters, defaults)
+            filters, defaults
+        )
 
         # Assert
         self.assertTrue(created)
@@ -95,22 +95,19 @@ class ShoppingBagServiceTestCase(TestCase):
         """
         # Arrange
         user = TestDataBuilder.create_authenticated_user(
-            '_existing_item', '_existing_item')
+            '_existing_item', '_existing_item'
+        )
         # Create existing bag item
         existing_item = ShoppingBag.objects.create(
-            user=user,
-            inventory=self.inventory,
-            quantity=1
+            user=user, inventory=self.inventory, quantity=1
         )
-        filters = {
-            'user': user,
-            'inventory': self.inventory
-        }
+        filters = {'user': user, 'inventory': self.inventory}
         defaults = {'quantity': 3}
 
         # Act
         bag_item, created = ShoppingBagService.get_or_create_bag_item(
-            filters, defaults)
+            filters, defaults
+        )
 
         # Assert
         self.assertFalse(created)

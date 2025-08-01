@@ -17,7 +17,9 @@ class CompleteOldOrdersTaskTest(TestCase):
     def test_completes_old_pending_orders(self):
         """Test that orders older than 1 day with PENDING status are completed."""
 
-        product_with_inventory = TestDataBuilder.create_product_with_inventory()
+        product_with_inventory = (
+            TestDataBuilder.create_product_with_inventory()
+        )
         user = TestDataBuilder.create_authenticated_user()
 
         old_order = Order.objects.create(
@@ -27,7 +29,8 @@ class CompleteOldOrdersTaskTest(TestCase):
         )
 
         Order.objects.filter(id=old_order.id).update(
-            created_at=self.now - timedelta(days=2))
+            created_at=self.now - timedelta(days=2)
+        )
         old_order.refresh_from_db()
 
         complete_old_orders()

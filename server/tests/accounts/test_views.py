@@ -17,7 +17,8 @@ class AccountsViewsTestCase(TestCase):
 
         # Create test user
         self.user = TestDataBuilder.create_authenticated_user(
-            'testuser', 'testuser')
+            'testuser', 'testuser'
+        )
         self.user.set_password('testpass123')
         self.user.save()
 
@@ -25,7 +26,7 @@ class AccountsViewsTestCase(TestCase):
         # Arrange
         login_data = {
             'email_or_username': self.user.email,
-            'password': 'testpass123'
+            'password': 'testpass123',
         }
 
         # Act
@@ -44,7 +45,7 @@ class AccountsViewsTestCase(TestCase):
         # Arrange
         login_data = {
             'email_or_username': self.user.username,
-            'password': 'testpass123'
+            'password': 'testpass123',
         }
 
         # Act
@@ -60,7 +61,7 @@ class AccountsViewsTestCase(TestCase):
         # Arrange
         invalid_data = {
             'email_or_username': self.user.email,
-            'password': 'wrongpassword'
+            'password': 'wrongpassword',
         }
 
         # Act

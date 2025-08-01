@@ -16,10 +16,7 @@ class TestFileSizeValidator(TestCase):
         )
 
     def test_valid_file_size_expect_no_errors(self):
-        file = SimpleUploadedFile(
-            'test.txt',
-            b"a" * self.max_size_in_mb
-        )
+        file = SimpleUploadedFile('test.txt', b"a" * self.max_size_in_mb)
 
         try:
             self.validator(file)
@@ -27,10 +24,7 @@ class TestFileSizeValidator(TestCase):
             self.fail('Correct file size. No fail expected.')
 
     def test_upload_more_than_max_size_raises_validation_error(self):
-        file = SimpleUploadedFile(
-            'test.txt',
-            b"a" * (self.max_size_in_mb + 1)
-        )
+        file = SimpleUploadedFile('test.txt', b"a" * (self.max_size_in_mb + 1))
 
         with self.assertRaises(ValidationError) as ve:
             self.validator(file)

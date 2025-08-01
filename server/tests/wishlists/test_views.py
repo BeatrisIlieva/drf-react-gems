@@ -16,11 +16,13 @@ class WishlistViewSetTestCase(TestCase):
     def setUp(self):
         # Create test user
         self.user = TestDataBuilder.create_unique_user(
-            'wishlist', 'wishlist_user')
+            'wishlist', 'wishlist_user'
+        )
 
         # Create test product data using unique builder
         product_data = TestDataBuilder.create_unique_product_data(
-            'Wishlist Test')
+            'Wishlist Test'
+        )
         self.collection = product_data['collection']
         self.color = product_data['color']
         self.metal = product_data['metal']
@@ -34,7 +36,7 @@ class WishlistViewSetTestCase(TestCase):
             collection=self.collection,
             color=self.color,
             metal=self.metal,
-            stone=self.stone
+            stone=self.stone,
         )
 
         # Create inventory for the earwear
@@ -43,7 +45,7 @@ class WishlistViewSetTestCase(TestCase):
             price=100.00,
             size=self.size,
             content_type=ContentType.objects.get_for_model(Earwear),
-            object_id=self.earwear.id
+            object_id=self.earwear.id,
         )
 
         # Get content type for earwear
@@ -62,7 +64,7 @@ class WishlistViewSetTestCase(TestCase):
         wishlist_item = Wishlist.objects.create(
             user=self.user,
             content_type=self.content_type,
-            object_id=self.earwear.id
+            object_id=self.earwear.id,
         )
 
         request = self.factory.get('/api/wishlists/')

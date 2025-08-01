@@ -28,9 +28,7 @@ class ShoppingBagSerializerTestCase(TestCase):
 
         # Create test shopping bag item
         cls.shopping_bag = ShoppingBag.objects.create(
-            user=cls.user,
-            inventory=cls.inventory,
-            quantity=2
+            user=cls.user, inventory=cls.inventory, quantity=2
         )
 
     def test_serializer_product_info_field(self):
@@ -65,8 +63,9 @@ class ShoppingBagSerializerTestCase(TestCase):
         self.assertIn('total_price', data)
         self.assertIsNotNone(data['total_price'])
         # Total price should be price * quantity = 100 * 2 = 200
-        expected_total = float(self.inventory.price) * \
-            self.shopping_bag.quantity
+        expected_total = (
+            float(self.inventory.price) * self.shopping_bag.quantity
+        )
         self.assertEqual(data['total_price'], expected_total)
 
     def test_get_product_info_method(self):
@@ -101,6 +100,7 @@ class ShoppingBagSerializerTestCase(TestCase):
         total_price = serializer.get_total_price(self.shopping_bag)
 
         # Assert
-        expected_total = float(self.inventory.price) * \
-            self.shopping_bag.quantity
+        expected_total = (
+            float(self.inventory.price) * self.shopping_bag.quantity
+        )
         self.assertEqual(total_price, expected_total)

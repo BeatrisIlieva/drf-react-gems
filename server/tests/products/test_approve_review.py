@@ -5,7 +5,13 @@ from django.contrib.auth.models import Permission
 from rest_framework.test import APITestCase
 from rest_framework.test import APIClient
 
-from src.products.models.product import Collection, Color, Earwear, Metal, Stone
+from src.products.models.product import (
+    Collection,
+    Color,
+    Earwear,
+    Metal,
+    Stone,
+)
 from src.products.models.review import Review
 from tests.common.test_data_builder import TestDataBuilder
 
@@ -17,7 +23,8 @@ class TestApproveReview(APITestCase):
         self.client = APIClient()
 
         self.user = TestDataBuilder.create_authenticated_user(
-            'testuser', 'testuser')
+            'testuser', 'testuser'
+        )
         self.user.set_password('testpass123')
         self.review_content_type = ContentType.objects.get_for_model(Review)
         self.permission, _ = Permission.objects.get_or_create(
@@ -39,7 +46,7 @@ class TestApproveReview(APITestCase):
             collection=self.collection,
             color=self.color,
             metal=self.metal,
-            stone=self.stone
+            stone=self.stone,
         )
 
         self.earwear_content_type = ContentType.objects.get_for_model(Earwear)

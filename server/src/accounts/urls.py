@@ -20,7 +20,10 @@ urlpatterns = [
     path('delete/', UserDeleteView.as_view(), name='delete'),
     path('profile/', UserProfileView.as_view(), name='profile'),
     path('photo/', PhotoUploadView.as_view(), name='photo'),
-    path('change-password/', PasswordChangeView.as_view(), name='change-password',
+    path(
+        'change-password/',
+        PasswordChangeView.as_view(),
+        name='change-password',
     ),
     path('token/refresh/', TokenRefreshView.as_view(), name='refresh-token'),
 ]

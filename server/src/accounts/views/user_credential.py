@@ -69,6 +69,7 @@ class UserLoginView(APIView):
     - Authenticates the user and issues JWT tokens.
     - Allows any user to attempt login.
     """
+
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
@@ -93,7 +94,9 @@ class UserLoginView(APIView):
         if user is None:
             # Invalid credentials
             return Response(
-                {'error': UserErrorMessages.INCORRECT_CREDENTIALS},
+                {
+                    'error': UserErrorMessages.INCORRECT_CREDENTIALS,
+                },
                 status=status.HTTP_401_UNAUTHORIZED,
             )
 
@@ -139,14 +142,18 @@ class UserLogoutView(APIView):
             token.blacklist()
 
             return Response(
-                {'message': 'Logout successful'},
+                {
+                    'message': 'Logout successful',
+                },
                 status=status.HTTP_200_OK,
             )
 
         except TokenError:
             # Token is invalid or already expired/blacklisted
             return Response(
-                {'error': 'Invalid or expired token'},
+                {
+                    'error': 'Invalid or expired token',
+                },
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -169,7 +176,9 @@ class PasswordChangeView(APIView):
             serializer.save()
 
             return Response(
-                {'message': 'Password changed successfully'},
+                {
+                    'message': 'Password changed successfully',
+                },
                 status=status.HTTP_200_OK,
             )
 

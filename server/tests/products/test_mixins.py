@@ -10,12 +10,14 @@ class FilterMixinTest(TestCase):
         # Create mock request with query parameters that has getlist method
         self.mock_request = Mock()
         self.mock_request.query_params = Mock()
-        self.mock_request.query_params.getlist = Mock(side_effect=lambda key: {
-            'colors': ['1', '2'],
-            'stones': ['3'],
-            'metals': ['4', '5'],
-            'collections': ['6']
-        }.get(key, []))
+        self.mock_request.query_params.getlist = Mock(
+            side_effect=lambda key: {
+                'colors': ['1', '2'],
+                'stones': ['3'],
+                'metals': ['4', '5'],
+                'collections': ['6'],
+            }.get(key, [])
+        )
 
     def test_get_params_extraction(self):
         # Arrange
