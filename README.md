@@ -207,7 +207,9 @@ All admin groups and their associated users are created automatically by a manag
 
 ### Testing
 
--   **64 Unit & Integration tests with [74% coverage report](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)** (`coverage run manage.py test && coverage report`)
+-   **64 Unit & Integration tests with [74% coverage report](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)**
+
+    (`coverage run manage.py test && coverage report`)
 
     [![Coverage](https://img.shields.io/badge/coverage-74%25-green.svg)](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)
 
