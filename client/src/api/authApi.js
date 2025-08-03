@@ -72,10 +72,52 @@ export const useAuthentication = () => {
         }
     }, [del]);
 
+    const resetPasswordRequest = useCallback(
+        async userData => {
+            try {
+                const response = await post(`${baseUrl}/reset-password-request/`, {
+                    data: { email: userData.email.value },
+                });
+                return response;
+            } catch (error) {
+                console.error(error);
+                return {
+                    error: error.message || 'Password Reset failed',
+                    ...error.data,
+                };
+            }
+        },
+        [post]
+    );
+
+    const resetPasswordConfirm = useCallback(
+        async (userData, uid, token) => {
+            try {
+                const response = await post(`${baseUrl}/reset-password-confirm/`, {
+                    data: {
+                        uid: uid,
+                        token: token,
+                        new_password: userData.new_password,
+                    },
+                });
+                return response;
+            } catch (error) {
+                console.error(error);
+                return {
+                    error: error.message || 'Password Reset failed',
+                    ...error.data,
+                };
+            }
+        },
+        [post]
+    );
+
     return {
         register,
         login,
         logout,
         deleteUser,
+        resetPasswordRequest,
+        resetPasswordConfirm,
     };
 };

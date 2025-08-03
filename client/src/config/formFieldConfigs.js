@@ -21,6 +21,25 @@ const passwordUpdateFields = [
     },
 ];
 
+const passwordResetFields = [
+    {
+        name: 'newPassword',
+        apiKey: 'new_password',
+        required: true,
+        label: 'New Password',
+        type: 'password',
+        maxLength: FIELD_LENGTHS.PASSWORD_MAX,
+    },
+    {
+        name: 'confirmNewPassword',
+        apiKey: 'confirm_new_password',
+        required: true,
+        label: 'Confirm New Password',
+        type: 'password',
+        maxLength: FIELD_LENGTHS.PASSWORD_MAX,
+    },
+];
+
 const loginFields = [
     {
         name: 'email_or_username',
@@ -39,13 +58,24 @@ const loginFields = [
     },
 ];
 
+const emailField = [
+    {
+        name: 'email',
+        apiKey: 'email',
+        required: true,
+        label: 'Email',
+        type: 'text',
+        maxLength: FIELD_LENGTHS.EMAIL_MAX,
+    },
+];
+
 const registerFields = [
     {
         name: 'email',
         apiKey: 'email',
         required: true,
         label: 'Email',
-        type: 'email',
+        type: 'text',
         maxLength: FIELD_LENGTHS.EMAIL_MAX,
     },
     {
@@ -53,6 +83,7 @@ const registerFields = [
         apiKey: 'username',
         required: true,
         label: 'Username',
+        type: 'text',
         maxLength: FIELD_LENGTHS.USERNAME_MAX,
     },
     {
@@ -161,6 +192,16 @@ const paymentFields = [
 ];
 
 export const FORM_CONFIGS = {
+    emailFieldForResetPassword: {
+        fieldConfig: createFormFieldConfig(emailField),
+        get initialValues() {
+            return getInitialFormValues(
+                emailField.map(f => f.name),
+                this.fieldConfig
+            );
+        },
+        title: 'Email address',
+    },
     passwordUpdate: {
         fieldConfig: createFormFieldConfig(passwordUpdateFields),
         get initialValues() {
@@ -170,6 +211,16 @@ export const FORM_CONFIGS = {
             );
         },
         title: 'Change Password',
+    },
+    passwordReset: {
+        fieldConfig: createFormFieldConfig(passwordResetFields),
+        get initialValues() {
+            return getInitialFormValues(
+                passwordResetFields.map(f => f.name),
+                this.fieldConfig
+            );
+        },
+        title: 'Reset Password',
     },
     login: {
         fieldConfig: createFormFieldConfig(loginFields),

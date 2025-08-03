@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { DeleteButton } from '../../../../reusable/delete-button/DeleteButton';
 import { Deletion } from '../../../../reusable/deletion/Deletion';
 import { Icon } from '../../../../reusable/icon/Icon';
+import { PasswordUpdateForm } from './password-update-form/PasswordUpdateForm';
 import { Popup } from '../../../../reusable/popup/Popup';
 import { ShadowBox } from '../../../../reusable/shadow-box/ShadowBox';
-import { PasswordUpdateForm } from '../password-update-form/PasswordUpdateForm';
 
 import { useAuthentication } from '../../../../../api/authApi';
 

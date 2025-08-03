@@ -1,30 +1,33 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { useNavigate } from 'react-router';
+
 import { useForm } from './useForm';
 
-import { useProfile } from '../api/useProfileApi';
+import { useAuthentication } from '../api/authApi';
 
 import { createApiDataFromForm } from '../utils/formHelpers';
 
 import { FORM_CONFIGS } from '../config/formFieldConfigs';
 
-export const usePasswordUpdateForm = onSuccess => {
-    const { changePassword } = useProfile();
+export const usePasswordResetForm = ({ uid, token }) => {
+    const { resetPasswordConfirm } = useAuthentication();
 
     const [newPasswordValue, setNewPasswordValue] = useState('');
 
-    const { fieldConfig, initialValues } = FORM_CONFIGS.passwordUpdate;
+    const { fieldConfig, initialValues } = FORM_CONFIGS.passwordReset;
+
+    const navigate = useNavigate();
 
     const handleSubmit = useCallback(
         async formData => {
             const apiData = createApiDataFromForm(formData, fieldConfig);
 
             try {
-                const result = await changePassword(apiData);
+                const result = await resetPasswordConfirm(apiData, uid, token);
 
                 if (result && !result.error) {
-                    onSuccess();
-                    return { success: true };
+                    navigate('/my-account/login');
                 }
 
                 if (result && typeof result === 'object') {
@@ -45,7 +48,7 @@ export const usePasswordUpdateForm = onSuccess => {
                 };
             }
         },
-        [fieldConfig, changePassword, onSuccess]
+        [fieldConfig, resetPasswordConfirm]
     );
 
     const formProps = useForm(initialValues, {

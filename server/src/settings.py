@@ -158,6 +158,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'accounts.UserCredential'
 
+PASSWORD_RESET_TIMEOUT = 3600
+
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
@@ -220,3 +222,5 @@ sentry_sdk.init(
     dsn=os.getenv('SENTRY_DSN', config('SENTRY_DSN')),
     send_default_pii=True,
 )
+
+FRONTEND_URL = 'https://drf-react-gems.web.app'

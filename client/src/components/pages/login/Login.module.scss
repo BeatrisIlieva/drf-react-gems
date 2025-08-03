@@ -18,4 +18,15 @@
         font-style: italic;
         margin-bottom: 1em;
     }
+
+    .forgot-password {
+        all: unset;
+        cursor: pointer;
+        text-decoration: underline;
+        text-transform: uppercase;
+        opacity: 0.9;
+        font-size: 0.9em;
+        text-underline-offset: 0.2em;
+        margin-top: 0.5em;
+    }
 }

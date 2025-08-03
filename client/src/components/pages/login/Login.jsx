@@ -1,8 +1,12 @@
+import { useState } from 'react';
+
 import { AuthLayout } from '../../reusable/auth-layout/AuthLayout';
 import { Button } from '../../reusable/button/Button';
 import { InputField } from '../../reusable/input-field/InputField';
+import { Popup } from '../../reusable/popup/Popup';
 import { ErrorMessage } from './error-message/ErrorMessage';
 import { Footer } from './footer/Footer';
+import { ResetPasswordRequest } from './reset-password-request/ResetPasswordRequest';
 
 import { useForm } from '../../../hooks/useForm';
 import { useLogin } from '../../../hooks/useLogin';
@@ -14,6 +18,7 @@ import styles from './Login.module.scss';
 export const Login = () => {
     const { fieldConfig, initialValues } = FORM_CONFIGS.login;
     const { handleSubmit, invalidCredentials } = useLogin(fieldConfig);
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
 
     const formProps = useForm(initialValues, {
         onSubmit: handleSubmit,
@@ -53,6 +58,14 @@ export const Login = () => {
                             )
                     )}
 
+                    <button
+                        type="button"
+                        className={styles['forgot-password']}
+                        onClick={() => setIsPopupOpen(true)}
+                    >
+                        Forgot your password?
+                    </button>
+
                     <Button
                         title="Sign In"
                         color="black"
@@ -65,6 +78,12 @@ export const Login = () => {
 
                 <Footer />
             </section>
+
+            {isPopupOpen && (
+                <Popup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)}>
+                    <ResetPasswordRequest onClose={() => setIsPopupOpen(false)} />
+                </Popup>
+            )}
         </AuthLayout>
     );
 };
