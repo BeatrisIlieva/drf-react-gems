@@ -4,8 +4,16 @@ This module defines serializers for user registration, login, logout, and passwo
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 from rest_framework import serializers
+
+from src.common.tasks import _send_email
 
 from src.accounts.constants import UserErrorMessages
 from src.accounts.validators.models import (
@@ -193,3 +201,86 @@ class PasswordChangeSerializer(serializers.Serializer):
         user.save()
 
         return user
+
+
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def save(self):
+        email = self.validated_data['email']
+
+        try:
+            user = UserModel.objects.get(email=email, is_active=True)
+
+            # converts 123 to something like MTIz
+            # It's reversible -> we can decode it to get the user ID back
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+
+            # Creates secure tokens tied to the user
+            token = default_token_generator.make_token(user)
+
+            # Reset URL to provide into the email
+            reset_url = f'{settings.FRONTEND_URL}/reset-password/{uid}/{token}'
+
+            # Send email
+            html_message = render_to_string(
+                'mailer/reset-password.html', {'reset_url': reset_url}
+            )
+            plain_message = strip_tags(html_message)
+
+            _send_email.delay(
+                subject='Reset Password',
+                message=plain_message,
+                html_message=html_message,
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=(user.email,),
+            )
+
+        except UserModel.DoesNotExist:
+            pass
+
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    uid = serializers.CharField()
+    token = serializers.CharField()
+    new_password = serializers.CharField()
+
+    def validate(self, attrs):
+        try:
+            uid = attrs['uid']
+            token = attrs['token']
+            user_id = force_str(urlsafe_base64_decode(uid))
+            user = UserModel.objects.get(pk=user_id)
+
+            if not default_token_generator.check_token(user, token):
+                raise serializers.ValidationError(
+                    "Invalid or expired reset token"
+                )
+
+            attrs['user'] = user
+
+            return attrs
+
+        except (TypeError, ValueError, OverflowError, UserModel.DoesNotExist):
+            raise serializers.ValidationError("Invalid reset link")
+
+    def save(self):
+        user = self.validated_data['user']
+        new_password = self.validated_data['new_password']
+
+        user.set_password(new_password)
+        user.save()
+
+        html_message = render_to_string(
+            'mailer/password-has-been-reset.html',
+        )
+
+        plain_message = strip_tags(html_message)
+
+        _send_email.delay(
+            subject='Your password has been reset',
+            message=plain_message,
+            html_message=html_message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=(user.email,),
+        )

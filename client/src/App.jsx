@@ -12,7 +12,6 @@ import { useShoppingBagContext } from './contexts/ShoppingBagContext';
 import { Footer } from './components/layout/footer/Footer';
 import { Header } from './components/layout/header/Header';
 import { ScrollToTop } from './components/layout/scroll-to-top/ScrollToTop';
-import { Page404 } from './components/pages/page404/Page404';
 import { Accounts } from './components/pages/accounts/Accounts';
 import { Details } from './components/pages/accounts/details/Details';
 import { OrderHistory } from './components/pages/accounts/order-history/OrderHistory';
@@ -21,6 +20,8 @@ import { Checkout } from './components/pages/checkout/Checkout';
 import { Home } from './components/pages/home/Home';
 import { Login } from './components/pages/login/Login';
 import { OrderConfirmation } from './components/pages/order-confirmation/OrderConfirmation';
+import { Page404 } from './components/pages/page404/Page404';
+import { PasswordReset } from './components/pages/password-reset/PasswordReset';
 import { Payment } from './components/pages/payment/Payment';
 import { ProductItem } from './components/pages/product-item/ProductItem';
 import { ProductList } from './components/pages/product-list/ProductList';
@@ -42,6 +43,7 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/my-account/register" element={<Register />} />
                     <Route path="/my-account/login" element={<Login />} />
+                    <Route path="/reset-password/:uid/:token" element={<PasswordReset />} />
                     <Route
                         path="/products/:categoryName"
                         element={

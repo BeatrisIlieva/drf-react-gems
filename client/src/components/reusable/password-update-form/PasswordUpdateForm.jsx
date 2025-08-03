@@ -1,12 +1,12 @@
-import { Button } from '../../../../reusable/button/Button';
-import { InputField } from '../../../../reusable/input-field/InputField';
-import { PasswordValidator } from '../../../../reusable/password-validator/PasswordValidator';
+import { Button } from '../../../../../reusable/button/Button';
+import { InputField } from '../../../../../reusable/input-field/InputField';
+import { PasswordValidator } from '../../../../../reusable/password-validator/PasswordValidator';
 
-import { usePasswordUpdateForm } from '../../../../../hooks/usePasswordUpdateForm';
+import { usePasswordUpdateForm } from '../../../../../../hooks/usePasswordUpdateForm';
 
 import styles from './PasswordUpdateForm.module.scss';
 
-export const PasswordUpdateForm = ({ onSuccess }) => {
+export const PasswordUpdateForm = ({ onSuccess = null }) => {
     const { formProps, fieldConfig, newPasswordValue, handleNewPasswordChange } =
         usePasswordUpdateForm(onSuccess);
     const {
