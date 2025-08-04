@@ -241,6 +241,7 @@ class PasswordResetRequestSerializer(serializers.Serializer):
 
 
 class PasswordResetConfirmSerializer(serializers.Serializer):
+    # Fields expected from the frontend
     uid = serializers.CharField()
     token = serializers.CharField()
     new_password = serializers.CharField()
@@ -249,22 +250,30 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
         try:
             uid = attrs['uid']
             token = attrs['token']
+
+            # Decode the UID to get the original user ID (e.g., from MTIz to 123)
             user_id = force_str(urlsafe_base64_decode(uid))
+
+            # Try to fetch the user with the decoded ID
             user = UserModel.objects.get(pk=user_id)
 
+            # Check if the token is valid for this user
             if not default_token_generator.check_token(user, token):
                 raise serializers.ValidationError(
                     UserErrorMessages.INVALID_TOKEN
                 )
 
+            # Store the user in validated_data so we can use it in save()
             attrs['user'] = user
 
             return attrs
 
+        # Handle cases where UID is invalid or user doesn't exist
         except (TypeError, ValueError, OverflowError, UserModel.DoesNotExist):
             raise serializers.ValidationError(UserErrorMessages.INVALID_TOKEN)
 
     def save(self):
+        # Get user and new password from validated data
         user = self.validated_data['user']
         new_password = self.validated_data['new_password']
 

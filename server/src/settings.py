@@ -223,6 +223,4 @@ sentry_sdk.init(
     send_default_pii=True,
 )
 
-FRONTEND_URL = os.getenv(
-    'CORS_ALLOWED_ORIGINS', config('CORS_ALLOWED_ORIGINS')
-).split(',')[1]
+FRONTEND_URL = 'https://drf-react-gems.web.app'
