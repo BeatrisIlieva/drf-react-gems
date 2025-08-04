@@ -141,7 +141,7 @@ class UserLogoutResponseSerializer(serializers.Serializer):
     message = serializers.CharField()
 
 
-class PasswordChangeSerializer(serializers.Serializer):
+class UserPasswordChangeSerializer(serializers.Serializer):
     """
     Serializer for changing a user's password.
 
@@ -203,7 +203,7 @@ class PasswordChangeSerializer(serializers.Serializer):
         return user
 
 
-class PasswordResetRequestSerializer(serializers.Serializer):
+class UserPasswordResetRequestSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
     def save(self):

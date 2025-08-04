@@ -14,10 +14,10 @@ from rest_framework_simplejwt.exceptions import TokenError
 
 from src.accounts.serializers.user_credential import (
     PasswordResetConfirmSerializer,
-    PasswordResetRequestSerializer,
+    UserPasswordResetRequestSerializer,
     UserRegisterSerializer,
     UserLoginRequestSerializer,
-    PasswordChangeSerializer,
+    UserPasswordChangeSerializer,
 )
 from src.accounts.constants import UserErrorMessages, UserSuccessMessages
 
@@ -162,7 +162,7 @@ class PasswordChangeView(APIView):
 
     def patch(self, request):
         # Validate current and new passwords
-        serializer = PasswordChangeSerializer(
+        serializer = UserPasswordChangeSerializer(
             data=request.data,
             context={
                 'request': request,
@@ -197,13 +197,13 @@ class UserDeleteView(DestroyAPIView):
         return self.request.user
 
 
-class PasswordResetRequestView(APIView):
+class UserPasswordResetRequestView(APIView):
     """Send password reset email"""
 
     permission_classes = [AllowAny]
 
     def post(self, request):
-        serializer = PasswordResetRequestSerializer(data=request.data)
+        serializer = UserPasswordResetRequestSerializer(data=request.data)
 
         if serializer.is_valid():
             serializer.save()
@@ -221,7 +221,7 @@ class PasswordResetRequestView(APIView):
         )
 
 
-class PasswordResetConfirmView(APIView):
+class UserPasswordResetConfirmView(APIView):
     """Reset password with token"""
 
     permission_classes = [AllowAny]

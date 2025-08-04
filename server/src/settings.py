@@ -223,4 +223,6 @@ sentry_sdk.init(
     send_default_pii=True,
 )
 
-FRONTEND_URL = 'https://drf-react-gems.web.app'
+FRONTEND_URL = os.getenv(
+    'FRONTEND_URL', config('FRONTEND_URL')
+)
