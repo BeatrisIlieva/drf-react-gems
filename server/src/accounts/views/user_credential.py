@@ -192,7 +192,10 @@ class UserDeleteView(DestroyAPIView):
     - Only accessible to authenticated users.
     - Deletes the user instance associated with the current request.
     """
-
+    @extend_schema(
+        summary='Delete user',
+        description='Deletes the logged in user'
+    )
     def get_object(self):
         # Return the current user instance for deletion
 
