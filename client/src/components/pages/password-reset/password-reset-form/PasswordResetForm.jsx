@@ -72,12 +72,6 @@ export const PasswordResetForm = ({ uid, token }) => {
                         success={formProps.formState?.success}
                         callbackHandler={() => {}}
                     />
-                    <Button
-                        title="Cancel"
-                        color="white"
-                        actionType="button"
-                        callbackHandler={() => {}}
-                    />
                 </div>
             </form>
         </section>

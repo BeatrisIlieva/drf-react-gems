@@ -7,6 +7,7 @@ export const getFieldDisplayName = fieldName => {
         password_confirmation: 'Confirm Password',
         currentPassword: 'Current Password',
         newPassword: 'New Password',
+        confirmNewPassword: 'Confirm New Password',
         apartment: 'Apartment/Suite',
         cardNumber: 'Card Number',
         cardHolderName: 'Name on card',
