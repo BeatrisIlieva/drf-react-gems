@@ -97,6 +97,20 @@ export const validators = {
 
         special: password => (/[!#$%]/.test(password) ? '' : AUTH_ERROR_MESSAGES.PASSWORD),
     },
+    confirmNewPassword: {
+        length: password =>
+            password.length >= FIELD_LENGTHS.PASSWORD_MIN ? '' : AUTH_ERROR_MESSAGES.PASSWORD,
+
+        upper: password => (/[A-Z]/.test(password) ? '' : AUTH_ERROR_MESSAGES.PASSWORD),
+
+        lower: password => (/[a-z]/.test(password) ? '' : AUTH_ERROR_MESSAGES.PASSWORD),
+
+        number: password => (/\d/.test(password) ? '' : AUTH_ERROR_MESSAGES.PASSWORD),
+
+        noSpaces: password => (!/\s/.test(password) ? '' : AUTH_ERROR_MESSAGES.PASSWORD),
+
+        special: password => (/[!#$%]/.test(password) ? '' : AUTH_ERROR_MESSAGES.PASSWORD),
+    },
     country: {
         isValid: value => {
             if (value.length < FIELD_LENGTHS.COUNTRY_MIN)

@@ -12,8 +12,10 @@ import styles from './PasswordResetForm.module.scss';
 export const PasswordResetForm = ({ uid, token }) => {
     const [passwordsDoNotMatch, setPasswordsDoNotMatch] = useState(false);
 
-    const { formProps, fieldConfig, newPasswordValue, handleNewPasswordChange } =
-        usePasswordResetForm({ uid, token });
+    const { formProps, fieldConfig, handleNewPasswordChange } = usePasswordResetForm({
+        uid,
+        token,
+    });
 
     const {
         formData,
@@ -62,7 +64,7 @@ export const PasswordResetForm = ({ uid, token }) => {
                     <p className={styles['error']}>Passwords don’t match. Please try again.</p>
                 )}
 
-                <PasswordValidator password={newPasswordValue} />
+                <PasswordValidator password={formData.newPassword.value} />
                 <div className={styles['button-group']}>
                     <Button
                         title="Save"

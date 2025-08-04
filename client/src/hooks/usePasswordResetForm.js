@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { useNavigate } from 'react-router';
 
@@ -12,8 +12,6 @@ import { FORM_CONFIGS } from '../config/formFieldConfigs';
 
 export const usePasswordResetForm = ({ uid, token }) => {
     const { resetPasswordConfirm } = useAuthentication();
-
-    const [newPasswordValue, setNewPasswordValue] = useState('');
 
     const { fieldConfig, initialValues } = FORM_CONFIGS.passwordReset;
 
@@ -59,7 +57,6 @@ export const usePasswordResetForm = ({ uid, token }) => {
     const { handleFieldChange, resetValidationStates } = formProps;
 
     const handleNewPasswordChange = e => {
-        setNewPasswordValue(e.target.value);
         handleFieldChange(e);
     };
 
@@ -72,7 +69,6 @@ export const usePasswordResetForm = ({ uid, token }) => {
     return {
         formProps,
         fieldConfig,
-        newPasswordValue,
         handleNewPasswordChange,
     };
 };

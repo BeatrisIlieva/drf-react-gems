@@ -212,7 +212,9 @@ EMAIL_USE_SSL = False
 EMAIL_HOST = os.getenv('EMAIL_HOST', config('EMAIL_HOST'))
 EMAIL_PORT = os.getenv('EMAIL_PORT', config('EMAIL_PORT'))
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', config('EMAIL_HOST_USER'))
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', config('DEFAULT_FROM_EMAIL'))
+DEFAULT_FROM_EMAIL = os.getenv(
+    'DEFAULT_FROM_EMAIL', config('DEFAULT_FROM_EMAIL')
+)
 SERVER_EMAIL = os.getenv('SERVER_EMAIL', config('SERVER_EMAIL'))
 EMAIL_HOST_PASSWORD = os.getenv(
     'EMAIL_HOST_PASSWORD', config('EMAIL_HOST_PASSWORD')
@@ -223,6 +225,4 @@ sentry_sdk.init(
     send_default_pii=True,
 )
 
-FRONTEND_URL = os.getenv(
-    'FRONTEND_URL', config('FRONTEND_URL')
-)
+FRONTEND_URL = os.getenv('FRONTEND_URL', config('FRONTEND_URL'))

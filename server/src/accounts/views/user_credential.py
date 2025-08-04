@@ -13,7 +13,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 
 from src.accounts.serializers.user_credential import (
-    PasswordResetConfirmSerializer,
+    UserPasswordResetConfirmSerializer,
     UserPasswordResetRequestSerializer,
     UserRegisterSerializer,
     UserLoginRequestSerializer,
@@ -227,7 +227,7 @@ class UserPasswordResetConfirmView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        serializer = PasswordResetConfirmSerializer(data=request.data)
+        serializer = UserPasswordResetConfirmSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
 

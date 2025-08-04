@@ -8,7 +8,7 @@ from django.utils.http import urlsafe_base64_encode
 
 from rest_framework.test import APITestCase
 from src.accounts.serializers.user_credential import (
-    PasswordResetConfirmSerializer,
+    UserPasswordResetConfirmSerializer,
     UserPasswordResetRequestSerializer,
 )
 
@@ -36,9 +36,14 @@ class PasswordResetSerializerTests(APITestCase):
         uid = urlsafe_base64_encode(force_bytes(self.user.pk))
         token = default_token_generator.make_token(self.user)
 
-        data = {'uid': uid, 'token': token, 'new_password': '!1Aabbb'}
+        data = {
+            'uid': uid,
+            'token': token,
+            'new_password': '!1Aabbb',
+            'confirm_new_password': '!1Aabbb',
+        }
 
-        serializer = PasswordResetConfirmSerializer(data=data)
+        serializer = UserPasswordResetConfirmSerializer(data=data)
         self.assertTrue(serializer.is_valid(), serializer.errors)
         serializer.save()
 

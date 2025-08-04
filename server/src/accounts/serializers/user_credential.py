@@ -4,6 +4,7 @@ This module defines serializers for user registration, login, logout, and passwo
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
@@ -240,11 +241,12 @@ class UserPasswordResetRequestSerializer(serializers.Serializer):
             pass
 
 
-class PasswordResetConfirmSerializer(serializers.Serializer):
+class UserPasswordResetConfirmSerializer(serializers.Serializer):
     # Fields expected from the frontend
     uid = serializers.CharField()
     token = serializers.CharField()
     new_password = serializers.CharField()
+    confirm_new_password = serializers.CharField()
 
     def validate(self, attrs):
         try:
@@ -262,6 +264,23 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
                 raise serializers.ValidationError(
                     UserErrorMessages.INVALID_TOKEN
                 )
+
+            new_password = attrs['new_password']
+            confirm_new_password = attrs['confirm_new_password']
+
+            # Validate passwords match
+            if new_password != confirm_new_password:
+                raise serializers.ValidationError(
+                    {
+                        'confirm_new_password': UserErrorMessages.PASSWORDS_DO_NOT_MATCH,
+                    }
+                )
+
+            # Validate new password using Django's validators
+            try:
+                validate_password(new_password, user=user)
+            except ValidationError as e:
+                raise serializers.ValidationError({'new_password': e.messages})
 
             # Store the user in validated_data so we can use it in save()
             attrs['user'] = user

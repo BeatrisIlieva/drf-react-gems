@@ -45,7 +45,8 @@ class UserErrorMessages:
         'Your password must contain at least one special character (!#$%).'
     )
     INCORRECT_CREDENTIALS = 'Invalid username or password.'
-    INVALID_TOKEN = 'Invalid or expired token'
+    INVALID_TOKEN = 'Invalid or expired token.'
+    PASSWORDS_DO_NOT_MATCH = 'Passwords do not match.'
 
 
 class UserSuccessMessages:

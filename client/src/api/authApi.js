@@ -98,6 +98,7 @@ export const useAuthentication = () => {
                         uid: uid,
                         token: token,
                         new_password: userData.new_password,
+                        confirm_new_password: userData.confirm_new_password,
                     },
                 });
                 return response;
