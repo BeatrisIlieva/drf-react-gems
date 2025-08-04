@@ -323,6 +323,12 @@ CELERY_BROKER_URL=redis://localhost:6379/0         # OK for local
 CELERY_RESULT_BACKEND=redis://localhost:6379/0     # OK for local
 
 # Email Service
+
+EMAIL_HOST=smtp.example.com
+EMAIL_PORT=your_email_port
+EMAIL_HOST_USER=your_email@example.com
+DEFAULT_FROM_EMAIL=your_email@example.com
+SERVER_EMAIL=your_email@example.com
 EMAIL_HOST_PASSWORD=your-SMTP-app-password         # REQUIRED: Generate app password in your
                                                    # Google Account settings
 
