@@ -28,6 +28,7 @@ django-timezone-field==7.1
 django-unfold==0.59.0
 djangorestframework==3.16.0
 djangorestframework_simplejwt==5.5.0
+drf-spectacular==0.28.0
 gunicorn==23.0.0
 h11==0.16.0
 honcho==2.0.0

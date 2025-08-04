@@ -19,6 +19,8 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 **Admin Panel: [https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net/admin](https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net/admin)**
 
+**API documentation: [https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net](https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net)**
+
 <p align="center">
   <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.45.11_e0m7vo.png" width="260" />
   &nbsp;

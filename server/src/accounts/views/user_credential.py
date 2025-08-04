@@ -11,6 +11,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
+from drf_spectacular.utils import extend_schema
 
 from src.accounts.serializers.user_credential import (
     UserPasswordResetConfirmSerializer,
@@ -67,6 +68,7 @@ class UserLoginView(APIView):
 
     permission_classes = [AllowAny]
 
+    @extend_schema(request=UserLoginRequestSerializer)
     def post(self, request, *args, **kwargs):
         # Validate login credentials
         serializer = UserLoginRequestSerializer(data=request.data)
@@ -159,7 +161,7 @@ class UserPasswordChangeView(APIView):
     - Validates current and new passwords.
     - Saves the new password if validation passes.
     """
-
+    @extend_schema(request=UserPasswordChangeSerializer)
     def patch(self, request):
         # Validate current and new passwords
         serializer = UserPasswordChangeSerializer(
@@ -202,6 +204,7 @@ class UserPasswordResetRequestView(APIView):
 
     permission_classes = [AllowAny]
 
+    @extend_schema(request=UserPasswordResetRequestSerializer)
     def post(self, request):
         serializer = UserPasswordResetRequestSerializer(data=request.data)
 
@@ -226,6 +229,7 @@ class UserPasswordResetConfirmView(APIView):
 
     permission_classes = [AllowAny]
 
+    @extend_schema(request=UserPasswordResetConfirmSerializer)
     def post(self, request):
         serializer = UserPasswordResetConfirmSerializer(data=request.data)
         if serializer.is_valid():

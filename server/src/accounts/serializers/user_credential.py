@@ -14,7 +14,7 @@ from django.utils.html import strip_tags
 
 from rest_framework import serializers
 
-from src.common.tasks import _send_email
+from src.common.views import _send_email
 
 from src.accounts.constants import UserErrorMessages
 from src.accounts.validators.models import (
