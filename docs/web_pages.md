@@ -1,4 +1,4 @@
-## 13 page components
+## 14 page components
 
 1.  Home page [client/src/components/pages/home/Home.jsx](https://github.com/beatrisilieva/drf2.react2.gems/blob/main/client/src/components/pages/home/Home.jsx)
 2.  Product list page [client/src/components/pages/product2.list/ProductList.jsx](https://github.com/beatrisilieva/drf2.react2.gems/blob/main/client/src/components/pages/product2.list/ProductList.jsx)
@@ -10,6 +10,7 @@
 8.  Order confirmation page [client/src/components/pages/order2.confirmation/OrderConfirmation.jsx](https://github.com/beatrisilieva/drf2.react2.gems/blob/main/client/src/components/pages/order2.confirmation/OrderConfirmation.jsx)
 9.  Login page [client/src/components/pages/login/Login.jsx](https://github.com/beatrisilieva/drf2.react2.gems/blob/main/client/src/components/pages/login/Login.jsx)
 10. Register page [client/src/components/pages/register/Register.jsx](https://github.com/beatrisilieva/drf2.react2.gems/blob/main/client/src/components/pages/register/Register.jsx)
-11. Accounts page [client/src/components/pages/accounts/Accounts.jsx](https://github.com/beatrisilieva/drf2.react2.gems/blob/main/client/src/components/pages/accounts/Accounts.jsx)
-12. Admin page [client/src/components/pages/admin/Admin.jsx](https://github.com/beatrisilieva/drf2.react2.gems/blob/main/client/src/components/pages/admin/Admin.jsx)
-13. 404 page [client/src/components/pages/page404/Page404.jsx](https://github.com/beatrisilieva/drf2.react2.gems/blob/main/client/src/components/pages/page404/Page404.jsx])
+11. Reset Password page [client/src/components/pages/password-rest/PasswordReset.jsx](https://github.com/beatrisilieva/drf2.react2.gems/blob/main/client/src/components/pages/register/Register.jsx)
+12. Accounts page [client/src/components/pages/password-rest/PasswordReset.jsx](https://github.com/beatrisilieva/drf2.react2.gems/blob/main/client/src/components/pages/accounts/Accounts.jsx)
+13. Admin page [client/src/components/pages/admin/Admin.jsx](https://github.com/beatrisilieva/drf2.react2.gems/blob/main/client/src/components/pages/admin/Admin.jsx)
+14. 404 page [client/src/components/pages/page404/Page404.jsx](https://github.com/beatrisilieva/drf2.react2.gems/blob/main/client/src/components/pages/page404/Page404.jsx])
