@@ -4,7 +4,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 
 
 from src.accounts.views import (
-    UserPhotoUploadView,
+    UserPhotoView,
     UserRegisterView,
     UserLoginView,
     UserLogoutView,
@@ -32,7 +32,7 @@ urlpatterns = [
     ),
     path('delete/', UserDeleteView.as_view(), name='delete'),
     path('profile/', UserProfileView.as_view(), name='profile'),
-    path('photo/', UserPhotoUploadView.as_view(), name='photo'),
+    path('photo/', UserPhotoView.as_view(), name='photo'),
     path(
         'change-password/',
         UserPasswordChangeView.as_view(),
