@@ -90,19 +90,21 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 ### Frontend Implementation
 
--   [The application has 13 page components](https://github.com/beatrisilieva/drf-react-gems/blob/main/docs/web_pages.md)
+-   [The application has 14 page components](https://github.com/beatrisilieva/drf-react-gems/blob/main/docs/web_pages.md)
 
 -   **Web Page Design:** Custom SCSS modules for component-based styling, ensuring modularity
 
 -   **User Interface:** Fully responsive UI, adapting to various screen sizes with reusable React components
 
--   **User Experience:** Accessible navigation with consistent interactive elements (buttons, forms, popups)
+-   **User Experience:** Accessible navigation and consistent interactive elements (buttons, forms, popups)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 ### Authentication Functionality
 
 -   JWT-based authentication system for login, registration, logout, and account deletion via `UserRegisterView`, `UserLoginView`, `UserLogoutView`, and `UserDeleteView`
+
+-   Password change functionality, handled by `UserPasswordChangeView`
 
 -   Password reset functionality, handled by `UserPasswordResetRequestView` and `UserPasswordResetConfirmView`
 
@@ -247,10 +249,7 @@ All admin groups and their associated users are created automatically by a manag
 
 -   **Exception handling:** Error handling is implemented using try-except blocks and DRF exception classes, particularly for authentication and business-critical operations
 
--   **Inheritance, abstraction, and polymorphism:** All product categories inherit from an abstract base product model [server/src/products/models/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/base.py), allowing shared fields. Instead of creating separate inventory and review models for each product type, the inventory [server/src/products/models/inventory.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/inventory.py) and review [server/src/products/models/review.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/review.py) models use Django’s GenericForeignKey to relate to any product category. This design enables a single inventory and review system for all product types defined in [server/src/products/models/product.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/product.py).
-
-    > **Design rationale:**  
-    > `GenericForeignKey` allows us to have dedicated models for each product category (Earwear, Neckwear, etc.), so the backend can query and manage each category without filtering a single large product table.
+-   **Inheritance, abstraction, and polymorphism:** All product categories inherit from an abstract base product model [server/src/products/models/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/base.py), allowing shared fields. Instead of creating separate inventory and review models for each product type, the inventory [server/src/products/models/inventory.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/inventory.py) and review [server/src/products/models/review.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/review.py) models use Django’s `GenericForeignKey` to relate to any product category. This design enables a single inventory and review system for all product types defined in [server/src/products/models/product.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/product.py).
 
 -   **Cohesion and loose coupling:** Each Django app (accounts, products, orders, shopping_bags and wishlists) encapsulates a distinct business domain. Django apps are primarily independent from each other
 

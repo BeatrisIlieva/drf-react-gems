@@ -153,7 +153,7 @@ class UserLogoutView(APIView):
             )
 
 
-class PasswordChangeView(APIView):
+class UserPasswordChangeView(APIView):
     """
     - Only accessible to authenticated users.
     - Validates current and new passwords.
