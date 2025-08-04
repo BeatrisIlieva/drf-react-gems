@@ -102,7 +102,11 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 ### Authentication Functionality
 
--   The application implements a complete JWT-based authentication system for secure login, registration, logout, and account deletion via `UserRegisterView`, `UserLoginView`, `UserLogoutView`, and `UserDeleteView`. Password reset functionality, handled by `PasswordResetRequestView` and `PasswordResetConfirmView`, is available without authentication to support users who have lost access to their accounts. [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
+-   JWT-based authentication system for login, registration, logout, and account deletion via `UserRegisterView`, `UserLoginView`, `UserLogoutView`, and `UserDeleteView`
+
+-   Password reset functionality, handled by `UserPasswordResetRequestView` and `UserPasswordResetConfirmView`
+
+    [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -300,6 +304,7 @@ SECRET_KEY=your-secret-key                         # REQUIRED: Generate new Djan
 ALLOWED_HOSTS=localhost,127.0.0.1                  # OK for local
 CORS_ALLOWED_ORIGINS=http://localhost:5173         # OK for local
 CSRF_TRUSTED_ORIGINS=http://localhost:5173         # OK for local
+FRONTEND_URL=http://localhost:5173                 # OK for local; Needed for password reset
 
 # Database (PostgreSQL)
 DB_NAME=your_database_name                         # REQUIRED: Your PostgreSQL database name

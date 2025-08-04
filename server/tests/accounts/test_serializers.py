@@ -9,7 +9,7 @@ from django.utils.http import urlsafe_base64_encode
 from rest_framework.test import APITestCase
 from src.accounts.serializers.user_credential import (
     PasswordResetConfirmSerializer,
-    PasswordResetRequestSerializer,
+    UserPasswordResetRequestSerializer,
 )
 
 
@@ -26,7 +26,7 @@ class PasswordResetSerializerTests(APITestCase):
         )
 
     def test_password_reset_request_serializer_valid(self):
-        serializer = PasswordResetRequestSerializer(
+        serializer = UserPasswordResetRequestSerializer(
             data={'email': 'test@mail.com'}
         )
         self.assertTrue(serializer.is_valid())
