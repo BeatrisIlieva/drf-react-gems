@@ -8,6 +8,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from asgiref.sync import sync_to_async
 import asyncio
+
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.utils import timezone
@@ -16,6 +17,7 @@ from src.shopping_bags.models import ShoppingBag
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from drf_spectacular.utils import extend_schema
 
 from src.common.tasks import _send_email
 from src.common.permissions import IsOrderManager
@@ -91,6 +93,10 @@ class ShoppingBagReminderInfoView(APIView):
 
     permission_classes = [IsOrderManager]
 
+    @extend_schema(
+        summary="Get shopping bag reminders",
+        description="Returns shopping bags older than one day for order managers to review"
+    )
     def get(self, request):
         one_day_ago = timezone.now() - timedelta(days=1)
         bag_items = ShoppingBag.objects.filter(

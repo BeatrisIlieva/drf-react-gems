@@ -1,11 +1,12 @@
+from src import settings
+
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.contrib.auth import get_user_model
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from src import settings
 
-from src.common.tasks import _send_email
+from src.common.views import _send_email
 from src.accounts.models.user_photo import UserPhoto
 from src.accounts.models.user_profile import UserProfile
 

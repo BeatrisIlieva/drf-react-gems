@@ -5,7 +5,7 @@ from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
-from src.common.tasks import _send_email
+from src.common.views import _send_email
 from src.products.models.review import Review
 
 
