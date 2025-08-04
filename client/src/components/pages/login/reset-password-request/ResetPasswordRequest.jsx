@@ -42,7 +42,7 @@ export const ResetPasswordRequest = ({ onClose }) => {
             <p>
                 {!isSubmitted
                     ? 'Enter your email to receive password reset instructions.'
-                    : "We've emailed you the details to reset your password. It may take a few minutes to arrive."}
+                    : 'If an email address matching that account exists, we have sent a password reset link to it.'}
             </p>
 
             {!isSubmitted && (

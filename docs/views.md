@@ -1,4 +1,4 @@
-## 14 independent class-based views:
+## 16 independent class-based views:
 
 -   BaseProductListView [server/src/products/views/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
 -   BaseProductItemView [server/src/products/views/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/views/base.py)
@@ -11,6 +11,8 @@
 -   UserLoginView [server/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
 -   UserLogoutView [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
 -   PasswordChangeView [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
+-   PasswordResetRequestView [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
+-   PasswordResetConfirmView [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
 -   UserDeleteView [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
 -   UserProfileView [server/src/accounts/views/user_profile.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_profile.py)
 -   PhotoUploadView [server/src/accounts/views/user_photo.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_photo.py)

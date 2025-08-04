@@ -26,7 +26,7 @@ from src.accounts.serializers.user_credential import (
     UserLoginRequestSerializer,
     PasswordChangeSerializer,
 )
-from src.accounts.constants import UserErrorMessages
+from src.accounts.constants import UserErrorMessages, UserSuccessMessages
 
 UserModel = get_user_model()
 
@@ -145,7 +145,7 @@ class UserLogoutView(APIView):
 
             return Response(
                 {
-                    'message': 'Logout successful',
+                    'message': UserSuccessMessages.LOGOUT_SUCCESS,
                 },
                 status=status.HTTP_200_OK,
             )
@@ -154,7 +154,7 @@ class UserLogoutView(APIView):
             # Token is invalid or already expired/blacklisted
             return Response(
                 {
-                    'error': 'Invalid or expired token',
+                    'error': UserErrorMessages.INVALID_TOKEN,
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
@@ -181,7 +181,7 @@ class PasswordChangeView(APIView):
 
             return Response(
                 {
-                    'message': 'Password changed successfully',
+                    'message': UserSuccessMessages.PASSWORD_CHANGED,
                 },
                 status=status.HTTP_200_OK,
             )
@@ -211,13 +211,13 @@ class PasswordResetRequestView(APIView):
 
     def post(self, request):
         serializer = PasswordResetRequestSerializer(data=request.data)
-        print(request.data)
+
         if serializer.is_valid():
             serializer.save()
 
             return Response(
                 {
-                    "message": "A reset link has been sent.",
+                    'message': UserSuccessMessages.RESET_LINK_SENT,
                 },
                 status=status.HTTP_200_OK,
             )
@@ -239,7 +239,9 @@ class PasswordResetConfirmView(APIView):
             serializer.save()
 
             return Response(
-                {"message": "Password reset successful."},
+                {
+                    'message': UserSuccessMessages.PASSWORD_RESET,
+                },
                 status=status.HTTP_200_OK,
             )
 

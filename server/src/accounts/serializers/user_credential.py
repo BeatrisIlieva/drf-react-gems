@@ -183,7 +183,7 @@ class PasswordChangeSerializer(serializers.Serializer):
         if attrs['current_password'] == attrs['new_password']:
             raise serializers.ValidationError(
                 {
-                    "new_password": UserErrorMessages.NEW_PASSWORD_SAME_AS_CURRENT
+                    'new_password': UserErrorMessages.NEW_PASSWORD_SAME_AS_CURRENT
                 }
             )
 
@@ -254,7 +254,7 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
 
             if not default_token_generator.check_token(user, token):
                 raise serializers.ValidationError(
-                    "Invalid or expired reset token"
+                    UserErrorMessages.INVALID_TOKEN
                 )
 
             attrs['user'] = user
@@ -262,7 +262,7 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
             return attrs
 
         except (TypeError, ValueError, OverflowError, UserModel.DoesNotExist):
-            raise serializers.ValidationError("Invalid reset link")
+            raise serializers.ValidationError(UserErrorMessages.INVALID_TOKEN)
 
     def save(self):
         user = self.validated_data['user']
