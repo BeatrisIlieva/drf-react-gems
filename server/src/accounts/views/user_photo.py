@@ -5,7 +5,7 @@ from src.accounts.models.user_photo import UserPhoto
 from src.accounts.serializers.user_photo import PhotoSerializer
 
 
-class PhotoUploadView(RetrieveUpdateDestroyAPIView):
+class UserPhotoUploadView(RetrieveUpdateDestroyAPIView):
     serializer_class = PhotoSerializer
     # These parsers allow the API to accept file uploads (e.g., images)
     parser_classes = (MultiPartParser, FormParser)
