@@ -1,12 +1,5 @@
 """
-This module defines API views for user registration, login, logout, password change, and account deletion.
-
-Key features:
-- User registration with email and password
-- User login with email or username
-- JWT token issuance and blacklisting
-- Password change for authenticated users
-- Account deletion for authenticated users
+This module defines API views for user registration, login, logout, password change, password reset and account deletion.
 """
 
 from django.contrib.auth import get_user_model, authenticate
