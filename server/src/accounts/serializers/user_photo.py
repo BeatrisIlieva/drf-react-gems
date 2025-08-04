@@ -9,7 +9,7 @@ from cloudinary.utils import cloudinary_url
 from src.accounts.models.user_photo import UserPhoto
 
 
-class PhotoSerializer(serializers.ModelSerializer):
+class UserPhotoSerializer(serializers.ModelSerializer):
     """
     Serializer for user photos.
 

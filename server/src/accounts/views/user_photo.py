@@ -2,11 +2,11 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.parsers import MultiPartParser, FormParser
 
 from src.accounts.models.user_photo import UserPhoto
-from src.accounts.serializers.user_photo import PhotoSerializer
+from src.accounts.serializers.user_photo import UserPhotoSerializer
 
 
-class UserPhotoUploadView(RetrieveUpdateDestroyAPIView):
-    serializer_class = PhotoSerializer
+class UserPhotoView(RetrieveUpdateDestroyAPIView):
+    serializer_class = UserPhotoSerializer
     # These parsers allow the API to accept file uploads (e.g., images)
     parser_classes = (MultiPartParser, FormParser)
 
