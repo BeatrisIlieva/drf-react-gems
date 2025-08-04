@@ -94,8 +94,8 @@ class ShoppingBagReminderInfoView(APIView):
     permission_classes = [IsOrderManager]
 
     @extend_schema(
-        summary="Get shopping bag reminders",
-        description="Returns shopping bags older than one day for order managers to review"
+        summary='Get shopping bag reminders',
+        description='Returns shopping bags older than one day for order managers to review'
     )
     def get(self, request):
         one_day_ago = timezone.now() - timedelta(days=1)
