@@ -60,13 +60,13 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 -   Complete Django configuration with DRF, JWT, CORS, and database settings: [server/src/settings.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/settings.py)
 
--   [The application has 14 independent class-based views](https://github.com/beatrisilieva/drf-react-gems/blob/main/docs/views.md)
+-   [The application has 16 independent class-based views](https://github.com/beatrisilieva/drf-react-gems/blob/main/docs/views.md)
 
 -   [The application has 12 independent models](https://github.com/beatrisilieva/drf-react-gems/blob/main/docs/models.md)
 
--   [The application has 6 forms (implemented with DRF serializers and React components)](https://github.com/beatrisilieva/drf-react-gems/blob/main/docs/forms.md)
+-   [The application has 7 forms (implemented with DRF serializers and React components)](https://github.com/beatrisilieva/drf-react-gems/blob/main/docs/forms.md)
 
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+**[⬆ Back to Top](#table-of-contents)**
 
 ### Database Service
 
@@ -86,7 +86,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
     -   UserPhoto: [server/src/accounts/models/user_photo.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/models/user_photo.py)
 
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+**[⬆ Back to Top](#table-of-contents)**
 
 ### Frontend Implementation
 
@@ -98,13 +98,13 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 -   **User Experience:** Accessible navigation with consistent interactive elements (buttons, forms, popups)
 
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+**[⬆ Back to Top](#table-of-contents)**
 
 ### Authentication Functionality
 
--   The application implements a complete JWT-based authentication system for secure login, registration, logout, and account deletion via `UserRegisterView`, `UserLoginView`, `UserLogoutView`, and `UserDeleteView` [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
+-   The application implements a complete JWT-based authentication system for secure login, registration, logout, and account deletion via `UserRegisterView`, `UserLoginView`, `UserLogoutView`, and `UserDeleteView`. Password reset functionality, handled by `PasswordResetRequestView` and `PasswordResetConfirmView`, is available without authentication to support users who have lost access to their accounts. server/src/accounts/views/user_credential.py
 
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+**[⬆ Back to Top](#table-of-contents)**
 
 ### Access Control
 
@@ -114,7 +114,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 -   **Review Moderation:** Regular users see only approved reviews; Order group users (with `products.approve_review` permission) view all reviews
 
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+**[⬆ Back to Top](#table-of-contents)**
 
 ### Customized Admin Site
 
@@ -134,7 +134,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
     See implementation: [server/src/products/admin.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/admin.py)
 
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+**[⬆ Back to Top](#table-of-contents)**
 
 ### Admin Groups
 
@@ -167,7 +167,7 @@ All admin groups and their associated users are created automatically by a manag
 
 **To access the Admin Panel visit: [https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net/admin](https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net/admin)**
 
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+**[⬆ Back to Top](#table-of-contents)**
 
 ### Exception Handling and Data Validation
 
@@ -183,7 +183,7 @@ All admin groups and their associated users are created automatically by a manag
     -   Visual feedback: Input fields dynamically change color to indicate validation state (green for valid, red for invalid, blue for focus)
     -   Server-side error integration: Any validation errors returned from the backend are mapped to the correct form fields and displayed to the user in real time
 
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+**[⬆ Back to Top](#table-of-contents)**
 
 ### Asynchronous Processing
 
@@ -203,17 +203,17 @@ All admin groups and their associated users are created automatically by a manag
 
     -   Review approval notification emails: [server/src/products/signals.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/signals.py)
 
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+**[⬆ Back to Top](#table-of-contents)**
 
 ### Testing
 
--   **64 Unit & Integration tests with [74% coverage report](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)**
+-   **66 Unit & Integration tests with [74% coverage report](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)**
 
     (`coverage run manage.py test && coverage report`)
 
     [![Coverage](https://img.shields.io/badge/coverage-74%25-green.svg)](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)
 
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+**[⬆ Back to Top](#table-of-contents)**
 
 ### Deployment
 
@@ -223,7 +223,7 @@ All admin groups and their associated users are created automatically by a manag
 
 -   **Coverage Report**: `GitHub Pages`
 
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+**[⬆ Back to Top](#table-of-contents)**
 
 ### Django User Extension
 
@@ -235,7 +235,7 @@ All admin groups and their associated users are created automatically by a manag
 
 -   **Automatic profile and photo creation using signals:** When a UserCredential is created, Django signals automatically create corresponding UserProfile and UserPhoto database objects with the same primary key as the UserCredential model, establishing one-to-one relationships [server/src/accounts/signals.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/signals.py)
 
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+**[⬆ Back to Top](#table-of-contents)**
 
 ### Object-Oriented Design
 
@@ -252,7 +252,7 @@ All admin groups and their associated users are created automatically by a manag
 
 -   **Code quality and readability:** All code adheres to PEP 8 (Python) and uses ESLint/Prettier (JavaScript) for consistent formatting
 
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+**[⬆ Back to Top](#table-of-contents)**
 
 ---
 
@@ -384,7 +384,7 @@ npm install
 npm run dev
 ```
 
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+**[⬆ Back to Top](#table-of-contents)**
 
 ### Database Population
 
@@ -395,10 +395,10 @@ The `python manage.py setup_database` command (run during installation) will:
 -   Create admin users with different roles and permissions
 -   Create a superuser with full system access
 
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+**[⬆ Back to Top](#table-of-contents)**
 
 ## License
 
 This project is licensed under the MIT License.
 
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+**[⬆ Back to Top](#table-of-contents)**

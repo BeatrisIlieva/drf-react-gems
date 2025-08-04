@@ -65,7 +65,7 @@
             <a id="nextFileLink" class="nav" href="z_cfd5b94935e84cc7_password_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.9.2">coverage.py v7.9.2</a>,
-            created at 2025-07-31 21:50 +0300
+            created at 2025-08-04 12:59 +0300
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -332,13 +332,15 @@
     <p class="run"><span class="n"><a id="t250" href="#t250">250</a></span><span class="t">    <span class="op">@</span><span class="nam">message</span><span class="op">.</span><span class="nam">setter</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t251" href="#t251">251</a></span><span class="t">    <span class="key">def</span> <span class="nam">message</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">value</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t252" href="#t252">252</a></span><span class="t">        <span class="key">if</span> <span class="nam">value</span> <span class="key">is</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t253" href="#t253">253</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">__message</span> <span class="op">=</span> <span class="fst">f'</span><span class="fst">File size must be less than </span><span class="op">{</span><span class="nam">self</span><span class="op">.</span><span class="nam">file_size_limit</span><span class="op">}</span><span class="fst">MB</span><span class="fst">'</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t254" href="#t254">254</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t255" href="#t255">255</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">__message</span> <span class="op">=</span> <span class="nam">value</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t253" href="#t253">253</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">__message</span> <span class="op">=</span> <span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t254" href="#t254">254</a></span><span class="t">                <span class="fst">f'</span><span class="fst">File size must be less than </span><span class="op">{</span><span class="nam">self</span><span class="op">.</span><span class="nam">file_size_limit</span><span class="op">}</span><span class="fst">MB</span><span class="fst">'</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t255" href="#t255">255</a></span><span class="t">            <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t256" href="#t256">256</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t257" href="#t257">257</a></span><span class="t">    <span class="key">def</span> <span class="nam">__call__</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">value</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t258" href="#t258">258</a></span><span class="t">        <span class="key">if</span> <span class="nam">value</span><span class="op">.</span><span class="nam">size</span> <span class="op">></span> <span class="nam">self</span><span class="op">.</span><span class="nam">file_size_limit</span> <span class="op">*</span> <span class="num">1024</span> <span class="op">*</span> <span class="num">1024</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t259" href="#t259">259</a></span><span class="t">            <span class="key">raise</span> <span class="nam">ValidationError</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">message</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t257" href="#t257">257</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">__message</span> <span class="op">=</span> <span class="nam">value</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t258" href="#t258">258</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t259" href="#t259">259</a></span><span class="t">    <span class="key">def</span> <span class="nam">__call__</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">value</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t260" href="#t260">260</a></span><span class="t">        <span class="key">if</span> <span class="nam">value</span><span class="op">.</span><span class="nam">size</span> <span class="op">></span> <span class="nam">self</span><span class="op">.</span><span class="nam">file_size_limit</span> <span class="op">*</span> <span class="num">1024</span> <span class="op">*</span> <span class="num">1024</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t261" href="#t261">261</a></span><span class="t">            <span class="key">raise</span> <span class="nam">ValidationError</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">message</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -348,7 +350,7 @@
             <a class="nav" href="z_cfd5b94935e84cc7_password_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.9.2">coverage.py v7.9.2</a>,
-            created at 2025-07-31 21:50 +0300
+            created at 2025-08-04 12:59 +0300
         </p>
     </div>
 </footer>

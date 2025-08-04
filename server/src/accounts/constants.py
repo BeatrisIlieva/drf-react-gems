@@ -45,6 +45,14 @@ class UserErrorMessages:
         'Your password must contain at least one special character (!#$%).'
     )
     INCORRECT_CREDENTIALS = 'Invalid username or password.'
+    INVALID_TOKEN = 'Invalid or expired token'
+
+
+class UserSuccessMessages:
+    LOGOUT_SUCCESS = 'Logout successful.'
+    PASSWORD_CHANGED = 'Password changed successfully.'
+    RESET_LINK_SENT = 'A reset link has been sent.'
+    PASSWORD_RESET = 'Password reset successful.'
 
 
 class PhotoSize:
