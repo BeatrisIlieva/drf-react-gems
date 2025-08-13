@@ -1,9 +1,8 @@
-from rest_framework.exceptions import ValidationError, NotFound
+from rest_framework.exceptions import ValidationError
 
 from src.shopping_bags.models import ShoppingBag
 from src.common.services import UserIdentificationService
 from src.shopping_bags.constants import ShoppingBagErrorMessages
-from src.products.models.inventory import Inventory
 
 
 class ShoppingBagService:
@@ -21,16 +20,6 @@ class ShoppingBagService:
     @staticmethod
     def get_user_identifier(request):
         return UserIdentificationService.get_user_identifier(request)
-
-    @staticmethod
-    def get_inventory_object(inventory_id):
-        """
-        Retrieve an inventory object by its ID.
-        """
-        try:
-            return Inventory.objects.get(pk=inventory_id)
-        except Inventory.DoesNotExist:
-            raise NotFound(ShoppingBagErrorMessages.PRODUCT_NOT_FOUND)
 
     @staticmethod
     def validate_inventory_quantity(inventory_obj, required_quantity):
