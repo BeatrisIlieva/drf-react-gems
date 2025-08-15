@@ -52,27 +52,22 @@ export const ProductList = () => {
                 <div ref={sentinelRef} className={styles['sentinel']} />
 
                 <HomeLink />
-
-                {loading ? (
-                    <LoadingSpinner />
-                ) : (
-                    <>
-                        <header className={isSticky ? styles['sticky'] : ''}>
-                            <Nav />
-                        </header>
-
-                        <div
-                            className={`${styles['wrapper-products']} ${
-                                displayFilters ? styles['with-gap'] : styles['no-gap']
-                            }`}
-                        >
-                            <FilterList />
-                            <div className={styles['wrapper-inner']}>
-                                {products.length > 0 && <ProductItems products={products} />}
-                            </div>
-                        </div>
-                    </>
+                {!loading && (
+                    <header className={isSticky ? styles['sticky'] : ''}>
+                        <Nav />
+                    </header>
                 )}
+
+                <div
+                    className={`${styles['wrapper-products']} ${
+                        displayFilters ? styles['with-gap'] : styles['no-gap']
+                    }`}
+                >
+                    <FilterList />
+                    <div className={styles['wrapper-inner']}>
+                        {loading ? <LoadingSpinner /> : <ProductItems products={products} />}
+                    </div>
+                </div>
             </section>
         </>
     );
