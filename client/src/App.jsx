@@ -1,7 +1,11 @@
+import { useEffect } from 'react';
+
 import { Navigate, Route, Routes } from 'react-router';
 
 import { AdminGuard } from './guards/AdminGuard';
 import { AuthGuard } from './guards/AuthGuard';
+
+import { useWakeUpServer } from './api/commonApi';
 
 import { ProductFiltersProvider } from './providers/ProductFiltersProvider';
 import { ProductItemProvider } from './providers/ProductItemProvider';
@@ -34,6 +38,12 @@ import styles from './App.module.scss';
 
 function App() {
     const { isMiniBagPopupOpen, toggleMiniBagPopupOpen } = useShoppingBagContext();
+
+    const { wakeUpServer } = useWakeUpServer();
+
+    useEffect(() => {
+        wakeUpServer().then(response => console.log(response));
+    }, [wakeUpServer]);
 
     return (
         <div className={styles['app']}>

@@ -17,6 +17,8 @@ from src.shopping_bags.models import ShoppingBag
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+
 from drf_spectacular.utils import extend_schema
 
 from src.common.tasks import _send_email
@@ -123,3 +125,10 @@ class ShoppingBagReminderInfoView(APIView):
         ]
 
         return Response(data)
+
+
+class WakeUpServerView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        return JsonResponse({'detail': 'The server was awakened.'})
