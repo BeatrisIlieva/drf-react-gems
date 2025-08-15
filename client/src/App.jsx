@@ -42,7 +42,7 @@ function App() {
     const { wakeUpServer } = useWakeUpServer();
 
     useEffect(() => {
-        wakeUpServer().then(response => console.log(response));
+        wakeUpServer();
     }, [wakeUpServer]);
 
     return (

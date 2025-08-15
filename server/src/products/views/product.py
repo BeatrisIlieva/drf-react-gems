@@ -108,13 +108,6 @@ class ProductAllReviewsView(APIView):
     permission_classes = [IsAuthenticated, IsOrderManager]
 
     def get(self, request, category, pk):
-        # Map category to model
-        from src.products.models.product import (
-            Earwear,
-            Neckwear,
-            Fingerwear,
-            Wristwear,
-        )
 
         model_map = {
             'earwear': Earwear,
@@ -122,7 +115,9 @@ class ProductAllReviewsView(APIView):
             'fingerwear': Fingerwear,
             'wristwear': Wristwear,
         }
+
         model = model_map.get(category.lower())
+
         if not model:
             return Response(
                 {'detail': 'Invalid category.'},
@@ -135,6 +130,7 @@ class ProductAllReviewsView(APIView):
                 {'detail': 'Product not found.'},
                 status=status.HTTP_404_NOT_FOUND,
             )
+
         # Get all reviews for this product
         content_type = ContentType.objects.get_for_model(model)
         reviews = Review.objects.filter(
