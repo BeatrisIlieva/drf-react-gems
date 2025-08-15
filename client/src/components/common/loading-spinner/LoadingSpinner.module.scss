@@ -1,0 +1,20 @@
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.25em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .thumbnail {
+        width: 11em;
+    }
+
+    p {
+        opacity: 0.8;
+        font-size: 1.2em;
+    }
+}

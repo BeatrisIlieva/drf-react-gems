@@ -29,10 +29,12 @@
 
         &.with-gap {
             gap: 3em;
+            position: relative;
         }
 
         &.no-gap {
             gap: 0;
+            position: relative;
         }
 
         .wrapper-inner {
