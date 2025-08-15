@@ -25,7 +25,6 @@
     .wrapper-products {
         display: flex;
         padding-inline: var(--layout-inline-padding);
-        position: relative;
 
         &.with-gap {
             gap: 3em;
