@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
+import { LoadingSpinner } from '../../common/loading-spinner/LoadingSpinner';
 import { ProductItems } from '../../reusable/product-items/ProductItems';
 import { FilterList } from './filter-list/FilterList';
 import { HomeLink } from './home-link/HomeLink';
@@ -52,22 +53,26 @@ export const ProductList = () => {
 
                 <HomeLink />
 
-                {!loading && (
-                    <header className={isSticky ? styles['sticky'] : ''}>
-                        <Nav />
-                    </header>
-                )}
+                {loading ? (
+                    <LoadingSpinner />
+                ) : (
+                    <>
+                        <header className={isSticky ? styles['sticky'] : ''}>
+                            <Nav />
+                        </header>
 
-                <div
-                    className={`${styles['wrapper-products']} ${
-                        displayFilters ? styles['with-gap'] : styles['no-gap']
-                    }`}
-                >
-                    <FilterList />
-                    <div className={styles['wrapper-inner']}>
-                        {products.length > 0 && <ProductItems products={products} />}
-                    </div>
-                </div>
+                        <div
+                            className={`${styles['wrapper-products']} ${
+                                displayFilters ? styles['with-gap'] : styles['no-gap']
+                            }`}
+                        >
+                            <FilterList />
+                            <div className={styles['wrapper-inner']}>
+                                {products.length > 0 && <ProductItems products={products} />}
+                            </div>
+                        </div>
+                    </>
+                )}
             </section>
         </>
     );
