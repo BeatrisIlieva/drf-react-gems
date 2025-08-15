@@ -4,9 +4,9 @@
     justify-content: center;
     align-items: center;
     gap: 0.25em;
-    position: relative;
-    top: 85%;
-    left: 415%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
 
     .thumbnail {

@@ -57,15 +57,17 @@ export const ProductList = () => {
                         <Nav />
                     </header>
                 )}
-
                 <div
                     className={`${styles['wrapper-products']} ${
                         displayFilters ? styles['with-gap'] : styles['no-gap']
                     }`}
                 >
                     <FilterList />
+
+                    {loading && <LoadingSpinner />}
+                    
                     <div className={styles['wrapper-inner']}>
-                        {loading ? <LoadingSpinner /> : <ProductItems products={products} />}
+                        {products.length > 0 && <ProductItems products={products} />}
                     </div>
                 </div>
             </section>
