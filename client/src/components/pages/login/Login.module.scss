@@ -24,9 +24,14 @@
         cursor: pointer;
         text-decoration: underline;
         text-transform: uppercase;
-        opacity: 0.9;
+        opacity: 0.8;
         font-size: 0.9em;
         text-underline-offset: 0.2em;
         margin-top: 0.5em;
+        transition: opacity 0.3 ease-in-out;
+
+        &:hover {
+            opacity: 1;
+        }
     }
 }
