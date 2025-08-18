@@ -13,7 +13,7 @@
 [![Firebase](https://img.shields.io/badge/Firebase-orange.svg)](https://firebase.google.com/)
 [![Sentry](https://img.shields.io/badge/Sentry-purple.svg)](https://sentry.io/)
 
-A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Features user authentication, shopping cart and wishlist functionality, secure payment processing, order history and asynchronous email notifications using Celery and Redis.
+A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Implements user authentication, shopping cart and wishlist functionality, payment processing, order history and asynchronous email notifications using Celery and Redis.
 
 **Live Application: [https://drf-react-gems.web.app](https://drf-react-gems.web.app/)**
 
@@ -38,6 +38,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   [Database Service](#database-service)
 -   [Frontend Implementation](#frontend-implementation)
 -   [Authentication Functionality](#authentication-functionality)
+-   [Password Reset System](#password-reset-system)
 -   [Access Control](#access-control)
 -   [Customized Admin Site](#customized-admin-site)
 -   [Admin Groups](#admin-groups)
@@ -106,11 +107,23 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 -   JWT-based authentication system for login, registration, logout, and account deletion via `UserRegisterView`, `UserLoginView`, `UserLogoutView`, and `UserDeleteView`
 
+-   Custom authentication backend allowing users to authenticate using either email or username through [CustomAuthBackendBackend](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/authentication.py)
+
 -   Password change functionality, handled by `UserPasswordChangeView`
 
--   Password reset functionality, handled by `UserPasswordResetRequestView` and `UserPasswordResetConfirmView`
-
     [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/views/user_credential.py)
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
+### Password Reset System
+
+-   **Two-step password reset process:** Users request reset via email, then confirm with token-based validation
+-   **Token-based verification:** Uses Django's built-in token generator with URL-safe base64 encoding for user identification
+-   **Email delivery:** Automated password reset emails sent via Gmail SMTP with HTML templates
+-   **Validation:** Confirms token validity, password strength requirements, and password confirmation matching
+-   **Implementation:** Handled by `UserPasswordResetRequestView` and `UserPasswordResetConfirmView`
+
+    [server/src/accounts/serializers/user_credential.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/serializers/user_credential.py)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -181,13 +194,14 @@ All admin groups and their associated users are created automatically by a manag
 
 -   **Server-side:**
 
+    -   Error handling is implemented using try-except blocks and DRF exception classes, particularly for authentication and business-critical operations
     -   Password validation: [server/src/accounts/validators/password.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/validators/password.py)
     -   Payment & order validation: [server/src/orders/services.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/orders/services.py)
     -   Model validation: [server/src/accounts/validators/model.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/accounts/validators/models.py)
 
 -   **Client-side:**
 
-    -   Real-time form validation: All forms (registration, login, delivery, payment, password update, etc.) provide instant feedback as users type, using custom React hooks and validation helpers
+    -   Real-time form validation: All forms (registration, login, delivery, payment, password update, etc.) provide instant feedback as users type, using custom React hooks and validation helpers, preventing invalid requests to backend
     -   Visual feedback: Input fields dynamically change color to indicate validation state (green for valid, red for invalid, blue for focus)
     -   Server-side error integration: Any validation errors returned from the backend are mapped to the correct form fields and displayed to the user in real time
 
@@ -247,11 +261,15 @@ All admin groups and their associated users are created automatically by a manag
 
 ### Object-Oriented Design
 
+-   **Inheritance:** All product categories inherit from an abstract base product model, allowing shared fields [server/src/products/models/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/base.py)
+
+-   **Open/Closed Principle:** New categories with own fields extend existing logic by adding new models without modification [server/src/products/models/product.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/product.py)
+
+-   **Polymorphic Relations:** Instead of separate inventory and review models per product type, inventory [server/src/products/models/inventory.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/inventory.py) and review [server/src/products/models/review.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/review.py) models use Django’s `GenericForeignKey` to relate to any product category. In the inventory model, each product is represented in three sizes, with each size having its own price and quantity. Combined with generic relations, this design enables a single inventory and review system shared across all product categories
+
+-   **Abstraction:** Product fetching logic is abstracted into `BaseProductManager`, keeping query details hidden from the views. The manager handles `prefetch_related` for inventory and review relations, `values` to retrieve base product fields, and annotations with `Min`, `Max`, and `Avg` to provide price ranges and average rating per product
+
 -   **Data encapsulation:** Business logic and data validation are encapsulated within dedicated service classes and model managers
-
--   **Exception handling:** Error handling is implemented using try-except blocks and DRF exception classes, particularly for authentication and business-critical operations
-
--   **Inheritance, abstraction, and polymorphism:** All product categories inherit from an abstract base product model [server/src/products/models/base.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/base.py), allowing shared fields. Instead of creating separate inventory and review models for each product type, the inventory [server/src/products/models/inventory.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/inventory.py) and review [server/src/products/models/review.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/review.py) models use Django’s `GenericForeignKey` to relate to any product category. This design enables a single inventory and review system for all product types defined in [server/src/products/models/product.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/products/models/product.py).
 
 -   **Cohesion and loose coupling:** Each Django app (accounts, products, orders, shopping_bags and wishlists) encapsulates a distinct business domain. Django apps are primarily independent from each other
 
