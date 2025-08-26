@@ -164,8 +164,6 @@ class AIResponseService:
         context = "\n\n".join(search_results) if search_results else ""
         user_message = (
             f"Based on the following context, answer the query:\n\nContext:\n{context}\n\nQuery: {query_text}"
-            if context
-            else f"Based on the following context, and the result returned by the tool `recall_fact` answer the query:\n\nContext:\n{context}\n\nQuery: {query_text}"
         )
 
         history = FileStorageService.load_chat_history()
@@ -277,8 +275,8 @@ class AIResponseService:
             "model": model,
             "messages": messages,
             "max_tokens": 100,
-            "temperature": 0.3,
-            "top_p": 0.3,
+            "temperature": 0.5,
+            "top_p": 0.5,
             "frequency_penalty": 1.0,
             "presence_penalty": 1.0,
             "stream": stream,
