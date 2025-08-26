@@ -1,38 +1,3 @@
-import os
-
-TOOLS = [
-    {
-        "type": "function",
-        "function": {
-            "name": "store_fact",
-            "description": "Store personal information when users share details about themselves - including but not limited to name, age, location, profession, preferences, interests, family, goals, hobbies, plans, desires, or any other personal details they mention.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "key": {"type": "string", "description": "Type of info (name, age, location, etc.)"},
-                    "value": {"type": "string", "description": "The actual information"}
-                },
-                "required": ["key", "value"]
-            }
-        }
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "recall_fact",
-            "description": "Retrieve stored user information when they ask direct questions about themselves - including but not limited to name, age, location, profession, preferences, interests, family, goals, hobbies, plans, desires, or any other personal details they mention, or when their personal details would help provide a more relevant response.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "query": {"type": "string", "description": "What to look for"}
-                },
-                "required": ["query"]
-            }
-        }
-    }
-]
-
-SYSTEM_MESSAGE = """
 <context>
 You work for the online luxury jewelry brand 'DRF React Gems'. 
 Your primary job is to handle customer queries in real-time via the boutique's webpage chat.
@@ -84,15 +49,5 @@ You may offer relevant advice based on your expertise as outlined in the role ta
 Limit discussions to information from the provided context and any personal details shared by the customer.
 </critical>
 </behaviour>
-"""
 
-MEMORY_FILE = os.path.join(
-    os.path.dirname(__file__),
-    "memory.json",
-)
-
-CHAT_HISTORY_FILE = os.path.join(
-    os.path.dirname(__file__),
-    "chat_history.json",
-)
 
