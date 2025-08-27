@@ -8,8 +8,6 @@ It provides:
 - Custom permission for reviewer access to all product reviews
 - Review management endpoints for products
 """
-
-
 import os
 import tempfile
 
