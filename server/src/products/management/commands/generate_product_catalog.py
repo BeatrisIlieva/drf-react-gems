@@ -213,75 +213,87 @@ class Command(BaseCommand):
         return output_path
     
     def _add_product_images(self, product, styles):
-        """Add product images to the PDF with better error handling"""
+        """Add product image URLs to the PDF without downloading/processing images"""
         story_elements = []
         
+        # Simply add image URLs as text references for the chatbot to use
         for i, image_url in enumerate([product.first_image, product.second_image]):
             if image_url:
-                try:
-                    print(f"Processing image {i+1}: {image_url[:50]}...")  # Debug output
-                    
-                    # Download image with shorter timeout and headers
-                    headers = {
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-                    }
-                    response = requests.get(image_url, timeout=5, headers=headers)
-                    
-                    if response.status_code == 200:
-                        # Convert to PIL Image for processing
-                        img_data = BytesIO(response.content)
-                        pil_img = PILImage.open(img_data)
-                        
-                        # Convert to RGB and remove any background
-                        if pil_img.mode in ('RGBA', 'LA', 'P'):
-                            # Create white background for transparent images
-                            background = PILImage.new('RGB', pil_img.size, (255, 255, 255))
-                            if pil_img.mode == 'RGBA':
-                                background.paste(pil_img, mask=pil_img.split()[-1])
-                            else:
-                                background.paste(pil_img)
-                            pil_img = background
-                        
-                        # Resize for PDF (max width 1.5 inches for better performance)
-                        max_width = 1.5 * inch
-                        aspect_ratio = pil_img.width / pil_img.height
-                        
-                        if pil_img.width > max_width:
-                            new_width = max_width
-                            new_height = max_width / aspect_ratio
-                        else:
-                            new_width = pil_img.width * 0.75  # Scale down even small images
-                            new_height = pil_img.height * 0.75
-                        
-                        # Save processed image to BytesIO
-                        processed_img = BytesIO()
-                        pil_img.save(processed_img, format='JPEG', quality=85)
-                        processed_img.seek(0)
-                        
-                        # Create reportlab Image
-                        img = Image(processed_img, width=new_width, height=new_height)
-                        story_elements.append(img)
-                        story_elements.append(Spacer(1, 6))
-                        
-                        # Add image URL for reference (for chatbot)
-                        story_elements.append(Paragraph(f"Image URL: {image_url}", styles['Normal']))
-                        story_elements.append(Spacer(1, 4))
-                        
-                        print(f"✓ Successfully processed image {i+1}")
-                        
-                except requests.exceptions.Timeout:
-                    print(f"✗ Image {i+1} timed out: {image_url}")
-                    story_elements.append(Paragraph(f"Image URL: {image_url} (Timeout)", styles['Normal']))
-                    story_elements.append(Spacer(1, 4))
-                    
-                except requests.exceptions.RequestException as e:
-                    print(f"✗ Image {i+1} request failed: {str(e)}")
-                    story_elements.append(Paragraph(f"Image URL: {image_url} (Network error)", styles['Normal']))
-                    story_elements.append(Spacer(1, 4))
-                    
-                except Exception as e:
-                    print(f"✗ Image {i+1} processing failed: {str(e)}")
-                    story_elements.append(Paragraph(f"Image URL: {image_url} (Processing error)", styles['Normal']))
-                    story_elements.append(Spacer(1, 4))
+                story_elements.append(Paragraph(f"Image {i+1} URL: {image_url}", styles['Normal']))
+                story_elements.append(Spacer(1, 4))
         
         return story_elements
+
+    # def _add_product_images(self, product, styles):
+    #     """Add product images to the PDF with better error handling"""
+    #     story_elements = []
+        
+    #     for i, image_url in enumerate([product.first_image, product.second_image]):
+    #         if image_url:
+    #             try:
+    #                 print(f"Processing image {i+1}: {image_url[:50]}...")  # Debug output
+                    
+    #                 # Download image with shorter timeout and headers
+    #                 headers = {
+    #                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+    #                 }
+    #                 response = requests.get(image_url, timeout=5, headers=headers)
+                    
+    #                 if response.status_code == 200:
+    #                     # Convert to PIL Image for processing
+    #                     img_data = BytesIO(response.content)
+    #                     pil_img = PILImage.open(img_data)
+                        
+    #                     # Convert to RGB and remove any background
+    #                     if pil_img.mode in ('RGBA', 'LA', 'P'):
+    #                         # Create white background for transparent images
+    #                         background = PILImage.new('RGB', pil_img.size, (255, 255, 255))
+    #                         if pil_img.mode == 'RGBA':
+    #                             background.paste(pil_img, mask=pil_img.split()[-1])
+    #                         else:
+    #                             background.paste(pil_img)
+    #                         pil_img = background
+                        
+    #                     # Resize for PDF (max width 1.5 inches for better performance)
+    #                     max_width = 1.5 * inch
+    #                     aspect_ratio = pil_img.width / pil_img.height
+                        
+    #                     if pil_img.width > max_width:
+    #                         new_width = max_width
+    #                         new_height = max_width / aspect_ratio
+    #                     else:
+    #                         new_width = pil_img.width * 0.75  # Scale down even small images
+    #                         new_height = pil_img.height * 0.75
+                        
+    #                     # Save processed image to BytesIO
+    #                     processed_img = BytesIO()
+    #                     pil_img.save(processed_img, format='JPEG', quality=85)
+    #                     processed_img.seek(0)
+                        
+    #                     # Create reportlab Image
+    #                     img = Image(processed_img, width=new_width, height=new_height)
+    #                     story_elements.append(img)
+    #                     story_elements.append(Spacer(1, 6))
+                        
+    #                     # Add image URL for reference (for chatbot)
+    #                     story_elements.append(Paragraph(f"Image URL: {image_url}", styles['Normal']))
+    #                     story_elements.append(Spacer(1, 4))
+                        
+    #                     print(f"✓ Successfully processed image {i+1}")
+                        
+        #         except requests.exceptions.Timeout:
+        #             print(f"✗ Image {i+1} timed out: {image_url}")
+        #             story_elements.append(Paragraph(f"Image URL: {image_url} (Timeout)", styles['Normal']))
+        #             story_elements.append(Spacer(1, 4))
+                    
+        #         except requests.exceptions.RequestException as e:
+        #             print(f"✗ Image {i+1} request failed: {str(e)}")
+        #             story_elements.append(Paragraph(f"Image URL: {image_url} (Network error)", styles['Normal']))
+        #             story_elements.append(Spacer(1, 4))
+                    
+        #         except Exception as e:
+        #             print(f"✗ Image {i+1} processing failed: {str(e)}")
+        #             story_elements.append(Paragraph(f"Image URL: {image_url} (Processing error)", styles['Normal']))
+        #             story_elements.append(Spacer(1, 4))
+        
+        # return story_elements
