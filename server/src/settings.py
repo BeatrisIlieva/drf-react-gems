@@ -29,10 +29,14 @@ CORS_ALLOWED_ORIGINS = os.getenv(
     'CORS_ALLOWED_ORIGINS', config('CORS_ALLOWED_ORIGINS')
 ).split(',')
 
+OPENAI_API_KEY = os.getenv(
+    'OPENAI_API_KEY', config('OPENAI_API_KEY')
+)
 
 # Custom Django applications in this project
 PROJECT_APPS = [
     'src.accounts',
+    'src.chatbot',
     'src.common',
     'src.products',
     'src.shopping_bags',
@@ -44,8 +48,8 @@ INSTALLED_APPS = [
     'unfold',
     'unfold.contrib.filters',
     'unfold.contrib.forms',
-    'cloudinary',
-    'cloudinary_storage',
+    # 'cloudinary',
+    # 'cloudinary_storage',
     'django_celery_beat',
     'daphne',
     'django.contrib.admin',

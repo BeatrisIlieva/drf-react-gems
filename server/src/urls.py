@@ -51,6 +51,7 @@ urlpatterns = [
             'src.accounts.urls',
         ),
     ),
+        path('api/chatbot/', include('src.chatbot.urls')), 
     path(
         'api/products/',
         include(

@@ -6,6 +6,9 @@ from src.products.views.product import (
     ColorRetrieveView,
     MetalRetrieveView,
     StoneRetrieveView,
+    catalog_page,
+    download_catalog,
+    generate_catalog,
 )
 from src.products.views.product import (
     EarwearItemView,
@@ -76,7 +79,6 @@ urlpatterns = [
             ]
         ),
     ),
-    # Synchronous attribute views (existing)
     path('stones/', StoneRetrieveView.as_view(), name='stone-retrieve'),
     path('colors/', ColorRetrieveView.as_view(), name='color-retrieve'),
     path(
@@ -90,4 +92,7 @@ urlpatterns = [
         ProductAllReviewsView.as_view(),
         name='product-all-reviews',
     ),
+    path('catalog/', catalog_page, name='catalog_page'),
+    path('catalog/generate/', generate_catalog, name='generate_catalog'),
+    path('download-catalog/', download_catalog, name='download_catalog'),
 ]
