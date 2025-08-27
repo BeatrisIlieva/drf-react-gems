@@ -93,6 +93,7 @@ class BaseProductAdmin(admin.ModelAdmin):
         'second_picture',
         'collection',
         'created_at',
+        'pk'
     )
 
     list_filter = (StoneListFilter, ColorListFilter, 'collection', 'metal')

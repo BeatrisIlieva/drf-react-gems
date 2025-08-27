@@ -9,6 +9,16 @@ It provides:
 - Review management endpoints for products
 """
 
+
+import os
+import tempfile
+
+from django.shortcuts import render
+from django.core.management import call_command
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.http import require_http_methods
+
+
 from src.common.permissions import IsOrderManager
 from src.products.models.product import Color, Metal, Stone, Collection
 
@@ -139,3 +149,48 @@ class ProductAllReviewsView(APIView):
         serializer = ReviewSerializer(reviews, many=True)
 
         return Response({'reviews': serializer.data})
+
+
+def catalog_page(request):
+    """Display the catalog download page"""
+    return render(request, 'catalog_download.html')
+
+
+@require_http_methods(["POST"])
+def generate_catalog(request):
+    """Generate and return the PDF catalog"""
+    try:
+        # Create temporary file
+        with tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) as tmp_file:
+            tmp_path = tmp_file.name
+
+        # Generate PDF
+        call_command('generate_product_catalog', output=tmp_path)
+
+        # Check if file was created successfully
+        if not os.path.exists(tmp_path):
+            return JsonResponse({'error': 'Failed to generate PDF'}, status=500)
+
+        # Get file size
+        file_size = os.path.getsize(tmp_path)
+
+        # Read and return PDF
+        with open(tmp_path, 'rb') as pdf_file:
+            pdf_data = pdf_file.read()
+
+        # Clean up temp file
+        os.unlink(tmp_path)
+
+        # Return PDF with proper headers
+        response = HttpResponse(pdf_data, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="product_catalog.pdf"'
+        response['Content-Length'] = str(file_size)
+        return response
+
+    except Exception as e:
+        return JsonResponse({'error': f'Error generating catalog: {str(e)}'}, status=500)
+
+
+def download_catalog(request):
+    """Legacy view - redirect to new page"""
+    return catalog_page(request)
