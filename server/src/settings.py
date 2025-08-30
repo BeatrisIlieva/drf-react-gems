@@ -33,6 +33,14 @@ OPENAI_API_KEY = os.getenv(
     'OPENAI_API_KEY', config('OPENAI_API_KEY')
 )
 
+LANGSMITH_API_KEY=os.getenv(
+    'LANGSMITH_API_KEY', config('LANGSMITH_API_KEY')
+)
+
+LANGSMITH_TRACING="true"
+LANGSMITH_ENDPOINT="https://api.smith.langchain.com"
+LANGSMITH_PROJECT="pr-impassioned-warfare-85"
+
 # Custom Django applications in this project
 PROJECT_APPS = [
     'src.accounts',

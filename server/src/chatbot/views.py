@@ -1,8 +1,10 @@
 import os
 import hashlib
 import json
+
 from django.conf import settings
 from django.http import StreamingHttpResponse
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
@@ -10,10 +12,12 @@ from rest_framework import status
 
 from src.chatbot.serializers import ChatRequestSerializer
 from src.chatbot.constants import ERROR_RESPONSE_OBJECT
-from src.chatbot.managers import ComponentManager, MemoryManager
 from src.chatbot.services import ChatbotService
 
 os.environ["OPENAI_API_KEY"] = settings.OPENAI_API_KEY
+os.environ["LANGSMITH_API_KEY"] = settings.LANGSMITH_API_KEY
+os.environ["LANGSMITH_ENDPOINT"] = settings.LANGSMITH_ENDPOINT
+os.environ["LANGSMITH_TRACING_V2"] = "true"
 
 
 class ChatBotAPIView(APIView):
@@ -29,17 +33,9 @@ class ChatBotAPIView(APIView):
             user_query = serializer.validated_data['message']
             session_id = self._get_or_create_session_id(request)
 
-            # Get components and memory
-            components = ComponentManager()
-            memory = MemoryManager.get_or_create_memory(session_id)
-
-            # Create service
-            service = ChatbotService(components.llm, components.vectorstore)
-
-            # Define generator with error handling
             def generate_response():
                 try:
-                    for chunk in service.generate_response_stream(user_query, session_id, memory):
+                    for chunk in ChatbotService.generate_response_stream(user_query, session_id):
                         yield chunk
                 except Exception as e:
                     yield f"data: {json.dumps({'error': str(e)})}\n\n"

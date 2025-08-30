@@ -1,64 +1,59 @@
 import json
+
 from langchain.prompts import ChatPromptTemplate
-from src.chatbot.config import SYSTEM_MESSAGE
+from langchain.prompts import SystemMessagePromptTemplate, HumanMessagePromptTemplate
 
-class RetrievalService:
+from src.chatbot.managers import MemoryAdapter, VectorstoreAdapter
+from src.chatbot.config import HUMAN_TEMPLATE, SYSTEM_TEMPLATE
+
+
+class ContextService:
     """Handles document retrieval and context building."""
-    def __init__(self, vectorstore):
-        self.vectorstore = vectorstore
 
-    def get_context(self, query, k=4):
-        results = self.vectorstore.similarity_search(query, k=k)
+    @staticmethod
+    def get_context(vectorstore, query, k=4):
+        results = vectorstore.similarity_search(query, k=k)
+        for i, doc in enumerate(results, 1):
+            print(f"--- Chunk {i} ---")
+            print(doc.page_content, "...\n")
         context = '\n'.join(result.page_content for result in results)
+
         return context.strip()
 
 
 class ChatbotService:
     """Core service for generating chatbot responses."""
-    def __init__(self, llm, vectorstore):
-        self.llm = llm
-        self.retrieval_service = RetrievalService(vectorstore)
 
-    def generate_response_stream(self, user_query, session_id, memory):
-        # Get context
-        context = self.retrieval_service.get_context(user_query)
+    @staticmethod
+    def generate_response_stream(user_query, session_id):
+        vectorstore = VectorstoreAdapter.get_vectorstore()
+        context = ContextService.get_context(vectorstore, user_query)
+        memory = MemoryAdapter.get_memory()
+        app = MemoryAdapter.get_app()
 
         # Yield session_id first
         yield f"data: {json.dumps({'session_id': session_id})}\n\n"
 
-        # Create prompt
+        config = {"configurable": {"thread_id": session_id}}
+
         prompt = ChatPromptTemplate.from_messages([
-            ("system", SYSTEM_MESSAGE),
-            ("system", f"""You are a helpful assistant. You have access to:
-
-            1. Document context (product information):
-            {context}
-
-            2. Previous conversation history: {{chat_history}}
-
-            Use both sources to answer the user's question. If you learned something about the user in previous conversations (like their name or preferences), make sure to reference that information when relevant."""),
-            ("human", "{input}")
+            SystemMessagePromptTemplate.from_template(SYSTEM_TEMPLATE),
+            HumanMessagePromptTemplate.from_template(HUMAN_TEMPLATE)
         ])
-
-        # Get chat history
-        chat_history = memory.load_memory_variables({})['chat_history']
 
         # Format messages
         messages = prompt.format_messages(
+            chat_history=memory,
             input=user_query,
-            chat_history=chat_history
+            context=context
         )
 
-        # Stream response
-        full_response = ""
-        for chunk in self.llm.stream(messages):
-            content = chunk.content
-            if content:
-                full_response += content
-                yield f"data: {json.dumps({'chunk': content})}\n\n"
+        system_message, human_message = messages[0], messages[1]
 
-        # Save to memory
-        memory.save_context({"input": user_query}, {"text": full_response})
+        for event in app.stream({"messages": [system_message, human_message]}, config, stream_mode="updates"):
+            ai_response = event['model']['messages'].content
+            for chunk in ai_response:
+                yield f"data: {json.dumps({'chunk': chunk})}\n\n"
 
         # Completion signal
         yield f"data: {json.dumps({'chunk': '[DONE]'})}\n\n"

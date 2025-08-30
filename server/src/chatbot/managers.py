@@ -1,4 +1,5 @@
 import os
+
 from collections import defaultdict
 from langchain_openai import ChatOpenAI
 from langchain_community.document_loaders import PyPDFLoader
@@ -6,6 +7,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain.memory import ConversationBufferMemory
+
 
 class ComponentManager:
     """Singleton-like manager for initializing and accessing shared components."""
@@ -17,7 +19,7 @@ class ComponentManager:
         if cls._instance is None:
             cls._instance = super().__new__(cls)
             cls._instance._initialize()
-            
+
         return cls._instance
 
     def _initialize(self):
@@ -29,8 +31,8 @@ class ComponentManager:
 
         text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=600,
-            chunk_overlap=100,
-            separators=["\n\n", "\n", ". ", " ", ""]
+            chunk_overlap=0,
+            separators=["\n\n", ". ", "!", '\n']
         )
 
         chunks = text_splitter.split_documents(pages)
@@ -45,9 +47,9 @@ class ComponentManager:
 
         self._llm = ChatOpenAI(
             model="gpt-4o-mini",
-            max_tokens=100,
-            temperature=0.5,
-            top_p=0.5,
+            max_tokens=120,
+            temperature=0.1,
+            top_p=0.1,
             frequency_penalty=1.0,
             presence_penalty=1.0,
             streaming=True,
@@ -75,5 +77,5 @@ class MemoryManager:
                 output_key="text",
                 return_messages=False
             )
-            
+
         return cls._memories[session_id]
