@@ -3,7 +3,7 @@ import json
 from langchain.prompts import ChatPromptTemplate
 from langchain.prompts import SystemMessagePromptTemplate, HumanMessagePromptTemplate
 
-from src.chatbot.managers import MemoryAdapter, VectorstoreAdapter
+from src.chatbot.adapters import MemoryAdapter, VectorstoreAdapter
 from src.chatbot.config import HUMAN_TEMPLATE, SYSTEM_TEMPLATE
 
 
