@@ -5,7 +5,7 @@ from langchain.prompts import SystemMessagePromptTemplate, HumanMessagePromptTem
 
 from src.chatbot.adapters import MemoryAdapter, VectorStoreAdapter
 
-from src.chatbot.config import ENHANCED_HUMAN_TEMPLATE, ENHANCED_SYSTEM_TEMPLATE, HUMAN_TEMPLATE, SYSTEM_TEMPLATE
+from src.chatbot.prompts import ENHANCED_HUMAN_TEMPLATE, ENHANCED_SYSTEM_TEMPLATE, HUMAN_TEMPLATE, SYSTEM_TEMPLATE
 
 
 class ContextService:
