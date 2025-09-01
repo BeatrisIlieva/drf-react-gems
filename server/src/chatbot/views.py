@@ -30,6 +30,7 @@ class ChatBotAPIView(APIView):
 
             user_query = serializer.validated_data['message']
             session_id = self._get_or_create_session_id(request)
+            
 
             def generate_response():
                 try:

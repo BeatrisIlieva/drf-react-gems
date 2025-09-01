@@ -9,6 +9,8 @@ from langchain_community.vectorstores import Chroma
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema import Document
 from langchain_openai import OpenAIEmbeddings
+from langchain.prompts import PromptTemplate
+from langchain.schema.runnable import RunnablePassthrough
 
 
 class LLMAdapter:
@@ -69,12 +71,40 @@ class MemoryAdapter:
 
     @classmethod
     def _call_model(cls, state: MessagesState):
-        """
-        For streaming within nodes, you need to accumulate the response
-        and return the complete message
-        """
         llm = LLMAdapter.get_llm()
-        response = llm.invoke(state["messages"])
+        conclusion_customer_pref_prompt = \
+            PromptTemplate(
+                input_variables=['messages'],
+                template='Based on the {messages}\n\n formulate three unique responses. Separate them by a new line. Important: when you recommend products, consider everything about the customers` preferences. Output only one product per recommendation.'
+            )
+
+        customer_pref = conclusion_customer_pref_prompt | llm
+        three_best_answers = customer_pref.invoke({
+            "messages": state["messages"],
+        }).content
+
+        print(three_best_answers)
+
+        recommend_or_ask_prompt = \
+            PromptTemplate(
+                input_variables=['conclusion', 'messages'],
+                template='Based on the - {messages}\n\n - choose the best from the following three responses: \n{conclusion}\n\n. They are separated by a new line. Output only the best response.'
+            )
+
+        chain = (
+            {
+                "conclusion": conclusion_customer_pref_prompt | llm,
+                "messages": RunnablePassthrough(),
+            }
+            | recommend_or_ask_prompt
+            | llm
+        )
+
+        response = chain.invoke({
+            "messages": state["messages"]
+        })
+
+        # response = llm.invoke(state["messages"])
 
         return {"messages": response}
 
@@ -98,16 +128,17 @@ class VectorStoreAdapter:
     def _initialize(cls):
         embedding_model = OpenAIEmbeddings(model="text-embedding-3-small")
 
-        boutique_data_pages = cls._create_pages_from_pdf(
-            'boutique_data.pdf')
-        boutique_data_chunks = cls._create_chunks_using_langchain(
-            boutique_data_pages)
+        # boutique_data_pages = cls._create_pages_from_pdf(
+        #     'boutique_data.pdf')
+        # boutique_data_chunks = cls._create_chunks_using_langchain(
+        #     boutique_data_pages)
 
         product_data_pages = cls._create_pages_from_pdf('product_data.pdf')
         product_data_chunks = cls._create_chunks_using_regex(
             product_data_pages)
 
-        all_chunks = boutique_data_chunks + product_data_chunks
+        # all_chunks = boutique_data_chunks + product_data_chunks
+        all_chunks = product_data_chunks
 
         return cls._create_vector_store(all_chunks, embedding_model)
 

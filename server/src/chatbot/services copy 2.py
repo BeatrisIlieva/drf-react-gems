@@ -1,19 +1,20 @@
 import json
 
-
 from langchain.prompts import ChatPromptTemplate
 from langchain.prompts import SystemMessagePromptTemplate, HumanMessagePromptTemplate
+from langchain_core.messages import HumanMessage, SystemMessage
+from langchain.schema.runnable import RunnablePassthrough
 
 from src.chatbot.adapters import LLMAdapter, MemoryAdapter, VectorStoreAdapter
 
-from src.chatbot.prompts import ENHANCED_HUMAN_MESSAGE, ENHANCED_SYSTEM_MESSAGE, HUMAN_MESSAGE, SYSTEM_MESSAGE
+from src.chatbot.prompts import ENHANCED_SYSTEM_TEMPLATE, ENHANCED_HUMAN_TEMPLATE, SYSTEM_TEMPLATE_GENERATE_THREE_BEST_ANSWERS, SYSTEM_TEMPLATE_CHOOSE_THE_BEST_ANSWER, HUMAN_TEMPLATE_CHOOSE_BEST_ANSWER, HUMAN_TEMPLATE_GENERATE_THREE_BEST_ANSWERS
 
 
 class ContextService:
     """Handles document retrieval and context building."""
 
     @staticmethod
-    def get_context(vectorstore, query, k=4):
+    def get_context(vectorstore, query, k=10):
         results = vectorstore.similarity_search(query, k=k)
         # for i, doc in enumerate(results, 1):
         # print(f"--- Chunk {i} ---")
@@ -41,7 +42,7 @@ class ChatbotService:
         if conversation_state:
             conversation_history = ChatbotService._build_conversation_history(
                 conversation_state, user_query)
-
+            print('history', conversation_history)
             enhanced_query = ChatbotService._create_enhanced_query(
                 conversation_history)
             context = ContextService.get_context(
@@ -52,24 +53,54 @@ class ChatbotService:
                 vector_store, user_query
             )
 
-        prompt = ChatPromptTemplate.from_messages([
-            SystemMessagePromptTemplate.from_template(SYSTEM_MESSAGE),
-            HumanMessagePromptTemplate.from_template(HUMAN_MESSAGE),
+        generate_three_best_answers_prompt = ChatPromptTemplate.from_messages([
+            SystemMessagePromptTemplate.from_template(
+                SYSTEM_TEMPLATE_GENERATE_THREE_BEST_ANSWERS),
+            HumanMessagePromptTemplate.from_template(HUMAN_TEMPLATE_GENERATE_THREE_BEST_ANSWERS),
         ])
 
-        messages = prompt.format_messages(
-            conversation_memory=conversation_memory,
-            input=user_query,
-            context=context
+
+        best_answer_prompt = ChatPromptTemplate.from_messages([
+            SystemMessagePromptTemplate.from_template(
+                SYSTEM_TEMPLATE_CHOOSE_THE_BEST_ANSWER),
+            HumanMessagePromptTemplate.from_template(HUMAN_TEMPLATE_CHOOSE_BEST_ANSWER),
+        ])
+
+        llm = LLMAdapter.get_llm()
+
+        chain = (
+            {
+                "three_best_answers": generate_three_best_answers_prompt | llm,
+                "conversation_memory": RunnablePassthrough(),
+                "input": RunnablePassthrough(),
+                "context": RunnablePassthrough(),
+            }
+            | best_answer_prompt
+            | llm
         )
 
-        system_message, human_message = messages[0], messages[1]
+        best_answer = chain.invoke({
+            "conversation_memory": conversation_memory, "input": user_query, "context": context
+        }).content
+        
+        three_best_answers_response = generate_three_best_answers_prompt | llm
+        three_best_answers = three_best_answers_response.invoke({
+            "conversation_memory": conversation_memory,
+            "input": user_query,
+            # "context": context
+        }).content
 
-        for event in app.stream({"messages": [system_message, human_message]}, config, stream_mode="updates"):
-            ai_response = event['model']['messages'].content
-
-            for chunk in ai_response:
+        # Print the generated three answers
+        print("🔹 Three best answers:\n", three_best_answers)
+        
+        system_message = SystemMessage(content=best_answer)
+        human_message = HumanMessage(content=user_query)
+        
+        for _ in app.stream({"messages": [system_message, human_message]}, config, stream_mode="updates"):
+            for chunk in best_answer:
                 yield f"data: {json.dumps({'chunk': chunk})}\n\n"
+
+        yield f"data: {json.dumps({'chunk': '[DONE]'})}\n\n"
 
     @staticmethod
     def _build_conversation_history(conversation_state, user_query):
@@ -93,8 +124,8 @@ class ChatbotService:
     def _create_enhanced_query(conversation_history):
         prompt = ChatPromptTemplate.from_messages([
             SystemMessagePromptTemplate.from_template(
-                ENHANCED_SYSTEM_MESSAGE),
-            HumanMessagePromptTemplate.from_template(ENHANCED_HUMAN_MESSAGE),
+                ENHANCED_SYSTEM_TEMPLATE),
+            HumanMessagePromptTemplate.from_template(ENHANCED_HUMAN_TEMPLATE),
         ])
 
         messages = prompt.format_messages(
@@ -106,3 +137,4 @@ class ChatbotService:
         enhanced_query = llm.invoke(messages).content
         print('enhanced_query', enhanced_query)
         return enhanced_query
+
