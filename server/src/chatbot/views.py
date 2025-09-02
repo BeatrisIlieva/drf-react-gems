@@ -15,6 +15,8 @@ from src.chatbot.services import ChatbotService
 os.environ["OPENAI_API_KEY"] = settings.OPENAI_API_KEY
 os.environ["LANGSMITH_API_KEY"] = settings.LANGSMITH_API_KEY
 os.environ["LANGSMITH_ENDPOINT"] = settings.LANGSMITH_ENDPOINT
+os.environ["PINECONE_API_KEY"] = settings.PINECONE_API_KEY
+os.environ["PINECONE_INDEX_NAME"] = settings.PINECONE_INDEX_NAME
 os.environ["LANGSMITH_TRACING_V2"] = "true"
 
 

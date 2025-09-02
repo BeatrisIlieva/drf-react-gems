@@ -4,6 +4,7 @@ import json
 from langchain.prompts import ChatPromptTemplate
 from langchain.prompts import SystemMessagePromptTemplate, HumanMessagePromptTemplate
 
+from src.chatbot.utils import build_conversation_history
 from src.chatbot.adapters import LLMAdapter, MemoryAdapter, VectorStoreAdapter
 
 from src.chatbot.prompts import ENHANCED_HUMAN_MESSAGE, ENHANCED_SYSTEM_MESSAGE, HUMAN_MESSAGE, SYSTEM_MESSAGE
@@ -13,11 +14,8 @@ class ContextService:
     """Handles document retrieval and context building."""
 
     @staticmethod
-    def get_context(vectorstore, query, k=4):
+    def get_context(vectorstore, query, k=5):
         results = vectorstore.similarity_search(query, k=k)
-        # for i, doc in enumerate(results, 1):
-        # print(f"--- Chunk {i} ---")
-        # print(doc.page_content, "...\n")
         context = '\n'.join(result.page_content for result in results)
 
         return context.strip()
@@ -39,7 +37,7 @@ class ChatbotService:
 
         conversation_state = conversation_memory.get(config)
         if conversation_state:
-            conversation_history = ChatbotService._build_conversation_history(
+            conversation_history = build_conversation_history(
                 conversation_state, user_query)
 
             enhanced_query = ChatbotService._create_enhanced_query(
@@ -70,24 +68,6 @@ class ChatbotService:
 
             for chunk in ai_response:
                 yield f"data: {json.dumps({'chunk': chunk})}\n\n"
-
-    @staticmethod
-    def _build_conversation_history(conversation_state, user_query):
-        conversation_history = []
-        messages = conversation_state['channel_values']['messages']
-        user_messages = [msg.content.split('INPUT:')[-1].strip()
-                         for msg in messages if msg.__class__.__name__ == 'HumanMessage']
-        assistant_messages = [msg.content.strip()
-                              for msg in messages if msg.__class__.__name__ == 'AIMessage']
-
-        for i in range(len(user_messages)):
-            conversation_history.append(
-                f'{i + 1}. user: {user_messages[i]}, assistant: {assistant_messages[i]};')
-
-        conversation_history.append(
-            f'{len(user_messages) + 1}. user: {user_query};')
-
-        return conversation_history
 
     @staticmethod
     def _create_enhanced_query(conversation_history):

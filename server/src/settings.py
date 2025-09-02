@@ -33,13 +33,22 @@ OPENAI_API_KEY = os.getenv(
     'OPENAI_API_KEY', config('OPENAI_API_KEY')
 )
 
-LANGSMITH_API_KEY=os.getenv(
+PINECONE_API_KEY = os.getenv(
+    'PINECONE_API_KEY', config('PINECONE_API_KEY')
+)
+
+PINECONE_INDEX_NAME = os.getenv(
+    'PINECONE_INDEX_NAME', config('PINECONE_INDEX_NAME')
+)
+
+
+LANGSMITH_API_KEY = os.getenv(
     'LANGSMITH_API_KEY', config('LANGSMITH_API_KEY')
 )
 
-LANGSMITH_TRACING="true"
-LANGSMITH_ENDPOINT="https://api.smith.langchain.com"
-LANGSMITH_PROJECT="pr-impassioned-warfare-85"
+LANGSMITH_TRACING = "true"
+LANGSMITH_ENDPOINT = "https://api.smith.langchain.com"
+LANGSMITH_PROJECT = "pr-impassioned-warfare-85"
 
 # Custom Django applications in this project
 PROJECT_APPS = [

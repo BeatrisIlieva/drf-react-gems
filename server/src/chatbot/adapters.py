@@ -6,11 +6,8 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, MessagesState, StateGraph
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.vectorstores import Chroma
-from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema import Document
 from langchain_openai import OpenAIEmbeddings
-from langchain.prompts import PromptTemplate
-from langchain.schema.runnable import RunnablePassthrough
 
 
 class LLMAdapter:
@@ -71,117 +68,128 @@ class MemoryAdapter:
 
     @classmethod
     def _call_model(cls, state: MessagesState):
+
         llm = LLMAdapter.get_llm()
-        conclusion_customer_pref_prompt = \
-            PromptTemplate(
-                input_variables=['messages'],
-                template='Based on the {messages}\n\n formulate three unique responses. Separate them by a new line. Important: when you recommend products, consider everything about the customers` preferences. Output only one product per recommendation.'
-            )
-
-        customer_pref = conclusion_customer_pref_prompt | llm
-        three_best_answers = customer_pref.invoke({
-            "messages": state["messages"],
-        }).content
-
-        print(three_best_answers)
-
-        recommend_or_ask_prompt = \
-            PromptTemplate(
-                input_variables=['conclusion', 'messages'],
-                template='Based on the - {messages}\n\n - choose the best from the following three responses: \n{conclusion}\n\n. They are separated by a new line. Output only the best response.'
-            )
-
-        chain = (
-            {
-                "conclusion": conclusion_customer_pref_prompt | llm,
-                "messages": RunnablePassthrough(),
-            }
-            | recommend_or_ask_prompt
-            | llm
-        )
-
-        response = chain.invoke({
-            "messages": state["messages"]
-        })
-
-        # response = llm.invoke(state["messages"])
+        response = llm.invoke(state["messages"])
 
         return {"messages": response}
 
 
+# class VectorStoreAdapter:
+#     _instance = None
+
+#     def __new__(cls):
+#         if cls._instance is None:
+#             cls._instance = super().__new__(cls)
+
+#             cls._instance.vectorstore = cls._initialize()
+
+#         return cls._instance
+
+#     @classmethod
+#     def get_vectorstore(cls):
+#         return cls().vectorstore
+
+#     @classmethod
+#     def _initialize(cls):
+#         embedding_model = OpenAIEmbeddings(model="text-embedding-3-small")
+
+#         product_data_pages = cls._create_pages_from_pdf('product_data.pdf')
+#         product_data_chunks = cls._create_chunks_using_regex(
+#             product_data_pages)
+
+#         all_chunks = product_data_chunks
+
+#         return cls._create_vector_store(all_chunks, embedding_model)
+
+#     @classmethod
+#     def _create_pages_from_pdf(cls, document_name):
+#         base_dir = os.path.dirname(os.path.abspath(__file__))
+#         pdf_path = os.path.join(base_dir, "docs", document_name)
+
+#         loader = PyPDFLoader(pdf_path)
+#         pages = loader.load()
+
+#         return pages
+
+#     @classmethod
+#     def _create_chunks_using_regex(cls, pages):
+#         full_text = "\n".join([p.page_content for p in pages])
+
+#         product_blocks = re.findall(
+#             r"Collection:.*?stars;", full_text, re.DOTALL)
+
+#         chunks = [Document(page_content=block)
+#                   for block in product_blocks]
+
+#         return chunks
+
+#     @classmethod
+#     def _create_vector_store(cls, chunks, embedding_model):
+#         vectorstore = Chroma.from_documents(
+#             documents=chunks,
+#             embedding=embedding_model,
+#             persist_directory=None
+#         )
+
+#         return vectorstore
+
+
+import os
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.vectorstores import Pinecone
+from pinecone import Pinecone as PineconeClient
+
+
 class VectorStoreAdapter:
+    """Adapter to connect to existing Pinecone vector store."""
     _instance = None
 
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
-
             cls._instance.vectorstore = cls._initialize()
-
         return cls._instance
 
     @classmethod
     def get_vectorstore(cls):
+        """Get the vector store instance."""
         return cls().vectorstore
 
     @classmethod
     def _initialize(cls):
+        """Initialize connection to existing Pinecone index."""
+        # Validate environment variables
+        api_key = os.getenv("PINECONE_API_KEY")
+        if not api_key:
+            raise ValueError("PINECONE_API_KEY environment variable is required")
+        
+        openai_api_key = os.getenv("OPENAI_API_KEY")
+        if not openai_api_key:
+            raise ValueError("OPENAI_API_KEY environment variable is required")
+        
+        # Get index name
+        index_name = os.getenv("PINECONE_INDEX_NAME", "chatbot-index")
+        
+        # Initialize Pinecone client and check if index exists
+        pc = PineconeClient(api_key=api_key)
+        existing_indexes = pc.list_indexes().names()
+        
+        if index_name not in existing_indexes:
+            raise ValueError(
+                f"Pinecone index '{index_name}' not found. "
+                f"Available indexes: {', '.join(existing_indexes) if existing_indexes else 'None'}. "
+                f"Please run 'python manage.py setup_vectorstore' first."
+            )
+        
+        # Initialize embedding model (same as used in management command)
         embedding_model = OpenAIEmbeddings(model="text-embedding-3-small")
-
-        # boutique_data_pages = cls._create_pages_from_pdf(
-        #     'boutique_data.pdf')
-        # boutique_data_chunks = cls._create_chunks_using_langchain(
-        #     boutique_data_pages)
-
-        product_data_pages = cls._create_pages_from_pdf('product_data.pdf')
-        product_data_chunks = cls._create_chunks_using_regex(
-            product_data_pages)
-
-        # all_chunks = boutique_data_chunks + product_data_chunks
-        all_chunks = product_data_chunks
-
-        return cls._create_vector_store(all_chunks, embedding_model)
-
-    @classmethod
-    def _create_pages_from_pdf(cls, document_name):
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        pdf_path = os.path.join(base_dir, "docs", document_name)
-
-        loader = PyPDFLoader(pdf_path)
-        pages = loader.load()
-
-        return pages
-
-    @classmethod
-    def _create_chunks_using_langchain(cls, pages):
-        text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=500,
-            chunk_overlap=100,
-            separators=["\n\n", ". ", "!", '\n']
-        )
-
-        chunks = text_splitter.split_documents(pages)
-
-        return chunks
-
-    @classmethod
-    def _create_chunks_using_regex(cls, pages):
-        full_text = "\n".join([p.page_content for p in pages])
-
-        product_blocks = re.findall(
-            r"Collection:.*?stars;", full_text, re.DOTALL)
-
-        chunks = [Document(page_content=block)
-                  for block in product_blocks]
-
-        return chunks
-
-    @classmethod
-    def _create_vector_store(cls, chunks, embedding_model):
-        vectorstore = Chroma.from_documents(
-            documents=chunks,
+        
+        # Connect to existing Pinecone vector store
+        vectorstore = Pinecone(
+            index=pc.Index(index_name),
             embedding=embedding_model,
-            persist_directory=None
+            text_key="text"
         )
-
+        
         return vectorstore
