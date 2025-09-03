@@ -11,14 +11,9 @@ from django.db.models import Avg
 
 from rest_framework import serializers
 
+from server.src.products.models.product import Bracelet, DropEarring, Necklace, Pendant, Ring, StudEarring, Watch
 from src.products.serializers.inventory import InventorySerializer
 from src.products.serializers.review import ReviewSerializer
-from src.products.models.product import (
-    Earwear,
-    Neckwear,
-    Fingerwear,
-    Wristwear,
-)
 
 
 class BaseProductListSerializer(serializers.ModelSerializer):
@@ -144,10 +139,13 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
                 )
             return result
 
-        related_products.extend(serialize_products_of_type(Wristwear))
-        related_products.extend(serialize_products_of_type(Earwear))
-        related_products.extend(serialize_products_of_type(Neckwear))
-        related_products.extend(serialize_products_of_type(Fingerwear))
+        related_products.extend(serialize_products_of_type(StudEarring))
+        related_products.extend(serialize_products_of_type(DropEarring))
+        related_products.extend(serialize_products_of_type(Necklace))
+        related_products.extend(serialize_products_of_type(Pendant))
+        related_products.extend(serialize_products_of_type(Ring))
+        related_products.extend(serialize_products_of_type(Bracelet))
+        related_products.extend(serialize_products_of_type(Watch))
 
         return related_products[:6]
 

@@ -2,7 +2,7 @@
 This module contains views for product listing, detail, attribute retrieval, and review management.
 
 It provides:
-- List and detail views for each product type (Earwear, Neckwear, Wristwear, Fingerwear)
+- List and detail views for each product type (Earring, Necklace, Pendant, Bracelet, Watch)
 - Attribute views for product properties like color, metal, stone, and collection
 - Both synchronous and asynchronous endpoints for attribute retrieval
 - Custom permission for reviewer access to all product reviews
@@ -18,24 +18,29 @@ from django.views.decorators.http import require_http_methods
 
 
 from src.common.permissions import IsOrderManager
-from src.products.models.product import Color, Metal, Stone, Collection
+from src.products.models.product import Bracelet, Color, DropEarring, Metal, Necklace, Pendant, Ring, Stone, Collection, StudEarring, Watch
 
 from src.products.serializers.product import (
+    BraceletItemSerializer,
+    BraceletListSerializer,
     CollectionSerializer,
     ColorSerializer,
-    EarwearItemSerializer,
-    FingerwearItemSerializer,
+    DropEarringItemSerializer,
+    DropEarringListSerializer,
     MetalSerializer,
-    NeckwearItemSerializer,
-    NeckwearListSerializer,
-    EarwearListSerializer,
+    NecklaceItemSerializer,
+    NecklaceListSerializer,
+    PendantItemSerializer,
+    PendantListSerializer,
+    RingItemSerializer,
+    RingListSerializer,
     StoneSerializer,
-    WristwearItemSerializer,
-    WristwearListSerializer,
-    FingerwearListSerializer,
+    StudEarringItemSerializer,
+    StudEarringListSerializer,
+    WatchItemSerializer,
+    WatchListSerializer,
 )
 
-from src.products.models import Earwear, Neckwear, Wristwear, Fingerwear
 
 from src.products.views.base import (
     BaseAttributeView,
@@ -52,44 +57,74 @@ from django.contrib.contenttypes.models import ContentType
 from rest_framework import status
 
 
-class EarwearListView(BaseProductListView):
-    model = Earwear
-    serializer_class = EarwearListSerializer
+class StudEarringListView(BaseProductListView):
+    model = StudEarring
+    serializer_class = StudEarringListSerializer
 
 
-class NeckwearListView(BaseProductListView):
-    model = Neckwear
-    serializer_class = NeckwearListSerializer
+class DropEarringListView(BaseProductListView):
+    model = DropEarring
+    serializer_class = DropEarringListSerializer
 
 
-class WristwearListView(BaseProductListView):
-    model = Wristwear
-    serializer_class = WristwearListSerializer
+class NecklaceListView(BaseProductListView):
+    model = Necklace
+    serializer_class = NecklaceListSerializer
 
 
-class FingerwearListView(BaseProductListView):
-    model = Fingerwear
-    serializer_class = FingerwearListSerializer
+class PendantListView(BaseProductListView):
+    model = Pendant
+    serializer_class = PendantListSerializer
 
 
-class EarwearItemView(BaseProductItemView):
-    model = Earwear
-    serializer_class = EarwearItemSerializer
+class BraceletListView(BaseProductListView):
+    model = Bracelet
+    serializer_class = BraceletListSerializer
 
 
-class NeckwearItemView(BaseProductItemView):
-    model = Neckwear
-    serializer_class = NeckwearItemSerializer
+class WatchListView(BaseProductListView):
+    model = Watch
+    serializer_class = WatchListSerializer
 
 
-class WristwearItemView(BaseProductItemView):
-    model = Wristwear
-    serializer_class = WristwearItemSerializer
+class RingListView(BaseProductListView):
+    model = Ring
+    serializer_class = RingListSerializer
 
 
-class FingerwearItemView(BaseProductItemView):
-    model = Fingerwear
-    serializer_class = FingerwearItemSerializer
+class StudEarringItemView(BaseProductItemView):
+    model = StudEarring
+    serializer_class = StudEarringItemSerializer
+
+
+class DropEarringItemView(BaseProductItemView):
+    model = DropEarring
+    serializer_class = DropEarringItemSerializer
+
+
+class NecklaceItemView(BaseProductItemView):
+    model = Necklace
+    serializer_class = NecklaceItemSerializer
+
+
+class PendantItemView(BaseProductItemView):
+    model = Pendant
+    serializer_class = PendantItemSerializer
+
+
+class BraceletItemView(BaseProductItemView):
+    model = Bracelet
+    serializer_class = BraceletItemSerializer
+
+
+class WatchItemView(BaseProductItemView):
+    model = Watch
+    serializer_class = WatchItemSerializer
+
+
+class RingItemView(BaseProductItemView):
+    model = Ring
+    serializer_class = RingItemSerializer
 
 
 class CollectionRetrieveView(BaseAttributeView):
@@ -118,10 +153,13 @@ class ProductAllReviewsView(APIView):
     def get(self, request, category, pk):
 
         model_map = {
-            'earwear': Earwear,
-            'neckwear': Neckwear,
-            'fingerwear': Fingerwear,
-            'wristwear': Wristwear,
+            'drop_earring': DropEarring,
+            'stud_earring': StudEarring,
+            'necklace': Necklace,
+            'pendant': Pendant,
+            'bracelet': Bracelet,
+            'watch': Watch,
+            'ring': Ring,
         }
 
         model = model_map.get(category.lower())

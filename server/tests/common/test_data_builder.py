@@ -8,7 +8,7 @@ from src.products.models import (
     Metal,
     Stone,
     Size,
-    Earwear,
+    DropEarring,
     Inventory,
 )
 
@@ -39,8 +39,8 @@ class TestDataBuilder:
         stone = Stone.objects.create(name='Shared Diamond')
         size = Size.objects.create(name='Shared Medium')
 
-        # Create test earwear product
-        earwear = Earwear.objects.create(
+        # Create test drop_earring product
+        drop_earring = DropEarring.objects.create(
             first_image='https://shared.example.com/image1.jpg',
             second_image='https://shared.example.com/image2.jpg',
             collection=collection,
@@ -49,17 +49,17 @@ class TestDataBuilder:
             stone=stone,
         )
 
-        # Create inventory for the earwear
+        # Create inventory for the drop_earring
         inventory = Inventory.objects.create(
             quantity=10,
             price=100.00,
             size=size,
-            content_type=ContentType.objects.get_for_model(Earwear),
-            object_id=earwear.id,
+            content_type=ContentType.objects.get_for_model(DropEarring),
+            object_id=drop_earring.id,
         )
 
         # Get content types
-        earwear_content_type = ContentType.objects.get_for_model(Earwear)
+        drop_earring_content_type = ContentType.objects.get_for_model(DropEarring)
         inventory_content_type = ContentType.objects.get_for_model(Inventory)
 
         return {
@@ -69,9 +69,9 @@ class TestDataBuilder:
             'metal': metal,
             'stone': stone,
             'size': size,
-            'earwear': earwear,
+            'drop_earring': drop_earring,
             'inventory': inventory,
-            'earwear_content_type': earwear_content_type,
+            'drop_earring_content_type': drop_earring_content_type,
             'inventory_content_type': inventory_content_type,
         }
 
@@ -108,7 +108,7 @@ class TestDataBuilder:
         )
 
         # Create product
-        product = Earwear.objects.create(
+        product = DropEarring.objects.create(
             first_image=f'https://{product_name.lower()}.example.com/image1.jpg',
             second_image=f'https://{product_name.lower()}.example.com/image2.jpg',
             collection=collection,
@@ -122,7 +122,7 @@ class TestDataBuilder:
             quantity=10,
             price=price,
             size=size,
-            content_type=ContentType.objects.get_for_model(Earwear),
+            content_type=ContentType.objects.get_for_model(DropEarring),
             object_id=product.id,
         )
 
@@ -134,7 +134,7 @@ class TestDataBuilder:
             'metal': metal,
             'stone': stone,
             'size': size,
-            'content_type': ContentType.objects.get_for_model(Earwear),
+            'content_type': ContentType.objects.get_for_model(DropEarring),
         }
 
     @classmethod

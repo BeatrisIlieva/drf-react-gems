@@ -5,8 +5,8 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
-from src.products.models.product import Earwear, Neckwear, Fingerwear, Wristwear
 from src.products.models.inventory import Inventory
+from src.products.models.product import Bracelet, DropEarring, Necklace, Pendant, Ring, StudEarring, Watch
 from src.products.models.review import Review
 import os
 
@@ -61,10 +61,13 @@ class Command(BaseCommand):
 
         # Process each product type
         product_models = [
-            ('Earring', Earwear),
-            ('Necklace', Neckwear),
-            ('Ring', Fingerwear),
-            ('Bracelet', Wristwear)
+            ('StudEarring', StudEarring),
+            ('DropEarring', DropEarring),
+            ('Necklace', Necklace),
+            ('Pendant', Pendant)
+            ('Bracelet', Bracelet),
+            ('Watch', Watch),
+            ('Ring', Ring)
         ]
 
         total_products = 0
@@ -119,7 +122,9 @@ class Command(BaseCommand):
                 Color: {product.color.name};
                 Metal: {product.metal.name};
                 Stone: {product.stone.name};
-                Category: {'Watch' if category_name == 'Bracelet' and (product.collection.name == 'Bracelet' or product.collection.name == 'Classics') else category_name};
+                Category: {category_name};
+                Description: {product.description};
+                Target Gender: {product.target_gender};
                 Product ID: {product.id};
                 Image URL: {product.first_image};
                 Sizes: {sizes};

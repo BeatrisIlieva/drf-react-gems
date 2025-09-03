@@ -4,10 +4,6 @@ from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericTabularInline
 
 from src.products.models import (
-    Earwear,
-    Fingerwear,
-    Neckwear,
-    Wristwear,
     Collection,
     Color,
     Metal,
@@ -15,6 +11,7 @@ from src.products.models import (
     Size,
     Inventory,
 )
+from src.products.models.product import Bracelet, DropEarring, Necklace, Pendant, Ring, StudEarring, Watch
 from src.products.models.review import Review
 
 
@@ -139,23 +136,38 @@ class BaseProductAdmin(admin.ModelAdmin):
         )
 
 
-@admin.register(Earwear)
-class EarwearAdmin(BaseProductAdmin):
+@admin.register(StudEarring)
+class StudEarringAdmin(BaseProductAdmin):
     inlines = [InventoryInline]
 
 
-@admin.register(Neckwear)
-class NeckwearAdmin(BaseProductAdmin):
+@admin.register(DropEarring)
+class DropEarringAdmin(BaseProductAdmin):
     inlines = [InventoryInline]
 
 
-@admin.register(Wristwear)
-class WristwearAdmin(BaseProductAdmin):
+@admin.register(Necklace)
+class NecklaceAdmin(BaseProductAdmin):
     inlines = [InventoryInline]
 
 
-@admin.register(Fingerwear)
-class FingerwearAdmin(BaseProductAdmin):
+@admin.register(Pendant)
+class PendantAdmin(BaseProductAdmin):
+    inlines = [InventoryInline]
+
+
+@admin.register(Bracelet)
+class BraceletAdmin(BaseProductAdmin):
+    inlines = [InventoryInline]
+
+
+@admin.register(Watch)
+class WatchAdmin(BaseProductAdmin):
+    inlines = [InventoryInline]
+
+
+@admin.register(Ring)
+class RingAdmin(BaseProductAdmin):
     inlines = [InventoryInline]
 
 

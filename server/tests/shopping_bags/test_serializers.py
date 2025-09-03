@@ -22,7 +22,7 @@ class ShoppingBagSerializerTestCase(TestCase):
         cls.color = cls.shared_data['color']
         cls.metal = cls.shared_data['metal']
         cls.stone = cls.shared_data['stone']
-        cls.earwear = cls.shared_data['earwear']
+        cls.drop_earring = cls.shared_data['drop_earring']
         cls.size = cls.shared_data['size']
         cls.inventory = cls.shared_data['inventory']
 
@@ -45,7 +45,7 @@ class ShoppingBagSerializerTestCase(TestCase):
         # Assert
         self.assertIn('product_info', data)
         self.assertIsNotNone(data['product_info'])
-        # The product_info should contain information about the earwear
+        # The product_info should contain information about the drop_earring
         self.assertIsInstance(data['product_info'], dict)
 
     def test_serializer_total_price_field(self):

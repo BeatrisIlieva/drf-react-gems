@@ -1,14 +1,10 @@
 from pinecone import Pinecone as PineconeClient
 from langchain_pinecone import Pinecone
 import os
-import re
 
 from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, MessagesState, StateGraph
-from langchain_community.document_loaders import PyPDFLoader
-from langchain_community.vectorstores import Chroma
-from langchain.schema import Document
 from langchain_openai import OpenAIEmbeddings
 
 

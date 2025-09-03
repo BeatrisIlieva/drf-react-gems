@@ -3,10 +3,6 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from src.products.models import (
-    Earwear,
-    Neckwear,
-    Fingerwear,
-    Wristwear,
     Collection,
     Color,
     Metal,
@@ -14,6 +10,7 @@ from src.products.models import (
     Size,
     Inventory,
 )
+from src.products.models.product import Bracelet, DropEarring, Necklace, Pendant, Ring, StudEarring, Watch
 from src.products.models.review import Review
 
 
@@ -29,10 +26,13 @@ class Command(BaseCommand):
 
         # === Define model content types ===
         models_permissions = {
-            Earwear: ['add', 'change', 'delete', 'view'],
-            Neckwear: ['add', 'change', 'delete', 'view'],
-            Fingerwear: ['add', 'change', 'delete', 'view'],
-            Wristwear: ['add', 'change', 'delete', 'view'],
+            StudEarring: ['add', 'change', 'delete', 'view'],
+            DropEarring: ['add', 'change', 'delete', 'view'],
+            Necklace: ['add', 'change', 'delete', 'view'],
+            Pendant: ['add', 'change', 'delete', 'view'],
+            Bracelet: ['add', 'change', 'delete', 'view'],
+            Watch: ['add', 'change', 'delete', 'view'],
+            Ring: ['add', 'change', 'delete', 'view'],
             Inventory: ['add', 'change', 'delete', 'view'],
             Size: ['add', 'change', 'delete', 'view'],
             Collection: ['add', 'change', 'delete', 'view'],

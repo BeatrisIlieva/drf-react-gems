@@ -4,7 +4,7 @@ import json
 from langchain.prompts import ChatPromptTemplate
 from langchain.prompts import SystemMessagePromptTemplate, HumanMessagePromptTemplate
 
-from src.chatbot.utils import build_conversation_history, filter_chunk_with_most_keywords
+from src.chatbot.utils import build_conversation_history
 from src.chatbot.adapters import LLMAdapter, MemoryAdapter, VectorStoreAdapter
 
 from src.chatbot.prompts import ENHANCED_HUMAN_MESSAGE, ENHANCED_SYSTEM_MESSAGE, HUMAN_MESSAGE, SYSTEM_MESSAGE
@@ -14,12 +14,11 @@ class ContextService:
     """Handles document retrieval and context building."""
 
     @staticmethod
-    def get_context(vectorstore, query, k=28):
+    def get_context(vectorstore, query, k=8):
         results = vectorstore.similarity_search(query, k=k)
         context = '\n'.join(result.page_content for result in results)
 
-        return results
-        # return context.strip()
+        return context.strip()
 
 
 class ChatbotService:
@@ -35,8 +34,6 @@ class ChatbotService:
         yield f"data: {json.dumps({'session_id': session_id})}\n\n"
 
         config = {"configurable": {"thread_id": session_id}}
-        
-        keywords = None
 
         conversation_state = conversation_memory.get(config)
         if conversation_state:
@@ -45,7 +42,6 @@ class ChatbotService:
 
             enhanced_query = ChatbotService._create_enhanced_query(
                 conversation_history)
-            keywords = enhanced_query
             context = ContextService.get_context(
                 vector_store, enhanced_query)
 
@@ -53,10 +49,6 @@ class ChatbotService:
             context = ContextService.get_context(
                 vector_store, user_query
             )
-            
-        most_relevant_product = filter_chunk_with_most_keywords(keywords if keywords else user_query, context)
-        
-        print(most_relevant_product)
 
         prompt = ChatPromptTemplate.from_messages([
             SystemMessagePromptTemplate.from_template(SYSTEM_MESSAGE),
@@ -66,7 +58,7 @@ class ChatbotService:
         messages = prompt.format_messages(
             conversation_memory=conversation_memory,
             input=user_query,
-            context=most_relevant_product.page_content
+            context=context
         )
 
         system_message, human_message = messages[0], messages[1]

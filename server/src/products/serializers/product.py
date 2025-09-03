@@ -2,21 +2,24 @@
 This module contains concrete serializers for each product type and related attributes.
 
 It provides:
-- List and detail serializers for each product type (Earwear, Neckwear, Wristwear, Fingerwear)
+- List and detail serializers for each product type (Earring, Necklace, Pendant, Bracelet, Watch)
 - Attribute serializers for product properties like color, metal, stone, and collection
 - All serializers are based on shared base serializers for consistency and reuse
 - Used for product list/detail API endpoints and for serializing product attributes
 """
 
 from src.products.models.product import (
+    Bracelet,
     Color,
-    Earwear,
+    DropEarring,
     Metal,
-    Neckwear,
+    Necklace,
+    Pendant,
+    Ring,
     Stone,
-    Wristwear,
-    Fingerwear,
     Collection,
+    StudEarring,
+    Watch,
 )
 
 from src.products.serializers.base import (
@@ -26,44 +29,74 @@ from src.products.serializers.base import (
 )
 
 
-class EarwearListSerializer(BaseProductListSerializer):
+class StudEarringListSerializer(BaseProductListSerializer):
     class Meta(BaseProductListSerializer.Meta):
-        model = Earwear
+        model = StudEarring
 
 
-class NeckwearListSerializer(BaseProductListSerializer):
+class DropEarringListSerializer(BaseProductListSerializer):
     class Meta(BaseProductListSerializer.Meta):
-        model = Neckwear
+        model = DropEarring
 
 
-class WristwearListSerializer(BaseProductListSerializer):
+class NecklaceListSerializer(BaseProductListSerializer):
     class Meta(BaseProductListSerializer.Meta):
-        model = Wristwear
+        model = Necklace
 
 
-class FingerwearListSerializer(BaseProductListSerializer):
+class PendantListSerializer(BaseProductListSerializer):
     class Meta(BaseProductListSerializer.Meta):
-        model = Fingerwear
+        model = Pendant
 
 
-class EarwearItemSerializer(BaseProductItemSerializer):
+class BraceletListSerializer(BaseProductListSerializer):
+    class Meta(BaseProductListSerializer.Meta):
+        model = Bracelet
+
+
+class RingListSerializer(BaseProductListSerializer):
+    class Meta(BaseProductListSerializer.Meta):
+        model = Ring
+
+
+class WatchListSerializer(BaseProductListSerializer):
+    class Meta(BaseProductListSerializer.Meta):
+        model = Watch
+
+
+class StudEarringItemSerializer(BaseProductItemSerializer):
     class Meta(BaseProductItemSerializer.Meta):
-        model = Earwear
+        model = StudEarring
 
 
-class NeckwearItemSerializer(BaseProductItemSerializer):
+class BraceletItemSerializer(BaseProductItemSerializer):
     class Meta(BaseProductItemSerializer.Meta):
-        model = Neckwear
+        model = Bracelet
 
 
-class WristwearItemSerializer(BaseProductItemSerializer):
+class WatchItemSerializer(BaseProductItemSerializer):
     class Meta(BaseProductItemSerializer.Meta):
-        model = Wristwear
+        model = Watch
 
 
-class FingerwearItemSerializer(BaseProductItemSerializer):
+class RingItemSerializer(BaseProductItemSerializer):
     class Meta(BaseProductItemSerializer.Meta):
-        model = Fingerwear
+        model = Ring
+
+
+class DropEarringItemSerializer(BaseProductItemSerializer):
+    class Meta(BaseProductItemSerializer.Meta):
+        model = DropEarring
+
+
+class NecklaceItemSerializer(BaseProductItemSerializer):
+    class Meta(BaseProductItemSerializer.Meta):
+        model = Necklace
+
+
+class PendantItemSerializer(BaseProductItemSerializer):
+    class Meta(BaseProductItemSerializer.Meta):
+        model = Pendant
 
 
 class CollectionSerializer(BaseAttributesSerializer):

@@ -8,12 +8,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
 
 from src.products.models import (
-    Earwear,
-    Fingerwear,
-    Neckwear,
     Review,
-    Wristwear,
 )
+from src.products.models.product import Bracelet, DropEarring, Necklace, Pendant, Ring, StudEarring, Watch
 
 
 UserModel = get_user_model()
@@ -174,21 +171,32 @@ class Command(BaseCommand):
         return created_users
 
     def create_fake_reviews(self, users):
-        fingerwears = Fingerwear.objects.all()
-        wristwears = Wristwear.objects.all()
-        neckwears = Neckwear.objects.all()
-        earwears = Earwear.objects.all()
+        stud_earrings = StudEarring.objects.all()
+        drop_earrings = DropEarring.objects.all()
+        necklaces = Necklace.objects.all()
+        pendants = Pendant.objects.all()
+        bracelets = Bracelet.objects.all()
+        watches = Watch.objects.all()
+        rings = Ring.objects.all()
 
-        fingerwear_content_type = ContentType.objects.get_for_model(Fingerwear)
-        wristwears_content_type = ContentType.objects.get_for_model(Wristwear)
-        neckwears_content_type = ContentType.objects.get_for_model(Neckwear)
-        earwears_content_type = ContentType.objects.get_for_model(Earwear)
+        stud_earrings_content_type = ContentType.objects.get_for_model(
+            StudEarring)
+        drop_earrings_content_type = ContentType.objects.get_for_model(
+            DropEarring)
+        necklaces_content_type = ContentType.objects.get_for_model(Necklace)
+        pendants_content_type = ContentType.objects.get_for_model(Pendant)
+        bracelets_content_type = ContentType.objects.get_for_model(Bracelet)
+        watches_content_type = ContentType.objects.get_for_model(Watch)
+        rings_content_type = ContentType.objects.get_for_model(Ring)
 
         all_products_with_their_content_types = [
-            [fingerwears, fingerwear_content_type],
-            [wristwears, wristwears_content_type],
-            [neckwears, neckwears_content_type],
-            [earwears, earwears_content_type],
+            [stud_earrings, stud_earrings_content_type],
+            [drop_earrings, drop_earrings_content_type],
+            [necklaces, necklaces_content_type],
+            [pendants, pendants_content_type],
+            [bracelets, bracelets_content_type],
+            [watches, watches_content_type],
+            [rings, rings_content_type],
         ]
 
         for element in all_products_with_their_content_types:
