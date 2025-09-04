@@ -30,7 +30,9 @@ def create_product(product_data):
 
     first_image = product_data['first_image']
     second_image = product_data['second_image']
-    
+    third_image = product_data['third_image']
+    fourth_image = product_data['fourth_image']
+
     description = product_data['description']
     target_gender = product_data['target_gender']
 
@@ -48,6 +50,8 @@ def create_product(product_data):
     product = model_class.objects.create(
         first_image=first_image,
         second_image=second_image,
+        third_image=third_image,
+        fourth_image=fourth_image,
         collection=collection,
         metal=metal,
         color=color,

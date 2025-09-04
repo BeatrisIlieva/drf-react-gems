@@ -24,6 +24,14 @@ class BaseProduct(models.Model):
         unique=True,
     )
 
+    third_image = models.URLField(
+        unique=True,
+    )
+
+    fourth_image = models.URLField(
+        unique=True,
+    )
+
     created_at = models.DateTimeField(
         auto_now_add=True,
     )
