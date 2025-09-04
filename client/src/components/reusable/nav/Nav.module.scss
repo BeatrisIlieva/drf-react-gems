@@ -5,13 +5,14 @@
 
     & > ul {
         display: flex;
-        gap: 3em;
+        gap: 2.5em;
 
         @media (max-width: 900px) {
             gap: 1.5em;
         }
 
         & li a {
+            font-size: 0.94em;
             text-transform: uppercase;
             opacity: 0.6;
             font-weight: 500;

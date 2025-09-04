@@ -19,6 +19,15 @@ export const Chatbot = () => {
 
     const assistantMessageRef = useRef('');
 
+    const startConversationHandler = () => {
+            const pendingAiMessage = {
+            role: 'assistant',
+            content: 'Hi, I’m the DRF React Gems Virtual Advisor. I’m an AI-powered chatbot that can answer questions and make product recommendations.',
+            timestamp: new Date().toLocaleTimeString(),
+        };
+        setMessages(prev => [...prev, pendingAiMessage]);
+    }
+
     const sendMessageHandler = async () => {
         if (!message.trim()) {
             setError('Please enter a message');
@@ -154,19 +163,9 @@ export const Chatbot = () => {
                         <div className={styles['time-wrapper']}>
                             <span>Today</span>
                             <span></span>
-                            {/* {msg.timestamp} */}
+                            {messages[0].timestamp}
                         </div>
                         <div className={styles['wrapper']}>
-                            <div>
-                                <div className={styles['thumbnail']}>
-                                    <img src="/logo.webp" alt="logo" />
-                                </div>
-                                <p>
-                                    Hi, I’m the DRF React Gems Virtual Advisor. I’m an AI-powered
-                                    chatbot that can answer questions and make product
-                                    recommendations.
-                                </p>
-                            </div>
                             {messages.map((msg, index) => (
                                 <>
                                     {msg.role === 'user' ? (
@@ -236,7 +235,7 @@ export const Chatbot = () => {
 
                     <Button
                         title="Chat Now"
-                        // callbackHandler
+                        callbackHandler={startConversationHandler}
                         color="black"
                     />
                 </div>

@@ -90,7 +90,7 @@ function App() {
                     </Route>
                     <Route path="*" element={<Page404 />} />
                 </Routes>
-                <Chatbot/>
+                {/* <Chatbot/> */}
             </main>
             <MiniBagPopup isOpen={isMiniBagPopupOpen} onClose={toggleMiniBagPopupOpen} />
             <ScrollToTop />

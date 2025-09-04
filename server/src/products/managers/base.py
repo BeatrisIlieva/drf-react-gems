@@ -72,6 +72,9 @@ class BaseProductManager(models.Manager):
                 'collection__name',
                 'first_image',
                 'second_image',
+                'third_image',
+                'fourth_image',
+                'description',
                 'color__name',
                 'stone__name',
                 'metal__name',
@@ -91,6 +94,8 @@ class BaseProductManager(models.Manager):
                 'id',
             )
         )
+        
+        
 
 
 class BaseAttributesManager(models.Manager):

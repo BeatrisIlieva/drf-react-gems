@@ -11,7 +11,7 @@ from django.db.models import Avg
 
 from rest_framework import serializers
 
-from server.src.products.models.product import Bracelet, DropEarring, Necklace, Pendant, Ring, StudEarring, Watch
+from src.products.models.product import Bracelet, DropEarring, Necklace, Pendant, Ring, StudEarring, Watch
 from src.products.serializers.inventory import InventorySerializer
 from src.products.serializers.review import ReviewSerializer
 
@@ -40,6 +40,9 @@ class BaseProductListSerializer(serializers.ModelSerializer):
             'id',
             'first_image',
             'second_image',
+            'third_image',
+            'fourth_image',
+            'description',
             'collection__name',
             'color__name',
             'stone__name',

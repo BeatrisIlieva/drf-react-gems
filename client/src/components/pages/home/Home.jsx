@@ -27,6 +27,18 @@ export const Home = () => {
                 </div>
                 <div className={styles['thumbnail']}>
                     <img
+                        src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1756919186/featuredd_midnightdatemoonphaseautomatic42mm_kuzd55.png"
+                        alt="hero-image"
+                    />
+                </div>
+                <div className={styles['thumbnail']}>
+                    <img
+                        src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1756919187/emerald_33mm-18k_rose_gold-quartz-emeqhd33rr002-fifty_b_hfe5d1.jpg"
+                        alt="hero-image"
+                    />
+                </div>
+                <div className={styles['thumbnail']}>
+                    <img
                         src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1745847416/sbs_pdp_lotuscluster_mrnuph.jpg"
                         alt="hero-image"
                     />

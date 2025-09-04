@@ -14,7 +14,7 @@ products_data = [
         'target_gender': 'F',
     },
     {
-        'category': 'Earring',
+        'category': 'Stud Earring',
         'collection': 'Berry',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115870/7_oxmuys.webp',
@@ -27,7 +27,7 @@ products_data = [
         'target_gender': 'F',
     },
     {
-        'category': 'Earring',
+        'category': 'Stud Earring',
         'collection': 'Berry',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115868/11_ntbstg.webp',
@@ -406,7 +406,7 @@ products_data = [
         'target_gender': 'F',
     },
     {
-        'category': 'Earring',
+        'category': 'Stud Earring',
         'collection': 'Gerbera',
         'material': 'Rose Gold',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115890/23_riwfc0.webp',
@@ -419,7 +419,7 @@ products_data = [
         'target_gender': 'F',
     },
     {
-        'category': 'Earring',
+        'category': 'Stud Earring',
         'collection': 'Gerbera',
         'material': 'Yellow Gold',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115898/21_o5ytzr.webp',
@@ -432,7 +432,7 @@ products_data = [
         'target_gender': 'F',
     },
     {
-        'category': 'Earring',
+        'category': 'Stud Earring',
         'collection': 'Gerbera',
         'material': 'Platinum',
         'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746115890/19_yq40yi.webp',

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRF React Gems - Product Catalog Download</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #333;
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+            font-size: 1rem;
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .download-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .status {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        
+        .status.loading {
+            background: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #bbdefb;
+        }
+        
+        .status.success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+        
+        .status.error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #1976d2;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .info-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .info-card h3 {
+            margin: 0 0 0.5rem 0;
+            color: #333;
+            font-size: 1.1rem;
+        }
+        
+        .info-card p {
+            margin: 0;
+            color: #666;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="logo">DRF React Gems</h1>
+        <p class="subtitle">Luxury Jewelry Collection</p>
+        
+        <div class="description">
+            Generate and download a comprehensive PDF catalog containing all products currently in the database, 
+            including detailed information about collections, pricing, inventory, and customer reviews.
+        </div>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>📊 Complete Catalog</h3>
+                <p>All product categories: Earwear, Neckwear, Fingerwear, and Wristwear</p>
+            </div>
+            <div class="info-card">
+                <h3>💎 Product Details</h3>
+                <p>Collections, materials, stones, pricing, and availability</p>
+            </div>
+            <div class="info-card">
+                <h3>⭐ Customer Reviews</h3>
+                <p>All approved customer reviews and ratings</p>
+            </div>
+            <div class="info-card">
+                <h3>🖼️ Product Images</h3>
+                <p>High-quality product images included in the catalog</p>
+            </div>
+        </div>
+        
+        <button id="downloadBtn" class="download-btn" onclick="downloadCatalog()">
+            Generate & Download Catalog
+        </button>
+        
+        <p style="margin-top: 1rem; color: #666; font-size: 0.9rem;">
+            💡 <strong>Tip:</strong> To save to Desktop, set your browser to "Ask where to save files" in download settings,
+            or the file will go to your default Downloads folder.
+        </p>
+        
+        <div id="status" class="status hidden"></div>
+    </div>
+
+    <script>
+        function downloadCatalog() {
+            const btn = document.getElementById('downloadBtn');
+            const status = document.getElementById('status');
+            
+            // Show loading state
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span>Generating PDF...';
+            status.className = 'status loading';
+            status.textContent = 'Generating catalog... This may take a few moments.';
+            status.classList.remove('hidden');
+            
+            // Create form for POST request
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{% url "generate_catalog" %}';
+            form.style.display = 'none';
+            
+            // Add CSRF token
+            const csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = 'csrfmiddlewaretoken';
+            csrfInput.value = '{{ csrf_token }}';
+            form.appendChild(csrfInput);
+            
+            document.body.appendChild(form);
+            
+            // Submit form via fetch for better error handling
+            const formData = new FormData(form);
+            
+            fetch('{% url "generate_catalog" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Success - trigger download
+                    return response.blob().then(blob => {
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.style.display = 'none';
+                        a.href = url;
+                        a.download = 'product_catalog.pdf';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        
+                        // Show success message
+                        status.className = 'status success';
+                        status.textContent = 'Catalog generated successfully! Download should start automatically.';
+                        
+                        // Reset button after delay
+                        setTimeout(() => {
+                            btn.disabled = false;
+                            btn.textContent = 'Generate & Download Catalog';
+                            status.classList.add('hidden');
+                        }, 3000);
+                    });
+                } else {
+                    throw new Error('Failed to generate catalog');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                status.className = 'status error';
+                status.textContent = 'Error generating catalog. Please try again.';
+                
+                // Reset button
+                btn.disabled = false;
+                btn.textContent = 'Generate & Download Catalog';
+            })
+            .finally(() => {
+                document.body.removeChild(form);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -98,7 +98,7 @@ urlpatterns = [
         ),
     ),
     path(
-        'watchs/',
+        'watches/',
         include(
             [
                 path('', WatchListView.as_view(), name='watch-list'),

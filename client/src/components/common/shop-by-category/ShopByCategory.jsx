@@ -4,10 +4,14 @@ import styles from './ShopByCategory.module.scss';
 
 export const ShopByCategory = () => {
     const imagesByCategories = {
-        Wristwear: 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748166/1_ak7nga.jpg',
-        Earwear: 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748166/2_kg1ckf.jpg',
-        Neckwear: 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748165/3_ukmmmx.avif',
-        Fingerwear: 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748166/4_tmk4cj.avif',
+        Braclet: 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748166/1_ak7nga.jpg',
+        'Stud Earring':
+            'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748166/2_kg1ckf.jpg',
+        Watche: 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756919034/sbs_latestmodelpage_nmtrx2.jpg',
+        'Drop Earring':
+            'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757008022/EdJqsYLXoAEsxjB_ax4pdf.jpg',
+        Pendant: 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748165/3_ukmmmx.avif',
+        Ring: 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1745748166/4_tmk4cj.avif',
     };
 
     return (
