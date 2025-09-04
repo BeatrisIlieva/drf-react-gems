@@ -5,6 +5,7 @@
         text-transform: uppercase;
         margin-left: 4em;
         margin-top: 0.5em;
+        font-size: 2em;
         @include anim.animate-fade-in(0.8s);
 
         @media (max-width: 1000px) {
@@ -15,7 +16,7 @@
 
     .links {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(6, 1fr);
         gap: 0.5em;
         margin-bottom: 1em;
 
@@ -24,6 +25,10 @@
         }
 
         @media (max-width: 1000px) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        @media (max-width: 450px) {
             grid-template-columns: repeat(2, 1fr);
         }
     }
