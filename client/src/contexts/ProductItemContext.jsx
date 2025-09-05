@@ -3,6 +3,9 @@ import { createContext, useContext } from 'react';
 export const ProductItemContext = createContext({
     firstImage: '',
     secondImage: '',
+    thirdImage: '',
+    fourthImage: '',
+    description: '',
     averageRating: 0,
     reviews: [],
     productId: 0,

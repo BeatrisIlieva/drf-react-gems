@@ -3,16 +3,16 @@ import { useProductItemContext } from '../../../../../../contexts/ProductItemCon
 import styles from './Images.module.scss';
 
 export const Images = () => {
-    const { firstImage, secondImage } = useProductItemContext();
+    const { firstImage, secondImage, thirdImage, fourthImage } = useProductItemContext();
 
     return (
         <section className={styles['images']}>
             <div className={styles['thumbnail']}>
-                <img src={firstImage} alt="Product First Image" />
+                <img src={thirdImage} alt="Product First Image" />
             </div>
 
             <div className={styles['thumbnail']}>
-                <img src={secondImage} alt="Product Second Image" />
+                <img src={fourthImage} alt="Product Second Image" />
             </div>
         </section>
     );

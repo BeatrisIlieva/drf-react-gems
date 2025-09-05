@@ -8,7 +8,7 @@ from rest_framework.test import APIClient
 from src.products.models.product import (
     Collection,
     Color,
-    DropEarring,
+    Earring,
     Metal,
     Stone,
 )
@@ -40,7 +40,7 @@ class TestApproveReview(APITestCase):
         self.metal = Metal.objects.create(name='Test metal')
         self.stone = Stone.objects.create(name='Test stone')
 
-        self.drop_earring = DropEarring.objects.create(
+        self.earring = Earring.objects.create(
             first_image='https://shared.example.com/image1.jpg',
             second_image='https://shared.example.com/image2.jpg',
             collection=self.collection,
@@ -49,13 +49,13 @@ class TestApproveReview(APITestCase):
             stone=self.stone,
         )
 
-        self.drop_earring_content_type = ContentType.objects.get_for_model(DropEarring)
+        self.earring_content_type = ContentType.objects.get_for_model(Earring)
 
         self.review = Review.objects.create(
             rating=5,
             comment='Some text',
-            content_type=self.drop_earring_content_type,
-            object_id=self.drop_earring.pk,
+            content_type=self.earring_content_type,
+            object_id=self.earring.pk,
             user=self.user,
         )
 

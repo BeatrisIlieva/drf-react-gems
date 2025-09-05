@@ -11,7 +11,7 @@ from src.products.models import (
     Size,
     Inventory,
 )
-from src.products.models.product import Bracelet, DropEarring, Necklace, Pendant, Ring, StudEarring, Watch
+from src.products.models.product import Bracelet, Earring, Necklace, Pendant, Ring, Watch
 from src.products.models.review import Review
 
 
@@ -136,13 +136,9 @@ class BaseProductAdmin(admin.ModelAdmin):
         )
 
 
-@admin.register(StudEarring)
-class StudEarringAdmin(BaseProductAdmin):
-    inlines = [InventoryInline]
 
-
-@admin.register(DropEarring)
-class DropEarringAdmin(BaseProductAdmin):
+@admin.register(Earring)
+class EarringAdmin(BaseProductAdmin):
     inlines = [InventoryInline]
 
 

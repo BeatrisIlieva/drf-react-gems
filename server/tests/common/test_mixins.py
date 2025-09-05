@@ -2,7 +2,7 @@ from django.test import TestCase
 from unittest.mock import Mock
 
 from src.common.mixins import InventoryMixin
-from src.products.models.product import DropEarring
+from src.products.models.product import Earring
 from src.products.models.inventory import Inventory
 
 
@@ -14,7 +14,7 @@ class InventoryMixinTest(TestCase):
         for testing the mixin functionality.
         """
         # Create mock product with all required attributes
-        self.mock_product = Mock(spec=DropEarring)
+        self.mock_product = Mock(spec=Earring)
         self.mock_product.id = 1
         self.mock_product.collection = "Summer Collection"
         self.mock_product.first_image = "https://example.com/image1.jpg"

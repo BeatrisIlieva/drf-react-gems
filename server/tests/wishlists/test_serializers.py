@@ -22,16 +22,16 @@ class WishlistSerializerTestCase(TestCase):
         cls.color = cls.shared_data['color']
         cls.metal = cls.shared_data['metal']
         cls.stone = cls.shared_data['stone']
-        cls.drop_earring = cls.shared_data['drop_earring']
+        cls.earring = cls.shared_data['earring']
         cls.size = cls.shared_data['size']
         cls.inventory = cls.shared_data['inventory']
-        cls.content_type = cls.shared_data['drop_earring_content_type']
+        cls.content_type = cls.shared_data['earring_content_type']
 
         # Create test wishlist item
         cls.wishlist_item = Wishlist.objects.create(
             user=cls.user,
             content_type=cls.content_type,
-            object_id=cls.drop_earring.id,
+            object_id=cls.earring.id,
         )
 
     def test_serializer_product_info_field(self):
@@ -48,7 +48,7 @@ class WishlistSerializerTestCase(TestCase):
         # Assert
         self.assertIn('product_info', data)
         self.assertIsNotNone(data['product_info'])
-        # The product_info should contain information about the drop_earring
+        # The product_info should contain information about the earring
         self.assertIsInstance(data['product_info'], dict)
 
     def test_get_product_info_method(self):

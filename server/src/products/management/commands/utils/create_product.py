@@ -9,11 +9,10 @@ from src.products.models import (
     Size,
     Inventory,
 )
-from src.products.models.product import Bracelet, DropEarring, Necklace, Pendant, Ring, StudEarring, Watch
+from src.products.models.product import Bracelet, Earring, Necklace, Pendant, Ring, Watch
 
 categories_mapper = {
-    'Drop Earring': DropEarring,
-    'Stud Earring': StudEarring,
+    'Earring': Earring,
     'Necklace': Necklace,
     'Pendant': Pendant,
     'Bracelet': Bracelet,

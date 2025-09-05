@@ -10,11 +10,7 @@ from src.products.managers.base import (
 )
 
 
-class StudEarringManager(BaseProductManager):
-    pass
-
-
-class DropEarringManager(BaseProductManager):
+class EarringManager(BaseProductManager):
     pass
 
 

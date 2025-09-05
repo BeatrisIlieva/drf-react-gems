@@ -9,7 +9,7 @@ from src.orders.models import Order
 from src.orders.choices import OrderStatusChoices
 from src.orders.constants import OrderStatusMessages
 from src.products.models import (
-    DropEarring,
+    Earring,
     Collection,
     Color,
     Metal,
@@ -37,7 +37,7 @@ class OrderViewSetTest(TestCase):
         self.metal = Metal.objects.create(name='Test Metal')
         self.stone = Stone.objects.create(name='Test Stone')
         self.size = Size.objects.create(name='Test Size')
-        self.product = DropEarring.objects.create(
+        self.product = Earring.objects.create(
             first_image='http://example.com/img1.jpg',
             second_image='http://example.com/img2.jpg',
             collection=self.collection,

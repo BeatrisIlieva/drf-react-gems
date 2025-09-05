@@ -10,7 +10,7 @@ from src.products.models import (
     Size,
     Inventory,
 )
-from src.products.models.product import Bracelet, DropEarring, Necklace, Pendant, Ring, StudEarring, Watch
+from src.products.models.product import Bracelet, Earring, Necklace, Pendant, Ring, Watch
 from src.products.models.review import Review
 
 
@@ -26,8 +26,7 @@ class Command(BaseCommand):
 
         # === Define model content types ===
         models_permissions = {
-            StudEarring: ['add', 'change', 'delete', 'view'],
-            DropEarring: ['add', 'change', 'delete', 'view'],
+            Earring: ['add', 'change', 'delete', 'view'],
             Necklace: ['add', 'change', 'delete', 'view'],
             Pendant: ['add', 'change', 'delete', 'view'],
             Bracelet: ['add', 'change', 'delete', 'view'],

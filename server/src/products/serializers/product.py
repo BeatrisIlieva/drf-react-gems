@@ -11,14 +11,13 @@ It provides:
 from src.products.models.product import (
     Bracelet,
     Color,
-    DropEarring,
+    Earring,
     Metal,
     Necklace,
     Pendant,
     Ring,
     Stone,
     Collection,
-    StudEarring,
     Watch,
 )
 
@@ -29,14 +28,9 @@ from src.products.serializers.base import (
 )
 
 
-class StudEarringListSerializer(BaseProductListSerializer):
+class EarringListSerializer(BaseProductListSerializer):
     class Meta(BaseProductListSerializer.Meta):
-        model = StudEarring
-
-
-class DropEarringListSerializer(BaseProductListSerializer):
-    class Meta(BaseProductListSerializer.Meta):
-        model = DropEarring
+        model = Earring
 
 
 class NecklaceListSerializer(BaseProductListSerializer):
@@ -64,11 +58,6 @@ class WatchListSerializer(BaseProductListSerializer):
         model = Watch
 
 
-class StudEarringItemSerializer(BaseProductItemSerializer):
-    class Meta(BaseProductItemSerializer.Meta):
-        model = StudEarring
-
-
 class BraceletItemSerializer(BaseProductItemSerializer):
     class Meta(BaseProductItemSerializer.Meta):
         model = Bracelet
@@ -84,9 +73,9 @@ class RingItemSerializer(BaseProductItemSerializer):
         model = Ring
 
 
-class DropEarringItemSerializer(BaseProductItemSerializer):
+class EarringItemSerializer(BaseProductItemSerializer):
     class Meta(BaseProductItemSerializer.Meta):
-        model = DropEarring
+        model = Earring
 
 
 class NecklaceItemSerializer(BaseProductItemSerializer):

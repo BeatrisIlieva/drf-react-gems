@@ -5,7 +5,7 @@ from rest_framework.test import APIClient
 
 from src.wishlists.models import Wishlist
 from src.wishlists.views import WishlistViewSet
-from src.products.models import DropEarring, Inventory
+from src.products.models import Earring, Inventory
 from tests.common.test_data_builder import TestDataBuilder
 
 UserModel = get_user_model()
@@ -29,8 +29,8 @@ class WishlistViewSetTestCase(TestCase):
         self.stone = product_data['stone']
         self.size = product_data['size']
 
-        # Create test drop_earring product
-        self.drop_earring = DropEarring.objects.create(
+        # Create test earring product
+        self.earring = Earring.objects.create(
             first_image='https://example.com/image1.jpg',
             second_image='https://example.com/image2.jpg',
             collection=self.collection,
@@ -39,17 +39,17 @@ class WishlistViewSetTestCase(TestCase):
             stone=self.stone,
         )
 
-        # Create inventory for the drop_earring
+        # Create inventory for the earring
         self.inventory = Inventory.objects.create(
             quantity=10,
             price=100.00,
             size=self.size,
-            content_type=ContentType.objects.get_for_model(DropEarring),
-            object_id=self.drop_earring.id,
+            content_type=ContentType.objects.get_for_model(Earring),
+            object_id=self.earring.id,
         )
 
-        # Get content type for drop_earring
-        self.content_type = ContentType.objects.get_for_model(DropEarring)
+        # Get content type for earring
+        self.content_type = ContentType.objects.get_for_model(Earring)
 
         # Create API client
         self.client = APIClient()
@@ -64,7 +64,7 @@ class WishlistViewSetTestCase(TestCase):
         wishlist_item = Wishlist.objects.create(
             user=self.user,
             content_type=self.content_type,
-            object_id=self.drop_earring.id,
+            object_id=self.earring.id,
         )
 
         request = self.factory.get('/api/wishlists/')

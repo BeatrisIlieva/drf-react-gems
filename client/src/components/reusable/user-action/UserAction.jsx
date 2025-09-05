@@ -29,6 +29,7 @@ export const UserAction = ({
         notSelectedSizeError,
         productId,
         selectedSize,
+        description,
     } = useProductItemContext();
 
     const { formattedMinPrice, formattedMaxPrice, selectedInventoryItem } = usePriceCalculation(
@@ -66,6 +67,8 @@ export const UserAction = ({
                 text={`${colorName} ${stoneName} set in ${metalName}`}
                 isSubtle={true}
             />
+
+            <p>{description}</p>
 
             <PriceDisplay
                 selectedInventoryItem={selectedInventoryItem}

@@ -7,11 +7,11 @@ It provides:
 - Shared fields and methods for reuse and extension in the product app
 """
 
-from django.db.models import Avg
+from django.db.models import Avg, Q, F
 
 from rest_framework import serializers
 
-from src.products.models.product import Bracelet, DropEarring, Necklace, Pendant, Ring, StudEarring, Watch
+from src.products.models.product import Bracelet, Earring, Necklace, Pendant, Ring, Watch
 from src.products.serializers.inventory import InventorySerializer
 from src.products.serializers.review import ReviewSerializer
 
@@ -121,16 +121,24 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
 
     def get_related_products(self, obj):
         color_id = obj.color_id
+        target_gender = obj.target_gender
         current_product_type = type(obj)
         related_products = []
 
         def serialize_products_of_type(model_class):
             # Only include products from other types
-            if model_class == current_product_type:
+            if model_class == current_product_type and target_gender != 'M':
                 return []
-            products = model_class.objects.filter(
-                color_id=color_id,
-            )
+
+            if target_gender == 'M':
+                products = model_class.objects.filter(
+                    Q(target_gender=target_gender)
+                )
+            else:
+                products = model_class.objects.filter(
+                    color_id=color_id,
+                )
+                
             result = []
             for product in products:
                 result.append(
@@ -142,15 +150,14 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
                 )
             return result
 
-        related_products.extend(serialize_products_of_type(StudEarring))
-        related_products.extend(serialize_products_of_type(DropEarring))
+        related_products.extend(serialize_products_of_type(Earring))
         related_products.extend(serialize_products_of_type(Necklace))
         related_products.extend(serialize_products_of_type(Pendant))
         related_products.extend(serialize_products_of_type(Ring))
         related_products.extend(serialize_products_of_type(Bracelet))
         related_products.extend(serialize_products_of_type(Watch))
 
-        return related_products[:6]
+        return related_products[:5]
 
 
 class BaseAttributesSerializer(serializers.ModelSerializer):

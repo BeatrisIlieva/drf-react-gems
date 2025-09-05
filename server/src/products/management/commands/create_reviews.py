@@ -10,7 +10,7 @@ from django.contrib.auth import get_user_model
 from src.products.models import (
     Review,
 )
-from src.products.models.product import Bracelet, DropEarring, Necklace, Pendant, Ring, StudEarring, Watch
+from src.products.models.product import Bracelet, Earring, Necklace, Pendant, Ring, Watch
 
 
 UserModel = get_user_model()
@@ -171,18 +171,15 @@ class Command(BaseCommand):
         return created_users
 
     def create_fake_reviews(self, users):
-        stud_earrings = StudEarring.objects.all()
-        drop_earrings = DropEarring.objects.all()
+        earrings = Earring.objects.all()
         necklaces = Necklace.objects.all()
         pendants = Pendant.objects.all()
         bracelets = Bracelet.objects.all()
         watches = Watch.objects.all()
         rings = Ring.objects.all()
 
-        stud_earrings_content_type = ContentType.objects.get_for_model(
-            StudEarring)
-        drop_earrings_content_type = ContentType.objects.get_for_model(
-            DropEarring)
+        earrings_content_type = ContentType.objects.get_for_model(
+            Earring)
         necklaces_content_type = ContentType.objects.get_for_model(Necklace)
         pendants_content_type = ContentType.objects.get_for_model(Pendant)
         bracelets_content_type = ContentType.objects.get_for_model(Bracelet)
@@ -190,8 +187,7 @@ class Command(BaseCommand):
         rings_content_type = ContentType.objects.get_for_model(Ring)
 
         all_products_with_their_content_types = [
-            [stud_earrings, stud_earrings_content_type],
-            [drop_earrings, drop_earrings_content_type],
+            [earrings, earrings_content_type],
             [necklaces, necklaces_content_type],
             [pendants, pendants_content_type],
             [bracelets, bracelets_content_type],

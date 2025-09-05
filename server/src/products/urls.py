@@ -6,8 +6,8 @@ from src.products.views.product import (
     BraceletListView,
     CollectionRetrieveView,
     ColorRetrieveView,
-    DropEarringItemView,
-    DropEarringListView,
+    EarringItemView,
+    EarringListView,
     MetalRetrieveView,
     NecklaceItemView,
     NecklaceListView,
@@ -16,8 +16,6 @@ from src.products.views.product import (
     RingItemView,
     RingListView,
     StoneRetrieveView,
-    StudEarringItemView,
-    StudEarringListView,
     WatchItemView,
     WatchListView,
     catalog_page,
@@ -37,25 +35,13 @@ router.register(r'reviews', ReviewViewSet, basename='review')
 urlpatterns = [
     path('', include(router.urls)),
     path(
-        'drop-earrings/',
+        'earrings/',
         include(
             [
-                path('', DropEarringListView.as_view(),
-                     name='drop-earrings-list'),
+                path('', EarringListView.as_view(),
+                     name='earrings-list'),
                 path(
-                    '<int:pk>/', DropEarringItemView.as_view(), name='drop-earrings-item'
-                ),
-            ]
-        ),
-    ),
-    path(
-        'stud-earrings/',
-        include(
-            [
-                path('', StudEarringListView.as_view(),
-                     name='stud-earrings-list'),
-                path(
-                    '<int:pk>/', StudEarringItemView.as_view(), name='stud-earrings-item'
+                    '<int:pk>/', EarringItemView.as_view(), name='earrings-item'
                 ),
             ]
         ),

@@ -18,15 +18,15 @@ from django.views.decorators.http import require_http_methods
 
 
 from src.common.permissions import IsOrderManager
-from src.products.models.product import Bracelet, Color, DropEarring, Metal, Necklace, Pendant, Ring, Stone, Collection, StudEarring, Watch
+from src.products.models.product import Bracelet, Color, Earring, Metal, Necklace, Pendant, Ring, Stone, Collection, Watch
 
 from src.products.serializers.product import (
     BraceletItemSerializer,
     BraceletListSerializer,
     CollectionSerializer,
     ColorSerializer,
-    DropEarringItemSerializer,
-    DropEarringListSerializer,
+    EarringItemSerializer,
+    EarringListSerializer,
     MetalSerializer,
     NecklaceItemSerializer,
     NecklaceListSerializer,
@@ -35,8 +35,6 @@ from src.products.serializers.product import (
     RingItemSerializer,
     RingListSerializer,
     StoneSerializer,
-    StudEarringItemSerializer,
-    StudEarringListSerializer,
     WatchItemSerializer,
     WatchListSerializer,
 )
@@ -57,14 +55,9 @@ from django.contrib.contenttypes.models import ContentType
 from rest_framework import status
 
 
-class StudEarringListView(BaseProductListView):
-    model = StudEarring
-    serializer_class = StudEarringListSerializer
-
-
-class DropEarringListView(BaseProductListView):
-    model = DropEarring
-    serializer_class = DropEarringListSerializer
+class EarringListView(BaseProductListView):
+    model = Earring
+    serializer_class = EarringListSerializer
 
 
 class NecklaceListView(BaseProductListView):
@@ -92,14 +85,9 @@ class RingListView(BaseProductListView):
     serializer_class = RingListSerializer
 
 
-class StudEarringItemView(BaseProductItemView):
-    model = StudEarring
-    serializer_class = StudEarringItemSerializer
-
-
-class DropEarringItemView(BaseProductItemView):
-    model = DropEarring
-    serializer_class = DropEarringItemSerializer
+class EarringItemView(BaseProductItemView):
+    model = Earring
+    serializer_class = EarringItemSerializer
 
 
 class NecklaceItemView(BaseProductItemView):
@@ -153,8 +141,7 @@ class ProductAllReviewsView(APIView):
     def get(self, request, category, pk):
 
         model_map = {
-            'drop_earring': DropEarring,
-            'stud_earring': StudEarring,
+            'earring': Earring,
             'necklace': Necklace,
             'pendant': Pendant,
             'bracelet': Bracelet,

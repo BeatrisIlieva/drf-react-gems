@@ -6,7 +6,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from src.products.models.inventory import Inventory
-from src.products.models.product import Bracelet, DropEarring, Necklace, Pendant, Ring, StudEarring, Watch
+from src.products.models.product import Bracelet, Earring, Necklace, Pendant, Ring, Watch
 from src.products.models.review import Review
 import os
 
@@ -61,8 +61,7 @@ class Command(BaseCommand):
 
         # Process each product type
         product_models = [
-            ('StudEarring', StudEarring),
-            ('DropEarring', DropEarring),
+            ('Earring', Earring),
             ('Necklace', Necklace),
             ('Pendant', Pendant)
             ('Bracelet', Bracelet),

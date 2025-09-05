@@ -47,27 +47,17 @@ UNFOLD = {
                 'collapsible': True,
                 'separator': True,
                 'permission': lambda request: request.user.has_perm(
-                    'products.view_drop_earring'
+                    'products.view_earring'
                 ),
                 'items': [
                     {
-                        'title': _('DropEarring'),
+                        'title': _('Earring'),
                         'icon': 'inventory',
                         'link': reverse_lazy(
-                            'admin:products_drop_earring_changelist'
+                            'admin:products_earring_changelist'
                         ),
                         'permission': lambda request: request.user.has_perm(
-                            'products.view_drop_earring'
-                        ),
-                    },
-                    {
-                        'title': _('StudEarring'),
-                        'icon': 'inventory',
-                        'link': reverse_lazy(
-                            'admin:products_stud_earring_changelist'
-                        ),
-                        'permission': lambda request: request.user.has_perm(
-                            'products.view_stud_earring'
+                            'products.view_earring'
                         ),
                     },
                     {

@@ -4,24 +4,20 @@ from src.products.managers.product import (
     BraceletManager,
     CollectionManager,
     ColorManager,
-    DropEarringManager,
+    EarringManager,
     MetalManager,
     NecklaceManager,
     PendantManager,
     RingManager,
     StoneManager,
-    StudEarringManager,
     WatchManager,
 )
 from src.products.mixins import NameFieldMixin
 
 
-class StudEarring(BaseProduct):
-    objects = StudEarringManager()
 
-
-class DropEarring(BaseProduct):
-    objects = DropEarringManager()
+class Earring(BaseProduct):
+    objects = EarringManager()
 
 
 class Necklace(BaseProduct):
