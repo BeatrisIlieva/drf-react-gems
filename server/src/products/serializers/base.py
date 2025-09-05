@@ -96,10 +96,10 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
 
         # If user is a reviewer, show all reviews (approved and unapproved)
         if request and request.user.has_perm('products.approve_review'):
-            latest_reviews = obj.review.all()[:6]
+            latest_reviews = obj.review.all()[:4]
         else:
             # Regular users only see approved reviews
-            latest_reviews = obj.review.filter(approved=True)[:6]
+            latest_reviews = obj.review.filter(approved=True)[:4]
 
         return ReviewSerializer(latest_reviews, many=True).data
 

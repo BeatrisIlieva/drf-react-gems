@@ -1,11 +1,11 @@
-@use '../../../../../../../styles/variables' as vars;
+@use '../../../../../styles/variables' as vars;
 
 .review-item {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
-    >span {
+    > span {
         &:nth-child(1) {
             display: flex;
             gap: 1em;
@@ -45,7 +45,6 @@
         }
     }
 }
-
 
 .approval-controls {
     margin-top: auto;

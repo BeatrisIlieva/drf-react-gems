@@ -65,7 +65,7 @@ export const ProductList = () => {
                     <FilterList />
 
                     {loading && <LoadingSpinner />}
-                    
+
                     <div className={styles['wrapper-inner']}>
                         {products.length > 0 && <ProductItems products={products} />}
                     </div>

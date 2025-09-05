@@ -1,8 +1,8 @@
-import { Stars } from '../../../../../reusable/stars/Stars';
+
+
+import { useProductItemContext } from '../../../../contexts/ProductItemContext';
+import { Stars } from '../../../reusable/stars/Stars';
 import { ReviewItem } from './review-item/ReviewItem';
-
-import { useProductItemContext } from '../../../../../../contexts/ProductItemContext';
-
 import styles from './ReviewList.module.scss';
 
 export const ReviewList = () => {
@@ -29,7 +29,7 @@ export const ReviewList = () => {
             </div>
             <ul>
                 {reviews.map(review => (
-                    <ReviewItem 
+                    <ReviewItem
                         key={review.id} 
                         review={review} 
                         onReviewUpdated={handleReviewUpdated}

@@ -29,7 +29,6 @@ export const UserAction = ({
         notSelectedSizeError,
         productId,
         selectedSize,
-        description,
     } = useProductItemContext();
 
     const { formattedMinPrice, formattedMaxPrice, selectedInventoryItem } = usePriceCalculation(
@@ -60,15 +59,17 @@ export const UserAction = ({
         <section className={sectionClassName}>
             <h1>
                 <span>{collectionName}</span>
-                <span>{categoryNameCapitalizedSingular}</span>
+                <span>
+                    {categoryNameCapitalizedSingular != 'Watche'
+                        ? categoryNameCapitalizedSingular
+                        : 'Watch'}
+                </span>
             </h1>
 
             <StyledTextBlock
                 text={`${colorName} ${stoneName} set in ${metalName}`}
                 isSubtle={true}
             />
-
-            <p>{description}</p>
 
             <PriceDisplay
                 selectedInventoryItem={selectedInventoryItem}

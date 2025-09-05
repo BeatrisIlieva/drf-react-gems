@@ -1,17 +1,21 @@
-@use '../../../../../../styles/variables' as vars;
+@use '../../../../styles/variables' as vars;
 
 .reviews {
     padding-left: var(--layout-inline-padding);
     padding-top: var(--layout-inline-padding);
 
-    >ul {
+    @media (max-width: 1023px) {
+        padding-right: var(--layout-inline-padding);
+    }
+
+    > ul {
         display: flex;
         flex-wrap: wrap;
         margin-top: 2.5em;
         justify-content: space-between;
         row-gap: 2.5em;
 
-        >li {
+        > li {
             flex: 0 0 45%;
 
             @media (max-width: 600px) {
@@ -40,11 +44,11 @@
             font-size: 1.6em;
         }
 
-        >div {
+        > div {
             display: flex;
             flex-direction: column;
 
-            >div {
+            > div {
                 display: flex;
                 gap: 0.25em;
                 align-items: center;

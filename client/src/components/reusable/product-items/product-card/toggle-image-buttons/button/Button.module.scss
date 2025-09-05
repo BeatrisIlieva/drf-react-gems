@@ -1,18 +1,21 @@
 @use '../../../../../../styles/variables' as vars;
 
 .button {
-    background: vars.$black;
-    opacity: 0.6;
+    background-color: vars.$medium-grey-darker;
     width: 0.6em;
     height: 0.6em;
     aspect-ratio: 1/1;
     border-radius: 50%;
     overflow: hidden;
     display: flex;
-    transition: opacity 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out;
 
     &:disabled {
-        opacity: 1;
+        background-color: vars.$light-black;
         cursor: auto;
+    }
+
+    &:hover {
+        background-color: vars.$black;
     }
 }

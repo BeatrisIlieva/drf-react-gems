@@ -20,6 +20,7 @@ export const ProductCard = ({
     collectionName,
     firstImage,
     secondImage,
+    fourthImage,
     colorName,
     stoneName,
     metalName,
@@ -118,9 +119,13 @@ export const ProductCard = ({
                     )}
                 </button>
 
-                <div className={styles['thumbnail']}>
+                <div
+                    className={styles['thumbnail']}
+                    onMouseEnter={() => setSelectedImageIndex(1)}
+                    onMouseLeave={() => setSelectedImageIndex(0)}
+                >
                     <img
-                        src={selectedImageIndex === 0 ? firstImage : secondImage}
+                        src={selectedImageIndex === 0 ? firstImage : fourthImage}
                         className={`${
                             selectedImageIndex === 0
                                 ? styles['slide-in-right']

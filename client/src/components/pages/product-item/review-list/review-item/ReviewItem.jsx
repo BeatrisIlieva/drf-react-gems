@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
-import { Stars } from '../../../../../../reusable/stars/Stars';
+import { Stars } from '../../../../reusable/stars/Stars';
 
-import { useReviewApi } from '../../../../../../../api/reviewApi';
+import { useReviewApi } from '../../../../../api/reviewApi';
 
-import { useAuth } from '../../../../../../../hooks/useAuth';
+import { useAuth } from '../../../../../hooks/useAuth';
 
 import styles from './ReviewItem.module.scss';
 
