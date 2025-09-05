@@ -22,7 +22,6 @@
             position: relative;
             width: 100%;
             height: auto;
-            aspect-ratio: 1/1.25;
 
             img {
                 position: relative;
@@ -70,6 +69,7 @@
             text-wrap: nowrap;
             opacity: 0.7;
             transition: opacity 0.3s ease-in-out;
+            z-index: 60;
 
             &:hover {
                 opacity: 1;

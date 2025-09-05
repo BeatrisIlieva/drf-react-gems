@@ -19,7 +19,6 @@ export const ProductCard = ({
     id,
     collectionName,
     firstImage,
-    secondImage,
     fourthImage,
     colorName,
     stoneName,
@@ -56,7 +55,7 @@ export const ProductCard = ({
                     id,
                     collectionName,
                     firstImage,
-                    secondImage,
+                    fourthImage,
                     colorName,
                     stoneName,
                     metalName,
@@ -72,7 +71,7 @@ export const ProductCard = ({
             id,
             collectionName,
             firstImage,
-            secondImage,
+            fourthImage,
             colorName,
             stoneName,
             metalName,
@@ -100,7 +99,7 @@ export const ProductCard = ({
                             id,
                             collectionName,
                             firstImage,
-                            secondImage,
+                            fourthImage,
                             colorName,
                             stoneName,
                             metalName,
@@ -140,7 +139,7 @@ export const ProductCard = ({
                         </button>
                     )}
                 </div>
-                {secondImage && (
+                {fourthImage && (
                     <footer>
                         <ToggleImageButtons
                             selectedIndex={selectedImageIndex}
