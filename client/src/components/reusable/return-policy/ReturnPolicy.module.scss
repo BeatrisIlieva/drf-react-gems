@@ -1,4 +1,4 @@
-.complimentary-shipping {
+.return-policy {
     display: grid;
     grid-template-columns: 1.5em auto;
     gap: 0.85em;
@@ -13,6 +13,13 @@
 
 .content {
     margin: auto 5em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    span {
+        font-weight: 600;
+    }
 
     p {
         font-weight: 300;

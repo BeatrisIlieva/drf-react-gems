@@ -19,7 +19,7 @@ export const ComplimentaryShipping = () => {
             </button>
             <Popup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)}>
                 <section className={styles['content']}>
-                    <h4>Complimentary One-Day Shipping</h4>
+                    <h3>Complimentary One-Day Shipping</h3>
                     <p>
                         Your order will be completed within one day of being placed—no matter which
                         day you order. We’re always working to get your gems to you as quickly as

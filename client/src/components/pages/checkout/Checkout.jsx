@@ -8,6 +8,7 @@ import { Delivery } from '../../reusable/delivery/Delivery';
 import { OrderSummary } from '../../reusable/order-summary/OrderSummary';
 import { PaddedContainer } from '../../reusable/padded-container/PaddedContainer';
 import { ProductsSummaryList } from '../../reusable/products-summary-list/ProductsSummaryList';
+import { ReturnPolicy } from '../../reusable/return-policy/ReturnPolicy';
 import { ShadowBox } from '../../reusable/shadow-box/ShadowBox';
 import { DeliveryAddressForm } from '../accounts/details/delivery-address-form/DeliveryAddressForm';
 
@@ -51,6 +52,7 @@ export const Checkout = () => {
 
                 <OrderSummary separate={true}>
                     <ComplimentaryShipping />
+                    <ReturnPolicy />
                 </OrderSummary>
             </section>
         </PaddedContainer>

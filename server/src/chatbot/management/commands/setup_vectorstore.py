@@ -1,3 +1,4 @@
+# python manage.py setup_vectorstore
 import os
 import re
 from django.core.management.base import BaseCommand, CommandError
@@ -17,8 +18,8 @@ class Command(BaseCommand):
         parser.add_argument(
             '--pdf-file',
             type=str,
-            default='product_data.pdf',
-            help='Name of the PDF file to process (default: product_data.pdf)'
+            default='product_catalog.pdf',
+            help='Name of the PDF file to process (default: product_catalog.pdf)'
         )
         parser.add_argument(
             '--index-name',

@@ -33,7 +33,11 @@
         visibility: hidden;
     }
 
-    p:last-of-type {
-        margin-block: 0.75em;
+    .buttons-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85em;
+        opacity: 0.8;
+        font-size: 0.9em;
     }
 }

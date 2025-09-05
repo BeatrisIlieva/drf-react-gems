@@ -61,12 +61,12 @@ class Command(BaseCommand):
 
         # Process each product type
         product_models = [
-            ('Earring', Earring),
-            ('Necklace', Necklace),
-            ('Pendant', Pendant)
-            ('Bracelet', Bracelet),
-            ('Watch', Watch),
-            ('Ring', Ring)
+            ('earrings', Earring),
+            ('necklaces', Necklace),
+            ('pendants', Pendant),
+            ('bracelets', Bracelet),
+            ('watches', Watch),
+            ('rings', Ring)
         ]
 
         total_products = 0
@@ -118,15 +118,14 @@ class Command(BaseCommand):
                 # Basic product information - each property on new line
                 basic_info = f"""
                 Collection: {product.collection.name};
-                Color: {product.color.name};
+                Stone: {product.color.name} {product.stone.name};
                 Metal: {product.metal.name};
-                Stone: {product.stone.name};
                 Category: {category_name};
-                Description: {product.description};
-                Target Gender: {product.target_gender};
                 Product ID: {product.id};
                 Image URL: {product.first_image};
                 Sizes: {sizes};
+                Description: {product.description};
+                Target Gender: {product.target_gender};
                 Average Rating: {average_rating};
                 """
                 story.append(Paragraph(basic_info, normal_style))

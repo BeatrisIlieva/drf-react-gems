@@ -1,7 +1,7 @@
 import re
 
 
-def build_conversation_history(conversation_state, user_query, max_messages=3):
+def build_conversation_history(conversation_state, user_query, max_messages=20):
     """
     Build conversation history with the last max_messages user-AI message pairs.
 

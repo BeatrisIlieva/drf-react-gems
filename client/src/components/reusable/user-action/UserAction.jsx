@@ -1,4 +1,5 @@
 import { ComplimentaryShipping } from '../complimentary-shipping/ComplimentaryShipping';
+import { ReturnPolicy } from '../return-policy/ReturnPolicy';
 import { StyledTextBlock } from '../styled-text-block/StyledTextBlock';
 import { PriceDisplay } from './price-display/PriceDisplay';
 import { ProductActions } from './product-actions/ProductActions';
@@ -94,7 +95,10 @@ export const UserAction = ({
                 hideWishlistButton={hideWishlistButton}
             />
 
-            <ComplimentaryShipping />
+            <div className={styles['buttons-wrapper']}>
+                <ComplimentaryShipping />
+                <ReturnPolicy />
+            </div>
         </section>
     );
 };

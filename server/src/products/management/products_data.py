@@ -1113,7 +1113,7 @@ products_data = [
         'third_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003582/191_o0k7ff.png',
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003583/192_yiwhjw.png',
         'stone_by_color': 'Green Emerald',
-        'price': 22300,
+        'price': 21700,
         'description': 'Embellished with a vibrantly colored mother-of-pearl dial and a refreshing splash of gemstones, the watch features a green genuine leather strap.',
         'target_gender': 'M',
     },
