@@ -3,7 +3,7 @@ from django.core.management.base import BaseCommand
 from django.contrib.contenttypes.models import ContentType
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
 from src.products.models.inventory import Inventory
 from src.products.models.product import Bracelet, Earring, Necklace, Pendant, Ring, Watch
@@ -44,20 +44,9 @@ class Command(BaseCommand):
         story = []
         styles = getSampleStyleSheet()
 
-        header_style = ParagraphStyle(
-            'Header',
-            parent=styles['Heading2'],
-            fontSize=14,
-            spaceAfter=8
-        )
-
         normal_style = styles['Normal']
         normal_style.fontSize = 10
         normal_style.spaceAfter = 4
-
-        # Add catalog header
-        story.append(Paragraph("Complete Product Catalog", header_style))
-        story.append(Spacer(1, 16))
 
         # Process each product type
         product_models = [
@@ -130,12 +119,6 @@ class Command(BaseCommand):
                 """
                 story.append(Paragraph(basic_info, normal_style))
                 story.append(Spacer(1, 8))
-
-                # Inventory information
-                inventory_items = Inventory.objects.filter(
-                    content_type=content_type,
-                    object_id=product.id
-                ).select_related('size')
 
         # Build the PDF
         doc.build(story)

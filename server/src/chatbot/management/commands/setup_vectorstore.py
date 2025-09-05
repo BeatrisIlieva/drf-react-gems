@@ -9,6 +9,7 @@ from langchain.schema import Document
 from langchain_openai import OpenAIEmbeddings
 from langchain_pinecone import Pinecone
 from pinecone import Pinecone as PineconeClient
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 
 class Command(BaseCommand):
@@ -20,6 +21,12 @@ class Command(BaseCommand):
             type=str,
             default='product_catalog.pdf',
             help='Name of the PDF file to process (default: product_catalog.pdf)'
+        )
+        parser.add_argument(
+            '--pdf-file-boutique-info',
+            type=str,
+            default='boutique_info.pdf',
+            help='Name of the PDF file to process (default: boutique_info.pdf)'
         )
         parser.add_argument(
             '--index-name',
@@ -41,8 +48,10 @@ class Command(BaseCommand):
         try:
             self.stdout.write("Starting vector store setup...")
 
-            # Get configuration
+            # Get configuration - FIXED: Correct variable assignment
             pdf_file = options['pdf_file']
+            # ✅ Fixed
+            pdf_file_boutique_info = options['pdf_file_boutique_info']
             index_name = options['index_name'] or os.getenv("PINECONE_INDEX_NAME") or config(
                 "PINECONE_INDEX_NAME", default="drf-react-gems-index")
             force_recreate = options['force_recreate']
@@ -62,32 +71,61 @@ class Command(BaseCommand):
                 model="text-embedding-3-small", dimensions=512)
             self.stdout.write("✓ Initialized embedding model")
 
-            # Process PDF
+            # Process first PDF (product catalog)
             self.stdout.write(f"Processing PDF: {pdf_file}")
             pages = self._create_pages_from_pdf(pdf_file)
             chunks = self._create_chunks_using_regex(pages)
 
-            self.stdout.write(f"✓ Created {len(chunks)} document chunks")
+            # Process second PDF (boutique info)
+            self.stdout.write(f"Processing PDF: {pdf_file_boutique_info}")
+            boutique_data_chunks_pages = self._create_pages_from_pdf(
+                pdf_file_boutique_info)
+            boutique_data_chunks = self._create_chunks_using_langchain(
+                boutique_data_chunks_pages)
+
+            # FIXED: Show counts for both PDFs
+            self.stdout.write(
+                f"✓ Created {len(chunks)} product document chunks")
+            self.stdout.write(
+                f"✓ Created {len(boutique_data_chunks)} boutique document chunks")
+
+            total_chunks = len(chunks) + len(boutique_data_chunks)
+            self.stdout.write(f"✓ Total chunks to process: {total_chunks}")
 
             if dry_run:
                 self.stdout.write(
                     "Would create/update Pinecone vector store with:")
-                for i, chunk in enumerate(chunks[:3]):  # Show first 3 chunks
+
+                # Show preview of product chunks
+                self.stdout.write("Product chunks:")
+                for i, chunk in enumerate(chunks[:2]):  # Show first 2 chunks
                     preview = chunk.page_content[:100] + "..." if len(
                         chunk.page_content) > 100 else chunk.page_content
                     self.stdout.write(f"  Chunk {i+1}: {preview}")
-                if len(chunks) > 3:
+
+                # Show preview of boutique chunks
+                self.stdout.write("Boutique chunks:")
+                # Show first 2 chunks
+                for i, chunk in enumerate(boutique_data_chunks[:2]):
+                    preview = chunk.page_content[:100] + "..." if len(
+                        chunk.page_content) > 100 else chunk.page_content
+                    self.stdout.write(f"  Chunk {i+1}: {preview}")
+
+                if total_chunks > 4:
                     self.stdout.write(
-                        f"  ... and {len(chunks) - 3} more chunks")
+                        f"  ... and {total_chunks - 4} more chunks")
                 return
 
             # Create/update vector store
             vectorstore = self._create_vector_store(
-                chunks, embedding_model, index_name, force_recreate)
+                chunks, boutique_data_chunks, embedding_model, index_name, force_recreate)
 
+            # FIXED: Show correct total count
             self.stdout.write(
                 self.style.SUCCESS(
-                    f"✓ Successfully set up vector store with {len(chunks)} documents")
+                    f"✓ Successfully set up vector store with {total_chunks} documents "
+                    f"({len(chunks)} product + {len(boutique_data_chunks)} boutique)"
+                )
             )
 
         except Exception as e:
@@ -185,7 +223,19 @@ class Command(BaseCommand):
 
         return chunks
 
-    def _create_vector_store(self, chunks, embedding_model, index_name, force_recreate=False):
+    @classmethod
+    def _create_chunks_using_langchain(cls, pages):
+        text_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=500,
+            chunk_overlap=100,
+            separators=["\n\n", ".", "!", '\n', ',', ':', ';',]
+        )
+
+        chunks = text_splitter.split_documents(pages)
+
+        return chunks
+
+    def _create_vector_store(self, chunks, boutique_data_chunks, embedding_model, index_name, force_recreate=False):
         """Create or update Pinecone vector store"""
         # Initialize Pinecone client
         pc = PineconeClient(api_key=os.getenv(
@@ -212,9 +262,9 @@ class Command(BaseCommand):
         # Create vectorstore from documents
         self.stdout.write(
             "Creating vector embeddings and uploading to Pinecone...")
-
+        all_chunks = chunks + boutique_data_chunks
         vectorstore = Pinecone.from_documents(
-            documents=chunks,
+            documents=all_chunks,
             embedding=embedding_model,
             index_name=index_name
         )
