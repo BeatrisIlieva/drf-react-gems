@@ -13,11 +13,11 @@ export const ProductListProvider = ({ children }) => {
     const { getProductList } = useProductList();
     const { nextPage, updatePage } = usePagination();
     const { colorIds, stoneIds, metalIds, collectionIds } = useProductFiltersContext();
-    const [loadMoreDisabled, setLoadMoreDisabled] = useState(false);
+    const [loadMoreDisabled, setLoadMoreDisabled] = useState(true);
 
     const [count, setCount] = useState(0);
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [ordering, setOrdering] = useState(null);
 
