@@ -1,6 +1,3 @@
-import re
-
-
 def build_conversation_history(conversation_state, user_query, max_messages=20):
     """
     Build conversation history with the last max_messages user-AI message pairs.
@@ -48,30 +45,3 @@ def build_conversation_history(conversation_state, user_query, max_messages=20):
     return conversation_history
 
 
-def filter_chunk_with_most_keywords(keywords, relevant_chunks, k=10):
-    if not relevant_chunks:
-        return None
-
-    # Split keywords into list
-    keyword_list = keywords.split()
-
-    # For each chunk, count exact keyword occurrences (case-insensitive whole word match)
-    chunk_scores = []
-    for chunk in relevant_chunks:
-        chunk_text_lower = chunk.page_content.lower()
-        score = sum(1 for keyword in keyword_list if re.search(r'\b{}\b'.format(
-            re.escape(keyword.lower())), chunk_text_lower, re.IGNORECASE))
-        chunk_scores.append((chunk, score))
-
-    # Filter chunks with at least one keyword match
-    valid_chunks = [(chunk, score)
-                    for chunk, score in chunk_scores if score > 0]
-
-    # If no chunks have any matches, return None
-    if not valid_chunks:
-        return None
-
-    # Find the chunk with the maximum score
-    max_chunk = max(valid_chunks, key=lambda x: x[1])[0]
-
-    return max_chunk

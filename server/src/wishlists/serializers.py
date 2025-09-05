@@ -97,7 +97,7 @@ class WishlistSerializer(serializers.ModelSerializer):
         return {
             'id': product.id,
             'first_image': product.first_image,
-            'second_image': product.second_image,
+            'fourth_image': product.fourth_image,
             'collection__name': product.collection.name,
             'color__name': product.color.name,
             'stone__name': product.stone.name,

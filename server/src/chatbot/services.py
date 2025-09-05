@@ -4,7 +4,7 @@ import json
 from langchain.prompts import ChatPromptTemplate
 from langchain.prompts import SystemMessagePromptTemplate, HumanMessagePromptTemplate
 
-from src.chatbot.utils import build_conversation_history, filter_chunk_with_most_keywords
+from src.chatbot.utils import build_conversation_history
 from src.chatbot.adapters import LLMAdapter, MemoryAdapter, VectorStoreAdapter
 
 from src.chatbot.prompts import OPTIMIZE_SEARCH_QUERY_HUMAN_MESSAGE, OPTIMIZE_SEARCH_QUERY_SYSTEM_MESSAGE, HUMAN_MESSAGE, SYSTEM_MESSAGE
@@ -14,7 +14,7 @@ class ContextService:
     """Handles document retrieval and context building."""
 
     @staticmethod
-    def get_context(vectorstore, query, k=4):
+    def get_context(vectorstore, query, k=3):
         results = vectorstore.similarity_search(query, k=k)
         context = '\n'.join(result.page_content for result in results)
 

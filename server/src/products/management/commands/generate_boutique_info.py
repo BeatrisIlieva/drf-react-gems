@@ -60,15 +60,10 @@ class Command(BaseCommand):
         Complimentary 30-day returns: We are pleased to offer a full refund for DRFReactGems.com purchases returned within 30 days of their purchase date. All refunds will be made to the purchaser and issued to the original form of payment. Please note: Returns must be accompanied by a sales receipt and received unaltered, unworn and in sellable condition. Some exclusions may apply. Used merchandise will not be accepted for refund or exchange unless defective.
         """
 
-        sizes = """ 
-        Stud Earrings small size (5.2mm); Stud Earrings medium size (8.1mm); Stud Earrings large size (12.3mm); Necklaces small size (381.0mm); Necklaces medium size (482.6mm); Necklaces large size (622.3mm); Pendants small size (12.4mm); Pendants medium size (18.9mm); Pendants large size (28.1mm); Rings small size (15.7mm); Rings medium size (17.3mm); Rings large size (19.8mm); Bracelets small size (165.1mm); Bracelets medium size (187.9mm); Bracelets large size (218.4mm); Watches small size (32.5mm); Watches medium size (38.4mm); Watches large size (44.7mm);
-        """
-
         story.append(Paragraph(boutique_introduction, normal_style))
         story.append(Paragraph(product_care, normal_style))
         story.append(Paragraph(complimentary_shipping, normal_style))
         story.append(Paragraph(return_policy, normal_style))
-        story.append(Paragraph(sizes, normal_style))
         story.append(Spacer(1, 8))
 
         # Build the PDF

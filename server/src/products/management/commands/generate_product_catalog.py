@@ -53,9 +53,9 @@ class Command(BaseCommand):
             ('earrings', Earring),
             ('necklaces', Necklace),
             ('pendants', Pendant),
+            ('rings', Ring),
             ('bracelets', Bracelet),
             ('watches', Watch),
-            ('rings', Ring)
         ]
 
         total_products = 0
