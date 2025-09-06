@@ -1,4 +1,3 @@
-import { LoadingSpinner } from '../../common/loading-spinner/LoadingSpinner';
 import { Button } from '../../reusable/button/Button';
 import { ProductItems } from '../../reusable/product-items/ProductItems';
 import { FilterList } from './filter-list/FilterList';
@@ -36,13 +35,11 @@ export const ProductList = () => {
                 >
                     <FilterList />
 
-                    {loading && <LoadingSpinner />}
-
                     <div className={styles['wrapper-inner']}>
                         {products.length > 0 && <ProductItems products={products} />}
                     </div>
                 </div>
-                {!loadMoreDisabled && (
+                {!loadMoreDisabled && !loading && (
                     <Button
                         color="black"
                         title="Load more"

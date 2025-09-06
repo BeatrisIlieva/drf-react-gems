@@ -169,13 +169,13 @@ export const WishlistProvider = ({ children }) => {
             if (!contentType || !objectId) return false;
 
             const standardizedContentType = contentType.endsWith('s')
-                ? contentType.slice(0, -1)
-                : contentType;
+                ? (contentType === 'watches' ? contentType.slice(0, -2) : contentType.slice(0, -1))
+                : (contentType === 'watche' ? 'watch' : contentType);
 
             return wishlistItems.some(item => {
                 const itemContentType = item.contentType?.endsWith('s')
-                    ? item.contentType.slice(0, -1)
-                    : item.contentType;
+                    ? (item.contentType === 'watches' ? item.contentType.slice(0, -2) : item.contentType.slice(0, -1))
+                    : (item.contentType === 'watche' ? 'watch' : item.contentType);
 
                 const objectIdStr = String(objectId);
 
@@ -217,7 +217,13 @@ export const WishlistProvider = ({ children }) => {
             maxPrice = null,
             averageRating = null
         ) => {
-            const category = categoryName?.slice(0, categoryName?.length - 1);
+            // const category = categoryName?.slice(0, categoryName?.length - 1);
+            let category;
+            if(categoryName === 'watches') {
+                category = 'watch'
+            } else {
+                category =categoryName.slice(0, categoryName?.length - 1)
+            }
 
             if (category && id) {
                 if (isInWishlist(category, id)) {

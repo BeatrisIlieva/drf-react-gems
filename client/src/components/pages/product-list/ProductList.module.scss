@@ -6,6 +6,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    flex-grow: 1;
     height: 100%;
     @include anim.animate-fade-in(1.2s);
 

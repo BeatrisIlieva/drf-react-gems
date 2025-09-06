@@ -36,8 +36,14 @@ export const ProductCard = ({
     const formattedMaxPrice = formatPrice(maxPrice);
     const navigate = useNavigate();
     const { isInWishlist, handleWishlistToggle } = useWishlistContext();
+
     const categoryParam = categoryFromUrl ? categoryFromUrl : categoryName;
-    const category = categoryParam?.slice(0, categoryParam?.length - 1);
+    let category;
+    if (categoryParam && (categoryParam == 'Watches' || categoryParam == 'watches')) {
+        category = categoryParam.slice(0, -2);
+    } else {
+        category = categoryParam.slice(0, -1);
+    }
 
     const isItemInWishlist = isInWishlist(category, id);
 
@@ -87,15 +93,15 @@ export const ProductCard = ({
     }, [categoryName]);
 
     const capitalizedCategoryName =
-        categoryParam.charAt(0).toUpperCase() + categoryParam.slice(1, categoryParam.length - 1);
-
+        category.charAt(0).toUpperCase() + category.slice(1, category.length);
+    console.log('category', category);
     return (
         <article className={styles['product-card']}>
             <div className={styles['wrapper']}>
                 <button
                     onClick={() =>
                         handleWishlistToggle(
-                            `${category}s`,
+                            `${category != 'watch' ? category + 's' : 'watches'}`,
                             id,
                             collectionName,
                             firstImage,
