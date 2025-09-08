@@ -4,6 +4,7 @@ from typing import Optional, Tuple
 from src.chatbot.models import (
     CategoryClassification,
     ColorClassification,
+    CustomerIntent,
     FilteredProduct,
     GenderClassification,
     MetalClassification,
@@ -23,6 +24,8 @@ from src.chatbot.prompts.helper_calls import (
     BUILD_DISCOVERY_QUESTION_SYSTEM_MESSAGE,
     BUILD_OPTIMIZED_SEARCH_QUERY_HUMAN_MESSAGE,
     BUILD_OPTIMIZED_SEARCH_QUERY_SYSTEM_MESSAGE,
+    EXTRACT_CUSTOMER_INTENT_HUMAN_MESSAGE,
+    EXTRACT_CUSTOMER_INTENT_SYSTEM_MESSAGE,
     EXTRACT_CUSTOMER_PREFERENCE_HUMAN_MESSAGE,
     EXTRACT_CUSTOMER_PREFERENCE_SYSTEM_MESSAGE,
     EXTRACT_FILTERED_PRODUCTS_HUMAN_MESSAGE,
@@ -197,4 +200,15 @@ def build_answer_to_recommend_product(llm, filtered_product, customer_query):
         'destructure_messages',
         product_to_recommend=filtered_product,
         input=customer_query,
+    )
+
+
+def extract_customer_intent(llm, optimized_query):
+    return generate_formatted_response(
+        llm,
+        EXTRACT_CUSTOMER_INTENT_SYSTEM_MESSAGE,
+        EXTRACT_CUSTOMER_INTENT_HUMAN_MESSAGE,
+        'extract_and_strip_ai_response_content',
+        response_model=CustomerIntent,
+        optimized_query=optimized_query,
     )

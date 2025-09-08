@@ -39,3 +39,10 @@ def generate_formatted_response(llm, system_message, human_message, response_for
     }
 
     return response_format_mapper[response_format]()
+
+
+def retrieve_relevant_content(vectorstore, query, k=4):
+    results = vectorstore.similarity_search(query, k=k)
+    context = '\n'.join(result.page_content for result in results)
+
+    return context.strip()

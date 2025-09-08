@@ -95,18 +95,18 @@ CONVERSATION SUMMARY: {conversation_summary}
 """
 )
 
-INTENT_CLASSIFICATION_SYSTEM_MESSAGE = (
+EXTRACT_CUSTOMER_INTENT_SYSTEM_MESSAGE = (
 f"""
 {CONVERSATION_ANALYST}
 <next>
-Analyze the CONVERSATION SUMMARY (customer-assistant conversation) to determine the current intent of the customer.
+Analyze the CUSTOMER QUERY (customer-assistant conversation) to determine the current intent of the customer.
 </next>
 """
 )
 
-INTENT_CLASSIFICATION_HUMAN_MESSAGE = (
+EXTRACT_CUSTOMER_INTENT_HUMAN_MESSAGE = (
 """ 
-CONVERSATION SUMMARY: {conversation_summary}\n
+CUSTOMER QUERY: {optimized_query}\n
 INSTRUCTIONS: {format_instructions}\n
 """
 )

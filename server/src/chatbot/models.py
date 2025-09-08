@@ -1,22 +1,26 @@
 from typing import Literal, Optional, Dict
+from enum import Enum
 
 from pydantic import BaseModel, Field
 
 
+from enum import Enum
+
+
+class CustomerIntentEnum(str, Enum):
+    PRODUCT_INFORMATION = "product_information"
+    DETAILS_ABOUT_RECOMMENDED_PRODUCT = "details_about_recommended_product"
+    SIZING_HELP = "sizing_help"
+    CARE_INSTRUCTIONS = "care_instructions"
+    RETURN_POLICY = "return_policy"
+    SHIPPING_INFORMATION = "shipping_information"
+    BRAND_INFORMATION = "brand_information"
+    ISSUE_OR_CONCERN_OR_HESITATION = "issue_or_concern_or_hesitation"
+    OFF_TOPIC = "off_topic"
+
+
 class CustomerIntent(BaseModel):
-    primary_intent: Literal[
-        "discovery",
-        "recommendation",
-        "details",
-        "closing",
-        "sizing_help",
-        "care_instructions",
-        "return_policy",
-        "shipping_information",
-        "brand_information",
-        "issue_or_concern_or_hesitation",
-        "off_topic"
-    ] = Field(
+    primary_intent: CustomerIntentEnum = Field(
         description="The primary intent the customer is expressing"
     )
 
