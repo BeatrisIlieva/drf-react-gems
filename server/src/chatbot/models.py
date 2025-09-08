@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Literal, Optional, Dict
 
 from pydantic import BaseModel, Field
 
@@ -61,15 +61,14 @@ class ColorClassification(BaseModel):
     )
 
 
-class ConversationStage(BaseModel):
-    conversation_stage: Literal[
-        "discovery",
-        "recommendation",
-        "details",
-        "closing",
-    ] = Field(
-        description="The current stage of the conversation"
-    )
-
-    extracted_info: dict = Field(
-        description="gender, purchase_type, product_characteristics")
+class FilteredProduct(BaseModel):
+    collection: str
+    stone: str
+    metal: str
+    category: str
+    product_id: str
+    image_url: str
+    sizes: Dict[str, str]
+    description: str
+    target_gender: str
+    average_rating: str

@@ -8,9 +8,9 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 
-from src.chatbot.factories import ChatbotServiceFactory
 from src.chatbot.serializers import ChatRequestSerializer
 from src.chatbot.constants import ERROR_RESPONSE_OBJECT
+from src.chatbot.services import ChatbotService
 
 os.environ["OPENAI_API_KEY"] = settings.OPENAI_API_KEY
 os.environ["LANGSMITH_API_KEY"] = settings.LANGSMITH_API_KEY
@@ -30,14 +30,13 @@ class ChatBotAPIView(APIView):
             if not serializer.is_valid():
                 return Response(ERROR_RESPONSE_OBJECT, status=status.HTTP_400_BAD_REQUEST)
 
-            customer_query = serializer.validated_data['message']
+            user_query = serializer.validated_data['message']
             session_id = self._get_or_create_session_id(request)
-
-            chatbot_service = ChatbotServiceFactory.create(session_id, customer_query)
-
+            
+            
             def generate_response():
                 try:
-                    for chunk in chatbot_service.generate_response_stream():
+                    for chunk in ChatbotService.generate_response_stream(user_query, session_id):
                         yield chunk
                 except Exception as e:
                     yield f"data: {json.dumps({'error': str(e)})}\n\n"

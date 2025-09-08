@@ -64,7 +64,7 @@ CRITICAL_RULES = (
 CONVERSATION_ANALYST = (
 """ 
 <role>
-You are a Conversation Analyst for the luxury jewelry brand 'DRF React Gems'. Your task is to analyze the provided CONVERSATION HISTORY, which consists of chronologically arranged customer-assistant conversation transcripts.
+You are a Conversation Analyst for the luxury jewelry brand 'DRF React Gems'. 
 </role>
 """
 )
