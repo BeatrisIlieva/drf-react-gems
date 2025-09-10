@@ -2,7 +2,7 @@ from src.chatbot.prompts.base import CONTEXT, CRITICAL_RULES, ROLE, WHO_AM_I
 
 PLAIN_HUMAN_MESSAGE = (
 """ 
-QUERY: {customer_query}
+STATEMENT: {customer_query}
 """
 )
 
@@ -22,7 +22,7 @@ CONTENT: \n{content}\n
 
 DISCOVERY_QUESTION_TO_ASK_SYSTEM_MESSAGE = (
 """ 
-Respond my QUERY with the following text exactly:\n {discovery_question}
+Respond my STATEMENT with the following text exactly:\n {discovery_question}
 """
 )
 
@@ -31,7 +31,7 @@ CONTEXT +
 WHO_AM_I  +
 ROLE +
 """ 
-Answer my QUERY by recommending the following product:\n
+Answer my STATEMENT by recommending the following product:\n
 {product_to_recommend}\n
 <product_recommendation>
 1. Include its image url and link to the product page using Markdown format for display in the chat. 
@@ -58,7 +58,7 @@ WHO_AM_I +
 ROLE +
 """ 
 <next>
-1. Provide additional details about the last recommended product by analyzing its product description and my QUERY.
+1. Provide additional details about the last recommended product by analyzing its product description and my STATEMENT.
 2. End your response using natural, one consultative question similar to these examples:
 - How do you envision wearing this?
 - Does this feel right for the occasion you have in mind?
@@ -86,10 +86,16 @@ WHO_AM_I +
 ROLE +
 """ 
 <next>
-Respond to my QUERY.
+Respond to my STATEMENT.
 </next>
 """ 
 + CRITICAL_RULES
+)
+
+SIZE_QUESTION_SYSTEM_MESSAGE = (
+""" 
+
+"""
 )
 
 OBJECTION_HANDLING_SYSTEM_MESSAGE = (
@@ -108,7 +114,7 @@ ROLE +
 - Rush orders: Set realistic expectations about shipping and processing times
 </objection_handling>
 <next>
-Respond to my QUERY.
+Respond to my STATEMENT.
 </next>
 """
 + CRITICAL_RULES

@@ -1,11 +1,11 @@
 import json
 
 from src.chatbot.handlers import analyze_conversation_insights, build_conversation_history, extract_customer_intent
-from src.chatbot.mixins import CustomerSupportMixin, ObjectionHandlingMixin, ProductDetailsMixin, ProductRecommendationMixin
+from src.chatbot.mixins import CustomerSupportMixin, ObjectionHandlingMixin, OffTopicMixin, ProductDetailsMixin, ProductRecommendationMixin
 from src.chatbot.models import CustomerIntentEnum
 
 
-class ChatbotService(ProductRecommendationMixin, ProductDetailsMixin, CustomerSupportMixin, ObjectionHandlingMixin):
+class ChatbotService(ProductRecommendationMixin, ProductDetailsMixin, CustomerSupportMixin, ObjectionHandlingMixin, OffTopicMixin):
     """Core service for generating chatbot responses."""
 
     def __init__(self, session_id, vector_store, memory, app, llm, customer_query):
@@ -19,7 +19,6 @@ class ChatbotService(ProductRecommendationMixin, ProductDetailsMixin, CustomerSu
 
         self.customer_preferences = None
         self.conversation_insights = None
-        
 
     def generate_response_stream(self):
         # 1. Get session_id
@@ -32,8 +31,9 @@ class ChatbotService(ProductRecommendationMixin, ProductDetailsMixin, CustomerSu
             self.customer_query,
             conversation_state
         )
-        
-        self.conversation_insights = analyze_conversation_insights(self.llm, conversation_history)
+
+        self.conversation_insights = analyze_conversation_insights(
+            self.llm, conversation_history)
 
         # 5. Define customer intent
         customer_intent = extract_customer_intent(
@@ -56,29 +56,67 @@ class ChatbotService(ProductRecommendationMixin, ProductDetailsMixin, CustomerSu
     @property
     def _intent_handler_map(self):
         return {
-            CustomerIntentEnum.PRODUCT_INFORMATION: lambda: self.handle_product_recommendation(
+            CustomerIntentEnum.PRODUCT_INFORMATION:
+                lambda: self.handle_product_recommendation(
+                    self.llm,
+                    self.vector_store,
+                    self.conversation_memory,
+                    self.conversation_insights,
+                    self.customer_query
+                ),
+            CustomerIntentEnum.DETAILS_ABOUT_RECOMMENDED_PRODUCT:
+            lambda: self.handle_details_about_recommended_product(
                 self.llm,
-                self.vector_store,
+                self.conversation_memory,
+                self.customer_query,
+                ),
+            CustomerIntentEnum.SIZING_HELP:
+            lambda: self.handle_customer_support(
+                self.llm,
                 self.conversation_memory,
                 self.conversation_insights,
                 self.customer_query
-            ),
-            CustomerIntentEnum.DETAILS_ABOUT_RECOMMENDED_PRODUCT: lambda: self.handle_details_about_recommended_product(
+                ),
+            CustomerIntentEnum.CARE_INSTRUCTIONS:
+            lambda: self.handle_customer_support(
+                self.llm,
+                self.conversation_memory,
+                self.conversation_insights,
+                self.customer_query
+                ),
+            CustomerIntentEnum.RETURN_POLICY:
+            lambda: self.handle_customer_support(
+                self.llm,
+                self.conversation_memory,
+                self.conversation_insights,
+                self.customer_query
+                ),
+            CustomerIntentEnum.SHIPPING_INFORMATION:
+            lambda: self.handle_customer_support(
+                self.llm,
+                self.conversation_memory,
+                self.conversation_insights,
+                self.customer_query
+                ),
+            CustomerIntentEnum.BRAND_INFORMATION:
+            lambda: self.handle_customer_support(
+                self.llm,
+                self.conversation_memory,
+                self.conversation_insights,
+                self.customer_query
+                ),
+            CustomerIntentEnum.ISSUE_OR_CONCERN_OR_HESITATION:
+            lambda: self.handle_objections(
+
+                self.llm,
+                self.conversation_memory,
+                self.conversation_insights,
+                self.customer_query
+                ),
+            CustomerIntentEnum.OFF_TOPIC:
+            lambda: self.handle_off_topic(
                 self.llm,
                 self.conversation_memory,
                 self.customer_query,
-            ),
-            CustomerIntentEnum.SIZING_HELP: lambda: self.handle_customer_support(self, self.llm, self.conversation_memory, self.conversation_insights, self.customer_query),
-            CustomerIntentEnum.CARE_INSTRUCTIONS: lambda: self.handle_customer_support(self, self.llm, self.conversation_memory, self.conversation_insights, self.customer_query),
-            CustomerIntentEnum.RETURN_POLICY: lambda: self.handle_customer_support(self, self.llm, self.conversation_memory, self.conversation_insights, self.customer_query),
-            CustomerIntentEnum.SHIPPING_INFORMATION: lambda: self.handle_customer_support(self, self.llm, self.conversation_memory, self.conversation_insights, self.customer_query),
-            CustomerIntentEnum.BRAND_INFORMATION: lambda: self.handle_customer_support(self, self.llm, self.conversation_memory, self.conversation_insights, self.customer_query),
-            CustomerIntentEnum.ISSUE_OR_CONCERN: lambda: self.handle_objections(
-                self, self.llm, self.conversation_memory, self.conversation_insights, self.customer_query
-            ),
-            CustomerIntentEnum.OFF_TOPIC: lambda: self.handle_off_topic(
-                self.llm,
-                self.conversation_memory,
-                self.customer_query,
-            ),
+                ),
         }

@@ -64,11 +64,11 @@ You work for 'DRF React Gems' as a Conversation Analyst. You have experience in 
 </role>
 
 <goal>
-The goal is to identify what the customer preferences and needs by analyzing the CUSTOMER QUERY.
+The goal is to identify what the customer preferences and needs by analyzing the CUSTOMER STATEMENT.
 </goal>
 
 <next>
-1. If a required value cannot be definitively determined from the CUSTOMER QUERY, include the key in the schema and set its value to an empty string (""). 
+1. If a required value cannot be definitively determined from the CUSTOMER STATEMENT, include the key in the schema and set its value to an empty string (""). 
 2. Do not make assumptions or infer values beyond what is explicitly stated in the conversation summary.
 </next>
 """
@@ -76,7 +76,7 @@ The goal is to identify what the customer preferences and needs by analyzing the
 
 CUSTOMER_PREFERENCE_HUMAN_MESSAGE = (
 """ 
-CUSTOMER QUERY: {conversation_insights}\n
+CUSTOMER STATEMENT: {conversation_insights}\n
 INSTRUCTIONS: {instructions}
 """
 )
@@ -109,14 +109,14 @@ You work for 'DRF React Gems' as a Conversation Analyst. You have experience in 
 </role>
 
 <goal>
-The goal is to identify what the customer intent is by analyzing the CUSTOMER QUERY.
+The goal is to identify what the customer intent is by analyzing the CUSTOMER STATEMENT.
 </goal>
 """
 )
 
 CUSTOMER_INTENT_HUMAN_MESSAGE = (
 """ 
-CUSTOMER QUERY: {conversation_insights}\n
+CUSTOMER STATEMENT: {conversation_insights}\n
 INSTRUCTIONS: {format_instructions}
 """
 )

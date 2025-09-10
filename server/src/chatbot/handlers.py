@@ -61,7 +61,7 @@ def build_conversation_history(customer_query, conversation_state, max_messages=
     messages = conversation_state['channel_values']['messages']
 
     # Extract customer and assistant messages
-    customer_messages = [msg.content.split('QUERY:')[-1].strip()
+    customer_messages = [msg.content.split('STATEMENT:')[-1].strip()
                          for msg in messages if msg.__class__.__name__ == 'HumanMessage']
     assistant_messages = [msg.content.strip()
                           for msg in messages if msg.__class__.__name__ == 'AIMessage']

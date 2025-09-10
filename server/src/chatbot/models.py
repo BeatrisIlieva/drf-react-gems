@@ -8,14 +8,15 @@ from enum import Enum
 
 
 class CustomerIntentEnum(str, Enum):
-    PRODUCT_INFORMATION = "product_information"
-    DETAILS_ABOUT_RECOMMENDED_PRODUCT = "details_about_recommended_product"
+    PRODUCT_INFORMATION = "wants_product_information"
+    DETAILS_ABOUT_RECOMMENDED_PRODUCT = "wants_details_about_recommended_product"
+    INTERESTED_IN_RECOMMENDED_PRODUCT_AFTER_RECEIVING_DETAILS='is_interested_in_recommended_product_after_receiving_details'
     SIZING_HELP = "sizing_help"
     CARE_INSTRUCTIONS = "care_instructions"
     RETURN_POLICY = "return_policy"
     SHIPPING_INFORMATION = "shipping_information"
     BRAND_INFORMATION = "brand_information"
-    ISSUE_OR_CONCERN = "issue_or_concern"
+    ISSUE_OR_CONCERN_OR_HESITATION = "issue_or_concern_or_hesitation"
     OFF_TOPIC = "off_topic"
 
 

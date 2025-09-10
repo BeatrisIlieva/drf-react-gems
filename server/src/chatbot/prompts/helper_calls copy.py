@@ -82,8 +82,8 @@ f"""
 {CONTEXT}\n
 {CONVERSATION_ANALYST}\n
 <next>
-1. Analyze the provided CUSTOMER QUERY. 
-2. If a required value cannot be definitively determined from the CUSTOMER QUERY, include the key in the schema and set its value to an empty string (""). 
+1. Analyze the provided CUSTOMER STATEMENT. 
+2. If a required value cannot be definitively determined from the CUSTOMER STATEMENT, include the key in the schema and set its value to an empty string (""). 
 3. Do not make assumptions or infer values beyond what is explicitly stated in the conversation summary.
 </next>
 """
@@ -91,7 +91,7 @@ f"""
 
 CUSTOMER_PREFERENCE_HUMAN_MESSAGE = (
 """ 
-CUSTOMER QUERY: {optimized_query}\n
+CUSTOMER STATEMENT: {optimized_query}\n
 INSTRUCTIONS: {instructions}
 """
 )
@@ -166,14 +166,14 @@ f"""
 {CONTEXT}\n
 {CONVERSATION_ANALYST}\n
 <next>
-Analyze the CUSTOMER QUERY (customer-assistant conversation) to determine the current intent of the customer.
+Analyze the CUSTOMER STATEMENT (customer-assistant conversation) to determine the current intent of the customer.
 </next>
 """
 )
 
 CUSTOMER_INTENT_HUMAN_MESSAGE = (
 """ 
-CUSTOMER QUERY: {optimized_query}\n
+CUSTOMER STATEMENT: {optimized_query}\n
 INSTRUCTIONS: {format_instructions}\n
 """
 )
