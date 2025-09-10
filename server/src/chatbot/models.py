@@ -15,7 +15,7 @@ class CustomerIntentEnum(str, Enum):
     RETURN_POLICY = "return_policy"
     SHIPPING_INFORMATION = "shipping_information"
     BRAND_INFORMATION = "brand_information"
-    ISSUE_OR_CONCERN_OR_HESITATION = "issue_or_concern_or_hesitation"
+    ISSUE_OR_CONCERN = "issue_or_concern"
     OFF_TOPIC = "off_topic"
 
 
@@ -62,6 +62,12 @@ class StoneClassification(BaseModel):
 class ColorClassification(BaseModel):
     color: str = Field(
         description="Color (e.g. purple) the customer has shown interest in through any means - direct requests, positive responses to assistant suggestions, questions about color, or any indication of preference for a specific color"
+    )
+
+
+class OccasionClassification(BaseModel):
+    occasion: str = Field(
+        description="The occasion for which the customer needs the jewelry."
     )
 
 

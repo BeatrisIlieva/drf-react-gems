@@ -226,9 +226,9 @@ class Command(BaseCommand):
     @classmethod
     def _create_chunks_using_langchain(cls, pages):
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=500,
-            chunk_overlap=100,
-            separators=["\n\n", ".", "!", '\n', ',', ':', ';',]
+            chunk_size=780,
+            chunk_overlap=0,
+            separators=["\n\n", ".", '\n']
         )
 
         chunks = text_splitter.split_documents(pages)

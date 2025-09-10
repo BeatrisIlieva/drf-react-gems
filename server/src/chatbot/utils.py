@@ -5,7 +5,7 @@ from langchain.prompts import SystemMessagePromptTemplate, HumanMessagePromptTem
 from langchain.output_parsers import PydanticOutputParser
 
 
-def generate_formatted_response(llm, system_message, human_message, response_format, response_model=None, **kwargs):
+def generate_formatted_response(llm, system_message_template, human_message_template, response_format, response_model=None, **kwargs):
     if response_model:
         instructions = PydanticOutputParser(
             pydantic_object=response_model
@@ -15,10 +15,10 @@ def generate_formatted_response(llm, system_message, human_message, response_for
 
     prompt = ChatPromptTemplate.from_messages([
         SystemMessagePromptTemplate.from_template(
-            system_message
+            system_message_template
         ),
         HumanMessagePromptTemplate.from_template(
-            human_message
+            human_message_template
         ),
     ])
 

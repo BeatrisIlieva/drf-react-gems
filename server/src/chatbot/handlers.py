@@ -8,28 +8,33 @@ from src.chatbot.models import (
     FilteredProduct,
     GenderClassification,
     MetalClassification,
+    OccasionClassification,
     PurchaseClassification,
     StoneClassification
 )
 
 from src.chatbot.prompts.customer_intent import (
-    HUMAN_MESSAGE,
-    BUILD_ANSWER_TO_RECOMMEND_PRODUCT_SYSTEM_MESSAGE,
-    BUILD_DISCOVERY_QUESTION_TO_ASK_SYSTEM_MESSAGE
+    ANSWER_TO_PROVIDE_CUSTOMER_SUPPORT_SYSTEM_MESSAGE,
+    ANSWER_TO_PROVIDE_DETAILS_ABOUT_RECOMMENDED_PRODUCT_SYSTEM_MESSAGE,
+    OBJECTION_HANDLING_SYSTEM_MESSAGE,
+    OFF_TOPIC_SYSTEM_MESSAGE,
+    PLAIN_HUMAN_MESSAGE,
+    ANSWER_TO_RECOMMEND_PRODUCT_SYSTEM_MESSAGE,
+    DISCOVERY_QUESTION_TO_ASK_SYSTEM_MESSAGE,
+    WITH_MEMORY_AND_DB_CONTENT_HUMAN_MESSAGE,
+    WITH_MEMORY_HUMAN_MESSAGE
 )
 from src.chatbot.prompts.helper_calls import (
-    BUILD_CONVERSATION_SUMMARY_HUMAN_MESSAGE,
-    BUILD_CONVERSATION_SUMMARY_SYSTEM_MESSAGE,
-    BUILD_DISCOVERY_QUESTION_HUMAN_MESSAGE,
-    BUILD_DISCOVERY_QUESTION_SYSTEM_MESSAGE,
-    BUILD_OPTIMIZED_SEARCH_QUERY_HUMAN_MESSAGE,
-    BUILD_OPTIMIZED_SEARCH_QUERY_SYSTEM_MESSAGE,
-    EXTRACT_CUSTOMER_INTENT_HUMAN_MESSAGE,
-    EXTRACT_CUSTOMER_INTENT_SYSTEM_MESSAGE,
-    EXTRACT_CUSTOMER_PREFERENCE_HUMAN_MESSAGE,
-    EXTRACT_CUSTOMER_PREFERENCE_SYSTEM_MESSAGE,
-    EXTRACT_FILTERED_PRODUCTS_HUMAN_MESSAGE,
-    EXTRACT_FILTERED_PRODUCTS_SYSTEM_MESSAGE
+    ANALYZE_CONVERSATION_INSIGHTS_HUMAN_MESSAGE,
+    ANALYZE_CONVERSATION_INSIGHTS_SYSTEM_MESSAGE,
+    DISCOVERY_QUESTION_HUMAN_MESSAGE,
+    DISCOVERY_QUESTION_SYSTEM_MESSAGE,
+    CUSTOMER_INTENT_HUMAN_MESSAGE,
+    CUSTOMER_INTENT_SYSTEM_MESSAGE,
+    CUSTOMER_PREFERENCE_HUMAN_MESSAGE,
+    CUSTOMER_PREFERENCE_SYSTEM_MESSAGE,
+    FILTERED_PRODUCTS_HUMAN_MESSAGE,
+    FILTERED_PRODUCTS_SYSTEM_MESSAGE
 )
 from src.chatbot.utils import generate_formatted_response
 
@@ -56,7 +61,7 @@ def build_conversation_history(customer_query, conversation_state, max_messages=
     messages = conversation_state['channel_values']['messages']
 
     # Extract customer and assistant messages
-    customer_messages = [msg.content.split('INPUT:')[-1].strip()
+    customer_messages = [msg.content.split('QUERY:')[-1].strip()
                          for msg in messages if msg.__class__.__name__ == 'HumanMessage']
     assistant_messages = [msg.content.strip()
                           for msg in messages if msg.__class__.__name__ == 'AIMessage']
@@ -84,29 +89,19 @@ def build_conversation_history(customer_query, conversation_state, max_messages=
     return '\n'.join(conversation_history)
 
 
-def build_conversation_summary(llm, conversation_history):
+def analyze_conversation_insights(llm, conversation_history):
     return generate_formatted_response(
         llm,
-        BUILD_CONVERSATION_SUMMARY_SYSTEM_MESSAGE,
-        BUILD_CONVERSATION_SUMMARY_HUMAN_MESSAGE,
+        ANALYZE_CONVERSATION_INSIGHTS_SYSTEM_MESSAGE,
+        ANALYZE_CONVERSATION_INSIGHTS_HUMAN_MESSAGE,
         'extract_ai_response_content',
         conversation_history=conversation_history,
     )
 
 
-def build_optimized_query(llm, conversation_summary):
-    return generate_formatted_response(
-        llm,
-        BUILD_OPTIMIZED_SEARCH_QUERY_SYSTEM_MESSAGE,
-        BUILD_OPTIMIZED_SEARCH_QUERY_HUMAN_MESSAGE,
-        'extract_ai_response_content',
-        conversation_summary=conversation_summary,
-    )
-
-
 def extract_customer_preferences(
     llm,
-    optimized_query: str,
+    conversation_insights: str,
 ) -> Tuple[Optional[str], bool]:
     """Extract customer preferences and check if ready for recommendations."""
 
@@ -117,7 +112,8 @@ def extract_customer_preferences(
         (CategoryClassification, 'category'),
         (StoneClassification, 'stone_type'),
         (MetalClassification, 'metal_type'),
-        (PurchaseClassification, 'purchase_type')
+        (PurchaseClassification, 'purchase_type'),
+        (OccasionClassification, 'occasion')
     ]
 
     # Extract all values
@@ -126,11 +122,11 @@ def extract_customer_preferences(
         result = json.loads(
             generate_formatted_response(
                 llm,
-                EXTRACT_CUSTOMER_PREFERENCE_SYSTEM_MESSAGE,
-                EXTRACT_CUSTOMER_PREFERENCE_HUMAN_MESSAGE,
+                CUSTOMER_PREFERENCE_SYSTEM_MESSAGE,
+                CUSTOMER_PREFERENCE_HUMAN_MESSAGE,
                 'extract_and_strip_ai_response_content',
                 classification_class,
-                optimized_query=optimized_query,
+                conversation_insights=conversation_insights,
             )
         )
         extracted[key] = result[key]
@@ -157,13 +153,13 @@ def extract_customer_preferences(
     return customer_preferences, ready_to_transition
 
 
-def build_discovery_question(llm, conversation_summary, customer_preferences):
+def build_discovery_question(llm, conversation_insights, customer_preferences):
     return generate_formatted_response(
         llm,
-        BUILD_DISCOVERY_QUESTION_SYSTEM_MESSAGE,
-        BUILD_DISCOVERY_QUESTION_HUMAN_MESSAGE,
+        DISCOVERY_QUESTION_SYSTEM_MESSAGE,
+        DISCOVERY_QUESTION_HUMAN_MESSAGE,
         'extract_ai_response_content',
-        conversation_summary=conversation_summary,
+        conversation_insights=conversation_insights,
         customer_preferences=customer_preferences,
     )
 
@@ -171,44 +167,90 @@ def build_discovery_question(llm, conversation_summary, customer_preferences):
 def build_discovery_question_to_ask(llm, discovery_question, customer_query):
     return generate_formatted_response(
         llm,
-        BUILD_DISCOVERY_QUESTION_TO_ASK_SYSTEM_MESSAGE,
-        HUMAN_MESSAGE,
+        DISCOVERY_QUESTION_TO_ASK_SYSTEM_MESSAGE,
+        PLAIN_HUMAN_MESSAGE,
         'destructure_messages',
         discovery_question=discovery_question,
-        input=customer_query,
+        customer_query=customer_query,
     )
 
 
-def extract_filtered_products(llm, conversation_summary, customer_preferences, products):
+def extract_filtered_products(llm, customer_preferences, products):
     return generate_formatted_response(
         llm,
-        EXTRACT_FILTERED_PRODUCTS_SYSTEM_MESSAGE,
-        EXTRACT_FILTERED_PRODUCTS_HUMAN_MESSAGE,
+        FILTERED_PRODUCTS_SYSTEM_MESSAGE,
+        FILTERED_PRODUCTS_HUMAN_MESSAGE,
         'extract_and_strip_ai_response_content',
         response_model=FilteredProduct,
-        conversation_summary=conversation_summary,
         customer_preferences=customer_preferences,
         products=products,
     )
 
 
-def build_answer_to_recommend_product(llm, filtered_product, customer_query):
+def build_answer_to_recommend_product(llm, filtered_product, conversation_memory, customer_query):
     return generate_formatted_response(
         llm,
-        BUILD_ANSWER_TO_RECOMMEND_PRODUCT_SYSTEM_MESSAGE,
-        HUMAN_MESSAGE,
+        ANSWER_TO_RECOMMEND_PRODUCT_SYSTEM_MESSAGE,
+        WITH_MEMORY_HUMAN_MESSAGE,
         'destructure_messages',
         product_to_recommend=filtered_product,
-        input=customer_query,
+        customer_query=customer_query,
+        conversation_memory=conversation_memory
     )
 
 
-def extract_customer_intent(llm, optimized_query):
+def extract_customer_intent(llm, conversation_insights):
     return generate_formatted_response(
         llm,
-        EXTRACT_CUSTOMER_INTENT_SYSTEM_MESSAGE,
-        EXTRACT_CUSTOMER_INTENT_HUMAN_MESSAGE,
+        CUSTOMER_INTENT_SYSTEM_MESSAGE,
+        CUSTOMER_INTENT_HUMAN_MESSAGE,
         'extract_and_strip_ai_response_content',
         response_model=CustomerIntent,
-        optimized_query=optimized_query,
+        conversation_insights=conversation_insights,
+    )
+
+
+def build_answer_to_provide_details_about_recommended_product(llm, conversation_memory, customer_query):
+    return generate_formatted_response(
+        llm,
+        ANSWER_TO_PROVIDE_DETAILS_ABOUT_RECOMMENDED_PRODUCT_SYSTEM_MESSAGE,
+        WITH_MEMORY_HUMAN_MESSAGE,
+        'destructure_messages',
+        conversation_memory=conversation_memory,
+        customer_query=customer_query,
+    )
+
+
+def build_answer_to_provide_customer_support(llm, conversation_memory, customer_query, content):
+    return generate_formatted_response(
+        llm,
+        ANSWER_TO_PROVIDE_CUSTOMER_SUPPORT_SYSTEM_MESSAGE,
+        WITH_MEMORY_AND_DB_CONTENT_HUMAN_MESSAGE,
+        'destructure_messages',
+        conversation_memory=conversation_memory,
+        customer_query=customer_query,
+        content=content,
+    )
+
+
+def build_objection_handling_answer(llm, conversation_memory, customer_query, content):
+    return generate_formatted_response(
+        llm,
+        OBJECTION_HANDLING_SYSTEM_MESSAGE,
+        WITH_MEMORY_AND_DB_CONTENT_HUMAN_MESSAGE,
+        'destructure_messages',
+        conversation_memory=conversation_memory,
+        customer_query=customer_query,
+        content=content,
+    )
+
+
+def build_off_topic_answer(llm, conversation_memory, customer_query):
+    return generate_formatted_response(
+        llm,
+        OFF_TOPIC_SYSTEM_MESSAGE,
+        WITH_MEMORY_HUMAN_MESSAGE,
+        'destructure_messages',
+        conversation_memory=conversation_memory,
+        customer_query=customer_query,
     )

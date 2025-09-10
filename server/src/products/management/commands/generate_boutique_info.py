@@ -59,11 +59,16 @@ class Command(BaseCommand):
         return_policy = """ 
         Complimentary 30-day returns: We are pleased to offer a full refund for DRFReactGems.com purchases returned within 30 days of their purchase date. All refunds will be made to the purchaser and issued to the original form of payment. Please note: Returns must be accompanied by a sales receipt and received unaltered, unworn and in sellable condition. Some exclusions may apply. Used merchandise will not be accepted for refund or exchange unless defective.
         """
+        
+        size_guide = """
+        earrings sizes: Small Size: 5.2mm (diameter), Medium Size: 8.1mm (diameter), Large Size: 12.3mm (diameter); necklaces sizes: Small Size: 381.0mm (length), Medium Size: 482.6mm (length), Large Size: 622.3mm (length); pendants sizes: Small Size: 12.4mm (length), Medium Size: 18.9mm (length), Large Size: 28.1mm (length); rings sizes: Small Size: 15.7mm (finger circumference), Medium Size: 17.3mm (finger circumference), Large Size: 19.8mm (finger circumference); bracelets sizes: Small Size: 165.1mm (wrist circumference), Medium Size: 187.9mm (wrist circumference), Large Size: 218.4mm (wrist circumference); watches sizes: Small Size: 32.5mm (wrist circumference), Medium Size: 38.4mm (wrist circumference), Large Size: 44.7mm (wrist circumference);
+        """
 
         story.append(Paragraph(boutique_introduction, normal_style))
         story.append(Paragraph(product_care, normal_style))
         story.append(Paragraph(complimentary_shipping, normal_style))
         story.append(Paragraph(return_policy, normal_style))
+        story.append(Paragraph(size_guide, normal_style))
         story.append(Spacer(1, 8))
 
         # Build the PDF
