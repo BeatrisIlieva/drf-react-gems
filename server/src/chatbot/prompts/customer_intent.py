@@ -8,7 +8,7 @@ STATEMENT: {customer_query}
 
 WITH_MEMORY_HUMAN_MESSAGE = (
 """ 
-CONVERSATION_MEMORY: \n{conversation_memory}\n
+CONVERSATION MEMORY: \n{conversation_memory}\n
 """
 + PLAIN_HUMAN_MESSAGE
 )
@@ -20,9 +20,16 @@ CONTENT: \n{content}\n
 + WITH_MEMORY_HUMAN_MESSAGE
 )
 
+WITH_MEMORY_AND_CONVERSATION_INSIGHTS_HUMAN_MESSAGE = (
+""" 
+CONVERSATION INSIGHTS: \n{conversation_insights}\n
+"""
++ WITH_MEMORY_HUMAN_MESSAGE
+)
+
 DISCOVERY_QUESTION_TO_ASK_SYSTEM_MESSAGE = (
 """ 
-Respond my STATEMENT with the following text exactly:\n {discovery_question}
+Respond to my STATEMENT with the following text exactly:\n {discovery_question}
 """
 )
 
@@ -31,7 +38,7 @@ CONTEXT +
 WHO_AM_I  +
 ROLE +
 """ 
-Answer my STATEMENT by recommending the following product:\n
+Respond to my STATEMENT by recommending the following product:\n
 {product_to_recommend}\n
 <product_recommendation>
 1. Include its image url and link to the product page using Markdown format for display in the chat. 
@@ -80,6 +87,25 @@ ROLE +
 + CRITICAL_RULES
 )
 
+OFFER_HELP_WITH_SELECTING_IDEAL_SIZE_SYSTEM_MESSAGE = (
+""" 
+1.Analyze the CUSTOMER STATEMENT to find out if it is self-purchase or gift-purchase.
+- If it is self-purchase, then respond to my STATEMENT exactly with: I'm delighted this piece resonates with you. The final touch in making this piece truly yours is ensuring it fits as beautifully as it looks. May I help you select your ideal size? We want this to feel like it was crafted specifically for you.
+- If it is gift-purchase, then respond to my STATEMENT exactly with: If this is a surprise gift, I can share some discrete ways to determine sizing without revealing your wonderful gesture.
+"""
+)
+
+PROVIDE_HELP_WITH_SELECTING_IDEAL_SIZE_SYSTEM_MESSAGE = (
+""" 
+1. Determine what was the type of the last jewelry that had been recommended.
+2. Based on the type respond to my STATEMENT with one of the following questions:
+- For RING: I'm delighted this piece resonates with you. To ensure it sits perfectly on your finger - as comfortable as it is beautiful - may I ask if you know your finger circumference? If not, I'd be happy to guide you through finding your perfect fit.
+- For BRACELET/WATCH: I'm delighted this piece resonates with you. To ensure it sits perfectly on your wrist - as comfortable as it is beautiful - may I ask if you know your wrist circumference? If not, I'd be happy to guide you through finding your perfect fit. 
+- For NECKLACE/PENDANT: I'm so pleased this captures what you're looking for. For necklaces, the length creates different statements - a closer fit draws attention to the neckline, while a longer drop creates drama. Which silhouette appeals to you?
+- For EARRINGS: Excellent choice! Our earrings come in graduated sizes to complement different styles - delicate for understated elegance, or more substantial for a confident statement. What suits your personal aesthetic?
+"""
+)
+
 ANSWER_TO_PROVIDE_CUSTOMER_SUPPORT_SYSTEM_MESSAGE = (
 CONTEXT +
 WHO_AM_I + 
@@ -92,18 +118,13 @@ Respond to my STATEMENT.
 + CRITICAL_RULES
 )
 
-SIZE_QUESTION_SYSTEM_MESSAGE = (
-""" 
-
-"""
-)
-
 OBJECTION_HANDLING_SYSTEM_MESSAGE = (
 CONTEXT +
 WHO_AM_I + 
 ROLE +
 """ 
 <objection_handling>
+- Hesitation/Doubt: Ask for clarifying questions
 - Price concerns: Focus on craftsmanship, heirloom value, and payment options available on website
 - Size uncertainty: Explain our sizing guide and return policy
 - Style doubts: Ask about lifestyle, existing jewelry, and personal preferences
@@ -127,6 +148,8 @@ ROLE +
 """ 
 <important>
 - Cannot process transactions or access external systems
+- Customers need to visit product page to make a purchase
+- To make a purchase customer has to select a size first
 - Redirect the query back to jewelry consultation
 - You can answer appropriate questions related to the customer like their name, age, gender, profession, style, family, special occasion etc.
 </important>
@@ -134,17 +157,6 @@ ROLE +
 + CRITICAL_RULES
 )
 
-CLOSING_PHASE = (
-CONTEXT +
-WHO_AM_I + 
-ROLE +
-""" 
-<next>
-Provide additional details about the last recommended product by analyzing its product description
-</next>
-"""
-+ CRITICAL_RULES
-)
 
 
 
