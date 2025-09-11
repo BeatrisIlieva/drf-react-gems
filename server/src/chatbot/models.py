@@ -1,17 +1,12 @@
-from typing import Literal, Optional, Dict
+from typing import Literal, Optional
 from enum import Enum
-
 from pydantic import BaseModel, Field
 
 
-from enum import Enum
-
-
 class CustomerIntentEnum(str, Enum):
-    PRODUCT_INFORMATION = 'wants_product_information'
-    DETAILS_ABOUT_RECOMMENDED_PRODUCT = 'wants_details_about_recommended_product'
-    INTERESTED_IN_RECOMMENDED_PRODUCT_AFTER_RECEIVING_DETAILS = 'is_interested_in_recommended_product_after_receiving_details'
-    INTERESTED_IN_RECEIVING_HELP_IN_SELECTING_IDEAL_SIZE_FOR_SELF_PURCHASE = 'interested_in_receiving_help_in_selecting_ideal_size_for_self_purchase'
+    WANTS_PRODUCT_INFORMATION_OR_SHARES_PREFERENCES = 'wants_product_information_or_shares_preferences'
+    IS_INTERESTED_IN_RECOMMENDED_PRODUCT = 'is_interested_in_recommended_product'
+    IS_INTERESTED_IN_RECEIVING_HELP_IN_SELECTING_IDEAL_SIZE_FOR_SELF_PURCHASE = 'is_interested_in_receiving_help_in_selecting_ideal_size_for_self_purchase'
     SIZING_HELP = 'sizing_help'
     CARE_INSTRUCTIONS = 'care_instructions'
     RETURN_POLICY = 'return_policy'
@@ -27,60 +22,45 @@ class CustomerIntent(BaseModel):
     )
 
 
-class GenderClassification(BaseModel):
-    gender: Literal['male', 'female'] = Field(
-        description='Gender of the person who will wear the jewelry, determined from conversational context such as pronouns, relationships, names, or direct statements'
+class ProductPreferences(BaseModel):
+    """Enhanced preference model for luxury jewelry consultation."""
+
+    # Primary Discovery Phase
+    occasion: Optional[str] = Field(
+        default=None,
+        description='The occasion or life moment for which the customer needs the jewelry (e.g., anniversary, achievement, birthday, engagement)'
     )
 
-
-class PurchaseClassification(BaseModel):
-    purchase_type: Literal['self_purchase', 'gift_purchase'] = Field(
+    purchase_type: Optional[Literal['self_purchase', 'gift_purchase']] = Field(
+        default=None,
         description='Whether the jewelry is for the customer themselves or as a gift for someone else'
     )
-    recipient_relationship: Optional[str] = Field(
+
+    # Secondary Discovery Phase
+    gender: Optional[Literal['male', 'female']] = Field(
         default=None,
-        description='Required when purchase_type is `gift_purchase` - relationship between customer and gift recipient'
+        description='Gender of the person who will wear the jewelry, determined from the CUSTOMER STATEMENT such as pronouns, relationships, names, or direct statements'
     )
 
-
-class CategoryClassification(BaseModel):
-    category: str = Field(
+    # Style Discovery Phase
+    category: Optional[str] = Field(
+        default=None,
         description='Jewelry type (e.g. brooches) the customer has shown interest in through any means - direct requests, positive responses to assistant suggestions, questions about jewelry type, or any indication of preference for a specific jewelry type'
     )
 
-
-class MetalClassification(BaseModel):
-    metal_type: str = Field(
+    # Material Discovery Phase
+    metal_type: Optional[str] = Field(
+        default=None,
         description='Metal type (e.g. silver) the customer has shown interest in through any means - direct requests, positive responses to assistant suggestions, questions about metal types, or any indication of preference for a specific metal type'
     )
 
-
-class StoneClassification(BaseModel):
-    stone_type: str = Field(
+    stone_type: Optional[str] = Field(
+        default=None,
         description='Stone type (e.g. diamond) type the customer has shown interest in through any means - direct requests, positive responses to assistant suggestions, questions about gemstone types, or any indication of preference for a specific gemstone type'
     )
 
-
-class ColorClassification(BaseModel):
-    color: str = Field(
-        description='Color (e.g. purple) the customer has shown interest in through any means - direct requests, positive responses to assistant suggestions, questions about color, or any indication of preference for a specific color'
+    # Budget Discovery Phase (for online, this is more delicate)
+    budget_range: Optional[float] = Field(
+        default=None,
+        description='Price sensitivity level'
     )
-
-
-class OccasionClassification(BaseModel):
-    occasion: str = Field(
-        description='The occasion for which the customer needs the jewelry.'
-    )
-
-
-class FilteredProduct(BaseModel):
-    collection: str
-    stone: str
-    metal: str
-    category: str
-    product_id: str
-    image_url: str
-    sizes: Dict[str, str]
-    description: str
-    target_gender: str
-    average_rating: str

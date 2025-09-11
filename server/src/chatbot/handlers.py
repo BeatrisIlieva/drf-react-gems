@@ -2,13 +2,7 @@ import json
 from typing import Optional, Tuple
 
 from src.chatbot.models import (
-    CategoryClassification,
-    ColorClassification,
-    GenderClassification,
-    MetalClassification,
-    OccasionClassification,
-    PurchaseClassification,
-    StoneClassification
+    ProductPreferences
 )
 
 
@@ -55,81 +49,34 @@ def build_conversation_history(customer_query, conversation_state, max_messages=
     return '\n'.join(conversation_history)
 
 
-def extract_customer_preferences(
-    llm,
-    conversation_insights: str,
-) -> Tuple[Optional[str], bool]:
-    """Extract customer preferences and check if ready for recommendations."""
+# def extract_customer_preferences(
+#     llm,
+#     conversation_insights: str,
+# ) -> Tuple[Optional[str], bool]:
+#     """Extract customer preferences and check if ready for recommendations."""
 
-    # Define classifications to extract
-    classifications = [
-        (
-            GenderClassification,
-            'gender'
-        ),
-        (
-            ColorClassification,
-            'color'
-        ),
-        (
-            CategoryClassification,
-            'category'
-        ),
-        (
-            StoneClassification,
-            'stone_type'
-        ),
-        (
-            MetalClassification,
-            'metal_type'
-        ),
-        (
-            PurchaseClassification,
-            'purchase_type'
-        ),
-        (
-            OccasionClassification,
-            'occasion'
-        )
-    ]
+#     # Extract all values
 
-    # Extract all values
-    extracted = {}
-    for classification_class, key in classifications:
-        result = json.loads(
-            generate_formatted_response(
-                llm,
-                CUSTOMER_PREFERENCE_SYSTEM_MESSAGE,
-                CUSTOMER_PREFERENCE_HUMAN_MESSAGE,
-                'extract_and_strip_ai_response_content',
-                classification_class,
-                conversation_insights=conversation_insights,
-            )
-        )
-        extracted[key] = result[key]
+#     result = generate_formatted_response(
+#         llm,
+#         CUSTOMER_PREFERENCE_SYSTEM_MESSAGE,
+#         CUSTOMER_PREFERENCE_HUMAN_MESSAGE,
+#         'extract_and_strip_ai_response_content',
+#         ProductPreferences,
+#         conversation_insights=conversation_insights,
+#     )
 
-        # Also get recipient_relationship from purchase classification
-        if classification_class == PurchaseClassification:
-            extracted['recipient_relationship'] = result.get(
-                'recipient_relationship'
-            )
+#     extracted = []
+#     ready_to_transition = True
 
-    # Check if all required fields are present
-    required_fields = [key for _, key in classifications]
-    if extracted['purchase_type'] == 'gift_purchase':
-        required_fields.append(
-            'recipient_relationship'
-        )
+#     for key, value in result.items():
+#         if value == '':
+#             ready_to_transition = False
 
-    ready_to_transition = all(
-        extracted[field] for field in required_fields
-    )
+#         extracted.append(f'{key}: {value}')
 
-    # Build preferences string
-    preferences_items = [
-        f'{field}: {extracted[field]}' for field in required_fields]
-    customer_preferences = '\n'.join(
-        preferences_items
-    )
+#     customer_preferences = '\n'.join(
+#         extracted
+#     )
 
-    return customer_preferences, ready_to_transition
+#     return customer_preferences, ready_to_transition

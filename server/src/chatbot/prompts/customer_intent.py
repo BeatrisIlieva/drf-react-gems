@@ -2,7 +2,7 @@ from src.chatbot.prompts.base import CONTEXT, CRITICAL_RULES, ROLE, WHO_AM_I
 
 PLAIN_HUMAN_MESSAGE = (
 """ 
-STATEMENT: {customer_query}
+STATEMENT: \n{conversation_insights}\n
 """
 )
 
@@ -20,13 +20,6 @@ CONTENT: \n{content}\n
 + WITH_MEMORY_HUMAN_MESSAGE
 )
 
-WITH_MEMORY_AND_CONVERSATION_INSIGHTS_HUMAN_MESSAGE = (
-""" 
-CONVERSATION INSIGHTS: \n{conversation_insights}\n
-"""
-+ WITH_MEMORY_HUMAN_MESSAGE
-)
-
 DISCOVERY_QUESTION_TO_ASK_SYSTEM_MESSAGE = (
 """ 
 Respond to my STATEMENT with the following text exactly:\n {discovery_question}
@@ -38,7 +31,7 @@ CONTEXT +
 WHO_AM_I  +
 ROLE +
 """ 
-Respond to my STATEMENT by recommending the following product:\n
+1. Respond my STATEMENT by recommending the following product:\n
 {product_to_recommend}\n
 <product_recommendation>
 1. Include its image url and link to the product page using Markdown format for display in the chat. 
@@ -52,20 +45,6 @@ Respond to my STATEMENT by recommending the following product:\n
 </recommendation_format>
 <product_recommendation>
 
-<important>
-- Conclude with a brief, engaging question that encourages further discussion about the product description
-</important>
-"""
-+ CRITICAL_RULES
-)
-
-ANSWER_TO_PROVIDE_DETAILS_ABOUT_RECOMMENDED_PRODUCT_SYSTEM_MESSAGE = (
-CONTEXT +
-WHO_AM_I + 
-ROLE +
-""" 
-<next>
-1. Provide additional details about the last recommended product by analyzing its product description and my STATEMENT.
 2. End your response using natural, one consultative question similar to these examples:
 - How do you envision wearing this?
 - Does this feel right for the occasion you have in mind?
@@ -81,24 +60,25 @@ ROLE +
 - This seems to align beautifully with what you've described - what are your thoughts?
 - I can see this working wonderfully for your occasion - does it feel right to you?
 - Something tells me this could be perfect - what's your impression?
-3. Customize the question according to the customer profile and their story.
-</next>
+3. Customize the question according to my profile and story
 """
 + CRITICAL_RULES
 )
 
+
 OFFER_HELP_WITH_SELECTING_IDEAL_SIZE_SYSTEM_MESSAGE = (
 """ 
-1.Analyze the CUSTOMER STATEMENT to find out if it is self-purchase or gift-purchase.
-- If it is self-purchase, then respond to my STATEMENT exactly with: I'm delighted this piece resonates with you. The final touch in making this piece truly yours is ensuring it fits as beautifully as it looks. May I help you select your ideal size? We want this to feel like it was crafted specifically for you.
-- If it is gift-purchase, then respond to my STATEMENT exactly with: If this is a surprise gift, I can share some discrete ways to determine sizing without revealing your wonderful gesture.
+1.Analyze the STATEMENT to find out if it is self-purchase or gift-purchase.
+- If it is self-purchase, then respond to the STATEMENT exactly with: I'm delighted this piece resonates with you. The final touch in making this piece truly yours is ensuring it fits as beautifully as it looks. May I help you select your ideal size? We want this to feel like it was crafted specifically for you.
+- If it is gift-purchase, then respond to the STATEMENT exactly with: If this is a surprise gift, I can share some discrete ways to determine sizing without revealing your wonderful gesture.
 """
 )
 
 PROVIDE_HELP_WITH_SELECTING_IDEAL_SIZE_SYSTEM_MESSAGE = (
 """ 
-1. Determine what was the type of the last jewelry that had been recommended.
-2. Based on the type respond to my STATEMENT with one of the following questions:
+1. Analyze the CONVERSATION MEMORY.
+2. Determine what was the type of the last jewelry that had been recommended.
+3. Based on the type respond to the STATEMENT with one of the following questions:
 - For RING: I'm delighted this piece resonates with you. To ensure it sits perfectly on your finger - as comfortable as it is beautiful - may I ask if you know your finger circumference? If not, I'd be happy to guide you through finding your perfect fit.
 - For BRACELET/WATCH: I'm delighted this piece resonates with you. To ensure it sits perfectly on your wrist - as comfortable as it is beautiful - may I ask if you know your wrist circumference? If not, I'd be happy to guide you through finding your perfect fit. 
 - For NECKLACE/PENDANT: I'm so pleased this captures what you're looking for. For necklaces, the length creates different statements - a closer fit draws attention to the neckline, while a longer drop creates drama. Which silhouette appeals to you?

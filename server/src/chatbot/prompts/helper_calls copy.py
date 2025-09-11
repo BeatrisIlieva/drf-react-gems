@@ -100,25 +100,49 @@ INSTRUCTIONS: {instructions}
 """
 )
 
-OPTIMIZED_VECTOR_SEARCH_QUERY_SYSTEM_MESSAGE = (
+DISCOVERY_QUESTION_SYSTEM_MESSAGE = (
+CONTEXT +
+WHO_AM_I +
+ROLE +
+""" 
+<goal>
+The goal is to discover all customer preferences step by step in order to recommend the most suitable jewelry product. Ask about preferences one by one to avoid overwhelming the customer with complex questions.
+</goal>
+
+<instructions>
+1. Analyze the CUSTOMER PREFERENCES and identify empty fields (those showing no value after the colon).
+2. Determine which empty preference is most important to discover next.
+3. Formulate one clear, conversational question to discover that preference.
+4. Return only that targeted question.
+</instructions>
+"""
++ CRITICAL_RULES
+)
+
+DISCOVERY_QUESTION_HUMAN_MESSAGE = (
+""" 
+CUSTOMER PREFERENCES: {customer_preferences}
+"""
+)
+
+FILTERED_PRODUCTS_SYSTEM_MESSAGE = (
 CONTEXT +
 """
-<role>
-You work for 'DRF React Gems' as a Conversation Analyst. You have experience in natural language processing concepts and sentiment analysis.
-</role>
-
 <next>
-1. Analyze CUSTOMER PREFERENCES.
-2. Analyze the CUSTOMER STATEMENT.
-3. Formulate a query to be used for vector search in our database (RAG) to retrieve the product that meets all customer preferences and needs.
-4. Output only the query to be used for the vector search.
+1. Analyze CUSTOMER_PREFERENCES to identify the customer needs and the exact characteristics the customer is seeking in a product.
+2. Analyze the provided PRODUCTS.
+3. Choose the most suitable product for the customer needs and preferences.
+- Connect product features to customer specific situation
+- For gifts: Consider relationship stage and appropriateness (new relationships: consider pendants/earrings over rings, established relationships: consider meaningful, personal pieces)
+4. Populate the schema with the characteristics of the exact product you have chosen.
 </next>
 """
 )
 
-OPTIMIZED_VECTOR_SEARCH_QUERY_HUMAN_MESSAGE = (
+FILTERED_PRODUCTS_HUMAN_MESSAGE = (
 """ 
-CUSTOMER PREFERENCES:\n {customer_preferences}\n
-STATEMENT:\n {conversation_insights}\n
+CUSTOMER_PREFERENCES:\n {customer_preferences}\n
+PRODUCTS:\n {products}\n
+INSTRUCTIONS: {instructions}
 """
 )

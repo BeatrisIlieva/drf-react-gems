@@ -1,4 +1,5 @@
 import re
+import json
 
 from langchain.prompts import ChatPromptTemplate
 from langchain.prompts import SystemMessagePromptTemplate, HumanMessagePromptTemplate
@@ -26,10 +27,10 @@ def generate_formatted_response(llm, system_message_template, human_message_temp
 
     response_format_mapper = {
         'extract_and_strip_ai_response_content':
-        lambda: re.sub(
+        lambda: json.loads(re.sub(
             r'```json\s*|\s*```', '',
             llm.invoke(messages).content
-        ).strip(),
+        ).strip()),
 
         'extract_ai_response_content':
         lambda: llm.invoke(messages).content,
