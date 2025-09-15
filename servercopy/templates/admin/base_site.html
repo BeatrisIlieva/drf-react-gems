@@ -1,0 +1,7 @@
+{% extends "admin/base.html" %} {% load static %} {% block extrahead %}
+<link
+    rel="shortcut icon"
+    type="image/x-icon"
+    href="{% static 'admin/img/favicon.ico' %}?v={{ request.GET.v|default:'1' }}"
+/>
+{% endblock %}

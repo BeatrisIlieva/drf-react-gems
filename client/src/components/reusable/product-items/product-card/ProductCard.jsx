@@ -19,7 +19,7 @@ export const ProductCard = ({
     id,
     collectionName,
     firstImage,
-    secondImage,
+    fourthImage,
     colorName,
     stoneName,
     metalName,
@@ -36,8 +36,14 @@ export const ProductCard = ({
     const formattedMaxPrice = formatPrice(maxPrice);
     const navigate = useNavigate();
     const { isInWishlist, handleWishlistToggle } = useWishlistContext();
+
     const categoryParam = categoryFromUrl ? categoryFromUrl : categoryName;
-    const category = categoryParam?.slice(0, categoryParam?.length - 1);
+    let category;
+    if (categoryParam && (categoryParam == 'Watches' || categoryParam == 'watches')) {
+        category = categoryParam.slice(0, -2);
+    } else {
+        category = categoryParam.slice(0, -1);
+    }
 
     const isItemInWishlist = isInWishlist(category, id);
 
@@ -55,7 +61,7 @@ export const ProductCard = ({
                     id,
                     collectionName,
                     firstImage,
-                    secondImage,
+                    fourthImage,
                     colorName,
                     stoneName,
                     metalName,
@@ -71,7 +77,7 @@ export const ProductCard = ({
             id,
             collectionName,
             firstImage,
-            secondImage,
+            fourthImage,
             colorName,
             stoneName,
             metalName,
@@ -87,19 +93,19 @@ export const ProductCard = ({
     }, [categoryName]);
 
     const capitalizedCategoryName =
-        categoryParam.charAt(0).toUpperCase() + categoryParam.slice(1, categoryParam.length - 1);
-
+        category.charAt(0).toUpperCase() + category.slice(1, category.length);
+    console.log('category', category);
     return (
         <article className={styles['product-card']}>
             <div className={styles['wrapper']}>
                 <button
                     onClick={() =>
                         handleWishlistToggle(
-                            `${category}s`,
+                            `${category != 'watch' ? category + 's' : 'watches'}`,
                             id,
                             collectionName,
                             firstImage,
-                            secondImage,
+                            fourthImage,
                             colorName,
                             stoneName,
                             metalName,
@@ -118,9 +124,13 @@ export const ProductCard = ({
                     )}
                 </button>
 
-                <div className={styles['thumbnail']}>
+                <div
+                    className={styles['thumbnail']}
+                    onMouseEnter={() => setSelectedImageIndex(1)}
+                    onMouseLeave={() => setSelectedImageIndex(0)}
+                >
                     <img
-                        src={selectedImageIndex === 0 ? firstImage : secondImage}
+                        src={selectedImageIndex === 0 ? firstImage : fourthImage}
                         className={`${
                             selectedImageIndex === 0
                                 ? styles['slide-in-right']
@@ -135,7 +145,7 @@ export const ProductCard = ({
                         </button>
                     )}
                 </div>
-                {secondImage && (
+                {fourthImage && (
                     <footer>
                         <ToggleImageButtons
                             selectedIndex={selectedImageIndex}

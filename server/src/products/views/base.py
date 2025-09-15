@@ -4,6 +4,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework import status
 
+from src.common.utils import convert_to_lower_case
 from src.products.mixins import FilterMixin
 from src.products.utils import get_valid_categories
 
@@ -70,18 +71,24 @@ class BaseAttributeView(FilterMixin, RetrieveAPIView):
                 category = ''
 
             if category.endswith('s') and len(category) > 1:
-                category = category[:-1]
+                if category == 'watches':
+                    category = category[:-2]
+                else:
+                    category = category[:-1]
+
+            categoryToLowerCase = convert_to_lower_case(category)
 
             valid_categories = get_valid_categories()
 
-            if category and category not in valid_categories:
+            if categoryToLowerCase and categoryToLowerCase not in valid_categories:
                 return Response(
                     {'error': 'Invalid category'},
                     status=status.HTTP_404_NOT_FOUND,
                 )
 
-            filters = self._get_filters_for_attributes(category)
-            data = self.model.objects.get_attributes_count(filters, category)
+            filters = self._get_filters_for_attributes(categoryToLowerCase)
+            data = self.model.objects.get_attributes_count(
+                filters, categoryToLowerCase)
             serializer = self.get_serializer(data, many=True)
 
             return Response({'results': serializer.data})

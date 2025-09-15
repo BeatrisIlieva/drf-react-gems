@@ -35,6 +35,7 @@ import { Wishlist } from './components/pages/wishlist/Wishlist';
 import { MiniBagPopup } from './components/reusable/user-action/mini-bag-popup/MiniBagPopup';
 
 import styles from './App.module.scss';
+import { Chatbot } from './components/chatbot/Chatbot';
 
 function App() {
     const { isMiniBagPopupOpen, toggleMiniBagPopupOpen } = useShoppingBagContext();
@@ -89,6 +90,7 @@ function App() {
                     </Route>
                     <Route path="*" element={<Page404 />} />
                 </Routes>
+                <Chatbot/>
             </main>
             <MiniBagPopup isOpen={isMiniBagPopupOpen} onClose={toggleMiniBagPopupOpen} />
             <ScrollToTop />

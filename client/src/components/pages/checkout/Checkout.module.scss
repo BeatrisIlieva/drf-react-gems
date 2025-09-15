@@ -4,6 +4,7 @@
 .checkout {
     display: flex;
     gap: 2em;
+
     @include anim.animate-fade-in(1.5s);
 
     @media (max-width: 900px) {
@@ -19,9 +20,5 @@
         flex-direction: column;
         flex: 1 1 auto;
         gap: 2em;
-    }
-
-    .checkout-button-container {
-        display: flex;
     }
 }

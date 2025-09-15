@@ -1,12 +1,7 @@
 @use '../../../styles/variables' as vars;
 
 .user-action {
-    flex: 0 1 26%;
-    margin-inline: auto;
-    position: sticky;
     margin-top: 4.3em;
-    top: 4.3em;
-    height: 100%;
 
     @media (max-width: 1000px) {
         margin-top: 0;
@@ -38,7 +33,11 @@
         visibility: hidden;
     }
 
-    p:last-of-type {
-        margin-block: 0.75em;
+    .buttons-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85em;
+        opacity: 0.8;
+        font-size: 0.9em;
     }
 }

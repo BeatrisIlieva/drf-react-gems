@@ -3,6 +3,11 @@
 
 .product-list {
     margin-bottom: 2em;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    flex-grow: 1;
+    height: 100%;
     @include anim.animate-fade-in(1.2s);
 
     .sentinel {
@@ -37,5 +42,10 @@
         .wrapper-inner {
             flex: 1 1 calc(100% - 250px);
         }
+    }
+
+    & > button {
+        margin-top: 4em;
+        align-self: center;
     }
 }

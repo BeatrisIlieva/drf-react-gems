@@ -1,33 +1,43 @@
 from src.products.models.base import BaseProduct
-from src.products.managers import (
-    EarwearManager,
-    NeckwearManager,
-    WristwearManager,
-    FingerwearManager,
-)
+
 from src.products.managers.product import (
+    BraceletManager,
     CollectionManager,
     ColorManager,
+    EarringManager,
     MetalManager,
+    NecklaceManager,
+    PendantManager,
+    RingManager,
     StoneManager,
+    WatchManager,
 )
 from src.products.mixins import NameFieldMixin
 
 
-class Earwear(BaseProduct):
-    objects = EarwearManager()
+
+class Earring(BaseProduct):
+    objects = EarringManager()
 
 
-class Neckwear(BaseProduct):
-    objects = NeckwearManager()
+class Necklace(BaseProduct):
+    objects = NecklaceManager()
 
 
-class Fingerwear(BaseProduct):
-    objects = FingerwearManager()
+class Pendant(BaseProduct):
+    objects = PendantManager()
 
 
-class Wristwear(BaseProduct):
-    objects = WristwearManager()
+class Ring(BaseProduct):
+    objects = RingManager()
+
+
+class Bracelet(BaseProduct):
+    objects = BraceletManager()
+
+
+class Watch(BaseProduct):
+    objects = WatchManager()
 
 
 class Collection(NameFieldMixin):

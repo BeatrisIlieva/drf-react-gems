@@ -3,6 +3,7 @@
 .thumbnail {
     display: flex;
     position: relative;
+    aspect-ratio: 1/1.4;
 }
 
 .thumbnail::before,

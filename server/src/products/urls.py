@@ -2,23 +2,28 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from src.products.views.product import (
+    BraceletItemView,
+    BraceletListView,
     CollectionRetrieveView,
     ColorRetrieveView,
+    EarringItemView,
+    EarringListView,
     MetalRetrieveView,
+    NecklaceItemView,
+    NecklaceListView,
+    PendantItemView,
+    PendantListView,
+    RingItemView,
+    RingListView,
     StoneRetrieveView,
+    WatchItemView,
+    WatchListView,
     catalog_page,
     download_catalog,
     generate_catalog,
 )
 from src.products.views.product import (
-    EarwearItemView,
-    EarwearListView,
-    FingerwearItemView,
-    FingerwearListView,
-    NeckwearItemView,
-    NeckwearListView,
-    WristwearItemView,
-    WristwearListView,
+
     ProductAllReviewsView,
 )
 from src.products.views.review import ReviewViewSet
@@ -30,51 +35,76 @@ router.register(r'reviews', ReviewViewSet, basename='review')
 urlpatterns = [
     path('', include(router.urls)),
     path(
-        'earwears/',
+        'earrings/',
         include(
             [
-                path('', EarwearListView.as_view(), name='earwear-list'),
+                path('', EarringListView.as_view(),
+                     name='earrings-list'),
                 path(
-                    '<int:pk>/', EarwearItemView.as_view(), name='earwear-item'
+                    '<int:pk>/', EarringItemView.as_view(), name='earrings-item'
                 ),
             ]
         ),
     ),
     path(
-        'fingerwears/',
+        'necklaces/',
         include(
             [
-                path('', FingerwearListView.as_view(), name='fingerwear-list'),
+                path('', NecklaceListView.as_view(),
+                     name='necklaces-list'),
                 path(
-                    '<int:pk>/',
-                    FingerwearItemView.as_view(),
-                    name='fingerwear-item',
+                    '<int:pk>/', NecklaceItemView.as_view(), name='necklaces-item'
                 ),
             ]
         ),
     ),
     path(
-        'neckwears/',
+        'pendants/',
         include(
             [
-                path('', NeckwearListView.as_view(), name='neckwear-list'),
+                path('', PendantListView.as_view(),
+                     name='pendants-list'),
                 path(
-                    '<int:pk>/',
-                    NeckwearItemView.as_view(),
-                    name='neckwear-item',
+                    '<int:pk>/', PendantItemView.as_view(), name='pendants-item'
                 ),
             ]
         ),
     ),
     path(
-        'wristwears/',
+        'bracelets/',
         include(
             [
-                path('', WristwearListView.as_view(), name='wristwear-list'),
+                path('', BraceletListView.as_view(), name='bracelet-list'),
                 path(
                     '<int:pk>/',
-                    WristwearItemView.as_view(),
-                    name='wristwear-item',
+                    BraceletItemView.as_view(),
+                    name='bracelet-item',
+                ),
+            ]
+        ),
+    ),
+    path(
+        'watches/',
+        include(
+            [
+                path('', WatchListView.as_view(), name='watch-list'),
+                path(
+                    '<int:pk>/',
+                    WatchItemView.as_view(),
+                    name='watch-item',
+                ),
+            ]
+        ),
+    ),
+    path(
+        'rings/',
+        include(
+            [
+                path('', RingListView.as_view(), name='ring-list'),
+                path(
+                    '<int:pk>/',
+                    RingItemView.as_view(),
+                    name='ring-item',
                 ),
             ]
         ),

@@ -47,47 +47,67 @@ UNFOLD = {
                 'collapsible': True,
                 'separator': True,
                 'permission': lambda request: request.user.has_perm(
-                    'products.view_earwear'
+                    'products.view_earring'
                 ),
                 'items': [
                     {
-                        'title': _('Earwear'),
+                        'title': _('Earring'),
                         'icon': 'inventory',
                         'link': reverse_lazy(
-                            'admin:products_earwear_changelist'
+                            'admin:products_earring_changelist'
                         ),
                         'permission': lambda request: request.user.has_perm(
-                            'products.view_earwear'
+                            'products.view_earring'
                         ),
                     },
                     {
-                        'title': _('Fingerwear'),
+                        'title': _('Ring'),
                         'icon': 'inventory',
                         'link': reverse_lazy(
-                            'admin:products_fingerwear_changelist'
+                            'admin:products_ring_changelist'
                         ),
                         'permission': lambda request: request.user.has_perm(
-                            'products.view_fingerwear'
+                            'products.view_ring'
                         ),
                     },
                     {
-                        'title': _('Neckwear'),
+                        'title': _('Necklace'),
                         'icon': 'inventory',
                         'link': reverse_lazy(
-                            'admin:products_neckwear_changelist'
+                            'admin:products_necklace_changelist'
                         ),
                         'permission': lambda request: request.user.has_perm(
-                            'products.view_neckwear'
+                            'products.view_necklace'
                         ),
                     },
                     {
-                        'title': _('Wristwear'),
+                        'title': _('Pendant'),
                         'icon': 'inventory',
                         'link': reverse_lazy(
-                            'admin:products_wristwear_changelist'
+                            'admin:products_pendant_changelist'
                         ),
                         'permission': lambda request: request.user.has_perm(
-                            'products.view_wristwear'
+                            'products.view_pendant'
+                        ),
+                    },
+                    {
+                        'title': _('Bracelet'),
+                        'icon': 'inventory',
+                        'link': reverse_lazy(
+                            'admin:products_bracelet_changelist'
+                        ),
+                        'permission': lambda request: request.user.has_perm(
+                            'products.view_bracelet'
+                        ),
+                    },
+                    {
+                        'title': _('Watch'),
+                        'icon': 'inventory',
+                        'link': reverse_lazy(
+                            'admin:products_watch_changelist'
+                        ),
+                        'permission': lambda request: request.user.has_perm(
+                            'products.view_watch'
                         ),
                     },
                 ],

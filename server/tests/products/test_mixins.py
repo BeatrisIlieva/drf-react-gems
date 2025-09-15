@@ -39,15 +39,15 @@ class FilterMixinTest(TestCase):
         mixin.request = self.mock_request
 
         # Act
-        result = mixin._get_filters_for_attributes('earwear')
+        result = mixin._get_filters_for_attributes('earring')
 
         # Assert
         # Convert Q object to string to check it contains expected filters
         q_string = str(result)
-        self.assertIn('earwear__color_id__in', q_string)
-        self.assertIn('earwear__stone_id__in', q_string)
-        self.assertIn('earwear__metal_id__in', q_string)
-        self.assertIn('earwear__collection_id__in', q_string)
+        self.assertIn('earring__color_id__in', q_string)
+        self.assertIn('earring__stone_id__in', q_string)
+        self.assertIn('earring__metal_id__in', q_string)
+        self.assertIn('earring__collection_id__in', q_string)
 
     def test_get_filters_for_product_with_all_params(self):
 

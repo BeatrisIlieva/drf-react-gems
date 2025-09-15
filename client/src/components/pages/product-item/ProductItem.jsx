@@ -1,6 +1,8 @@
-import { MainContent } from './main-content/MainContent';
+import { UserAction } from '../../reusable/user-action/UserAction';
 import { Nav } from './nav/Nav';
+import { ProductImages } from './product-images/ProductImages';
 import { RelatedProducts } from './related-products/RelatedProducts';
+import { ReviewList } from './review-list/ReviewList';
 
 import { useProductItemContext } from '../../../contexts/ProductItemContext';
 
@@ -19,9 +21,13 @@ export const ProductItem = () => {
                         }
                     >
                         <Nav />
-                        <MainContent />
-                        <RelatedProducts />
+                        <div>
+                            <ProductImages />
+                            <ReviewList />
+                        </div>
+                        <UserAction />
                     </div>
+                    <RelatedProducts />
                 </section>
             )}
         </>

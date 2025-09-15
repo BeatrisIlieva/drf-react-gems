@@ -10,19 +10,27 @@ from src.products.managers.base import (
 )
 
 
-class EarwearManager(BaseProductManager):
+class EarringManager(BaseProductManager):
     pass
 
 
-class NeckwearManager(BaseProductManager):
+class NecklaceManager(BaseProductManager):
     pass
 
 
-class WristwearManager(BaseProductManager):
+class PendantManager(BaseProductManager):
     pass
 
 
-class FingerwearManager(BaseProductManager):
+class RingManager(BaseProductManager):
+    pass
+
+
+class BraceletManager(BaseProductManager):
+    pass
+
+
+class WatchManager(BaseProductManager):
     pass
 
 

@@ -4,6 +4,7 @@ import { Delivery } from '../../reusable/delivery/Delivery';
 import { EmptyList } from '../../reusable/empty-list/EmptyList';
 import { OrderSummary } from '../../reusable/order-summary/OrderSummary';
 import { PaddedContainer } from '../../reusable/padded-container/PaddedContainer';
+import { ReturnPolicy } from '../../reusable/return-policy/ReturnPolicy';
 import { ShoppingBagList } from './shopping-bag-list/ShoppingBagList';
 
 import { useShoppingBagContext } from '../../../contexts/ShoppingBagContext';
@@ -35,6 +36,7 @@ export const ShoppingBag = () => {
                                 />
 
                                 <ComplimentaryShipping />
+                                <ReturnPolicy />
                             </OrderSummary>
                         </div>
                     </section>

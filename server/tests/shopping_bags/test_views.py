@@ -6,7 +6,7 @@ from rest_framework.test import APIClient
 
 from src.shopping_bags.models import ShoppingBag
 from src.shopping_bags.views import ShoppingBagViewSet
-from src.products.models import Earwear, Inventory
+from src.products.models import Earring, Inventory
 from tests.common.test_data_builder import TestDataBuilder
 
 UserModel = get_user_model()
@@ -34,8 +34,8 @@ class ShoppingBagViewSetTestCase(TestCase):
         self.stone = product_data['stone']
         self.size = product_data['size']
 
-        # Create test earwear product
-        self.earwear = Earwear.objects.create(
+        # Create test earring product
+        self.earring = Earring.objects.create(
             first_image='https://example.com/image1.jpg',
             second_image='https://example.com/image2.jpg',
             collection=self.collection,
@@ -44,13 +44,13 @@ class ShoppingBagViewSetTestCase(TestCase):
             stone=self.stone,
         )
 
-        # Create inventory for the earwear
+        # Create inventory for the earring
         self.inventory = Inventory.objects.create(
             quantity=10,
             price=100.00,
             size=self.size,
-            content_type=ContentType.objects.get_for_model(Earwear),
-            object_id=self.earwear.id,
+            content_type=ContentType.objects.get_for_model(Earring),
+            object_id=self.earring.id,
         )
 
         # Create API client

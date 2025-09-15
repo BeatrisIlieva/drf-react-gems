@@ -49,3 +49,7 @@ a {
 button:disabled {
     cursor: auto !important;
 }
+
+textarea {
+    all: unset;
+}

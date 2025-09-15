@@ -15,7 +15,7 @@ export const RelatedProducts = () => {
             <ul>
                 {products.map((product, index) => (
                     <li key={`related-product-${index}`} className={styles['related-product']}>
-                        <Link to={`/products/${product.productType}/${product.id}`}>
+                        <Link to={`/products/${product.productType != 'watchs' ? product.productType : 'watches'}/${product.id}`}>
                             <img src={product.firstImage} alt={`Related product ${product.id}`} />
                         </Link>
                     </li>

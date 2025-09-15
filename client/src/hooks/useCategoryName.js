@@ -14,7 +14,12 @@ export const useCategoryName = () => {
         }
 
         const capitalized = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
-        const singular = capitalized.slice(0, -1);
+        let singular;
+        if (capitalized == 'Watches') {
+            singular = capitalized.slice(0, -2);
+        } else {
+            singular = capitalized.slice(0, -1);
+        }
 
         return {
             capitalizedPlural: capitalized,

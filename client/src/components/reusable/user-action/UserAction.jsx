@@ -1,4 +1,5 @@
 import { ComplimentaryShipping } from '../complimentary-shipping/ComplimentaryShipping';
+import { ReturnPolicy } from '../return-policy/ReturnPolicy';
 import { StyledTextBlock } from '../styled-text-block/StyledTextBlock';
 import { PriceDisplay } from './price-display/PriceDisplay';
 import { ProductActions } from './product-actions/ProductActions';
@@ -59,7 +60,11 @@ export const UserAction = ({
         <section className={sectionClassName}>
             <h1>
                 <span>{collectionName}</span>
-                <span>{categoryNameCapitalizedSingular}</span>
+                <span>
+                    {categoryNameCapitalizedSingular != 'Watche'
+                        ? categoryNameCapitalizedSingular
+                        : 'Watch'}
+                </span>
             </h1>
 
             <StyledTextBlock
@@ -90,7 +95,10 @@ export const UserAction = ({
                 hideWishlistButton={hideWishlistButton}
             />
 
-            <ComplimentaryShipping />
+            <div className={styles['buttons-wrapper']}>
+                <ComplimentaryShipping />
+                <ReturnPolicy />
+            </div>
         </section>
     );
 };

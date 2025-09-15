@@ -4,7 +4,38 @@
 .product-item {
     display: flex;
     flex-direction: column;
-    gap: 2em;
-    min-height: 80vh;
     @include anim.animate-fade-in(1.2s);
+    min-height: 100vh;
+
+    & > div {
+        display: flex;
+        flex-wrap: wrap;
+
+        & > nav {
+            flex: 1 1 100%;
+        }
+
+        & > div {
+            flex: 0 1 55%;
+            flex-direction: column;
+
+            @media (max-width: 1023px) {
+                flex: 1 1 100%;
+            }
+        }
+
+        & > section {
+            flex: 0 1 30%;
+            margin-inline: auto;
+            position: sticky;
+            top: 4.3em;
+            height: fit-content;
+
+            @media (max-width: 1023px) {
+                flex: 1 1 100%;
+                padding-inline: var(--layout-inline-padding);
+                padding-top: 3em;
+            }
+        }
+    }
 }

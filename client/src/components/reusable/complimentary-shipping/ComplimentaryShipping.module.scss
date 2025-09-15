@@ -1,4 +1,8 @@
 .complimentary-shipping {
+    display: grid;
+    grid-template-columns: 1.5em auto;
+    gap: 0.85em;
+
     span {
         opacity: 0.7;
         text-decoration: underline;

@@ -20,10 +20,10 @@ class WishlistServiceTestCase(TestCase):
         cls.color = cls.shared_data['color']
         cls.metal = cls.shared_data['metal']
         cls.stone = cls.shared_data['stone']
-        cls.earwear = cls.shared_data['earwear']
+        cls.earring = cls.shared_data['earring']
         cls.size = cls.shared_data['size']
         cls.inventory = cls.shared_data['inventory']
-        cls.content_type = cls.shared_data['earwear_content_type']
+        cls.content_type = cls.shared_data['earring_content_type']
 
     def setUp(self):
         # Create API client
@@ -40,7 +40,7 @@ class WishlistServiceTestCase(TestCase):
         )
         user_filters = {'user': user}
         content_type = self.content_type
-        object_id = self.earwear.id
+        object_id = self.earring.id
 
         # Act
         wishlist_item = WishlistService.create_wishlist_item(
@@ -64,7 +64,7 @@ class WishlistServiceTestCase(TestCase):
         )
         user_filters = {'user': user}
         content_type = self.content_type
-        object_id = self.earwear.id
+        object_id = self.earring.id
 
         # Create existing wishlist item
         Wishlist.objects.create(
@@ -94,7 +94,7 @@ class WishlistServiceTestCase(TestCase):
         )
         user_filters = {'user': user}
         content_type = self.content_type
-        object_id = self.earwear.id
+        object_id = self.earring.id
 
         # Create existing wishlist item
         existing_item = Wishlist.objects.create(
@@ -122,7 +122,7 @@ class WishlistServiceTestCase(TestCase):
         )
         user_filters = {'user': user}
         content_type = self.content_type
-        object_id = self.earwear.id
+        object_id = self.earring.id
 
         # Act & Assert
         with self.assertRaises(NotFound) as context:

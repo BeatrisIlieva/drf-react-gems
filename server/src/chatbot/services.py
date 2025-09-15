@@ -1,64 +1,161 @@
 import json
-from langchain.prompts import ChatPromptTemplate
-from src.chatbot.config import SYSTEM_MESSAGE
 
-class RetrievalService:
-    """Handles document retrieval and context building."""
-    def __init__(self, vectorstore):
-        self.vectorstore = vectorstore
+from src.chatbot.handlers import build_conversation_history
+from src.chatbot.mixins import (
+    AnalyzeConversationInsightsMixin,
+    CustomerSupportMixin,
+    ExtractCustomerIntentMixin,
+    ObjectionHandlingMixin,
+    OffTopicMixin,
+    OfferSizeHelp,
+    ProductRecommendationMixin,
+    ProvideSizeHelp
+)
+from src.chatbot.models import CustomerIntentEnum
 
-    def get_context(self, query, k=4):
-        results = self.vectorstore.similarity_search(query, k=k)
-        context = '\n'.join(result.page_content for result in results)
-        return context.strip()
 
-
-class ChatbotService:
+class ChatbotService(
+    ProductRecommendationMixin,
+    CustomerSupportMixin,
+    ObjectionHandlingMixin,
+    OffTopicMixin,
+    OfferSizeHelp,
+    ProvideSizeHelp,
+    AnalyzeConversationInsightsMixin,
+    ExtractCustomerIntentMixin
+):
     """Core service for generating chatbot responses."""
-    def __init__(self, llm, vectorstore):
+
+    def __init__(
+        self,
+        session_id,
+        vector_store,
+        memory,
+        app,
+        llm,
+        customer_query
+    ):
+        self.session_id = session_id
+        self.vector_store = vector_store
+        self.conversation_memory = memory
+        self.app = app
         self.llm = llm
-        self.retrieval_service = RetrievalService(vectorstore)
+        self.customer_query = customer_query
+        self.config = {
+            'configurable': {'thread_id': session_id}
+        }
 
-    def generate_response_stream(self, user_query, session_id, memory):
-        # Get context
-        context = self.retrieval_service.get_context(user_query)
+        self.customer_preferences = None
+        self.conversation_insights = None
 
-        # Yield session_id first
-        yield f"data: {json.dumps({'session_id': session_id})}\n\n"
+    def generate_response_stream(self):
+        # 1. Get session_id
+        yield f'data: {json.dumps({'session_id': self.session_id})}\n\n'
 
-        # Create prompt
-        prompt = ChatPromptTemplate.from_messages([
-            ("system", SYSTEM_MESSAGE),
-            ("system", f"""You are a helpful assistant. You have access to:
-
-            1. Document context (product information):
-            {context}
-
-            2. Previous conversation history: {{chat_history}}
-
-            Use both sources to answer the user's question. If you learned something about the user in previous conversations (like their name or preferences), make sure to reference that information when relevant."""),
-            ("human", "{input}")
-        ])
-
-        # Get chat history
-        chat_history = memory.load_memory_variables({})['chat_history']
-
-        # Format messages
-        messages = prompt.format_messages(
-            input=user_query,
-            chat_history=chat_history
+        # 2. Build conversation history
+        conversation_state = self.conversation_memory.get(
+            self.config
+        )
+        conversation_history = build_conversation_history(
+            self.customer_query,
+            conversation_state
         )
 
-        # Stream response
-        full_response = ""
-        for chunk in self.llm.stream(messages):
-            content = chunk.content
-            if content:
-                full_response += content
-                yield f"data: {json.dumps({'chunk': content})}\n\n"
+        # 3. Extract conversation insights
+        self.conversation_insights = self.analyze_conversation_insights(
+            self.llm,
+            conversation_history,
+        )
+        
+        print('conversation_insights')
+        print(self.conversation_insights)
+        print('-----')
 
-        # Save to memory
-        memory.save_context({"input": user_query}, {"text": full_response})
+        # 4. Define customer intent
+        customer_intent = self.extract_customer_intent(
+            self.llm,
+            self.conversation_insights,
+        )
+        
+        print('customer_intent')
+        print(customer_intent)
+        print('-----')
 
-        # Completion signal
-        yield f"data: {json.dumps({'chunk': '[DONE]'})}\n\n"
+        # 5. Handle customer query
+        handler = self._intent_handler_map.get(
+            customer_intent['primary_intent'],
+        )
+        system_message, human_message = handler()
+
+        # 6. Generate response stream
+        for event in self.app.stream(
+            {'messages': [system_message, human_message]},
+                self.config, stream_mode='updates'
+        ):
+
+            for chunk in event['model']['messages'].content:
+                yield f'data: {json.dumps({'chunk': chunk})}\n\n'
+
+    @property
+    def _intent_handler_map(self):
+        return {
+            CustomerIntentEnum.WANTS_PRODUCT_INFORMATION_OR_SHARES_PREFERENCES:
+                lambda: self.handle_product_recommendation(
+                    self.llm,
+                    self.vector_store,
+                    self.conversation_memory,
+                    self.conversation_insights,
+                ),
+            CustomerIntentEnum.IS_INTERESTED_IN_A_SPECIFIC_PRODUCT_THAT_HAS_BEEN_RECOMMENDED_DURING_THE_CURRENT_CONVERSATION:
+                lambda: self.handle_offer_size_help(
+                    self.llm,
+                    self.conversation_memory,
+                    self.conversation_insights,
+                ),
+            CustomerIntentEnum.IS_INTERESTED_IN_RECEIVING_HELP_IN_SELECTING_IDEAL_SIZE_FOR_SELF_PURCHASE:
+                lambda: self.handle_provide_size_help(
+                    self.llm,
+                    self.conversation_memory,
+                ),
+            CustomerIntentEnum.SIZING_HELP:
+                lambda: self.handle_customer_support(
+                    self.llm,
+                    self.conversation_memory,
+                    self.conversation_insights,
+                ),
+            CustomerIntentEnum.CARE_INSTRUCTIONS:
+                lambda: self.handle_customer_support(
+                    self.llm,
+                    self.conversation_memory,
+                    self.conversation_insights,
+                ),
+            CustomerIntentEnum.RETURN_POLICY:
+                lambda: self.handle_customer_support(
+                    self.llm,
+                    self.conversation_memory,
+                    self.conversation_insights,
+                ),
+            CustomerIntentEnum.SHIPPING_INFORMATION:
+                lambda: self.handle_customer_support(
+                    self.llm,
+                    self.conversation_memory,
+                    self.conversation_insights,
+                ),
+            CustomerIntentEnum.BRAND_INFORMATION:
+                lambda: self.handle_customer_support(
+                    self.llm,
+                    self.conversation_memory,
+                    self.conversation_insights,
+                ),
+            CustomerIntentEnum.ISSUE_OR_CONCERN_OR_HESITATION:
+                lambda: self.handle_objections(
+                    self.llm,
+                    self.conversation_memory,
+                    self.conversation_insights,
+                ),
+            CustomerIntentEnum.OFF_TOPIC:
+                lambda: self.handle_off_topic(
+                    self.llm,
+                    self.conversation_memory,
+                ),
+        }

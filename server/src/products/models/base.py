@@ -6,6 +6,10 @@ from src.products.models.review import Review
 
 
 class BaseProduct(models.Model):
+    class GenderChoices(models.TextChoices):
+        MALE = "M", "Male"
+        FEMALE = "F", "Female"
+
     inventory = GenericRelation(Inventory)
     review = GenericRelation(Review)
 
@@ -17,6 +21,14 @@ class BaseProduct(models.Model):
     )
 
     second_image = models.URLField(
+        unique=True,
+    )
+
+    third_image = models.URLField(
+        unique=True,
+    )
+
+    fourth_image = models.URLField(
         unique=True,
     )
 
@@ -42,6 +54,19 @@ class BaseProduct(models.Model):
     stone = models.ForeignKey(
         to='products.Stone',
         on_delete=models.CASCADE,
+    )
+
+    description = models.TextField(
+        null=True,
+        blank=True,
+    )
+
+    target_gender = models.CharField(
+        max_length=1,
+        choices=GenderChoices.choices,
+        default=GenderChoices.FEMALE,
+        null=True,
+        blank=True,
     )
 
     def __str__(self):

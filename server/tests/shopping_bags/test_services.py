@@ -1,6 +1,5 @@
 from django.test import TestCase, RequestFactory
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import AnonymousUser
 
 from src.shopping_bags.services import ShoppingBagService
 from src.shopping_bags.models import ShoppingBag
@@ -22,7 +21,7 @@ class ShoppingBagServiceTestCase(TestCase):
         cls.color = cls.shared_data['color']
         cls.metal = cls.shared_data['metal']
         cls.stone = cls.shared_data['stone']
-        cls.earwear = cls.shared_data['earwear']
+        cls.earring = cls.shared_data['earring']
         cls.size = cls.shared_data['size']
         cls.inventory = cls.shared_data['inventory']
         cls.content_type = cls.shared_data['inventory_content_type']

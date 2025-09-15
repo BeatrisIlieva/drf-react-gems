@@ -1,0 +1,10 @@
+[tool.black]
+skip-magic-trailing-comma = false
+skip-string-normalization = true
+line-length = 79
+
+[tool.coverage.run]
+source = ["src"]
+
+[tool.isort]
+profile = "black"

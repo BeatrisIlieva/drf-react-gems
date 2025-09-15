@@ -1,6 +1,8 @@
 export const navLinks = [
-    { title: 'Earwears', path: '/products/earwears' },
-    { title: 'Neckwears', path: '/products/neckwears' },
-    { title: 'Wristwears', path: '/products/wristwears' },
-    { title: 'Fingerwears', path: '/products/fingerwears' },
+    { title: 'Earrings', path: '/products/earrings' },
+    { title: 'Necklaces', path: '/products/necklaces' },
+    { title: 'Pendants', path: '/products/pendants' },
+    { title: 'Bracelets', path: '/products/bracelets' },
+    { title: 'Rings', path: '/products/rings' },
+    { title: 'Watches', path: '/products/watches' },
 ];

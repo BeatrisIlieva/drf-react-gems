@@ -41,15 +41,12 @@
 .wrapper-bottom {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    justify-items: center;
     gap: 0.5em;
-    margin-block: auto;
 
-    .thumbnail:first-child {
-        padding-left: 6em;
-    }
-
-    .thumbnail:nth-child(2) {
-        padding-right: 5em;
+    .thumbnail {
+        display: flex;
     }
 }
 

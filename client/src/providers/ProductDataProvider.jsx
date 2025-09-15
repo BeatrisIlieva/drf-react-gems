@@ -1,4 +1,4 @@
-import { use, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useParams } from 'react-router';
 
@@ -127,7 +127,7 @@ export const ProductDataProvider = ({
         product,
         refreshShoppingBag,
         openMiniBagPopup,
-        categoryName
+        categoryName,
     ]);
 
     useEffect(() => {
@@ -166,6 +166,9 @@ export const ProductDataProvider = ({
         () => ({
             firstImage: product?.firstImage,
             secondImage: product?.secondImage,
+            thirdImage: product?.thirdImage,
+            fourthImage: product?.fourthImage,
+            description: product?.description,
             averageRating: product?.averageRating,
             reviews: product?.review,
             productId: product?.id,

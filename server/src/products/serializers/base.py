@@ -7,18 +7,13 @@ It provides:
 - Shared fields and methods for reuse and extension in the product app
 """
 
-from django.db.models import Avg
+from django.db.models import Avg, Q, F
 
 from rest_framework import serializers
 
+from src.products.models.product import Bracelet, Earring, Necklace, Pendant, Ring, Watch
 from src.products.serializers.inventory import InventorySerializer
 from src.products.serializers.review import ReviewSerializer
-from src.products.models.product import (
-    Earwear,
-    Neckwear,
-    Fingerwear,
-    Wristwear,
-)
 
 
 class BaseProductListSerializer(serializers.ModelSerializer):
@@ -45,6 +40,9 @@ class BaseProductListSerializer(serializers.ModelSerializer):
             'id',
             'first_image',
             'second_image',
+            'third_image',
+            'fourth_image',
+            'description',
             'collection__name',
             'color__name',
             'stone__name',
@@ -98,10 +96,10 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
 
         # If user is a reviewer, show all reviews (approved and unapproved)
         if request and request.user.has_perm('products.approve_review'):
-            latest_reviews = obj.review.all()[:6]
+            latest_reviews = obj.review.all()[:4]
         else:
             # Regular users only see approved reviews
-            latest_reviews = obj.review.filter(approved=True)[:6]
+            latest_reviews = obj.review.filter(approved=True)[:4]
 
         return ReviewSerializer(latest_reviews, many=True).data
 
@@ -123,16 +121,24 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
 
     def get_related_products(self, obj):
         color_id = obj.color_id
+        target_gender = obj.target_gender
         current_product_type = type(obj)
         related_products = []
 
         def serialize_products_of_type(model_class):
             # Only include products from other types
-            if model_class == current_product_type:
+            if model_class == current_product_type and target_gender != 'M':
                 return []
-            products = model_class.objects.filter(
-                color_id=color_id,
-            )
+
+            if target_gender == 'M':
+                products = model_class.objects.filter(
+                    Q(target_gender=target_gender)
+                )
+            else:
+                products = model_class.objects.filter(
+                    color_id=color_id,
+                )
+                
             result = []
             for product in products:
                 result.append(
@@ -144,12 +150,14 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
                 )
             return result
 
-        related_products.extend(serialize_products_of_type(Wristwear))
-        related_products.extend(serialize_products_of_type(Earwear))
-        related_products.extend(serialize_products_of_type(Neckwear))
-        related_products.extend(serialize_products_of_type(Fingerwear))
+        related_products.extend(serialize_products_of_type(Earring))
+        related_products.extend(serialize_products_of_type(Necklace))
+        related_products.extend(serialize_products_of_type(Pendant))
+        related_products.extend(serialize_products_of_type(Ring))
+        related_products.extend(serialize_products_of_type(Bracelet))
+        related_products.extend(serialize_products_of_type(Watch))
 
-        return related_products[:6]
+        return related_products[:5]
 
 
 class BaseAttributesSerializer(serializers.ModelSerializer):
