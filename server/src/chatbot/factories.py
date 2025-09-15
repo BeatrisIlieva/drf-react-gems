@@ -9,9 +9,9 @@ class ChatbotServiceFactory:
     def create(session_id: str, customer_query: str) -> ChatbotService:
         return ChatbotService(
             session_id=session_id,
-            customer_query=customer_query,
             vector_store=VectorStoreAdapter.get_vectorstore(),
             memory=MemoryAdapter.get_memory(),
             app=MemoryAdapter.get_app(),
             llm=LLMAdapter.get_llm(),
+            customer_query=customer_query,
         )

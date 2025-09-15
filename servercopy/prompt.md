@@ -131,3 +131,13 @@ You: "How thoughtful! Since you're still discovering her style, may I suggest so
 - Build emotional connection before product presentation
 </critical_rules>
 </behaviour>
+
+
+I am building a chatbot in Python and need a function to chunk the attached PDF file.
+
+Chunking Parameters (defined as constants):
+CHUNK_SIZE = 550
+CHUNK_OVERLAP = 80
+
+The chunks must be split semantically, but it is also EXTREMELY important to have as few chunks as possible.
+To avoid splitting text in the middle of a word, use separators such as: \n\n, \n, ., !, ?, ,, ;, :, -.

@@ -76,10 +76,9 @@ INSTRUCTIONS: {instructions}
 )
 
 CUSTOMER_PREFERENCE_SYSTEM_MESSAGE = (
-CONTEXT +
 """
 <role>
-You work for 'DRF React Gems' as a Conversation Analyst. You have experience in natural language processing concepts and sentiment analysis.
+You work for 'DRF React Gems' (an online luxury jewelry brand) as a Conversation Analyst. You have experience in natural language processing concepts and sentiment analysis.
 </role>
 
 <goal>
@@ -87,7 +86,7 @@ The goal is to identify the customer preferences and needs by analyzing the CUST
 </goal>
 
 <next>
-1. If a required value cannot be definitively determined from the CUSTOMER STATEMENT, include the key in the schema and set its value to an empty string (""). 
+1. If a required value cannot be definitively determined from the CUSTOMER STATEMENT, include the key in the schema and set its value to an empty string (""). Do not make assumptions. Conclude only based on what is explicitly stated into the CUSTOMER STATEMENT.
 2. Do not make assumptions or infer values beyond what is explicitly stated in the CUSTOMER STATEMENT.
 </next>
 """

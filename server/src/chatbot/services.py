@@ -66,12 +66,20 @@ class ChatbotService(
             self.llm,
             conversation_history,
         )
+        
+        print('conversation_insights')
+        print(self.conversation_insights)
+        print('-----')
 
         # 4. Define customer intent
         customer_intent = self.extract_customer_intent(
             self.llm,
             self.conversation_insights,
         )
+        
+        print('customer_intent')
+        print(customer_intent)
+        print('-----')
 
         # 5. Handle customer query
         handler = self._intent_handler_map.get(
@@ -98,7 +106,7 @@ class ChatbotService(
                     self.conversation_memory,
                     self.conversation_insights,
                 ),
-            CustomerIntentEnum.IS_INTERESTED_IN_RECOMMENDED_PRODUCT:
+            CustomerIntentEnum.IS_INTERESTED_IN_A_SPECIFIC_PRODUCT_THAT_HAS_BEEN_RECOMMENDED_DURING_THE_CURRENT_CONVERSATION:
                 lambda: self.handle_offer_size_help(
                     self.llm,
                     self.conversation_memory,

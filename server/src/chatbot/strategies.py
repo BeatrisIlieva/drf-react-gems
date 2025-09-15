@@ -15,7 +15,7 @@ class PreferenceDiscoveryStrategy:
     ]
 
     QUESTION_TEMPLATES = {
-        'occasion': "Every piece of jewelry tells a story. Are you marking a special moment, or simply adding to your collection?",
+        'occasion': "Every piece of jewelry tells a story. What special moment or occasion brings you to DRF React Gems today?",
 
         'purchase_type': "How wonderful! Will you be the lucky wearer, or are you selecting a gift to delight someone dear to you?",
 
@@ -41,10 +41,10 @@ class PreferenceDiscoveryStrategy:
         """
 
         for field_name in cls.DISCOVERY_SEQUENCE:
-            field_value = getattr(preferences, field_name)
+            field_value = preferences.get(field_name)
 
             # Skip fields that are already filled
-            if field_value is not None:
+            if field_value:
                 continue
 
             # Get appropriate question
@@ -62,7 +62,7 @@ class PreferenceDiscoveryStrategy:
         if isinstance(question, dict):
             # Handle conditional question
             if field_name == 'gender':
-                variant = 'self' if preferences.purchase_type == 'self_purchase' else 'gift'
+                variant = 'self' if preferences['purchase_type'] == 'self_purchase' else 'gift'
                 return question[variant]
 
         return question

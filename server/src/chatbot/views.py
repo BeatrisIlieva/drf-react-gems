@@ -24,42 +24,41 @@ class ChatBotAPIView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        # try:
-            # Validate input
-        serializer = ChatRequestSerializer(data=request.data)
-        if not serializer.is_valid():
-            return Response(
-                ERROR_RESPONSE_OBJECT,
-                status=status.HTTP_400_BAD_REQUEST
+        try:
+            serializer = ChatRequestSerializer(data=request.data)
+            if not serializer.is_valid():
+                return Response(
+                    ERROR_RESPONSE_OBJECT,
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            customer_query = serializer.validated_data['message']
+            session_id = self._get_or_create_session_id(
+                request
             )
 
-        customer_query = serializer.validated_data['message']
-        session_id = self._get_or_create_session_id(
-            request
-        )
+            chatbot_service = ChatbotServiceFactory.create(
+                session_id,
+                customer_query,
+            )
 
-        chatbot_service = ChatbotServiceFactory.create(
-            session_id,
-            customer_query,
-        )
+            def generate_response():
+                try:
+                    for chunk in chatbot_service.generate_response_stream():
+                        yield chunk
+                except Exception as e:
+                    yield f'data: {json.dumps({'error': str(e)})}\n\n'
 
-        def generate_response():
-            # try:
-            for chunk in chatbot_service.generate_response_stream():
-                yield chunk
-            # except Exception as e:
-            #     yield f'data: {json.dumps({'error': str(e)})}\n\n'
+            return StreamingHttpResponse(
+                generate_response(),
+                content_type='text/plain',
+            )
 
-        return StreamingHttpResponse(
-            generate_response(),
-            content_type='text/plain',
-        )
-
-        # except Exception as e:
-        #     return Response(
-        #         {'error': str(e), 'success': False},
-        #         status=status.HTTP_500_INTERNAL_SERVER_ERROR
-        #     )
+        except Exception as e:
+            return Response(
+                {'error': str(e), 'success': False},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
     @staticmethod
     def _get_or_create_session_id(request):

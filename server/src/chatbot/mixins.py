@@ -1,5 +1,5 @@
 from src.chatbot.models import CustomerIntent, ProductPreferences
-from src.chatbot.prompts.customer_intent import ANSWER_TO_PROVIDE_CUSTOMER_SUPPORT_SYSTEM_MESSAGE, ANSWER_TO_RECOMMEND_PRODUCT_SYSTEM_MESSAGE, DISCOVERY_QUESTION_TO_ASK_SYSTEM_MESSAGE, OBJECTION_HANDLING_SYSTEM_MESSAGE, OFF_TOPIC_SYSTEM_MESSAGE, OFFER_HELP_WITH_SELECTING_IDEAL_SIZE_SYSTEM_MESSAGE, PLAIN_HUMAN_MESSAGE, PROVIDE_HELP_WITH_SELECTING_IDEAL_SIZE_SYSTEM_MESSAGE, WITH_MEMORY_AND_CONVERSATION_INSIGHTS_HUMAN_MESSAGE, WITH_MEMORY_AND_DB_CONTENT_HUMAN_MESSAGE, WITH_MEMORY_HUMAN_MESSAGE
+from src.chatbot.prompts.customer_intent import ANSWER_TO_PROVIDE_CUSTOMER_SUPPORT_SYSTEM_MESSAGE, ANSWER_TO_RECOMMEND_PRODUCT_SYSTEM_MESSAGE, DISCOVERY_QUESTION_TO_ASK_SYSTEM_MESSAGE, OBJECTION_HANDLING_SYSTEM_MESSAGE, OFF_TOPIC_SYSTEM_MESSAGE, OFFER_HELP_WITH_SELECTING_IDEAL_SIZE_SYSTEM_MESSAGE, PLAIN_HUMAN_MESSAGE, PROVIDE_HELP_WITH_SELECTING_IDEAL_SIZE_SYSTEM_MESSAGE, WITH_MEMORY_AND_DB_CONTENT_HUMAN_MESSAGE, WITH_MEMORY_HUMAN_MESSAGE
 from src.chatbot.prompts.helper_calls import ANALYZE_CONVERSATION_INSIGHTS_HUMAN_MESSAGE, ANALYZE_CONVERSATION_INSIGHTS_SYSTEM_MESSAGE, CUSTOMER_INTENT_HUMAN_MESSAGE, CUSTOMER_INTENT_SYSTEM_MESSAGE, CUSTOMER_PREFERENCE_HUMAN_MESSAGE, CUSTOMER_PREFERENCE_SYSTEM_MESSAGE, OPTIMIZED_VECTOR_SEARCH_QUERY_HUMAN_MESSAGE, OPTIMIZED_VECTOR_SEARCH_QUERY_SYSTEM_MESSAGE
 from src.chatbot.strategies import PreferenceDiscoveryStrategy
 from src.chatbot.utils import generate_formatted_response, retrieve_relevant_content
@@ -23,7 +23,7 @@ class ExtractCustomerIntentMixin:
             CUSTOMER_INTENT_SYSTEM_MESSAGE,
             CUSTOMER_INTENT_HUMAN_MESSAGE,
             'extract_and_strip_ai_response_content',
-            response_model=CustomerIntent,
+            CustomerIntent,
             conversation_insights=conversation_insights,
         )
 
@@ -51,7 +51,7 @@ class ProductRecommendationMixin:
                 vector_search_query,
                 1
             )
-            return self._recommend_product(llm, vector_store, conversation_memory, conversation_insights, customer_preferences, product)
+            return self._recommend_product(llm, conversation_memory, conversation_insights, product)
 
     def _ask_clarifying_question(self, llm, discovery_question, conversation_insights):
 
@@ -74,7 +74,7 @@ class ProductRecommendationMixin:
             customer_preferences=customer_preferences
         )
 
-    def _recommend_product(self, llm, conversation_memory, product, conversation_insights):
+    def _recommend_product(self, llm, conversation_memory, conversation_insights, product):
         return generate_formatted_response(
             llm,
             ANSWER_TO_RECOMMEND_PRODUCT_SYSTEM_MESSAGE,
@@ -82,10 +82,11 @@ class ProductRecommendationMixin:
             'destructure_messages',
             product_to_recommend=product,
             conversation_insights=conversation_insights,
-            conversation_memory=conversation_memory
+            conversation_memory=conversation_memory,
         )
 
     def _determine_next_step(
+        self,
         llm,
         conversation_insights: str,
     ):
@@ -101,17 +102,16 @@ class ProductRecommendationMixin:
             CUSTOMER_PREFERENCE_HUMAN_MESSAGE,
             'extract_and_strip_ai_response_content',
             ProductPreferences,
-            conversation_insights,
+            conversation_insights=conversation_insights,
         )
+        
+        print('customer_preferences')
+        print(preferences)
+        print('-----')
 
         # Check if discovery is complete (minimum required fields)
         required_fields = PreferenceDiscoveryStrategy.DISCOVERY_SEQUENCE
-        is_ready_to_proceed = all(
-            getattr(preferences, field) is not None for field in required_fields)
-
-        # For gifts, also need recipient_relationship
-        if preferences.purchase_type == 'gift_purchase':
-            is_ready_to_proceed = is_ready_to_proceed and preferences.recipient_relationship is not None
+        is_ready_to_proceed = all(preferences.get(field) not in ('', None) for field in required_fields)
 
         if is_ready_to_proceed:
             preferences_as_string = ''

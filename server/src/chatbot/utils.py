@@ -6,7 +6,14 @@ from langchain.prompts import SystemMessagePromptTemplate, HumanMessagePromptTem
 from langchain.output_parsers import PydanticOutputParser
 
 
-def generate_formatted_response(llm, system_message_template, human_message_template, response_format, response_model=None, **kwargs):
+def generate_formatted_response(
+    llm,
+    system_message_template,
+    human_message_template,
+    response_format,
+    response_model=None,
+    **kwargs
+):
     if response_model:
         instructions = PydanticOutputParser(
             pydantic_object=response_model
