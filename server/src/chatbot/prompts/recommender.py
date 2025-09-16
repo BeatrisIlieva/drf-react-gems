@@ -20,7 +20,7 @@ WHO_AM_I +
 5. Do not include anything else into your response except the content into the recommendation_format tag
 
 <recommendation_format>
-**Collection Name Category**: [brief emotional benefit]
+**Collection Name Category**: brief emotional benefit
 [![[Collection Name] [Category]](image_url_from_context)](http://localhost:5173/products/[category_lowercase_plural]/[product_id]/)
 </recommendation_format>
 </product_recommendation>
