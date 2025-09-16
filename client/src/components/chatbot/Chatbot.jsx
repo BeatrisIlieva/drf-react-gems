@@ -1,6 +1,7 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Button } from '../reusable/button/Button';
+import { Icon } from '../reusable/icon/Icon';
 import ReactMarkdown from 'react-markdown';
 
 // Add this import
@@ -18,15 +19,28 @@ export const Chatbot = () => {
     const { sendMessage } = useChatbot();
 
     const assistantMessageRef = useRef('');
+    // Add ref for messages container
+    const messagesEndRef = useRef(null);
+
+    // Add auto-scroll function
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // Add useEffect to scroll when messages change
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
     const startConversationHandler = () => {
-            const pendingAiMessage = {
+        const pendingAiMessage = {
             role: 'assistant',
-            content: 'Hi, I’m the DRF React Gems Virtual Advisor. I’m an AI-powered chatbot that can answer questions and make product recommendations.',
+            content:
+                "Hi, I'm the DRF React Gems Virtual Jewelry Consultant. Every piece of jewelry tells a story. What special moment or occasion brings you to DRF React Gems today?",
             timestamp: new Date().toLocaleTimeString(),
         };
         setMessages(prev => [...prev, pendingAiMessage]);
-    }
+    };
 
     const sendMessageHandler = async () => {
         if (!message.trim()) {
@@ -36,6 +50,7 @@ export const Chatbot = () => {
 
         setLoading(true);
         setError('');
+        setMessage('');
 
         // Add user message to chat
         const userMessage = {
@@ -170,48 +185,54 @@ export const Chatbot = () => {
                                 <>
                                     {msg.role === 'user' ? (
                                         <div key={index}>
-                                            {msg.content}
-                                            {msg.timestamp}
+                                            <span className={styles['message-content']}>
+                                                {msg.content}
+                                            </span>
+                                            <span className={styles['time-span']}>{msg.timestamp}</span>
                                         </div>
                                     ) : (
                                         <div key={index}>
                                             <div className={styles['thumbnail']}>
                                                 <img src="/logo.webp" alt="logo" />
                                             </div>
-                                            <ReactMarkdown
-                                                components={{
-                                                    img: ({ node, ...props }) => (
-                                                        <img
-                                                            {...props}
-                                                            style={{
-                                                                maxWidth: '100%',
-                                                                height: 'auto',
-                                                                borderRadius: '4px',
-                                                                margin: '10px 0',
-                                                            }}
-                                                        />
-                                                    ),
-                                                    a: ({ node, ...props }) => (
-                                                        <a
-                                                            {...props}
-                                                            style={{
-                                                                color: '#007bff',
-                                                                textDecoration: 'none',
-                                                            }}
-                                                            rel="noopener noreferrer"
-                                                        >
-                                                            {props.children}
-                                                        </a>
-                                                    ),
-                                                }}
-                                            >
-                                                {msg.content || (loading ? 'Thinking...' : '')}
-                                            </ReactMarkdown>
-                                            {msg.timestamp}
+                                            <div className={styles['message-content']}>
+                                                <ReactMarkdown
+                                                    components={{
+                                                        img: ({ node, ...props }) => (
+                                                            <img
+                                                                {...props}
+                                                                style={{
+                                                                    maxWidth: '100%',
+                                                                    height: 'auto',
+                                                                    borderRadius: '4px',
+                                                                    margin: '10px 0',
+                                                                }}
+                                                            />
+                                                        ),
+                                                        a: ({ node, ...props }) => (
+                                                            <a
+                                                                {...props}
+                                                                style={{
+                                                                    color: '#007bff',
+                                                                    textDecoration: 'none',
+                                                                }}
+                                                                rel="noopener noreferrer"
+                                                            >
+                                                                {props.children}
+                                                            </a>
+                                                        ),
+                                                    }}
+                                                >
+                                                    {msg.content || (loading ? 'Thinking...' : '')}
+                                                </ReactMarkdown>
+                                            </div>
+                                            <span className={styles['time-span']}>DRf React Gems Virtual Jewelry Consultant {msg.timestamp}</span>
                                         </div>
                                     )}
                                 </>
                             ))}
+                            {/* Add invisible div for scroll target */}
+                            <div className={styles['ref-div']} ref={messagesEndRef} />
                         </div>
                     </div>
                     <div className={styles['text-area']}>
@@ -219,14 +240,26 @@ export const Chatbot = () => {
                             value={message}
                             onChange={e => setMessage(e.target.value)}
                             onKeyDown={handleKeyPress}
-                            placeholder="Type your message..."
+                            placeholder={
+                                loading ? 'Waiting for response...' : 'Type your message...'
+                            }
+                            disabled={loading}
                         ></textarea>
+                        <span
+                            className={
+                                message
+                                    ? `${styles['send-button']} ${styles['visible']}`
+                                    : `${styles['send-button']}`
+                            }
+                        >
+                            <Icon name="send" />
+                        </span>
                     </div>
                 </>
             ) : (
                 <div className={styles['no-messages-yet']}>
                     <h4>HOW CAN WE HELP?</h4>
-                    <p>Our Virtual Advisor is ready to assist you.</p>
+                    <p>Our Virtual Jewelry Consultant is ready to assist you.</p>
 
                     <p>
                         Note that artificial intelligence is a developing technology and this
