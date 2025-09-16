@@ -114,7 +114,7 @@ class Command(BaseCommand):
                 Image URL: {product.first_image};
                 Sizes: {sizes};
                 Description: {product.description};
-                Target Gender: {product.target_gender};
+                Target Gender: {'F(Female, Woman, Girl)' if product.target_gender == 'F' else 'M(Male, Man, Boy)'};
                 Average Rating: {average_rating};
                 """
                 story.append(Paragraph(basic_info, normal_style))

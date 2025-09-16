@@ -27,12 +27,11 @@ class LLMAdapter:
     def _initialize(cls):
         return ChatOpenAI(
             model="gpt-4o-mini",
-            max_tokens=120,
+            max_tokens=200,
             temperature=0,
             top_p=0,
             frequency_penalty=1.0,
             presence_penalty=1.0,
-            streaming=True,
         )
 
 

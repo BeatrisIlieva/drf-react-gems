@@ -8,8 +8,8 @@ from langchain.output_parsers import PydanticOutputParser
 
 def generate_formatted_response(
     llm,
-    system_message_template,
-    human_message_template,
+    system_message,
+    human_message,
     response_format,
     response_model=None,
     **kwargs
@@ -23,21 +23,34 @@ def generate_formatted_response(
 
     prompt = ChatPromptTemplate.from_messages([
         SystemMessagePromptTemplate.from_template(
-            system_message_template
+            system_message
         ),
         HumanMessagePromptTemplate.from_template(
-            human_message_template
+            human_message
         ),
     ])
 
     messages = prompt.format_messages(**kwargs)
+    
+    def get_and_format_customer_preferences():
+        customer_preferences = json.loads(re.sub(
+                r'```json\s*|\s*```', '',
+                llm.invoke(messages).content
+            ).strip())
+        
+        if isinstance(customer_preferences, dict) and 'properties' in customer_preferences:
+            customer_preferences = customer_preferences['properties']
+            
+        return customer_preferences
 
     response_format_mapper = {
+        # 'extract_and_strip_ai_response_content':
+        # lambda: json.loads(re.sub(
+        #     r'```json\s*|\s*```', '',
+        #     llm.invoke(messages).content
+        # ).strip()),
         'extract_and_strip_ai_response_content':
-        lambda: json.loads(re.sub(
-            r'```json\s*|\s*```', '',
-            llm.invoke(messages).content
-        ).strip()),
+        get_and_format_customer_preferences,
 
         'extract_ai_response_content':
         lambda: llm.invoke(messages).content,
