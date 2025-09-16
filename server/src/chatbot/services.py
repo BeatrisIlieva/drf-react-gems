@@ -1,161 +1,144 @@
 import json
 
-from src.chatbot.handlers import build_conversation_history
-from src.chatbot.mixins import (
-    AnalyzeConversationInsightsMixin,
-    CustomerSupportMixin,
-    ExtractCustomerIntentMixin,
-    ObjectionHandlingMixin,
-    OffTopicMixin,
-    OfferSizeHelp,
-    ProductRecommendationMixin,
-    ProvideSizeHelp
-)
-from src.chatbot.models import CustomerIntentEnum
+from src.chatbot.adapters import LLMAdapter, MemoryAdapter, VectorStoreAdapter
+from src.chatbot.handlers import HANDLERS_MAPPER, build_conversation_history
+from src.chatbot.models import BudgetRange, CategoryType, MetalType, PurchaseType, StoneType, WearerGender
+from src.chatbot.strategies import PreferenceDiscoveryStrategy
+from src.chatbot.utils import retrieve_relevant_content
+from langchain.schema.runnable import RunnablePassthrough, RunnableLambda
 
 
-class ChatbotService(
-    ProductRecommendationMixin,
-    CustomerSupportMixin,
-    ObjectionHandlingMixin,
-    OffTopicMixin,
-    OfferSizeHelp,
-    ProvideSizeHelp,
-    AnalyzeConversationInsightsMixin,
-    ExtractCustomerIntentMixin
-):
+class ChatbotService:
     """Core service for generating chatbot responses."""
 
-    def __init__(
-        self,
-        session_id,
-        vector_store,
-        memory,
-        app,
-        llm,
-        customer_query
-    ):
-        self.session_id = session_id
-        self.vector_store = vector_store
-        self.conversation_memory = memory
-        self.app = app
-        self.llm = llm
-        self.customer_query = customer_query
-        self.config = {
-            'configurable': {'thread_id': session_id}
-        }
+    @staticmethod
+    def generate_response_stream(customer_query, session_id):
+        vector_store = VectorStoreAdapter.get_vectorstore()
+        conversation_memory = MemoryAdapter.get_memory()
+        llm = LLMAdapter.get_llm()
+        app = MemoryAdapter.get_app()
 
-        self.customer_preferences = None
-        self.conversation_insights = None
+        # Yield session_id first
+        yield f"data: {json.dumps({'session_id': session_id})}\n\n"
 
-    def generate_response_stream(self):
-        # 1. Get session_id
-        yield f'data: {json.dumps({'session_id': self.session_id})}\n\n'
+        config = {"configurable": {"thread_id": session_id}}
 
-        # 2. Build conversation history
-        conversation_state = self.conversation_memory.get(
-            self.config
-        )
+        conversation_state = conversation_memory.get(config)
         conversation_history = build_conversation_history(
-            self.customer_query,
-            conversation_state
+            customer_query, conversation_state)
+
+        chain = (
+            RunnablePassthrough.assign(
+                optimized_query=RunnableLambda(
+                    lambda inputs: HANDLERS_MAPPER['optimized_query'](
+                        llm,
+                        conversation_history=inputs["conversation_history"],
+                    )
+                )
+            )
+            | RunnablePassthrough.assign(
+                context=lambda x: retrieve_relevant_content(
+                    vector_store,
+                    x["optimized_query"],
+                )
+            )
+            | RunnablePassthrough.assign(
+                purchase_type=RunnableLambda(
+                    lambda inputs: HANDLERS_MAPPER['customer_preferences'](
+                        llm,
+                        PurchaseType,
+                        conversation_history=inputs["conversation_history"]
+                    )
+                )
+            )
+            | RunnablePassthrough.assign(
+                gender=RunnableLambda(
+                    lambda inputs: HANDLERS_MAPPER['customer_preferences'](
+                        llm,
+                        WearerGender,
+                        conversation_history=inputs["conversation_history"]
+                    )
+                )
+            )
+            | RunnablePassthrough.assign(
+                category=RunnableLambda(
+                    lambda inputs: HANDLERS_MAPPER['customer_preferences'](
+                        llm,
+                        CategoryType,
+                        conversation_history=inputs["conversation_history"]
+                    )
+                )
+            )
+            | RunnablePassthrough.assign(
+                metal_type=RunnableLambda(
+                    lambda inputs: HANDLERS_MAPPER['customer_preferences'](
+                        llm,
+                        MetalType,
+                        conversation_history=inputs["conversation_history"]
+                    )
+                )
+            )
+            | RunnablePassthrough.assign(
+                stone_type=RunnableLambda(
+                    lambda inputs: HANDLERS_MAPPER['customer_preferences'](
+                        llm,
+                        StoneType,
+                        conversation_history=inputs["conversation_history"]
+                    )
+                )
+            )
+            | RunnablePassthrough.assign(
+                budget_range=RunnableLambda(
+                    lambda inputs: HANDLERS_MAPPER['customer_preferences'](
+                        llm,
+                        BudgetRange,
+                        conversation_history=inputs["conversation_history"]
+                    )
+                )
+            )
+            | RunnablePassthrough.assign(
+                next_discovery_question=RunnableLambda(
+                    lambda inputs: PreferenceDiscoveryStrategy.get_next_question(
+                        inputs['purchase_type'] | inputs['gender'] | inputs['category'] | 
+                        inputs['metal_type'] | inputs['stone_type'] | inputs['budget_range']
+                    )
+                )
+            )
+            | RunnablePassthrough.assign(
+                customer_intent=RunnableLambda(
+                    lambda inputs: HANDLERS_MAPPER['customer_intent'](
+                        llm,
+                        conversation_history=inputs["conversation_history"]
+                    )
+                )
+            )
+            | RunnableLambda(
+                lambda inputs: HANDLERS_MAPPER[inputs['customer_intent']['primary_intent']](
+                    llm,
+                    context=inputs["context"],
+                    customer_query=inputs["customer_query"],
+                    next_discovery_question=inputs['next_discovery_question'],
+                    purchase_type=inputs["purchase_type"]["purchase_type"] if inputs["purchase_type"]["purchase_type"] else '',
+                    gender=inputs["gender"]["gender"] if inputs["gender"]["gender"] else '',
+                    category=inputs["category"]["category"] if inputs["category"]["category"] else '',
+                    metal_type=inputs["metal_type"]["metal_type"] if inputs["metal_type"]["metal_type"] else '',
+                    stone_type=inputs["stone_type"]["stone_type"] if inputs["stone_type"]["stone_type"] else '',
+                    budget_range=inputs["budget_range"]["budget_range"] if inputs["budget_range"]["budget_range"] else '',
+                    conversation_memory=inputs["conversation_memory"]
+                )
+            )
         )
 
-        # 3. Extract conversation insights
-        self.conversation_insights = self.analyze_conversation_insights(
-            self.llm,
-            conversation_history,
+        system_message, human_message = chain.invoke(
+            {
+                "conversation_history": conversation_history,
+                "conversation_memory": conversation_memory,
+                "customer_query": customer_query,
+            }
         )
-        
-        print('conversation_insights')
-        print(self.conversation_insights)
-        print('-----')
 
-        # 4. Define customer intent
-        customer_intent = self.extract_customer_intent(
-            self.llm,
-            self.conversation_insights,
-        )
-        
-        print('customer_intent')
-        print(customer_intent)
-        print('-----')
+        for event in app.stream({"messages": [system_message, human_message]}, config, stream_mode="updates"):
+            ai_response = event['model']['messages'].content
 
-        # 5. Handle customer query
-        handler = self._intent_handler_map.get(
-            customer_intent['primary_intent'],
-        )
-        system_message, human_message = handler()
-
-        # 6. Generate response stream
-        for event in self.app.stream(
-            {'messages': [system_message, human_message]},
-                self.config, stream_mode='updates'
-        ):
-
-            for chunk in event['model']['messages'].content:
-                yield f'data: {json.dumps({'chunk': chunk})}\n\n'
-
-    @property
-    def _intent_handler_map(self):
-        return {
-            CustomerIntentEnum.WANTS_PRODUCT_INFORMATION_OR_SHARES_PREFERENCES:
-                lambda: self.handle_product_recommendation(
-                    self.llm,
-                    self.vector_store,
-                    self.conversation_memory,
-                    self.conversation_insights,
-                ),
-            CustomerIntentEnum.IS_INTERESTED_IN_A_SPECIFIC_PRODUCT_THAT_HAS_BEEN_RECOMMENDED_DURING_THE_CURRENT_CONVERSATION:
-                lambda: self.handle_offer_size_help(
-                    self.llm,
-                    self.conversation_memory,
-                    self.conversation_insights,
-                ),
-            CustomerIntentEnum.IS_INTERESTED_IN_RECEIVING_HELP_IN_SELECTING_IDEAL_SIZE_FOR_SELF_PURCHASE:
-                lambda: self.handle_provide_size_help(
-                    self.llm,
-                    self.conversation_memory,
-                ),
-            CustomerIntentEnum.SIZING_HELP:
-                lambda: self.handle_customer_support(
-                    self.llm,
-                    self.conversation_memory,
-                    self.conversation_insights,
-                ),
-            CustomerIntentEnum.CARE_INSTRUCTIONS:
-                lambda: self.handle_customer_support(
-                    self.llm,
-                    self.conversation_memory,
-                    self.conversation_insights,
-                ),
-            CustomerIntentEnum.RETURN_POLICY:
-                lambda: self.handle_customer_support(
-                    self.llm,
-                    self.conversation_memory,
-                    self.conversation_insights,
-                ),
-            CustomerIntentEnum.SHIPPING_INFORMATION:
-                lambda: self.handle_customer_support(
-                    self.llm,
-                    self.conversation_memory,
-                    self.conversation_insights,
-                ),
-            CustomerIntentEnum.BRAND_INFORMATION:
-                lambda: self.handle_customer_support(
-                    self.llm,
-                    self.conversation_memory,
-                    self.conversation_insights,
-                ),
-            CustomerIntentEnum.ISSUE_OR_CONCERN_OR_HESITATION:
-                lambda: self.handle_objections(
-                    self.llm,
-                    self.conversation_memory,
-                    self.conversation_insights,
-                ),
-            CustomerIntentEnum.OFF_TOPIC:
-                lambda: self.handle_off_topic(
-                    self.llm,
-                    self.conversation_memory,
-                ),
-        }
+            for chunk in ai_response:
+                yield f"data: {json.dumps({'chunk': chunk})}\n\n"

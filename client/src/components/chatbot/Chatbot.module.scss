@@ -49,7 +49,8 @@
         display: flex;
         flex-direction: column;
         padding: 1em 1.75em;
-        overflow: scroll;
+        overflow-y: auto; // Changed from 'overflow: scroll' to 'overflow-y: auto'
+        scroll-behavior: smooth; // Add smooth scrolling behavior
 
         .wrapper {
             margin-top: 1.75em;
@@ -57,19 +58,30 @@
             flex-direction: column;
             gap: 1.75em;
 
+            .message-content {
+                padding: 0.75em;
+                border-radius: 0.5em;
+                padding: 0.75em;
+            }
+
+            .time-span {
+                opacity: 0.9;
+                font-size: 0.85em;
+
+            }
+
+            & > div {
+                display: flex;
+                flex-direction: column;
+                margin-left: 2em;
+            }
+
             & > span {
                 margin-top: 0.5em;
                 align-self: center;
             }
 
-            & > div {
-                border-radius: 0.5em;
-                padding: 0.75em;
-                margin-left: 2em;
-            }
-
             & > div:nth-of-type(odd) {
-                background: vars.$light-grey;
                 position: relative;
                 margin-right: 2em;
 
@@ -78,26 +90,65 @@
                     display: flex;
                     position: absolute;
                     left: -2.5em;
-                    top: -0.5em;
+                    bottom: 1em;
+                }
+
+                .message-content {
+                    background: vars.$light-grey;
+                    border-bottom-left-radius: 0;
                 }
             }
 
             & > div:nth-of-type(even) {
-                background: vars.$black;
-                color: vars.$white;
+                .message-content {
+                    background: vars.$black;
+                    color: vars.$white;
+                    border-bottom-right-radius: 0;
+                }
             }
         }
     }
 
     .text-area {
         display: flex;
+        position: relative;
 
         textarea {
             flex-grow: 1;
-            border: 0.08em solid vars.$dark-grey;
+            border: 0.08em solid vars.$black;
             border-radius: 0.2em;
-
             height: 2em;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            overflow-x: hidden;
+            resize: vertical;
+            overflow-y: auto;
+
+            padding-right: 3em;
         }
+
+        .send-button {
+            position: absolute;
+            top: 2.25em;
+            right: 2em;
+            display: none;
+            transition: opacity 0.3s ease-in-out;
+            cursor: pointer;
+
+            &:hover {
+                opacity: 0.7;
+            }
+
+            &.visible {
+                display: block;
+            }
+        }
+    }
+    .ref-div {
+        background: white !important;
+        height: 0 !important;
+        padding: 0 !important;
+        margin-top: -1.75em !important;
     }
 }

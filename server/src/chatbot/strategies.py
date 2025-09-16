@@ -5,7 +5,6 @@ class PreferenceDiscoveryStrategy:
     """Strategic preference discovery for luxury online jewelry consultation."""
 
     DISCOVERY_SEQUENCE = [
-        'occasion',
         'purchase_type',
         'gender',
         'category',
@@ -15,9 +14,7 @@ class PreferenceDiscoveryStrategy:
     ]
 
     QUESTION_TEMPLATES = {
-        'occasion': "Every piece of jewelry tells a story. What special moment or occasion brings you to DRF React Gems today?",
-
-        'purchase_type': "How wonderful! Will you be the lucky wearer, or are you selecting a gift to delight someone dear to you?",
+        'purchase_type': "Will you be the lucky wearer, or are you selecting a gift to delight someone dear to you?",
 
         'gender': {
             'self': "To ensure I show you our most suitable collections, do you prefer pieces from our women's or men's lines?",

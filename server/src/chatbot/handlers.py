@@ -1,16 +1,147 @@
-import json
-from typing import Optional, Tuple
-
-from src.chatbot.models import (
-    ProductPreferences
-)
-
-
-from src.chatbot.prompts.helper_calls import (
-    CUSTOMER_PREFERENCE_HUMAN_MESSAGE,
-    CUSTOMER_PREFERENCE_SYSTEM_MESSAGE,
-)
+from src.chatbot.models import CustomerIntent, ProductPreferences
+from src.chatbot.prompts.company_information_handler import HUMAN_MESSAGE_COMPANY_INFORMATION_HANDLER, SYSTEM_MESSAGE_COMPANY_INFORMATION_HANDLER
+from src.chatbot.prompts.customer_intent_determiner import HUMAN_MESSAGE_INTENT_DETERMINER, SYSTEM_MESSAGE_INTENT_DETERMINER
+from src.chatbot.prompts.investigator import HUMAN_MESSAGE_INVESTIGATOR, SYSTEM_MESSAGE_INVESTIGATOR
+from src.chatbot.prompts.objection_handler import HUMAN_MESSAGE_OBJECTION_HANDLER, SYSTEM_MESSAGE_OBJECTION_HANDLER
+from src.chatbot.prompts.preferences_builder import HUMAN_MESSAGE_CUSTOMER_PREFERENCES_BUILDER, SYSTEM_MESSAGE_CUSTOMER_PREFERENCES_BUILDER
+from src.chatbot.prompts.query_optimizer import HUMAN_MESSAGE_QUERY_OPTIMIZER, SYSTEM_MESSAGE_QUERY_OPTIMIZER
+from src.chatbot.prompts.recommender import HUMAN_MESSAGE_RECOMMENDER, SYSTEM_MESSAGE_RECOMMENDER
+from src.chatbot.prompts.sizing_help_handler import HUMAN_MESSAGE_COMPANY_SIZE_HELP_HANDLER, SYSTEM_MESSAGE_COMPANY_SIZE_HELP_HANDLER
 from src.chatbot.utils import generate_formatted_response
+
+
+def should_recommend_product_or_continue_investigate(llm, **kwargs):
+    """Decision logic that returns the appropriate handler function"""
+    
+    purchase_type = kwargs['purchase_type']
+    gender = kwargs['gender']
+    category = kwargs['category']
+    metal_type = kwargs['metal_type']
+    stone_type = kwargs['stone_type']
+    budget_range = kwargs['budget_range']
+
+    print(purchase_type)
+    print(gender)
+    print(category)
+    print(metal_type)
+    print(stone_type)
+    print(budget_range)
+
+    if not all(x != "" for x in [purchase_type, gender, category, metal_type, stone_type, budget_range]):
+        return generate_formatted_response(
+            llm,
+            SYSTEM_MESSAGE_INVESTIGATOR,
+            HUMAN_MESSAGE_INVESTIGATOR,
+            'destructure_messages',
+            **kwargs
+        )
+
+    return generate_formatted_response(
+        llm,
+        SYSTEM_MESSAGE_RECOMMENDER,
+        HUMAN_MESSAGE_RECOMMENDER,
+        'destructure_messages',
+        **kwargs
+    )
+
+
+HANDLERS_MAPPER = {
+    'optimized_query': lambda llm, **kwargs: generate_formatted_response(
+        llm,
+        SYSTEM_MESSAGE_QUERY_OPTIMIZER,
+        HUMAN_MESSAGE_QUERY_OPTIMIZER,
+        'extract_ai_response_content',
+        **kwargs
+    ),
+
+    'customer_preferences': lambda llm, response_model, **kwargs: generate_formatted_response(
+        llm,
+        SYSTEM_MESSAGE_CUSTOMER_PREFERENCES_BUILDER,
+        HUMAN_MESSAGE_CUSTOMER_PREFERENCES_BUILDER,
+        'extract_and_strip_ai_response_content',
+        response_model,
+        **kwargs
+    ),
+
+    'customer_intent': lambda llm, **kwargs: generate_formatted_response(
+        llm,
+        SYSTEM_MESSAGE_INTENT_DETERMINER,
+        HUMAN_MESSAGE_INTENT_DETERMINER,
+        'extract_and_strip_ai_response_content',
+        CustomerIntent,
+        **kwargs
+    ),
+    
+    'general_sizing_help_about_measurement_not_related_to_products_availability': lambda llm, **kwargs: generate_formatted_response(
+        llm,
+        SYSTEM_MESSAGE_COMPANY_SIZE_HELP_HANDLER,
+        HUMAN_MESSAGE_COMPANY_SIZE_HELP_HANDLER,
+        'destructure_messages',
+        **kwargs
+    ),
+
+    'care_instructions': lambda llm, **kwargs: generate_formatted_response(
+        llm,
+        SYSTEM_MESSAGE_COMPANY_INFORMATION_HANDLER,
+        HUMAN_MESSAGE_COMPANY_INFORMATION_HANDLER,
+        'destructure_messages',
+        **kwargs
+    ),
+    
+    'pricing': lambda llm, **kwargs: generate_formatted_response(
+        llm,
+        SYSTEM_MESSAGE_COMPANY_INFORMATION_HANDLER,
+        HUMAN_MESSAGE_COMPANY_INFORMATION_HANDLER,
+        'destructure_messages',
+        **kwargs
+    ),
+
+    'return_policy': lambda llm, **kwargs: generate_formatted_response(
+        llm,
+        SYSTEM_MESSAGE_COMPANY_INFORMATION_HANDLER,
+        HUMAN_MESSAGE_COMPANY_INFORMATION_HANDLER,
+        'destructure_messages',
+        **kwargs
+    ),
+
+    'shipping_information': lambda llm, **kwargs: generate_formatted_response(
+        llm,
+        SYSTEM_MESSAGE_COMPANY_INFORMATION_HANDLER,
+        HUMAN_MESSAGE_COMPANY_INFORMATION_HANDLER,
+        'destructure_messages',
+        **kwargs
+    ),
+
+    'brand_information': lambda llm, **kwargs: generate_formatted_response(
+        llm,
+        SYSTEM_MESSAGE_COMPANY_INFORMATION_HANDLER,
+        HUMAN_MESSAGE_COMPANY_INFORMATION_HANDLER,
+        'destructure_messages',
+        **kwargs
+    ),
+
+    'concern_or_hesitation': lambda llm, **kwargs: generate_formatted_response(
+        llm,
+        SYSTEM_MESSAGE_OBJECTION_HANDLER,
+        HUMAN_MESSAGE_OBJECTION_HANDLER,
+        'destructure_messages',
+        **kwargs
+    ),
+
+    'off_topic': lambda llm, **kwargs: generate_formatted_response(
+        llm,
+        SYSTEM_MESSAGE_OBJECTION_HANDLER,
+        HUMAN_MESSAGE_OBJECTION_HANDLER,
+        'destructure_messages',
+        **kwargs
+    ),
+
+    'wants_product_information_or_products_availability_information_or_shares_preferences': \
+        lambda llm, **kwargs: should_recommend_product_or_continue_investigate(
+        llm, 
+        **kwargs
+    ),
+}
 
 
 def build_conversation_history(customer_query, conversation_state, max_messages=20):
