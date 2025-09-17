@@ -11,8 +11,6 @@ from langchain_pinecone import Pinecone
 from pinecone import Pinecone as PineconeClient
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-from src.chatbot.config import CHUNK_OVERLAP, CHUNK_SIZE, DIMENSIONS, EMBEDDING_MODEL
-
 
 class Command(BaseCommand):
     help = 'Initialize and populate Pinecone vector store with PDF documents'
@@ -70,7 +68,7 @@ class Command(BaseCommand):
 
             # Initialize embedding model
             embedding_model = OpenAIEmbeddings(
-                model=EMBEDDING_MODEL, dimensions=DIMENSIONS)
+                model="text-embedding-3-small", dimensions=512)
             self.stdout.write("✓ Initialized embedding model")
 
             # Process first PDF (product catalog)
@@ -119,7 +117,7 @@ class Command(BaseCommand):
                 return
 
             # Create/update vector store
-            self._create_vector_store(
+            vectorstore = self._create_vector_store(
                 chunks, boutique_data_chunks, embedding_model, index_name, force_recreate)
 
             # FIXED: Show correct total count
@@ -228,8 +226,8 @@ class Command(BaseCommand):
     @classmethod
     def _create_chunks_using_langchain(cls, pages):
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=CHUNK_SIZE,
-            chunk_overlap=CHUNK_OVERLAP,
+            chunk_size=780,
+            chunk_overlap=0,
             separators=["\n\n", ".", '\n']
         )
 

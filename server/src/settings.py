@@ -32,23 +32,25 @@ CORS_ALLOWED_ORIGINS = os.getenv(
 OPENAI_API_KEY = os.getenv(
     'OPENAI_API_KEY', config('OPENAI_API_KEY')
 )
-
 PINECONE_API_KEY = os.getenv(
     'PINECONE_API_KEY', config('PINECONE_API_KEY')
 )
-
 PINECONE_INDEX_NAME = os.getenv(
     'PINECONE_INDEX_NAME', config('PINECONE_INDEX_NAME')
 )
-
-
 LANGSMITH_API_KEY = os.getenv(
     'LANGSMITH_API_KEY', config('LANGSMITH_API_KEY')
 )
-
 LANGSMITH_TRACING = "true"
 LANGSMITH_ENDPOINT = "https://api.smith.langchain.com"
 LANGSMITH_PROJECT = "pr-impassioned-warfare-85"
+
+os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
+os.environ['LANGSMITH_API_KEY'] = LANGSMITH_API_KEY
+os.environ['LANGSMITH_ENDPOINT'] = LANGSMITH_ENDPOINT
+os.environ['PINECONE_API_KEY'] = PINECONE_API_KEY
+os.environ['PINECONE_INDEX_NAME'] = PINECONE_INDEX_NAME
+os.environ['LANGSMITH_TRACING_V2'] = 'true'
 
 # Custom Django applications in this project
 PROJECT_APPS = [

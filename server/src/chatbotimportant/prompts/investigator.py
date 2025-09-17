@@ -31,9 +31,9 @@ Your primary objective is to guide customers through a personalized jewelry sele
 <next>
 1. Analyze the pdf_summary.
 2. Analyze the products into the provided CONTEXT.
-3. If your products would not meet MY PREFERENCES, acknowledge that with grace and guide the conversation toward pieces with different characteristics, phrasing it as an invitation to explore other concrete options rather than a substitution.
-4. If I asking a clarifying question, you must respond to within your STRATEGIC QUESTION.
-4. Otherwise, ask THE STRATEGIC QUESTION provided.
+3. If the products would not meet MY PREFERENCES, acknowledge that with grace and guide the conversation toward pieces with different characteristics, phrasing it as an invitation to explore other concrete options rather than a substitution.
+4. If I am asking a clarifying question, you must respond to it within your STRATEGIC QUESTION.
+4. Otherwise, ask THE STRATEGIC QUESTION provided only.
 </next>
 """
 + CRITICAL_RULES
@@ -44,7 +44,7 @@ HUMAN_MESSAGE_INVESTIGATOR = (
 """
 BASED ON:\n
 1. CONVERSATION MEMORY:\n{conversation_memory}\n\n
-MY PREFERENCES:
+2. MY PREFERENCES:
 - I am buying the jewelry as a: {purchase_type}
 - The gender of the person who will be wearing the jewelry is: {gender}
 - The product category I am interested is: {category}
@@ -52,8 +52,8 @@ MY PREFERENCES:
 - The stone type I am interested is: {stone_type}
 - The budget I have in mind is: {budget_range}
 \n\n
-8. CONTEXT:\n{context}\n\n
+3. CONTEXT:\n{context}\n\n
 Respond to my STATEMENT with a strategic question like this one: {next_discovery_question}.\n\n
-STATEMENT:\n{customer_query}
+4. STATEMENT:\n{customer_query}
 """
 )

@@ -7,8 +7,6 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, MessagesState, StateGraph
 from langchain_openai import OpenAIEmbeddings
 
-from src.chatbot.config import DIMENSIONS, EMBEDDING_MODEL, LLM_MODEL, MAX_TOKENS, TEMPERATURE, TOP_P, FREQUENCY_PENALTY, PRESENCE_PENALTY
-
 
 class LLMAdapter:
     _instance = None
@@ -28,12 +26,12 @@ class LLMAdapter:
     @classmethod
     def _initialize(cls):
         return ChatOpenAI(
-            model=LLM_MODEL,
-            max_tokens=MAX_TOKENS,
-            temperature=TEMPERATURE,
-            top_p=TOP_P,
-            frequency_penalty=FREQUENCY_PENALTY,
-            presence_penalty=PRESENCE_PENALTY,
+            model="gpt-4o-mini",
+            max_tokens=300,
+            temperature=0,
+            top_p=0,
+            frequency_penalty=1.0,
+            presence_penalty=1.0,
         )
 
 
@@ -118,7 +116,7 @@ class VectorStoreAdapter:
 
         # Initialize embedding model (same as used in management command)
         embedding_model = OpenAIEmbeddings(
-            model=EMBEDDING_MODEL, dimensions=DIMENSIONS)
+            model="text-embedding-3-small", dimensions=512)
 
         # Connect to existing Pinecone vector store
         vectorstore = Pinecone.from_existing_index(
