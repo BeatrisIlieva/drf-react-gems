@@ -6,42 +6,6 @@ from langchain.prompts import SystemMessagePromptTemplate, HumanMessagePromptTem
 from langchain.output_parsers import PydanticOutputParser
 
 
-def build_conversation_history(customer_query, conversation_state, max_messages=20):
-    """
-    Build conversation history with the last max_messages customer-AI message pairs.
-    """
-    if not conversation_state:
-        return [f'{1}. customer: {customer_query};']
-
-    conversation_history = []
-    messages = conversation_state['channel_values']['messages']
-
-    # Extract customer and assistant messages
-    customer_messages = [
-        msg.content.split('STATEMENT:')[-1].strip()
-        for msg in messages if msg.__class__.__name__ == 'HumanMessage'
-    ]
-    assistant_messages = [
-        msg.content.strip()
-        for msg in messages if msg.__class__.__name__ == 'AIMessage'
-    ]
-
-    # Take the last max_messages pairs (or fewer if not enough pairs)
-    num_pairs = len(customer_messages)
-    start_index = max(0, num_pairs - max_messages)
-
-    # Build history with the most recent message pairs
-    for i in range(start_index, num_pairs):
-        conversation_history.append(
-            f'{i + 1}. customer: {customer_messages[i]}, assistant: {assistant_messages[i]};')
-
-    # Append the current customer query
-    conversation_history.append(
-        f'{num_pairs + 1}. customer: {customer_query};')
-
-    return '\n'.join(conversation_history)
-
-
 def generate_formatted_response(
     llm,
     system_message,
@@ -80,6 +44,11 @@ def generate_formatted_response(
         return customer_preferences
 
     response_format_mapper = {
+        # 'extract_and_strip_ai_response_content':
+        # lambda: json.loads(re.sub(
+        #     r'```json\s*|\s*```', '',
+        #     llm.invoke(messages).content
+        # ).strip()),
         'extract_and_strip_ai_response_content':
         get_and_format_customer_preferences,
 
@@ -93,4 +62,21 @@ def generate_formatted_response(
     return response_format_mapper[response_format]()
 
 
+def retrieve_relevant_content(vectorstore, query, k=4):
+    results = vectorstore.similarity_search(query, k=k)
+    context = '\n'.join(result.page_content for result in results)
 
+    return context.strip()
+
+
+def all_preferences_collected(inputs):
+    """Check if all required preferences have been collected"""
+    preferences = [
+        inputs.get("purchase_type", {}).get("purchase_type", ""),
+        inputs.get("gender", {}).get("gender", ""),
+        inputs.get("category", {}).get("category", ""),
+        inputs.get("metal_type", {}).get("metal_type", ""),
+        inputs.get("stone_type", {}).get("stone_type", ""),
+        inputs.get("budget_range", {}).get("budget_range", "")
+    ]
+    return all(pref != "" and pref is not None for pref in preferences)

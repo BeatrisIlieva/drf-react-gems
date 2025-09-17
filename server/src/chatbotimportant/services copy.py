@@ -26,24 +26,24 @@
 # ):
 #     """Core service for generating chatbot responses."""
 
-#     def __init__(
-#         self,
-#         session_id,
-#         vector_store,
-#         memory,
-#         app,
-#         llm,
-#         customer_query
-#     ):
-#         self.session_id = session_id
-#         self.vector_store = vector_store
-#         self.conversation_memory = memory
-#         self.app = app
-#         self.llm = llm
-#         self.customer_query = customer_query
-#         self.config = {
-#             'configurable': {'thread_id': session_id}
-#         }
+    # def __init__(
+    #     self,
+    #     session_id,
+    #     vector_store,
+    #     memory,
+    #     app,
+    #     llm,
+    #     customer_query
+    # ):
+    #     self.session_id = session_id
+    #     self.vector_store = vector_store
+    #     self.conversation_memory = memory
+    #     self.app = app
+    #     self.llm = llm
+    #     self.customer_query = customer_query
+    #     self.config = {
+    #         'configurable': {'thread_id': session_id}
+    #     }
 
 #         self.customer_preferences = None
 #         self.conversation_insights = None

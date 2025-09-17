@@ -1,200 +1,270 @@
-# from src.chatbot.models import CustomerIntent, ProductPreferences
-# from src.chatbot.prompts.customer_intent import ANSWER_TO_PROVIDE_CUSTOMER_SUPPORT_SYSTEM_MESSAGE, ANSWER_TO_RECOMMEND_PRODUCT_SYSTEM_MESSAGE, DISCOVERY_QUESTION_TO_ASK_SYSTEM_MESSAGE, OBJECTION_HANDLING_SYSTEM_MESSAGE, OFF_TOPIC_SYSTEM_MESSAGE, OFFER_HELP_WITH_SELECTING_IDEAL_SIZE_SYSTEM_MESSAGE, PLAIN_HUMAN_MESSAGE, PROVIDE_HELP_WITH_SELECTING_IDEAL_SIZE_SYSTEM_MESSAGE, WITH_MEMORY_AND_DB_CONTENT_HUMAN_MESSAGE, WITH_MEMORY_HUMAN_MESSAGE
-# from src.chatbot.prompts.helper_calls import ANALYZE_CONVERSATION_INSIGHTS_HUMAN_MESSAGE, ANALYZE_CONVERSATION_INSIGHTS_SYSTEM_MESSAGE, CUSTOMER_INTENT_HUMAN_MESSAGE, CUSTOMER_INTENT_SYSTEM_MESSAGE, CUSTOMER_PREFERENCE_HUMAN_MESSAGE, CUSTOMER_PREFERENCE_SYSTEM_MESSAGE, OPTIMIZED_VECTOR_SEARCH_QUERY_HUMAN_MESSAGE, OPTIMIZED_VECTOR_SEARCH_QUERY_SYSTEM_MESSAGE
-# from src.chatbot.strategies import PreferenceDiscoveryStrategy
-# from src.chatbot.utils import generate_formatted_response, retrieve_relevant_content
+from langchain.schema.runnable import RunnablePassthrough, RunnableLambda, RunnableBranch
+
+from src.chatbot.handlers import HANDLERS_MAPPER
+from src.chatbot.models import BudgetRange, CategoryType,  MetalType, PurchaseType, StoneType, WearerGender
+from src.chatbot.strategies import PreferenceDiscoveryStrategy
 
 
-# class AnalyzeConversationInsightsMixin:
-#     def analyze_conversation_insights(self, llm, conversation_history):
-#         return generate_formatted_response(
-#             llm,
-#             ANALYZE_CONVERSATION_INSIGHTS_SYSTEM_MESSAGE,
-#             ANALYZE_CONVERSATION_INSIGHTS_HUMAN_MESSAGE,
-#             'extract_ai_response_content',
-#             conversation_history=conversation_history,
-#         )
+# class PreferenceExtractionMixin:
+#     """Mixin for extracting customer preferences."""
 
-
-# class ExtractCustomerIntentMixin:
-#     def extract_customer_intent(self, llm, conversation_insights):
-#         return generate_formatted_response(
-#             llm,
-#             CUSTOMER_INTENT_SYSTEM_MESSAGE,
-#             CUSTOMER_INTENT_HUMAN_MESSAGE,
-#             'extract_and_strip_ai_response_content',
-#             CustomerIntent,
-#             conversation_insights=conversation_insights,
-#         )
-
-
-# class ProductRecommendationMixin:
-#     def handle_product_recommendation(self, llm, vector_store, conversation_memory, conversation_insights):
-#         # Determine whether the customer has provided all necessary preferences
-#         result = self._determine_next_step(
-#             llm,
-#             conversation_insights
-#         )
-
-#         is_ready_to_proceed = result['is_ready_to_proceed']
-#         if not is_ready_to_proceed:
-#             discovery_question = result['discovery_question']
-
-#             return self._ask_clarifying_question(llm, discovery_question, conversation_insights)
-
-#         else:
-#             customer_preferences = result['customer_preferences']
-#             vector_search_query = self._create_optimized_vector_search_query(
-#                 llm, conversation_insights, customer_preferences)
-#             product = retrieve_relevant_content(
-#                 vector_store,
-#                 vector_search_query,
-#                 1
+#     def _build_preference_extraction_chain(self):
+#         """Build chain for extracting customer preferences."""
+#         return (
+#             RunnablePassthrough.assign(
+#                 purchase_type=RunnableLambda(
+#                     lambda inputs: HANDLERS_MAPPER['customer_preferences'](
+#                         self.llm,
+#                         PurchaseType,
+#                         conversation_history=inputs["conversation_history"]
+#                     )
+#                 )
 #             )
-#             return self._recommend_product(llm, conversation_memory, conversation_insights, product)
-
-#     def _ask_clarifying_question(self, llm, discovery_question, conversation_insights):
-
-#         return generate_formatted_response(
-#             llm,
-#             DISCOVERY_QUESTION_TO_ASK_SYSTEM_MESSAGE,
-#             PLAIN_HUMAN_MESSAGE,
-#             'destructure_messages',
-#             discovery_question=discovery_question,
-#             conversation_insights=conversation_insights,
-#         )
-
-#     def _create_optimized_vector_search_query(self, llm, conversation_insights, customer_preferences):
-#         return generate_formatted_response(
-#             llm,
-#             OPTIMIZED_VECTOR_SEARCH_QUERY_SYSTEM_MESSAGE,
-#             OPTIMIZED_VECTOR_SEARCH_QUERY_HUMAN_MESSAGE,
-#             'extract_ai_response_content',
-#             conversation_insights=conversation_insights,
-#             customer_preferences=customer_preferences
-#         )
-
-#     def _recommend_product(self, llm, conversation_memory, conversation_insights, product):
-#         return generate_formatted_response(
-#             llm,
-#             ANSWER_TO_RECOMMEND_PRODUCT_SYSTEM_MESSAGE,
-#             WITH_MEMORY_HUMAN_MESSAGE,
-#             'destructure_messages',
-#             product_to_recommend=product,
-#             conversation_insights=conversation_insights,
-#             conversation_memory=conversation_memory,
-#         )
-
-#     def _determine_next_step(
-#         self,
-#         llm,
-#         conversation_insights: str,
-#     ):
-#         """
-#         Extract preferences and generate next question using strategic ordering.
-#         Returns (preferences, next_question, is_complete)
-#         """
-
-#         # Extract current preferences
-#         preferences = generate_formatted_response(
-#             llm,
-#             CUSTOMER_PREFERENCE_SYSTEM_MESSAGE,
-#             CUSTOMER_PREFERENCE_HUMAN_MESSAGE,
-#             'extract_and_strip_ai_response_content',
-#             ProductPreferences,
-#             conversation_insights=conversation_insights,
-#         )
-        
-#         print('customer_preferences')
-#         print(preferences)
-#         print('-----')
-
-#         # Check if discovery is complete (minimum required fields)
-#         required_fields = PreferenceDiscoveryStrategy.DISCOVERY_SEQUENCE
-#         is_ready_to_proceed = all(preferences.get(field) not in ('', None) for field in required_fields)
-
-#         if is_ready_to_proceed:
-#             preferences_as_string = ''
-
-#             for key, value in preferences.items():
-#                 preferences_as_string += f'{key}: {value}\n'
-
-#             return {'is_ready_to_proceed': is_ready_to_proceed, 'customer_preferences': preferences_as_string}
-
-#         # Get next question using strategy
-#         next_question = PreferenceDiscoveryStrategy.get_next_question(
-#             preferences)
-
-#         return {'is_ready_to_proceed': is_ready_to_proceed, 'discovery_question': next_question}
-
-
-# class OfferSizeHelp:
-#     def handle_offer_size_help(self, llm, conversation_memory, conversation_insights):
-#         return generate_formatted_response(
-#             llm,
-#             OFFER_HELP_WITH_SELECTING_IDEAL_SIZE_SYSTEM_MESSAGE,
-#             WITH_MEMORY_HUMAN_MESSAGE,
-#             'destructure_messages',
-#             conversation_memory=conversation_memory,
-#             conversation_insights=conversation_insights,
+#             | RunnablePassthrough.assign(
+#                 gender=RunnableLambda(
+#                     lambda inputs: HANDLERS_MAPPER['customer_preferences'](
+#                         self.llm,
+#                         WearerGender,
+#                         conversation_history=inputs["conversation_history"]
+#                     )
+#                 )
+#             )
+#             | RunnablePassthrough.assign(
+#                 category=RunnableLambda(
+#                     lambda inputs: HANDLERS_MAPPER['customer_preferences'](
+#                         self.llm,
+#                         CategoryType,
+#                         conversation_history=inputs["conversation_history"]
+#                     )
+#                 )
+#             )
+#             | RunnablePassthrough.assign(
+#                 metal_type=RunnableLambda(
+#                     lambda inputs: HANDLERS_MAPPER['customer_preferences'](
+#                         self.llm,
+#                         MetalType,
+#                         conversation_history=inputs["conversation_history"]
+#                     )
+#                 )
+#             )
+#             | RunnablePassthrough.assign(
+#                 stone_type=RunnableLambda(
+#                     lambda inputs: HANDLERS_MAPPER['customer_preferences'](
+#                         self.llm,
+#                         StoneType,
+#                         conversation_history=inputs["conversation_history"]
+#                     )
+#                 )
+#             )
+#             | RunnablePassthrough.assign(
+#                 budget_range=RunnableLambda(
+#                     lambda inputs: HANDLERS_MAPPER['customer_preferences'](
+#                         self.llm,
+#                         BudgetRange,
+#                         conversation_history=inputs["conversation_history"]
+#                     )
+#                 )
+#             )
 #         )
 
 
-# class ProvideSizeHelp:
-#     def handle_provide_size_help(self, llm, conversation_memory, conversation_insights):
-#         return generate_formatted_response(
-#             llm,
-#             PROVIDE_HELP_WITH_SELECTING_IDEAL_SIZE_SYSTEM_MESSAGE,
-#             WITH_MEMORY_HUMAN_MESSAGE,
-#             'destructure_messages',
-#             conversation_memory=conversation_memory,
-#             conversation_insights=conversation_insights,
+# class ProductDiscoveryMixin:
+#     """Mixin for product discovery functionality."""
+
+#     def _build_continue_discovery_chain(self):
+#         """Build chain for continuing preference discovery."""
+#         return (
+#             RunnablePassthrough.assign(
+#                 next_discovery_question=RunnableLambda(
+#                     lambda inputs: PreferenceDiscoveryStrategy.get_next_question(
+#                         {k: v for key in PreferenceDiscoveryStrategy.DISCOVERY_SEQUENCE
+#                          for k, v in inputs.get(key, {}).items()}
+#                     )
+#                 )
+#             )
+#             | RunnableLambda(
+#                 lambda inputs: HANDLERS_MAPPER['investigate'](
+#                     self.llm,
+#                     context=inputs["context"],
+#                     customer_query=inputs["customer_query"],
+#                     next_discovery_question=inputs['next_discovery_question'],
+#                     **self._extract_safe_preferences(inputs),
+#                     conversation_memory=inputs["conversation_memory"]
+#                 )
+#             )
 #         )
 
-
-# class CustomerSupportMixin:
-#     def handle_customer_support(self, llm, vector_store, conversation_memory, conversation_insights):
-#         content = retrieve_relevant_content(
-#             vector_store,
-#             conversation_insights
+#     def _build_recommend_product_chain(self):
+#         """Build chain for product recommendations."""
+#         return RunnableLambda(
+#             lambda inputs: HANDLERS_MAPPER['recommend_product'](
+#                 self.llm,
+#                 context=inputs["context"],
+#                 customer_query=inputs["customer_query"],
+#                 **self._extract_preferences(inputs),
+#                 conversation_memory=inputs["conversation_memory"]
+#             )
 #         )
 
-#         return generate_formatted_response(
-#             llm,
-#             ANSWER_TO_PROVIDE_CUSTOMER_SUPPORT_SYSTEM_MESSAGE,
-#             WITH_MEMORY_AND_DB_CONTENT_HUMAN_MESSAGE,
-#             'destructure_messages',
-#             conversation_memory=conversation_memory,
-#             content=content,
-#             conversation_insights=conversation_insights
+#     def _build_available_options_navigator_chain(self):
+#         """Build chain for navigating available options."""
+#         return RunnableLambda(
+#             lambda inputs: HANDLERS_MAPPER['available_options_navigator'](
+#                 self.llm,
+#                 context=inputs["context"],
+#                 customer_query=inputs["customer_query"],
+#                 **self._extract_safe_preferences(inputs),
+#                 conversation_memory=inputs["conversation_memory"]
+#             )
 #         )
 
+#     def _extract_preferences(self, inputs):
+#         """Extract preferences assuming they're all present."""
+#         return {
+#             key: inputs[key][key]
+#             for key in PreferenceDiscoveryStrategy.DISCOVERY_SEQUENCE
+#         }
 
-# class ObjectionHandlingMixin:
-#     def handle_objections(self, llm, vector_store, conversation_memory, conversation_insights):
-#         content = retrieve_relevant_content(
-#             vector_store,
-#             conversation_insights
-#         )
-
-#         return generate_formatted_response(
-#             llm,
-#             OBJECTION_HANDLING_SYSTEM_MESSAGE,
-#             WITH_MEMORY_AND_DB_CONTENT_HUMAN_MESSAGE,
-#             'destructure_messages',
-#             conversation_memory=conversation_memory,
-#             content=content,
-#             conversation_insights=conversation_insights,
-#         )
+#     def _extract_safe_preferences(self, inputs):
+#         """Extract preferences with safe dictionary access."""
+#         return {
+#             key: inputs.get(key, {}).get(key, "")
+#             for key in PreferenceDiscoveryStrategy.DISCOVERY_SEQUENCE
+#         }
 
 
-# class OffTopicMixin:
-#     def handle_off_topic(self, llm, conversation_memory, conversation_insights):
-#         return generate_formatted_response(
-#             llm,
-#             OFF_TOPIC_SYSTEM_MESSAGE,
-#             WITH_MEMORY_HUMAN_MESSAGE,
-#             'destructure_messages',
-#             conversation_memory=conversation_memory,
-#             conversation_insights=conversation_insights,
-#         )
+class GeneralInfoMixin:
+    """Mixin for general information handling."""
+
+    def _build_general_info_chain(self):
+        """Build chain for general information responses."""
+        return RunnableLambda(
+            lambda inputs: HANDLERS_MAPPER[inputs['customer_intent']](
+                self.llm,
+                context=inputs["context"],
+                customer_query=inputs["customer_query"],
+                conversation_memory=inputs["conversation_memory"]
+            )
+        )
+
+
+class JewelryConsultationMixin:
+    """Mixin for building conditional chains."""
+
+    def _build_jewelry_consultation_chain(self):
+        """Build the complete jewelry consultation process chain."""
+        return (
+            self._build_preference_extraction_chain()
+            | RunnablePassthrough.assign(
+                found_products=RunnableLambda(
+                    lambda inputs: HANDLERS_MAPPER['check_for_products_matching_customer_preferences'](
+                        self.llm,
+                        context=inputs["context"],
+                        **self._extract_safe_preferences(inputs),
+                    )
+                )
+            )
+            | RunnableBranch(
+                (
+                    # lambda x: x['found_products'] == 'FOUND',
+                    lambda x: (print("found_products:", x.get('found_products')) or True) and x['found_products'] == 'FOUND',
+                    self._build_discovery_or_recommend_chain()
+                ),
+                self._build_available_options_navigator_chain()
+            )
+        )
+
+    def _build_preference_extraction_chain(self):
+        """Build chain for extracting customer preferences."""
+        preference_assignments = {
+            preference_key: RunnableLambda(
+                lambda inputs, model=config['model']: HANDLERS_MAPPER['extract_customer_preferences'](
+                    self.llm,
+                    model,
+                    conversation_history=inputs["conversation_history"]
+                )
+            )
+            for preference_key, config in PreferenceDiscoveryStrategy.DISCOVERY_SEQUENCE.items()
+        }
+
+        return RunnablePassthrough.assign(**preference_assignments)
+
+    def _build_discovery_or_recommend_chain(self):
+        """Build conditional chain for discovery vs recommendation."""
+        return RunnableBranch(
+            (
+                # If all preferences are collected, recommend products
+                lambda x: self._all_preferences_collected(x),
+                self._build_recommend_product_chain()
+            ),
+            # Otherwise, continue discovery
+            self._build_continue_discovery_chain()
+        )
+
+    @classmethod
+    def _all_preferences_collected(cls, inputs):
+        """Check if all required preferences have been collected"""
+        return all(
+            inputs.get(key, {}).get(key, "") not in ("", None)
+            for key in PreferenceDiscoveryStrategy.DISCOVERY_SEQUENCE
+        )
+
+    def _build_recommend_product_chain(self):
+        """Build chain for product recommendations."""
+        return RunnableLambda(
+            lambda inputs: HANDLERS_MAPPER['recommend_product'](
+                self.llm,
+                context=inputs["context"],
+                customer_query=inputs["customer_query"],
+                **self._extract_preferences(inputs),
+                conversation_memory=inputs["conversation_memory"]
+            )
+        )
+
+    def _build_continue_discovery_chain(self):
+        """Build chain for continuing preference discovery."""
+        return (
+            RunnablePassthrough.assign(
+                next_discovery_question=RunnableLambda(
+                    lambda inputs: PreferenceDiscoveryStrategy.get_next_question(
+                        self._extract_safe_preferences(inputs) 
+                    )
+                )
+            )
+            | RunnableLambda(
+                lambda inputs: HANDLERS_MAPPER['discover_customer_preferences'](
+                    self.llm,
+                    context=inputs["context"],
+                    customer_query=inputs["customer_query"],
+                    next_discovery_question=inputs['next_discovery_question'],
+                    **self._extract_safe_preferences(inputs),
+                    conversation_memory=inputs["conversation_memory"]
+                )
+            )
+        )
+
+    def _build_available_options_navigator_chain(self):
+        """Build chain for navigating available options."""
+        return RunnableLambda(
+            lambda inputs: HANDLERS_MAPPER['navigate_towards_available_options'](
+                self.llm,
+                context=inputs["context"],
+                customer_query=inputs["customer_query"],
+                **self._extract_safe_preferences(inputs),
+                conversation_memory=inputs["conversation_memory"]
+            )
+        )
+
+    def _extract_preferences(self, inputs):
+        """Extract preferences assuming they're all present."""
+        return {
+            key: inputs[key][key]
+            for key in PreferenceDiscoveryStrategy.DISCOVERY_SEQUENCE.keys()  
+        }
+
+    def _extract_safe_preferences(self, inputs):
+        """Extract preferences with safe dictionary access."""
+        return {
+            key: inputs.get(key, {}).get(key, "")
+            for key in PreferenceDiscoveryStrategy.DISCOVERY_SEQUENCE.keys()  
+        }
