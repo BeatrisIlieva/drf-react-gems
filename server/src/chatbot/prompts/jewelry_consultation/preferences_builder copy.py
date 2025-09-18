@@ -27,12 +27,26 @@ You are an experienced Conversation Analyst. You have tne ability to identify tr
 </role>
 
 <goal>
-The goal is to identify the customer preferences and needs by analyzing their STATEMENT. This will help our assistant to recommend the best product to the customer.
+The goal is to identify the customer preferences and needs by analyzing the CONVERSATION HISTORY. This will help our assistant to recommend the best product to the customer.
 </goal>
 
-</important>
-Do not make assumptions beyond what is explicitly mentioned into the STATEMENT.
+<task>
+The provided CONVERSATION HISTORY consists of chronologically arranged customer-assistant conversation transcripts.
+
+2. Analyze the complete conversation between a customer and assistant.
+- Review all messages from start to finish
+- Pay attention to how the conversation evolves and changes direction
+- Note any clarifications, follow-up questions, or course corrections
+3. Identify the Core Need
+Look beyond the surface-level questions to understand what the customer truly wants:
+- Initial request - What did they first ask for?
+- Follow-up clarifications - What additional details did they seek?
+</task>
+
 <important>
+The customer’s needs and preferences might change during the course of the conversation. The customer might change their mind or want to see more products after liking a product recommended by the assistant. Consider with highest priority the most recent statements.
+If a required value cannot be determined from the CONVERSATION_HISTORY, include the key in the schema and set its value to an empty string (""). 
+</important>
 
 <next>
 {instructions}
@@ -42,6 +56,6 @@ Do not make assumptions beyond what is explicitly mentioned into the STATEMENT.
 
 HUMAN_MESSAGE_CUSTOMER_PREFERENCES_BUILDER = (
 """
-STATEMENT:\n{optimized_query}
+BASED ON THE FOLLOWING CONVERSATION_HISTORY:\n{conversation_history}
 """
 )

@@ -1,7 +1,7 @@
 from src.chatbot.prompts.base import CONTEXT, PDF_SUMMARY
 
 
-SYSTEM_MESSAGE_QUERY_OPTIMIZER = (
+SYSTEM_MESSAGE_QUERY_FOR_INTENT_OPTIMIZER = (
 PDF_SUMMARY +
 CONTEXT +
 """
@@ -45,7 +45,7 @@ The goal is to identify what the customer truly wants by analyzing the complete 
 </goal>
 
 <task>
-The provided CONVERSATION HISTORY consists of chronologically arranged customer-assistant conversation transcripts.
+The provided STATEMENT consists of chronologically arranged customer-assistant conversation transcripts.
 
 1. Study the provided PDF SUMMARY. This knowledge will guide your query optimization decisions.
 2. Analyze the complete conversation between a customer and assistant to identify the customer's true underlying need and formulate it as a single, clear question.
@@ -69,20 +69,11 @@ The question should capture:
 - The context that matters for providing the right answer
 - The desired outcome or goal
 
-<quality_check>
-The question should:
-- Address the customer's true underlying need
-- Include relevant context and constraints
-- Be specific and actionable
-- Sound natural in the customer's voice
-- Eliminate any confusion or ambiguity from the original conversation
-</quality_check>
-
 <important>
 - Focus on terms, concepts, and phrases that are likely to match the chunked content while maintaining the customer's original intent expressed into the USER QUERY
 - Your optimized query should use terminology and concepts present in the source document to ensure successful retrieval from the vectorstore
 - Do not include irrelevant keywords that could block matching the customer’s intended information
-- Do not make assumptions or infer values beyond what is stated in the CONVERSATION HISTORY
+- Do not make assumptions or infer values beyond what is stated in the STATEMENT
 </important>
 </task>
 
@@ -92,8 +83,8 @@ Output only the optimized search query as a question in the customer's voice. Do
 """
 )
 
-HUMAN_MESSAGE_QUERY_OPTIMIZER = (
+HUMAN_MESSAGE_QUERY_FOR_INTENT_OPTIMIZER = (
 """
-CONVERSATION HISTORY:\n{conversation_history}
+STATEMENT:\n{conversation_history}
 """
 )
