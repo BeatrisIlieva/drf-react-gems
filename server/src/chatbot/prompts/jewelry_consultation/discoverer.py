@@ -9,9 +9,13 @@ WHO_AM_I +
 GOAL +
 """
 <next>
-1. Analyze the products into the provided CONTEXT.
-2. If I ask a question, you must address it through your STRATEGIC QUESTION.
-3. Output exactly the STRATEGIC QUESTION only along with the response of my question if such.
+1. Analyze the AVAILABLE PRODUCTS.
+2. Analyze the INSTRUCTION.
+3. Analyze MY STATEMENT.
+4. Follow the instruction to formulate one STRATEGIC QUESTION.
+5. Address MY STATEMENT through your STRATEGIC QUESTION.
+6. Formulate your FINAL ANSWER to first respond to my question if such, followed by the STRATEGIC QUESTION.
+6. Output your FINAL ANSWER.
 </next>
 """
 + CRITICAL_RULES
@@ -28,10 +32,9 @@ BASED ON:\n
 - The product category I am interested is: {category}
 - The metal type I am interested is: {metal_type}
 - The stone type I am interested is: {stone_type}
-- The budget I have in mind is: {budget_range}
 \n\n
-3. CONTEXT:\n{context}\n\n
-4. Respond to my STATEMENT with the following STRATEGIC QUESTION: {next_discovery_question}.\n\n
-5. STATEMENT:\n{customer_query}
+3. AVAILABLE PRODUCTS:\n{context}\n\n
+4. INSTRUCTION: {next_discovery_question}.\n\n
+5. MY STATEMENT:\n{customer_query}
 """
 )

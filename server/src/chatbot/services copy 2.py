@@ -21,13 +21,6 @@ class ChatbotService(GeneralInfoMixin, JewelryConsultationMixin):
         self.config = {
             'configurable': {'thread_id': session_id}
         }
-        conversation_state = self.conversation_memory.get(
-            self.config
-        )
-        self.conversation_history = build_conversation_history(
-            customer_query, conversation_state
-        )
-
 
     def generate_response_stream(self):
         """Generate streaming response for the customer query."""
@@ -35,13 +28,25 @@ class ChatbotService(GeneralInfoMixin, JewelryConsultationMixin):
         yield f"data: {json.dumps({'session_id': self.session_id})}\n\n"
 
         try:
+            conversation_state = self.conversation_memory.get(
+            self.config
+            )
+            conversation_history = build_conversation_history(
+                self.customer_query, conversation_state
+            )
+        
+            optimized_query = HANDLERS_MAPPER['create_optimized_query'](
+                self.llm,
+                conversation_history=conversation_history,
+            )
             # Build and execute the main chain
             chain = self._build_main_chain()
 
             system_message, human_message = chain.invoke({
-                "conversation_history": self.conversation_history,
+                # "conversation_history": self.conversation_history,
                 "conversation_memory": self.conversation_memory,
-                "customer_query": self.customer_query,
+                "optimized_query": optimized_query,
+                # "customer_query": self.customer_query,
             })
 
             # Stream the response
@@ -61,32 +66,16 @@ class ChatbotService(GeneralInfoMixin, JewelryConsultationMixin):
         """Build the main processing chain."""
         return (
             RunnablePassthrough.assign(
-                optimized_query_for_intent=RunnableLambda(
-                    lambda inputs: HANDLERS_MAPPER['create_optimized_query_for_intent'](
-                        self.llm,
-                        customer_query=inputs["customer_query"],
-                    )
-                )
-            )
-            | RunnablePassthrough.assign(
                 customer_intent=RunnableLambda(
                     lambda inputs: HANDLERS_MAPPER['extract_customer_intent'](
                         self.llm,
-                        optimized_query=inputs["optimized_query_for_intent"]
-                    )
-                )
-            )
-            | RunnablePassthrough.assign(
-                optimized_query_for_search=RunnableLambda(
-                    lambda inputs: HANDLERS_MAPPER['create_optimized_query_for_search'](
-                        self.llm,
-                        conversation_history=inputs["conversation_history"],
+                        optimized_query=inputs["optimized_query"]
                     )
                 )
             )
             | RunnablePassthrough.assign(
                 context=lambda x: self._retrieve_relevant_content(
-                    x["optimized_query_for_search"],
+                    x["optimized_query"],
                 )
             )
             | RunnableBranch(

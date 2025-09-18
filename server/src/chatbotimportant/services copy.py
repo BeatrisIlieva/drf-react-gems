@@ -171,7 +171,7 @@ from src.chatbot.adapters import LLMAdapter, MemoryAdapter, VectorStoreAdapter
 from src.chatbot.handlers import build_conversation_history
 from src.chatbot.models import ProductPreferences
 from src.chatbot.prompts.preferences_builder import HUMAN_MESSAGE_CUSTOMER_PREFERENCES_BUILDER, SYSTEM_MESSAGE_CUSTOMER_PREFERENCES_BUILDER
-from src.chatbot.prompts.query_optimizer import HUMAN_MESSAGE_QUERY_OPTIMIZER, SYSTEM_MESSAGE_QUERY_OPTIMIZER
+from src.chatbot.prompts.query_for_search_optimizer import HUMAN_MESSAGE_QUERY_OPTIMIZER, SYSTEM_MESSAGE_QUERY_OPTIMIZER
 from src.chatbot.prompts.query_responder import HUMAN_MESSAGE_RESPONDER, SYSTEM_MESSAGE_RESPONDER
 from src.chatbot.utils import generate_formatted_response, retrieve_relevant_content
 from langchain.schema.runnable import RunnablePassthrough, RunnableLambda

@@ -8,32 +8,29 @@ class PreferenceDiscoveryStrategy:
 
     DISCOVERY_SEQUENCE = {
         'purchase_type': {
-            'question': 'Will you be the lucky wearer, or are you selecting a gift to delight someone dear to you?',
+            'question': 'Formulate a question to determine whether the purchase is for oneself or as a gift. The question must be thoughtful and aligned with luxury jewelry standards. Bold the keywords so I can easily detect what you are asking.',
             'model': PurchaseType,
         },
         'gender': {
-            'question': {
-                'self': "To ensure I show you our most suitable collections, do you prefer pieces from our women's or men's lines?",
-                'gift': "So thoughtful of you! Are you shopping for a lady or a gentleman?"
-            },
+            'question': 'Formulate a question to determine the gender of the person who will be wearing the jewelry. The question must be thoughtful and aligned with luxury jewelry standards. Use the keywords lady or gentleman and bold them so I can easily detect what you are asking.',
             'model': WearerGender,
         },
         'category': {
-            'question': 'Now for the exciting part - what type of piece speaks to you? Perhaps elegant earrings, a stunning necklace, a meaningful ring, or something else from our collections?',
+            'question': 'Formulate a question to determine what jewelry category I am interested in. Guide me to select one of the jewelry categories that exist into the AVAILABLE PRODUCTS. The question must be thoughtful and aligned with luxury jewelry standards. Bold the jewelry categories so I can easily detect what you are asking. Only suggest characteristics that exist in products that completely match all aspects of my stated PREFERENCES, not from products that only partially match. Do not invite me to explore options that do not exist.',
             'model': CategoryType,
         },
         'metal_type': {
-            'question': 'Our pieces come in precious metals that each have their own character. Do you have a preference for the cool elegance of platinum, the warmth of yellow gold, or the romantic glow of rose gold?',
+            'question': 'Formulate a question to determine what metal type I am interested in. Guide me to select one of the metal types that exist into the AVAILABLE PRODUCTS. The question must be thoughtful and aligned with luxury jewelry standards. Bold metal types so I can easily detect what you are asking. Only suggest characteristics that exist in products that completely match all aspects of my stated PREFERENCES, not from products that only partially match. Do not invite me to explore options that do not exist.',
             'model': MetalType,
         },
         'stone_type': {
-            'question': 'Are you drawn to any particular gemstone? We have exquisite diamonds, vibrant rubies and emeralds, or the serene beauty of pink, blue or yellow sapphires and aquamarines.',
+            'question': 'Formulate a question to determine what stone type I am interested in. Guide me to select one of the stone types that exist into the AVAILABLE PRODUCTS. The question must be thoughtful and aligned with luxury jewelry standards. Bold the stone types so I can easily detect what you are asking. Only suggest characteristics that exist in products that completely match all aspects of my stated PREFERENCES, not from products that only partially match. Do not invite me to explore options that do not exist.',
             'model': StoneType,
         },
-        'budget_range': {
-            'question': 'To ensure I present pieces that align with your vision, are you thinking of this as a significant investment piece, or would you prefer to explore a specific range?',
-            'model': BudgetRange,
-        },
+        # 'budget_range': {
+        #     'question': 'Formulate a question to determine what price range I feel comfortable with.',
+        #     'model': BudgetRange,
+        # },
     }
 
     @classmethod
@@ -48,9 +45,9 @@ class PreferenceDiscoveryStrategy:
             if customer_preference:
                 continue
 
-            if key == 'gender':
-                variant = 'self' if preferences['purchase_type'] == 'self_purchase' else 'gift'
+            # if key == 'gender':
+            #     variant = 'self' if preferences['purchase_type'] == 'self_purchase' else 'gift'
                 
-                return value['question'][variant]
+            #     return value['question'][variant]
 
             return value['question']

@@ -20,7 +20,7 @@ You work for 'DRF React Gems' as a Conversation Analyst. You have experience in 
 </role>
 
 <goal>
-The goal is to identify what the customer intent is by analyzing their STATEMENT. 
+The goal is to identify what the customer intent is by analyzing the CONVERSATION HISTORY.
 </goal>
 
 <next>
@@ -31,6 +31,6 @@ The goal is to identify what the customer intent is by analyzing their STATEMENT
 
 HUMAN_MESSAGE_INTENT_DETERMINER  = (
 """ 
-STATEMENT:\n{optimized_query}
+BASED ON THE FOLLOWING CONVERSATION_HISTORY:\n{conversation_history}
 """
 )
