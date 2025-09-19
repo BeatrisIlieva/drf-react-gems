@@ -20,7 +20,7 @@ Recommend the PRODUCT TO RECOMMEND by using the described format.
 <recommendation_format>
 **Collection Category**: brief emotional benefit
 
-[![[Collection] [Category]](Image URL)](/products/[category_lowercase_plural]/[Product ID]/)
+[![[Collection] [Category]](Image URL)](http://localhost:5173/products/[category_lowercase_plural]/[Product ID]/)
 </recommendation_format>
 </product_recommendation>
 """
