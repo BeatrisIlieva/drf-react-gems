@@ -16,8 +16,7 @@ class GeneralInfoMixin:
             lambda inputs: HANDLERS_MAPPER[inputs['customer_intent']](
                 self.llm,
                 context=inputs["context"],
-                customer_query=inputs["optimized_query_for_search"],
-                conversation_memory=inputs["conversation_memory"]
+                customer_query=inputs["customer_query"],
             )
         )
 
@@ -87,9 +86,10 @@ class JewelryConsultationMixin:
             lambda inputs: HANDLERS_MAPPER['recommend_product'](
                 self.llm,
                 product_to_recommend=JewelryConsultationMixin.PRODUCT_TO_RECOMMEND,
-                customer_query=inputs["optimized_query_for_search"],
+                customer_query=inputs["customer_query"],
+                # customer_query=inputs["optimized_query_for_search"],
                 **self._extract_preferences(inputs),
-                conversation_memory=inputs["conversation_memory"]
+                conversation_history=inputs["conversation_history"]
             )
         )
 
@@ -107,10 +107,11 @@ class JewelryConsultationMixin:
                 lambda inputs: HANDLERS_MAPPER['discover_customer_preferences'](
                     self.llm,
                     context=inputs["context"],
-                    customer_query=inputs["optimized_query_for_search"],
+                    customer_query=inputs["customer_query"],
+                    # customer_query=inputs["optimized_query_for_search"],
                     next_discovery_question=inputs['next_discovery_question'],
                     **self._extract_safe_preferences(inputs),
-                    conversation_memory=inputs["conversation_memory"]
+                    conversation_history=inputs["conversation_history"]
                 )
             )
         )
@@ -121,10 +122,11 @@ class JewelryConsultationMixin:
             lambda inputs: HANDLERS_MAPPER['navigate_towards_available_options'](
                 self.llm,
                 context=inputs["context"],
-                customer_query=inputs["optimized_query_for_search"],
+                customer_query=inputs["customer_query"],
+                # customer_query=inputs["optimized_query_for_search"],
                 mismatch_reason=inputs['product_match_status'],
                 **self._extract_safe_preferences(inputs),
-                conversation_memory=inputs["conversation_memory"]
+                conversation_history=inputs["conversation_history"]
             )
         )
 
@@ -141,7 +143,7 @@ class JewelryConsultationMixin:
             key: inputs.get(key, {}).get(key, "")
             for key in PreferenceDiscoveryStrategy.DISCOVERY_SEQUENCE.keys()
         }
-        
+
     def _extract_individual_products(self, context):
         """Extract individual products from context using regex."""
         # Find all products matching the pattern
@@ -173,7 +175,7 @@ class JewelryConsultationMixin:
 
                 # If this product matches, return success immediately
                 if result and not result.startswith('NOT_FOUND'):
-                    JewelryConsultationMixin.PRODUCT_TO_RECOMMEND = i
+                    JewelryConsultationMixin.PRODUCT_TO_RECOMMEND = product
                     return f"FOUND: Match found in product {i}"
 
                 # If we get a specific reason why this product doesn't match,

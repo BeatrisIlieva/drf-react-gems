@@ -1,6 +1,6 @@
 from typing import Tuple
 
-from src.chatbot.models import PurchaseType, WearerGender, CategoryType, MetalType, StoneType, BudgetRange
+from src.chatbot.models import PurchaseType, WearerGender, CategoryType, MetalType, StoneType
 
 
 class PreferenceDiscoveryStrategy:
@@ -26,11 +26,7 @@ class PreferenceDiscoveryStrategy:
         'stone_type': {
             'question': 'Formulate a question to determine what stone type I am interested in. Guide me to select one of the stone types that exist into the AVAILABLE PRODUCTS. The question must be thoughtful and aligned with luxury jewelry standards. Bold the stone types so I can easily detect what you are asking. Only suggest characteristics that exist in products that completely match all aspects of my stated PREFERENCES, not from products that only partially match. Do not invite me to explore options that do not exist.',
             'model': StoneType,
-        },
-        # 'budget_range': {
-        #     'question': 'Formulate a question to determine what price range I feel comfortable with.',
-        #     'model': BudgetRange,
-        # },
+        }
     }
 
     @classmethod
@@ -44,10 +40,5 @@ class PreferenceDiscoveryStrategy:
 
             if customer_preference:
                 continue
-
-            # if key == 'gender':
-            #     variant = 'self' if preferences['purchase_type'] == 'self_purchase' else 'gift'
-                
-            #     return value['question'][variant]
 
             return value['question']

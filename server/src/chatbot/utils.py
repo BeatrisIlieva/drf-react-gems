@@ -6,7 +6,7 @@ from langchain.prompts import SystemMessagePromptTemplate, HumanMessagePromptTem
 from langchain.output_parsers import PydanticOutputParser
 
 
-def build_conversation_history(customer_query, conversation_state, max_messages=20):
+def build_conversation_history(customer_query, conversation_state, max_messages=30):
     """
     Build conversation history with the last max_messages customer-AI message pairs.
     """
