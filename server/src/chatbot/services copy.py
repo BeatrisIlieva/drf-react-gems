@@ -7,17 +7,18 @@ from src.chatbot.models import CustomerIntentEnum
 from src.chatbot.utils import build_conversation_history
 from langchain.schema.runnable import RunnablePassthrough, RunnableLambda, RunnableBranch
 
+from langchain_core.messages import AIMessage
+
 
 class ChatbotService(GeneralInfoMixin, JewelryConsultationMixin):
     """Core service for generating chatbot responses."""
 
-    def __init__(self, session_id, vector_store, memory, app, llm, streaming_llm, customer_query):
+    def __init__(self, session_id, vector_store, memory, app, llm, customer_query):
         self.session_id = session_id
         self.vector_store = vector_store
         self.conversation_memory = memory
         self.app = app
         self.llm = llm
-        self.streaming_llm = streaming_llm,
         self.customer_query = customer_query
         self.config = {
             'configurable': {'thread_id': session_id}
@@ -28,14 +29,14 @@ class ChatbotService(GeneralInfoMixin, JewelryConsultationMixin):
         self.conversation_history = build_conversation_history(
             customer_query, conversation_state
         )
-
+        
     def generate_response_stream(self):
         """Generate streaming response for the customer query."""
         # Yield session_id first
         yield f"data: {json.dumps({'session_id': self.session_id})}\n\n"
 
         try:
-            # Build and execute the main chain
+            # Build and execute the main chain (this remains synchronous and non-streamed)
             chain = self._build_main_chain()
 
             system_message, human_message = chain.invoke({
@@ -43,18 +44,55 @@ class ChatbotService(GeneralInfoMixin, JewelryConsultationMixin):
                 "customer_query": self.customer_query,
             })
 
-            # Stream the response
-            for event in self.app.stream(
-                {"messages": [system_message, human_message]},
-                self.config,
-                stream_mode="updates"
-            ):
-                ai_response = event['model']['messages'].content
-                for chunk in ai_response:
-                    yield f"data: {json.dumps({'chunk': chunk})}\n\n"
+            # Load current state from memory
+            state = self.conversation_memory.get(self.config) or {"messages": []}
+
+            # Append the new messages to the history
+            new_messages = [system_message, human_message]
+            updated_messages = state["messages"] + new_messages
+
+            # Stream the LLM response incrementally
+            full_response = ""
+            for chunk in self.llm.stream(updated_messages):
+                # Assuming the chunk is an AIMessageChunk or similar; extract content
+                chunk_content = chunk.content if hasattr(chunk, 'content') else str(chunk)
+                yield f"data: {json.dumps({'chunk': chunk_content})}\n\n"
+                full_response += chunk_content
+
+            # After streaming completes, update memory with the full response
+            ai_message = AIMessage(content=full_response)
+            self.conversation_memory.put(self.config, {"messages": updated_messages + [ai_message]})
 
         except Exception as e:
             yield f"data: {json.dumps({'error': 'Something went wrong. Please try again.'})}\n\n"
+
+
+    # def generate_response_stream(self):
+    #     """Generate streaming response for the customer query."""
+    #     # Yield session_id first
+    #     yield f"data: {json.dumps({'session_id': self.session_id})}\n\n"
+
+    #     try:
+    #         # Build and execute the main chain
+    #         chain = self._build_main_chain()
+
+    #         system_message, human_message = chain.invoke({
+    #             "conversation_history": self.conversation_history,
+    #             "customer_query": self.customer_query,
+    #         })
+
+    #         # Stream the response
+    #         for event in self.app.stream(
+    #             {"messages": [system_message, human_message]},
+    #             self.config,
+    #             stream_mode="updates"
+    #         ):
+    #             ai_response = event['model']['messages'].content
+    #             for chunk in ai_response:
+    #                 yield f"data: {json.dumps({'chunk': chunk})}\n\n"
+
+    #     except Exception as e:
+    #         yield f"data: {json.dumps({'error': 'Something went wrong. Please try again.'})}\n\n"
 
     def _build_main_chain(self):
         """Build the main processing chain."""
@@ -109,3 +147,5 @@ class ChatbotService(GeneralInfoMixin, JewelryConsultationMixin):
         )
 
         return context.strip()
+
+

@@ -6,7 +6,6 @@ from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, MessagesState, StateGraph
 from langchain_openai import OpenAIEmbeddings
-from langchain_core.messages import AIMessage,  AIMessageChunk
 
 from src.chatbot.config import DIMENSIONS, EMBEDDING_MODEL, LLM_MODEL, MAX_TOKENS, TEMPERATURE, TOP_P, FREQUENCY_PENALTY, PRESENCE_PENALTY
 
@@ -18,21 +17,16 @@ class LLMAdapter:
         if cls._instance is None:
             cls._instance = super().__new__(cls)
 
-            cls._instance.llm = cls._initialize_llm()
-            cls._instance.streaming_llm = cls._initialize_streaming_llm()
+            cls._instance.llm = cls._initialize()
 
         return cls._instance
 
     @classmethod
     def get_llm(cls):
         return cls().llm
-    
-    @classmethod
-    def get_streaming_llm(cls):
-        return cls().streaming_llm
 
     @classmethod
-    def _initialize_llm(cls):
+    def _initialize(cls):
         return ChatOpenAI(
             model=LLM_MODEL,
             max_tokens=MAX_TOKENS,
@@ -40,18 +34,6 @@ class LLMAdapter:
             top_p=TOP_P,
             frequency_penalty=FREQUENCY_PENALTY,
             presence_penalty=PRESENCE_PENALTY,
-        )
-
-    @classmethod
-    def _initialize_streaming_llm(cls):
-        return ChatOpenAI(
-            model=LLM_MODEL,
-            max_tokens=MAX_TOKENS,
-            temperature=TEMPERATURE,
-            top_p=TOP_P,
-            frequency_penalty=FREQUENCY_PENALTY,
-            presence_penalty=PRESENCE_PENALTY,
-            streaming=True,
         )
 
 
@@ -90,19 +72,6 @@ class MemoryAdapter:
         response = llm.invoke(state["messages"])
 
         return {"messages": response}
-
-    # @classmethod
-    # def _call_model(cls, state: MessagesState):
-    #     """Stream response from the LLM for the given state."""
-    #     llm = LLMAdapter.get_llm()
-    #     full_response = ""
-    #     for chunk in llm.stream(state["messages"]):
-    #         chunk_content = chunk.content if hasattr(
-    #             chunk, 'content') else str(chunk)
-    #         yield {"messages": AIMessageChunk(content=chunk_content)}
-    #         full_response += chunk_content
-    #     # Ensure the final message is a complete AIMessage
-    #     yield {"messages": {"role": "assistant", "content": full_response}}
 
 
 class VectorStoreAdapter:

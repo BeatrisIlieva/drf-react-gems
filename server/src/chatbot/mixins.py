@@ -14,7 +14,7 @@ class GeneralInfoMixin:
         """Build chain for general information responses."""
         return RunnableLambda(
             lambda inputs: HANDLERS_MAPPER[inputs['customer_intent']](
-                self.llm,
+                self.streaming_llm,
                 context=inputs["context"],
                 customer_query=inputs["customer_query"],
             )
@@ -84,10 +84,9 @@ class JewelryConsultationMixin:
         """Build chain for product recommendations."""
         return RunnableLambda(
             lambda inputs: HANDLERS_MAPPER['recommend_product'](
-                self.llm,
+                self.streaming_llm,
                 product_to_recommend=JewelryConsultationMixin.PRODUCT_TO_RECOMMEND,
                 customer_query=inputs["customer_query"],
-                # customer_query=inputs["optimized_query_for_search"],
                 **self._extract_preferences(inputs),
                 conversation_history=inputs["conversation_history"]
             )
@@ -105,10 +104,9 @@ class JewelryConsultationMixin:
             )
             | RunnableLambda(
                 lambda inputs: HANDLERS_MAPPER['discover_customer_preferences'](
-                    self.llm,
+                    self.streaming_llm,
                     context=inputs["context"],
                     customer_query=inputs["customer_query"],
-                    # customer_query=inputs["optimized_query_for_search"],
                     next_discovery_question=inputs['next_discovery_question'],
                     **self._extract_safe_preferences(inputs),
                     conversation_history=inputs["conversation_history"]
@@ -120,10 +118,9 @@ class JewelryConsultationMixin:
         """Build chain for navigating available options."""
         return RunnableLambda(
             lambda inputs: HANDLERS_MAPPER['navigate_towards_available_options'](
-                self.llm,
+                self.streaming_llm,
                 context=inputs["context"],
                 customer_query=inputs["customer_query"],
-                # customer_query=inputs["optimized_query_for_search"],
                 mismatch_reason=inputs['product_match_status'],
                 **self._extract_safe_preferences(inputs),
                 conversation_history=inputs["conversation_history"]

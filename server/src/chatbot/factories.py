@@ -13,5 +13,6 @@ class ChatbotServiceFactory:
             memory=MemoryAdapter.get_memory(),
             app=MemoryAdapter.get_app(),
             llm=LLMAdapter.get_llm(),
+            streaming_llm=LLMAdapter.get_streaming_llm(),
             customer_query=customer_query,
         )
