@@ -29,7 +29,6 @@ First, extract these specific product characteristics from the PREFERENCES:
    - Red ↔ Ruby  
    - White ↔ Diamond
    - Blue ↔ Sapphire (or Aquamarine if specified)
-   - Yellow ↔ Yellow Sapphire
    - Pink ↔ Pink Sapphire
 5. Partial matches DO NOT count
 <important>

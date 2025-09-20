@@ -67,7 +67,6 @@ class MetalType(BaseModel):
 class StoneTypeEnum(str, Enum):
     PINK_SAPPHIRE = 'Pink Sapphire'
     BLUE_SAPPHIRE = 'Blue Sapphire'
-    YELLOW_SAPPHIRE = 'Yellow Sapphire'
     AQUAMARINE = 'Aquamarine'
     EMERALD = 'Emerald'
     RUBY = 'Ruby'
