@@ -144,7 +144,7 @@ class JewelryConsultationMixin:
     def _extract_individual_products(self, context):
         """Extract individual products from context using regex."""
         # Find all products matching the pattern
-        return re.findall(r"Collection:.*?stars;", context, re.DOTALL)
+        return re.findall(r"Stone:.*?stars;", context, re.DOTALL)
 
     def _check_products_individually(self, inputs):
         """Check each product individually until a match is found."""

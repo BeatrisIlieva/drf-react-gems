@@ -91,6 +91,3 @@ def generate_formatted_response(
     }
 
     return response_format_mapper[response_format]()
-
-
-

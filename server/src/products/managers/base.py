@@ -74,7 +74,6 @@ class BaseProductManager(models.Manager):
                 'second_image',
                 'third_image',
                 'fourth_image',
-                'description',
                 'color__name',
                 'stone__name',
                 'metal__name',

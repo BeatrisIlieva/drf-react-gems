@@ -60,18 +60,10 @@ class ChatbotService(GeneralInfoMixin, JewelryConsultationMixin):
         """Build the main processing chain."""
         return (
             RunnablePassthrough.assign(
-                optimized_query_for_intent=RunnableLambda(
-                    lambda inputs: HANDLERS_MAPPER['create_optimized_query_for_intent'](
-                        self.llm,
-                        conversation_history=inputs["conversation_history"],
-                    )
-                )
-            )
-            | RunnablePassthrough.assign(
                 customer_intent=RunnableLambda(
                     lambda inputs: HANDLERS_MAPPER['extract_customer_intent'](
                         self.llm,
-                        optimized_query=inputs["optimized_query_for_intent"]
+                        conversation_history=inputs["conversation_history"],
                     )
                 )
             )

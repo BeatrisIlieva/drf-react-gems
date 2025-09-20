@@ -1,7 +1,6 @@
 from src.chatbot.models import CustomerIntent, CustomerIntentEnum
 from src.chatbot.utils import generate_formatted_response
 
-from src.chatbot.prompts.query_for_intent_optimizer import HUMAN_MESSAGE_QUERY_FOR_INTENT_OPTIMIZER, SYSTEM_MESSAGE_QUERY_FOR_INTENT_OPTIMIZER
 from src.chatbot.prompts.query_for_search_optimizer import HUMAN_MESSAGE_QUERY_FOR_SEARCH_OPTIMIZER, SYSTEM_MESSAGE_QUERY_FOR_SEARCH_OPTIMIZER
 from src.chatbot.prompts.customer_intent_determiner import HUMAN_MESSAGE_INTENT_DETERMINER, SYSTEM_MESSAGE_INTENT_DETERMINER
 from src.chatbot.prompts.general.company_information_handler import HUMAN_MESSAGE_COMPANY_INFORMATION_HANDLER, SYSTEM_MESSAGE_COMPANY_INFORMATION_HANDLER
@@ -16,14 +15,6 @@ from src.chatbot.prompts.jewelry_consultation.discoverer import HUMAN_MESSAGE_DI
 
 
 HANDLERS_MAPPER = {
-    'create_optimized_query_for_intent': lambda llm, **kwargs: generate_formatted_response(
-        llm,
-        SYSTEM_MESSAGE_QUERY_FOR_INTENT_OPTIMIZER,
-        HUMAN_MESSAGE_QUERY_FOR_INTENT_OPTIMIZER,
-        'extract_ai_response_content',
-        **kwargs
-    ),
-
     'create_optimized_query_for_search': lambda llm, **kwargs: generate_formatted_response(
         llm,
         SYSTEM_MESSAGE_QUERY_FOR_SEARCH_OPTIMIZER,

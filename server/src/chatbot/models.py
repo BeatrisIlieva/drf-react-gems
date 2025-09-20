@@ -2,6 +2,9 @@ from enum import Enum
 
 from pydantic import BaseModel, Field
 
+from django.db import models
+from django.db.models import JSONField
+
 
 class CustomerIntentEnum(str, Enum):
     SIZING_HELP = 'general_sizing_help_about_measurement_not_related_to_products_availability'
@@ -83,7 +86,7 @@ class StoneTypeEnum(str, Enum):
     AQUAMARINE = 'Aquamarine'
     EMERALD = 'Emerald'
     RUBY = 'Ruby'
-    WHITE_DIAMOND = 'White Diamond'
+    WHITE_DIAMOND = 'Diamond'
 
 
 class StoneType(BaseModel):
@@ -91,4 +94,3 @@ class StoneType(BaseModel):
         default='',
         description='Stone type the customer has shown interest in'
     )
-

@@ -13,14 +13,14 @@ Recommend the PRODUCT TO RECOMMEND by using the described format.
 
 <product_recommendation>
 1. Include its image url and link to the product page using Markdown format for display in the chat. 
-2. Extract the necessary details (Average Rating, Target Gender, Description, Sizes, Image URL, Product ID, Category, Metal, Stone, Collection) directly from the PRODUCT TO RECOMMEND.
+2. Extract the necessary details (Target Gender, Sizes, Image URL, Product ID, Category, Metal, Stone) directly from the PRODUCT TO RECOMMEND.
 3. Use the Image URL as the display image. 
 4. Do not include anything else into your response except the content into the recommendation_format tag
 
 <recommendation_format>
-**Collection Category**: brief emotional benefit
+**Product Category**: brief emotional benefit
 
-[![[Collection] [Category]](Image URL)](/products/[category_lowercase_plural]/[Product ID]/)
+[![[Product Category]](Image URL)](/products/[category_lowercase_plural]/[Product ID]/)
 </recommendation_format>
 </product_recommendation>
 """

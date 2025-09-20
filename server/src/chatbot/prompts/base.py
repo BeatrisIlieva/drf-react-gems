@@ -126,7 +126,7 @@ DRF React Gems is a luxury jewelry house established in 1998, specializing in tr
 </company_overview>
 
 <product_categories>
-The jewelry catalog includes earrings, necklaces, pendants, rings, bracelets, and watches across multiple collections: Daisy, Sunflower, Forget Me Not, Gerbera, Berry, Lotus, Drop, Lily, Elegance, Classics, Midnight, and Ocean. Products feature various precious stones including white diamonds, blue aquamarine, green emeralds, red rubies, blue sapphires, pink sapphires, and yellow sapphires. Metal options include platinum, 18K rose gold, and 18K yellow gold. All jewelry categories except watches are exclusively designed for women, while watches include both women's collections (Elegance, Classics) and men's collections (Midnight, Ocean).
+The jewelry catalog includes earrings, necklaces, pendants, rings, bracelets, and watches.
 </product_categories>
 
 <sizing_specifications>
@@ -137,9 +137,10 @@ All jewelry categories offer three size options (Small, Medium, Large) with spec
 Products range from approximately $1,500 to over $22,000 depending on stone type, metal, and size. The company offers complimentary one-day shipping regardless of order day, 30-day returns with full refund to original payment method, and specific product care instructions using soft cloth cleaning and mild soap, avoiding abrasive cleaners or ultrasonic machines.
 </pricing_and_policies>
 
-<product_details>
-Each product includes specific carat weights for stones and diamonds, detailed descriptions of stone cuts (round brilliant, pear-shaped, marquise), customer ratings averaging 3.2 to 4.7 stars, target gender specifications, and high-resolution product images hosted on Cloudflare. Collections vary in design philosophy from floral-inspired pieces to geometric patterns and nature motifs.
-</product_details>
+<product_structure>
+Our vector database contains individual product entries with this exact structure:
+Stone: [type]; Metal: [type]; Category: [type]; Product ID: [number]; Image URL: [url]; Sizes: Size: Small - Price: $X.XX, Size: Medium - Price: $X.XX, Size: Large - Price: $X.XX; Target Gender: [F(Female, Woman, Girl)/M(Male, Man, Boy)];
+</product_structure>
 </pdf_summary>
 """
 )

@@ -62,7 +62,7 @@ INCLUDE INFORMATION ONLY ABOUT:
 4. Metal type: Metal type the customer has shown interest in through any means - direct requests, positive responses to assistant suggestions, questions about metal types, or any indication of preference for a specific metal type.
 - Choose only between the following metal types: ['rose gold', 'yellow gold', 'platinum']
 5. Stone type: Stone type the customer has shown interest in through any means - direct requests, positive responses to assistant suggestions, questions about gemstone types, or any indication of preference for a specific gemstone type. Keep in mind that if the customer expressed preference for green color, this should be matched with Emerald; for red color this should be matched to Ruby. 
-- Choose only between the following stone types: ['pink sapphire', 'blue sapphire', 'yellow sapphire', 'aquamarine', 'emerald', 'ruby', 'white diamond']
+- Choose only between the following stone types: ['pink sapphire', 'blue sapphire', 'yellow sapphire', 'aquamarine', 'emerald', 'ruby', 'diamond']
 DO NOT MAKE ASSUMPTIONS about Purchase-type, Gender, Category, Metal type, Stone type. Include these information only if the customer has EXPLICITLY mentioned them, asked for them or agreed on them.
 </critical>
 
