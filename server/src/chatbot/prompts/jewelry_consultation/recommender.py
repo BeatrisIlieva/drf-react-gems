@@ -18,7 +18,7 @@ Recommend the PRODUCT TO RECOMMEND by using the described format.
 4. Do not include anything else into your response except the content into the recommendation_format tag
 
 <recommendation_format>
-**Product Category**: brief emotional benefit
+**Brief emotional benefit**
 
 [![[Product Category]](Image URL)](/products/[category_lowercase_plural]/[Product ID]/)
 </recommendation_format>
