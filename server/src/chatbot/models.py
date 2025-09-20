@@ -2,9 +2,6 @@ from enum import Enum
 
 from pydantic import BaseModel, Field
 
-from django.db import models
-from django.db.models import JSONField
-
 
 class CustomerIntentEnum(str, Enum):
     SIZING_HELP = 'general_sizing_help_about_measurement_not_related_to_products_availability'
@@ -23,18 +20,6 @@ class CustomerIntent(BaseModel):
     primary_intent: CustomerIntentEnum = Field(
         default=CustomerIntentEnum.OFF_TOPIC,
         description='The primary intent the customer is expressing'
-    )
-
-
-class PurchaseTypeEnum(str, Enum):
-    SELF_PURCHASE = 'self_purchase'
-    GIFT_PURCHASE = 'gift_purchase'
-
-
-class PurchaseType(BaseModel):
-    purchase_type: PurchaseTypeEnum = Field(
-        default='',
-        description='Whether the jewelry is for the customer themselves or as a gift for someone else'
     )
 
 

@@ -151,7 +151,7 @@ class JewelryConsultationMixin:
         context = inputs["context"]
         preferences = {k: v for k, v in self._extract_safe_preferences(
             inputs
-        ).items() if k != 'purchase_type'}
+        ).items()}
 
         # Extract individual products
         individual_products = self._extract_individual_products(context)

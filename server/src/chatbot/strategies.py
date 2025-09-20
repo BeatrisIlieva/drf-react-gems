@@ -1,16 +1,12 @@
 from typing import Tuple
 
-from src.chatbot.models import PurchaseType, WearerGender, CategoryType, MetalType, StoneType
+from src.chatbot.models import WearerGender, CategoryType, MetalType, StoneType
 
 
 class PreferenceDiscoveryStrategy:
     """Strategic preference discovery for luxury online jewelry consultation."""
 
     DISCOVERY_SEQUENCE = {
-        'purchase_type': {
-            'question': 'Formulate a question to determine whether the purchase is for oneself or as a gift. The question must be thoughtful and aligned with luxury jewelry standards. Bold the keywords so I can easily detect what you are asking.',
-            'model': PurchaseType,
-        },
         'gender': {
             'question': 'Formulate a question to determine the gender of the person who will be wearing the jewelry. The question must be thoughtful and aligned with luxury jewelry standards. Use the keywords lady or gentleman and bold them so I can easily detect what you are asking.',
             'model': WearerGender,

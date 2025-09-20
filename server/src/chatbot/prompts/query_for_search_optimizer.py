@@ -53,21 +53,19 @@ The provided CONVERSATION HISTORY consists of chronologically arranged customer-
 <critical>
 Including information about purchase-type, gender, category, metal type, stone type into the QUESTION is critically important for the effective vector search. However, include them into the QUESTION only if the customer has explicitly mentioned them, asked for them or agreed on them.
 INCLUDE INFORMATION ONLY ABOUT:
-1. Purchase-type: Whether the jewelry is for the customer themselves or as a gift for someone else.
-- Choose only between: ['self-purchase', 'gift-purchase']
-2. Gender: Gender of the person who will wear the jewelry, determined from the CONVERSATION HISTORY such as pronouns, relationships, names, or direct statements.
+1. Gender: Gender of the person who will wear the jewelry, determined from the CONVERSATION HISTORY such as pronouns, relationships, names, or direct statements.
 - Choose only between: ['male', 'female']
-3. Category: Jewelry type the customer has shown interest in through any means - direct requests, positive responses to assistant suggestions, questions about jewelry type, or any indication of preference for a specific jewelry type.
+2. Category: Jewelry type the customer has shown interest in through any means - direct requests, positive responses to assistant suggestions, questions about jewelry type, or any indication of preference for a specific jewelry type.
 - Choose only between the following categories: ['earrings', 'necklaces', 'pendants', 'bracelets', 'watches', 'rings']
-4. Metal type: Metal type the customer has shown interest in through any means - direct requests, positive responses to assistant suggestions, questions about metal types, or any indication of preference for a specific metal type.
+3. Metal type: Metal type the customer has shown interest in through any means - direct requests, positive responses to assistant suggestions, questions about metal types, or any indication of preference for a specific metal type.
 - Choose only between the following metal types: ['rose gold', 'yellow gold', 'platinum']
-5. Stone type: Stone type the customer has shown interest in through any means - direct requests, positive responses to assistant suggestions, questions about gemstone types, or any indication of preference for a specific gemstone type. Keep in mind that if the customer expressed preference for green color, this should be matched with Emerald; for red color this should be matched to Ruby. 
+4. Stone type: Stone type the customer has shown interest in through any means - direct requests, positive responses to assistant suggestions, questions about gemstone types, or any indication of preference for a specific gemstone type. Keep in mind that if the customer expressed preference for green color, this should be matched with Emerald; for red color this should be matched to Ruby. 
 - Choose only between the following stone types: ['pink sapphire', 'blue sapphire', 'yellow sapphire', 'aquamarine', 'emerald', 'ruby', 'diamond']
 DO NOT MAKE ASSUMPTIONS about Purchase-type, Gender, Category, Metal type, Stone type. Include these information only if the customer has EXPLICITLY mentioned them, asked for them or agreed on them.
 </critical>
 
 <note>
-The customer may have already been recommended a product. They might not have liked it, or they may have liked it but are now asking for another one. You must formulate the QUESTION so that the vector search returns information about only one product at a time — the one the customer is currently seeking. The QUESTION must specify only one purchase type, one gender, one category, one metal type, and one stone type. You need to estimate which values are the most relevant at this point.
+The customer may have already been recommended a product. They might not have liked it, or they may have liked it but are now asking for another one. You must formulate the QUESTION so that the vector search returns information about only one product at a time — the one the customer is currently seeking. The QUESTION must specify only one gender, one category, one metal type, and one stone type. You need to estimate which values are the most relevant at this point.
 </note>
 </task>
 

@@ -31,7 +31,6 @@ HUMAN_MESSAGE_AVAILABLE_OPTIONS_NAVIGATOR = (
 BASED ON:\n
 1. CONVERSATION MEMORY:\n{conversation_history}\n\n
 2. MY PREFERENCES:
-- I am buying the jewelry as a: {purchase_type}
 - The gender of the person who will be wearing the jewelry is: {gender}
 - The product category I am interested is: {category}
 - The metal type I am interested is: {metal_type}
