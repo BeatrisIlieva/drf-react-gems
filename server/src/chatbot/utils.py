@@ -5,6 +5,8 @@ from langchain.prompts import ChatPromptTemplate
 from langchain.prompts import SystemMessagePromptTemplate, HumanMessagePromptTemplate
 from langchain.output_parsers import PydanticOutputParser
 
+from src.chatbot.config import TOP_N_RESULTS
+
 
 def build_conversation_history(customer_query, conversation_state, max_messages=30):
     """
@@ -40,6 +42,18 @@ def build_conversation_history(customer_query, conversation_state, max_messages=
         f'{num_pairs + 1}. customer: {customer_query};')
 
     return '\n'.join(conversation_history)
+
+
+def retrieve_relevant_content(query, vector_store, k=TOP_N_RESULTS):
+    print('optimized_qury', query)
+    results = vector_store.similarity_search(
+        query, k=k
+    )
+    context = '\n'.join(
+        result.page_content for result in results
+    )
+
+    return context.strip()
 
 
 def generate_formatted_response(

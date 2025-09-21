@@ -1,6 +1,5 @@
 import json
 
-from src.chatbot.config import TOP_N_RESULTS
 from src.chatbot.handlers import HANDLERS_MAPPER
 from src.chatbot.mixins import JewelryConsultationMixin, GeneralInfoMixin
 from src.chatbot.models import CustomerIntentEnum
@@ -67,19 +66,6 @@ class ChatbotService(GeneralInfoMixin, JewelryConsultationMixin):
                     )
                 )
             )
-            | RunnablePassthrough.assign(
-                optimized_query_for_search=RunnableLambda(
-                    lambda inputs: HANDLERS_MAPPER['create_optimized_query_for_search'](
-                        self.llm,
-                        conversation_history=inputs["conversation_history"],
-                    )
-                )
-            )
-            | RunnablePassthrough.assign(
-                context=lambda x: self._retrieve_relevant_content(
-                    x["optimized_query_for_search"],
-                )
-            )
             | RunnableBranch(
                 (
                     # Check if customer intent is product-related
@@ -91,13 +77,4 @@ class ChatbotService(GeneralInfoMixin, JewelryConsultationMixin):
             )
         )
 
-    def _retrieve_relevant_content(self, query, k=TOP_N_RESULTS):
-        print('optimized_qury', query)
-        results = self.vector_store.similarity_search(
-            query, k=k
-        )
-        context = '\n'.join(
-            result.page_content for result in results
-        )
 
-        return context.strip()

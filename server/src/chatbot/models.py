@@ -9,9 +9,9 @@ class CustomerIntentEnum(str, Enum):
     CARE_INSTRUCTIONS = 'care_instructions'
     RETURN_POLICY = 'return_policy'
     SHIPPING_INFORMATION = 'shipping_information'
-    ORDER_PLACING = 'placing_an_order_or_making_a_purchase_or_processing_transaction'
     BRAND_INFORMATION = 'brand_information'
     CONCERN_OR_HESITATION = 'concern_or_hesitation'
+    PROCESSING_TRANSACTION = 'processing_transaction_or_completing_an_order'
     PRODUCTS_INFO = 'wants_product_information_or_products_availability_information_or_shares_preferences'
     OFF_TOPIC = 'off_topic'
 
@@ -26,12 +26,13 @@ class CustomerIntent(BaseModel):
 class WearerGenderEnum(str, Enum):
     FEMALE = 'female'
     MALE = 'male'
+    UNKNOWN = 'unknown'
 
 
 class WearerGender(BaseModel):
     gender: WearerGenderEnum = Field(
-        default='',
-        description='Gender of the person who will wear the jewelry, determined by pronouns, relationships, names, or direct statements'
+        default=WearerGenderEnum.UNKNOWN,
+        description='Gender of the intended wearer of the jewelry, not necessarily the purchaser. Determined from pronouns, relationships, names, or direct statements in the conversation.'
     )
 
 
@@ -42,12 +43,13 @@ class CategoryTypeEnum(str, Enum):
     BRACELETS = 'bracelets'
     WATCHES = 'watches'
     RINGS = 'rings'
+    UNKNOWN = 'unknown'
 
 
 class CategoryType(BaseModel):
     category: CategoryTypeEnum = Field(
-        default='',
-        description='Jewelry type the customer has shown interest in'
+        default=CategoryTypeEnum.UNKNOWN,
+        description='The jewelry type the customer is currently focused on. If the customer shifts from one type to another, update to reflect their current interest. IMPORTANT: Reset to unknown if customer starts a new search for a different person or separate product request.'
     )
 
 
@@ -55,12 +57,13 @@ class MetalTypeEnum(str, Enum):
     ROSE_GOLD = 'Rose Gold'
     YELLOW_GOLD = 'Yellow Gold'
     PLATINUM = 'Platinum'
+    UNKNOWN = 'unknown'
 
 
 class MetalType(BaseModel):
     metal_type: MetalTypeEnum = Field(
-        default='',
-        description='Metal type the customer has shown interest in'
+        default=MetalTypeEnum.UNKNOWN,
+        description='The metal type the customer is currently focused on. If the customer shifts from one type to another, update to reflect their current interest. IMPORTANT: Reset to unknown if customer starts a new search for a different person or separate product request.'
     )
 
 
@@ -71,10 +74,11 @@ class StoneTypeEnum(str, Enum):
     EMERALD = 'Emerald'
     RUBY = 'Ruby'
     WHITE_DIAMOND = 'Diamond'
+    UNKNOWN = 'unknown'
 
 
 class StoneType(BaseModel):
     stone_type: StoneTypeEnum = Field(
-        default='',
-        description='Stone type the customer has shown interest in'
+        default=StoneTypeEnum.UNKNOWN,
+        description='The stone type the customer is currently focused on. If the customer shifts from one type to another, update to reflect their current interest. IMPORTANT: Reset to unknown if customer starts a new search for a different person or separate product request.'
     )

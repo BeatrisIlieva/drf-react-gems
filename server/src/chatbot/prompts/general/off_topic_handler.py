@@ -25,6 +25,7 @@ You task is to handle customer off-topic query.
 HUMAN_MESSAGE_OFF_TOPIC_HANDLER= (
 """
 BASED ON:\n
+CONVERSATION MEMORY:\n{conversation_history}\n\n
 CONTEXT:\n{context}\n\n
 Respond to my STATEMENT:\n\n{customer_query}
 """
