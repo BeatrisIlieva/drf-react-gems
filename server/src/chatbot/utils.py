@@ -45,7 +45,6 @@ def build_conversation_history(customer_query, conversation_state, max_messages=
 
 
 def retrieve_relevant_content(query, vector_store, k=TOP_N_RESULTS):
-    print('optimized_qury', query)
     results = vector_store.similarity_search(
         query, k=k
     )
