@@ -2,7 +2,7 @@ import { icons } from './icons';
 
 import styles from './Icon.module.scss';
 
-export const Icon = ({ name, fontSize, isSubtle, callbackHandler = null }) => {
+export const Icon = ({ name, fontSize, isSubtle, callbackHandler = null, color = null }) => {
     return (
         <span
             onClick={callbackHandler}
@@ -10,6 +10,7 @@ export const Icon = ({ name, fontSize, isSubtle, callbackHandler = null }) => {
             style={{
                 fontSize: fontSize ? `${fontSize}em` : `${1.1}em`,
                 opacity: isSubtle ? 0.6 : 1,
+                color: color ? color : 'inherit'
             }}
         >
             {icons[name]}

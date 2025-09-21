@@ -5,7 +5,6 @@ export const ProductItemContext = createContext({
     secondImage: '',
     thirdImage: '',
     fourthImage: '',
-    description: '',
     averageRating: 0,
     reviews: [],
     productId: 0,

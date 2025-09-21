@@ -1,5 +1,43 @@
 @use '../../styles/variables' as vars;
 
+.time-separator {
+    background: vars.$black;
+    border-radius: 50%;
+    width: 0.2em;
+    display: flex;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: 1/1;
+}
+
+.thumbnail {
+    width: 2.15em;
+    display: flex;
+    position: absolute;
+    left: -2.5em;
+    bottom: 1em;
+}
+
+.open-modal {
+    background: vars.$black;
+    position: fixed;
+    bottom: 1em;
+    right: 1em;
+    padding: 0.75em 1em;
+    border-radius: 3em;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    .chat-with-a-consultant {
+        color: vars.$white;
+        text-transform: uppercase;
+    }
+}
+
 .chatbot {
     position: fixed;
     height: 482px;
@@ -13,13 +51,35 @@
     box-shadow: 0 0 0.8em 0 rgb(0, 0, 0, 0.6);
     font-size: 0.98em;
 
+    @media (max-width: 400px) {
+        width: 320px;
+    }
+
     & > div {
-        padding: 1.25em;
+        padding: 1em;
     }
 
     .header {
         background: vars.$black;
         color: vars.$white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9em;
+        padding-block: 0.75em;
+
+        & > span {
+            text-transform: uppercase;
+
+            &:nth-of-type(2) {
+                cursor: pointer;
+                padding: 0.25em;
+
+                &:hover {
+                    background: vars.$dark-grey;
+                }
+            }
+        }
     }
 
     .no-messages-yet {
@@ -36,7 +96,7 @@
 
         & p:last-of-type {
             margin-top: auto;
-            font-size: 0.75em;
+            font-size: 0.95em;
         }
 
         button {
@@ -45,6 +105,31 @@
     }
 
     .messages {
+        .time-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.25em;
+            align-self: center;
+            font-size: 0.85em;
+            opacity: 0.8;
+            margin-bottom: 1em;
+        }
+
+        .welcome-wrapper {
+            align-items: center;
+            font-size: 0.8em;
+            text-align: center;
+            position: relative;
+
+            .inner-wrapper {
+                padding-inline: 1.5em;
+
+                & > span:last-child {
+                    margin-left: 0.25em;
+                }
+            }
+        }
+
         flex-grow: 1;
         display: flex;
         flex-direction: column;
@@ -66,8 +151,11 @@
 
             .time-span {
                 opacity: 0.9;
-                font-size: 0.85em;
-
+                font-size: 0.75em;
+                display: flex;
+                align-items: center;
+                gap: 0.5em;
+                margin-top: 0.25em;
             }
 
             & > div {
@@ -85,14 +173,6 @@
                 position: relative;
                 margin-right: 2em;
 
-                .thumbnail {
-                    width: 2.15em;
-                    display: flex;
-                    position: absolute;
-                    left: -2.5em;
-                    bottom: 1em;
-                }
-
                 .message-content {
                     background: vars.$light-grey;
                     border-bottom-left-radius: 0;
@@ -104,6 +184,11 @@
                     background: vars.$black;
                     color: vars.$white;
                     border-bottom-right-radius: 0;
+                }
+
+                .time-span {
+                    align-self: flex-end;
+                    justify-self: flex-end;
                 }
             }
         }
@@ -124,13 +209,14 @@
             overflow-x: hidden;
             resize: vertical;
             overflow-y: auto;
-
+            font-size: 1em;
             padding-right: 3em;
+            vertical-align: middle;
         }
 
         .send-button {
             position: absolute;
-            top: 2.25em;
+            top: 2em;
             right: 2em;
             display: none;
             transition: opacity 0.3s ease-in-out;
@@ -150,5 +236,25 @@
         height: 0 !important;
         padding: 0 !important;
         margin-top: -1.75em !important;
+    }
+}
+
+.thinking-text {
+    display: inline-block;
+}
+
+.thinking-char {
+    display: inline-block;
+    animation: thinkingWave 2s ease-in-out infinite;
+    opacity: 0.3;
+}
+
+@keyframes thinkingWave {
+    0%,
+    100% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 1;
     }
 }

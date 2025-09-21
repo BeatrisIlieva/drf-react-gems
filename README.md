@@ -229,7 +229,7 @@ All admin groups and their associated users are created automatically by a manag
 
 ### Testing
 
--   **66 Unit & Integration tests with [74% coverage report](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)**
+-   **66 Unit & Integration tests with [70% coverage report](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)**
 
     (`coverage run manage.py test && coverage report`)
 
@@ -336,6 +336,12 @@ DB_PORT=5432                                       # OK for local
 CLOUD_NAME=your_cloud_name                         # REQUIRED: From your Cloudinary account
 CLOUD_API_KEY=your_api_key                         # REQUIRED: From your Cloudinary account
 CLOUD_API_SECRET=your_api_secret                   # REQUIRED: From your Cloudinary account
+
+OPENAI_API_KEY=your_open_ai_api_key
+LANGSMITH_API_KEY=your_langsmith_api_key
+
+PINECONE_API_KEY=your_pine_cone_api_key
+PINECONE_INDEX_NAME=your_pinecone_index_name
 
 # Redis (Celery)
 CELERY_BROKER_URL=redis://localhost:6379/0         # OK for local
