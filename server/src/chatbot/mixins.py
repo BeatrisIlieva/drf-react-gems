@@ -2,9 +2,9 @@ import re
 
 from langchain.schema.runnable import RunnablePassthrough, RunnableLambda, RunnableBranch
 
-from src.chatbot.handlers import HANDLERS_MAPPER
 from src.chatbot.strategies import PreferenceDiscoveryStrategy
 from src.chatbot.utils import retrieve_relevant_content
+from src.chatbot.handlers import HANDLERS_MAPPER
 
 
 class GeneralInfoMixin:

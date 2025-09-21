@@ -1,15 +1,18 @@
 # python manage.py setup_vectorstore
 import os
 import re
-from django.core.management.base import BaseCommand, CommandError
+
 from django.conf import settings
 from decouple import config
+from django.core.management.base import BaseCommand, CommandError
+
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.schema import Document
 from langchain_openai import OpenAIEmbeddings
 from langchain_pinecone import Pinecone
-from pinecone import Pinecone as PineconeClient
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+from pinecone import Pinecone as PineconeClient
 
 from src.chatbot.config import CHUNK_OVERLAP, CHUNK_SIZE, DIMENSIONS, EMBEDDING_MODEL
 

@@ -7,7 +7,16 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, MessagesState, StateGraph
 from langchain_openai import OpenAIEmbeddings
 
-from src.chatbot.config import DIMENSIONS, EMBEDDING_MODEL, LLM_MODEL, MAX_TOKENS, TEMPERATURE, TOP_P, FREQUENCY_PENALTY, PRESENCE_PENALTY
+from src.chatbot.config import (
+    DIMENSIONS,
+    EMBEDDING_MODEL,
+    LLM_MODEL,
+    MAX_TOKENS,
+    TEMPERATURE,
+    TOP_P,
+    FREQUENCY_PENALTY,
+    PRESENCE_PENALTY
+)
 
 
 class LLMAdapter:

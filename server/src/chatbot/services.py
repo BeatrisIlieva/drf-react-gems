@@ -1,10 +1,11 @@
 import json
 
-from src.chatbot.handlers import HANDLERS_MAPPER
+from langchain.schema.runnable import RunnablePassthrough, RunnableLambda, RunnableBranch
+
 from src.chatbot.mixins import JewelryConsultationMixin, GeneralInfoMixin
 from src.chatbot.models import CustomerIntentEnum
 from src.chatbot.utils import build_conversation_history
-from langchain.schema.runnable import RunnablePassthrough, RunnableLambda, RunnableBranch
+from src.chatbot.handlers import HANDLERS_MAPPER
 
 
 class ChatbotService(GeneralInfoMixin, JewelryConsultationMixin):
@@ -76,5 +77,3 @@ class ChatbotService(GeneralInfoMixin, JewelryConsultationMixin):
                 self._build_general_info_chain()
             )
         )
-
-
