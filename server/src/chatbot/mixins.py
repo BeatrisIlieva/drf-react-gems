@@ -188,7 +188,6 @@ class JewelryConsultationMixin:
 
         # Extract individual products
         individual_products = self._extract_individual_products(context)
-        print('preferences', preferences)
 
         if not individual_products:
             return "NOT_FOUND: No products found in context"
