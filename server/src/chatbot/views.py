@@ -12,7 +12,7 @@ from src.chatbot.serializers import ChatRequestSerializer
 from src.chatbot.constants import ERROR_RESPONSE_OBJECT
 
 
-class ChatBotAPIView(APIView):
+class ChatBotView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
