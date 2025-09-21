@@ -8,9 +8,8 @@ You task is to determine if a single product into the AVAILABLE PRODUCTS matches
 </task>
 
 <product_structure>
-Our vector database contains individual product entries with this exact structure:
-Collection: [name]; Stone: [type]; Metal: [type]; Category: [type]; Product ID: [number]; Image URL: [url]; Sizes: Size: Small - Price: $X.XX, Size: Medium - Price: $X.XX, Size: Large - Price: $X.XX; Description: [detailed description]; Target Gender: [F(Female, Woman, Girl)/M(Male,
-Man, Boy)]; Average Rating: [X.X]/5 stars;
+Our vector database contains individual product entries with this exact structure: Stone: [type]; Metal: [type]; Category: [type]; Product ID: [number]; Image URL: [url]; Sizes: Size: Small - Price: $X.XX, Size: Medium - Price: $X.XX, Size: Large - Price: $X.XX; Target Gender: [F(Female, Woman, Girl)/M(Male,
+Man, Boy)];
 </product_structure>
 
 <preferences_extraction>
@@ -30,7 +29,6 @@ First, extract these specific product characteristics from the PREFERENCES:
    - Red ↔ Ruby  
    - White ↔ Diamond
    - Blue ↔ Sapphire (or Aquamarine if specified)
-   - Yellow ↔ Yellow Sapphire
    - Pink ↔ Pink Sapphire
 5. Partial matches DO NOT count
 <important>

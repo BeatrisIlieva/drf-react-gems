@@ -13,7 +13,7 @@ NEXT
 HUMAN_MESSAGE_COMPANY_INFORMATION_HANDLER = (
 """
 BASED ON:\n
-CONVERSATION MEMORY:\n{conversation_memory}\n\n
+CONVERSATION MEMORY:\n{conversation_history}\n\n
 CONTEXT:\n{context}\n\n
 Respond to my STATEMENT:\n\n{customer_query}
 """

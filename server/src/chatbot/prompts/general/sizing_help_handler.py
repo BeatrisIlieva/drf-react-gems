@@ -18,7 +18,7 @@ Analyze MY PREFERENCES to find out if I have mentioned any category type.
 HUMAN_MESSAGE_COMPANY_SIZE_HELP_HANDLER = (
 """ 
 BASED ON:\n
-CONVERSATION MEMORY:\n{conversation_memory}\n\n
+CONVERSATION MEMORY:\n{conversation_history}\n\n
 CONTEXT:\n{context}\n\n
 Respond to my STATEMENT:\n\n{customer_query}
 """

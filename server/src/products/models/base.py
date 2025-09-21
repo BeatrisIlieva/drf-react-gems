@@ -56,11 +56,6 @@ class BaseProduct(models.Model):
         on_delete=models.CASCADE,
     )
 
-    description = models.TextField(
-        null=True,
-        blank=True,
-    )
-
     target_gender = models.CharField(
         max_length=1,
         choices=GenderChoices.choices,

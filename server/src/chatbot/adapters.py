@@ -1,7 +1,7 @@
-from pinecone import Pinecone as PineconeClient
-from langchain_pinecone import Pinecone
 import os
 
+from pinecone import Pinecone as PineconeClient
+from langchain_pinecone import Pinecone
 from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, MessagesState, StateGraph
@@ -17,7 +17,8 @@ class LLMAdapter:
         if cls._instance is None:
             cls._instance = super().__new__(cls)
 
-            cls._instance.llm = cls._initialize()
+            cls._instance.llm = cls._initialize_llm()
+            cls._instance.streaming_llm = cls._initialize_streaming_llm()
 
         return cls._instance
 
@@ -26,7 +27,11 @@ class LLMAdapter:
         return cls().llm
 
     @classmethod
-    def _initialize(cls):
+    def get_streaming_llm(cls):
+        return cls().streaming_llm
+
+    @classmethod
+    def _initialize_llm(cls):
         return ChatOpenAI(
             model=LLM_MODEL,
             max_tokens=MAX_TOKENS,
@@ -34,6 +39,18 @@ class LLMAdapter:
             top_p=TOP_P,
             frequency_penalty=FREQUENCY_PENALTY,
             presence_penalty=PRESENCE_PENALTY,
+        )
+
+    @classmethod
+    def _initialize_streaming_llm(cls):
+        return ChatOpenAI(
+            model=LLM_MODEL,
+            max_tokens=MAX_TOKENS,
+            temperature=TEMPERATURE,
+            top_p=TOP_P,
+            frequency_penalty=FREQUENCY_PENALTY,
+            presence_penalty=PRESENCE_PENALTY,
+            streaming=True,
         )
 
 

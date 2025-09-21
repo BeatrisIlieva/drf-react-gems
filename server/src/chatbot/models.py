@@ -1,5 +1,4 @@
 from enum import Enum
-from typing import Literal, Union
 
 from pydantic import BaseModel, Field
 
@@ -10,9 +9,9 @@ class CustomerIntentEnum(str, Enum):
     CARE_INSTRUCTIONS = 'care_instructions'
     RETURN_POLICY = 'return_policy'
     SHIPPING_INFORMATION = 'shipping_information'
-    ORDER_PLACING = 'placing_and_order_or_making_purchase'
     BRAND_INFORMATION = 'brand_information'
     CONCERN_OR_HESITATION = 'concern_or_hesitation'
+    PROCESSING_TRANSACTION = 'processing_transaction_or_completing_an_order'
     PRODUCTS_INFO = 'wants_product_information_or_products_availability_information_or_shares_preferences'
     OFF_TOPIC = 'off_topic'
 
@@ -24,43 +23,62 @@ class CustomerIntent(BaseModel):
     )
 
 
-class PurchaseType(BaseModel):
-    purchase_type: Union[Literal['self_purchase', 'gift_purchase'], str] = Field(
-        default='',
-        description='Whether the jewelry is for the customer themselves or as a gift for someone else. Do not make assumptions beyond what is explicitly mentioned into the STATEMENT.'
-    )
+class WearerGenderEnum(str, Enum):
+    FEMALE = 'female'
+    MALE = 'male'
+    UNKNOWN = 'unknown'
 
 
 class WearerGender(BaseModel):
-    gender: Union[Literal['male', 'female'], str] = Field(
-        default='',
-        description='Gender of the person who will wear the jewelry, determined by pronouns, relationships, names, or direct statements. Do not make assumptions beyond what is explicitly mentioned into the STATEMENT.'
+    gender: WearerGenderEnum = Field(
+        default=WearerGenderEnum.UNKNOWN,
+        description='Gender of the intended wearer of the jewelry, not necessarily the purchaser. Determined from pronouns, relationships, names, or direct statements in the conversation.'
     )
+
+
+class CategoryTypeEnum(str, Enum):
+    EARRINGS = 'earrings'
+    NECKLACES = 'necklaces'
+    PENDANTS = 'pendants'
+    BRACELETS = 'bracelets'
+    WATCHES = 'watches'
+    RINGS = 'rings'
+    UNKNOWN = 'unknown'
 
 
 class CategoryType(BaseModel):
-    category: Union[Literal['earrings', 'necklaces', 'pendants', 'bracelets', 'watches', 'rings'], str] = Field(
-        default='',
-        description='Jewelry type the customer has shown interest. Do not make assumptions beyond what is explicitly mentioned into the STATEMENT.'
+    category: CategoryTypeEnum = Field(
+        default=CategoryTypeEnum.UNKNOWN,
+        description='The jewelry type the customer is currently focused on. If the customer shifts from one type to another, update to reflect their current interest. IMPORTANT: Reset to unknown if customer starts a new search for a different person or separate product request.'
     )
+
+
+class MetalTypeEnum(str, Enum):
+    ROSE_GOLD = 'Rose Gold'
+    YELLOW_GOLD = 'Yellow Gold'
+    PLATINUM = 'Platinum'
+    UNKNOWN = 'unknown'
 
 
 class MetalType(BaseModel):
-    metal_type: Union[Literal['Rose Gold', 'Yellow Gold', 'Platinum'], str] = Field(
-        default='',
-        description='Metal type the customer has shown interest. Do not make assumptions beyond what is explicitly mentioned into the STATEMENT.'
+    metal_type: MetalTypeEnum = Field(
+        default=MetalTypeEnum.UNKNOWN,
+        description='The metal type the customer is currently focused on. If the customer shifts from one type to another, update to reflect their current interest. IMPORTANT: Reset to unknown if customer starts a new search for a different person or separate product request.'
     )
+
+
+class StoneTypeEnum(str, Enum):
+    PINK_SAPPHIRE = 'Pink Sapphire'
+    BLUE_SAPPHIRE = 'Blue Sapphire'
+    AQUAMARINE = 'Aquamarine'
+    EMERALD = 'Emerald'
+    RUBY = 'Ruby'
+    WHITE_DIAMOND = 'Diamond'
+    UNKNOWN = 'unknown'
 
 
 class StoneType(BaseModel):
-    stone_type: Union[Literal['Pink Sapphire', 'Blue Sapphire', 'Yellow Sapphire', 'Aquamarine', 'Emerald', 'Ruby', 'White Diamond'], str] = Field(
-        default='',
-        description='Stone type the customer has shown interest. Do not make assumptions beyond what is explicitly mentioned into the STATEMENT.'
-    )
-
-
-class BudgetRange(BaseModel):
-    budget_range: str = Field(
-        default='',
-        description='Approximate price the customer has expressed they feel comfortable with. Do not be too restrictive.'
+    stone_type: StoneTypeEnum = Field(
+        default=StoneTypeEnum.UNKNOWN,
+        description='The stone type the customer is currently focused on. If the customer shifts from one type to another, update to reflect their current interest. IMPORTANT: Reset to unknown if customer starts a new search for a different person or separate product request.'
     )

@@ -1,16 +1,12 @@
 from typing import Tuple
 
-from src.chatbot.models import PurchaseType, WearerGender, CategoryType, MetalType, StoneType, BudgetRange
+from src.chatbot.models import WearerGender, CategoryType, MetalType, StoneType
 
 
 class PreferenceDiscoveryStrategy:
     """Strategic preference discovery for luxury online jewelry consultation."""
 
     DISCOVERY_SEQUENCE = {
-        'purchase_type': {
-            'question': 'Formulate a question to determine whether the purchase is for oneself or as a gift. The question must be thoughtful and aligned with luxury jewelry standards. Bold the keywords so I can easily detect what you are asking.',
-            'model': PurchaseType,
-        },
         'gender': {
             'question': 'Formulate a question to determine the gender of the person who will be wearing the jewelry. The question must be thoughtful and aligned with luxury jewelry standards. Use the keywords lady or gentleman and bold them so I can easily detect what you are asking.',
             'model': WearerGender,
@@ -26,11 +22,7 @@ class PreferenceDiscoveryStrategy:
         'stone_type': {
             'question': 'Formulate a question to determine what stone type I am interested in. Guide me to select one of the stone types that exist into the AVAILABLE PRODUCTS. The question must be thoughtful and aligned with luxury jewelry standards. Bold the stone types so I can easily detect what you are asking. Only suggest characteristics that exist in products that completely match all aspects of my stated PREFERENCES, not from products that only partially match. Do not invite me to explore options that do not exist.',
             'model': StoneType,
-        },
-        # 'budget_range': {
-        #     'question': 'Formulate a question to determine what price range I feel comfortable with.',
-        #     'model': BudgetRange,
-        # },
+        }
     }
 
     @classmethod
@@ -44,10 +36,5 @@ class PreferenceDiscoveryStrategy:
 
             if customer_preference:
                 continue
-
-            # if key == 'gender':
-            #     variant = 'self' if preferences['purchase_type'] == 'self_purchase' else 'gift'
-                
-            #     return value['question'][variant]
 
             return value['question']

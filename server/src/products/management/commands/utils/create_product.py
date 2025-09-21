@@ -32,7 +32,6 @@ def create_product(product_data):
     third_image = product_data['third_image']
     fourth_image = product_data['fourth_image']
 
-    description = product_data['description']
     target_gender = product_data['target_gender']
 
     stone = product_data['stone_by_color']
@@ -55,7 +54,6 @@ def create_product(product_data):
         metal=metal,
         color=color,
         stone=stone,
-        description=description,
         target_gender=target_gender,
     )
 

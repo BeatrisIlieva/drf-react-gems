@@ -168,7 +168,6 @@ export const ProductDataProvider = ({
             secondImage: product?.secondImage,
             thirdImage: product?.thirdImage,
             fourthImage: product?.fourthImage,
-            description: product?.description,
             averageRating: product?.averageRating,
             reviews: product?.review,
             productId: product?.id,

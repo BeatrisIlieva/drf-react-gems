@@ -30,7 +30,7 @@ Your task is to handle the customer concern or hesitation.
 HUMAN_MESSAGE_OBJECTION_HANDLER = (
 """
 BASED ON:\n
-CONVERSATION MEMORY:\n{conversation_memory}\n\n
+CONVERSATION MEMORY:\n{conversation_history}\n\n
 CONTEXT:\n{context}\n\n
 Respond to my STATEMENT:\n\n{customer_query}
 """

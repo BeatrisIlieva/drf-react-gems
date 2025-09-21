@@ -42,7 +42,6 @@ class BaseProductListSerializer(serializers.ModelSerializer):
             'second_image',
             'third_image',
             'fourth_image',
-            'description',
             'collection__name',
             'color__name',
             'stone__name',
@@ -138,7 +137,7 @@ class BaseProductItemSerializer(serializers.ModelSerializer):
                 products = model_class.objects.filter(
                     color_id=color_id,
                 )
-                
+
             result = []
             for product in products:
                 result.append(

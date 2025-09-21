@@ -16,3 +16,4 @@
 14. UserDeleteView [server/src/accounts/views/user_credential.py](https://github.com/beatrisilieva/drf1.react1.gems/blob/main/server/src/accounts/views/user_credential.py)
 15. UserProfileView [server/src/accounts/views/user_profile.py](https://github.com/beatrisilieva/drf1.react1.gems/blob/main/server/src/accounts/views/user_profile.py)
 16. UserPhotoView [server/src/accounts/views/user_photo.py](https://github.com/beatrisilieva/drf1.react1.gems/blob/main/server/src/accounts/views/user_photo.py)
+17. ChatBotView [server/src/accounts/views/user_photo.py](https://github.com/beatrisilieva/drf1.react1.gems/blob/main/server/src/chatbot/views.py)

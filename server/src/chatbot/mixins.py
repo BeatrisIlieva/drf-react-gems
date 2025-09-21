@@ -4,6 +4,7 @@ from langchain.schema.runnable import RunnablePassthrough, RunnableLambda, Runna
 
 from src.chatbot.handlers import HANDLERS_MAPPER
 from src.chatbot.strategies import PreferenceDiscoveryStrategy
+from src.chatbot.utils import retrieve_relevant_content
 
 
 class GeneralInfoMixin:
@@ -12,12 +13,20 @@ class GeneralInfoMixin:
 
     def _build_general_info_chain(self):
         """Build chain for general information responses."""
-        return RunnableLambda(
-            lambda inputs: HANDLERS_MAPPER[inputs['customer_intent']](
-                self.llm,
-                context=inputs["context"],
-                customer_query=inputs["optimized_query_for_search"],
-                conversation_memory=inputs["conversation_memory"]
+        return (
+            RunnablePassthrough.assign(
+                context=lambda x: retrieve_relevant_content(
+                    x["customer_query"],
+                    self.vector_store
+                )
+            )
+            | RunnableLambda(
+                lambda inputs: HANDLERS_MAPPER[inputs['customer_intent']](
+                    self.streaming_llm,
+                    context=inputs["context"],
+                    customer_query=inputs["customer_query"],
+                    conversation_history=inputs["conversation_history"]
+                )
             )
         )
 
@@ -30,13 +39,26 @@ class JewelryConsultationMixin:
         return (
             self._build_preference_extraction_chain()
             | RunnablePassthrough.assign(
+                optimized_query_for_search=RunnableLambda(
+                    lambda inputs: HANDLERS_MAPPER['create_optimized_query_for_search'](
+                        self.llm,
+                        **self._extract_safe_preferences(inputs),
+                    )
+                )
+            )
+            | RunnablePassthrough.assign(
+                context=lambda x: retrieve_relevant_content(
+                    x["optimized_query_for_search"],
+                    self.vector_store
+                )
+            )
+            | RunnablePassthrough.assign(
                 product_match_status=RunnableLambda(
                     lambda inputs: self._check_products_individually(
                         inputs
                     )
                 )
             )
-
             | RunnableBranch(
                 (
                     lambda x: x['product_match_status'].startswith('FOUND'),
@@ -53,7 +75,7 @@ class JewelryConsultationMixin:
                 lambda inputs, model=config['model']: HANDLERS_MAPPER['extract_customer_preferences'](
                     self.llm,
                     model,
-                    optimized_query=inputs['optimized_query_for_search']
+                    conversation_history=inputs['conversation_history']
                 )
             )
             for preference_key, config in PreferenceDiscoveryStrategy.DISCOVERY_SEQUENCE.items()
@@ -77,7 +99,7 @@ class JewelryConsultationMixin:
     def _all_preferences_collected(cls, inputs):
         """Check if all required preferences have been collected"""
         return all(
-            inputs.get(key, {}).get(key, "") not in ("", None)
+            inputs.get(key, {}).get(key, "") not in ("", "unknown", None)
             for key in PreferenceDiscoveryStrategy.DISCOVERY_SEQUENCE
         )
 
@@ -85,11 +107,11 @@ class JewelryConsultationMixin:
         """Build chain for product recommendations."""
         return RunnableLambda(
             lambda inputs: HANDLERS_MAPPER['recommend_product'](
-                self.llm,
+                self.streaming_llm,
                 product_to_recommend=JewelryConsultationMixin.PRODUCT_TO_RECOMMEND,
-                customer_query=inputs["optimized_query_for_search"],
+                customer_query=inputs["customer_query"],
                 **self._extract_preferences(inputs),
-                conversation_memory=inputs["conversation_memory"]
+                conversation_history=inputs["conversation_history"]
             )
         )
 
@@ -105,12 +127,12 @@ class JewelryConsultationMixin:
             )
             | RunnableLambda(
                 lambda inputs: HANDLERS_MAPPER['discover_customer_preferences'](
-                    self.llm,
+                    self.streaming_llm,
                     context=inputs["context"],
-                    customer_query=inputs["optimized_query_for_search"],
+                    customer_query=inputs["customer_query"],
                     next_discovery_question=inputs['next_discovery_question'],
                     **self._extract_safe_preferences(inputs),
-                    conversation_memory=inputs["conversation_memory"]
+                    conversation_history=inputs["conversation_history"]
                 )
             )
         )
@@ -119,40 +141,50 @@ class JewelryConsultationMixin:
         """Build chain for navigating available options."""
         return RunnableLambda(
             lambda inputs: HANDLERS_MAPPER['navigate_towards_available_options'](
-                self.llm,
+                self.streaming_llm,
                 context=inputs["context"],
-                customer_query=inputs["optimized_query_for_search"],
+                customer_query=inputs["customer_query"],
                 mismatch_reason=inputs['product_match_status'],
                 **self._extract_safe_preferences(inputs),
-                conversation_memory=inputs["conversation_memory"]
+                conversation_history=inputs["conversation_history"]
             )
         )
 
     def _extract_preferences(self, inputs):
         """Extract preferences assuming they're all present."""
-        return {
+        preferences =  {
             key: inputs[key][key]
             for key in PreferenceDiscoveryStrategy.DISCOVERY_SEQUENCE.keys()
+        }
+        
+        return {
+            key: "" if value == "unknown" else value
+            for key, value in preferences.items()
         }
 
     def _extract_safe_preferences(self, inputs):
         """Extract preferences with safe dictionary access."""
-        return {
+        preferences = {
             key: inputs.get(key, {}).get(key, "")
             for key in PreferenceDiscoveryStrategy.DISCOVERY_SEQUENCE.keys()
         }
         
+        return {
+            key: "" if value == "unknown" else value
+            for key, value in preferences.items()
+        }
+
     def _extract_individual_products(self, context):
         """Extract individual products from context using regex."""
         # Find all products matching the pattern
-        return re.findall(r"Collection:.*?stars;", context, re.DOTALL)
+        return re.findall(r"Stone:.*?stars;", context, re.DOTALL)
 
     def _check_products_individually(self, inputs):
         """Check each product individually until a match is found."""
         context = inputs["context"]
         preferences = {k: v for k, v in self._extract_safe_preferences(
             inputs
-        ).items() if k != 'purchase_type'}
+        ).items()}
 
         # Extract individual products
         individual_products = self._extract_individual_products(context)
@@ -161,7 +193,7 @@ class JewelryConsultationMixin:
         if not individual_products:
             return "NOT_FOUND: No products found in context"
 
-        last_reason = None
+        reasons = ''
         # Check each product individually
         for i, product in enumerate(individual_products, 1):
             try:
@@ -173,14 +205,14 @@ class JewelryConsultationMixin:
 
                 # If this product matches, return success immediately
                 if result and not result.startswith('NOT_FOUND'):
-                    JewelryConsultationMixin.PRODUCT_TO_RECOMMEND = i
+                    JewelryConsultationMixin.PRODUCT_TO_RECOMMEND = product
                     return f"FOUND: Match found in product {i}"
 
                 # If we get a specific reason why this product doesn't match,
                 # store it but continue checking other products
                 if result and result.startswith('NOT_FOUND'):
 
-                    last_reason = result
+                    reasons += result + '; '
 
             except Exception as e:
                 # Log error and continue with next product
@@ -189,4 +221,4 @@ class JewelryConsultationMixin:
 
         # No matches found in any product
         # Return the last specific reason or a general message
-        return last_reason
+        return reasons

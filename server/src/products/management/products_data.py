@@ -10,7 +10,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999227/2_xpwcdf.png',
         'stone_by_color': 'Blue Sapphire',
         'price': 3600,
-        'description': '16 round brilliant diamonds weighing a total of approximately 0.90 carats with round sapphire center stones of approximately 0.44 carats each, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -23,7 +22,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999303/4_qrijtq.png',
         'stone_by_color': 'Red Ruby',
         'price': 3700,
-        'description': '16 round brilliant diamonds weighing a total of approximately 0.90 carats with round ruby center stones of approximately 0.44 carats each, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -36,7 +34,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999344/6_ovuyxh.png',
         'stone_by_color': 'Green Emerald',
         'price': 3400,
-        'description': '10 pear-shaped diamonds weighing a total of approximately 3.35 carats with 6 round emeralds weighing a total of approximately 2.01 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -49,7 +46,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999370/7_zkigkm.png',
         'stone_by_color': 'Green Emerald',
         'price': 4400,
-        'description': '5 pear-shaped diamonds weighing a total of approximately 2.01 carats with 3 round emeralds weighing a total of approximately 1.39 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -62,7 +58,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999407/10_ktyhge.png',
         'stone_by_color': 'Blue Sapphire',
         'price': 4600,
-        'description': '5 pear-shaped diamonds weighing a total of approximately 2.03 carats with 3 round sapphires weighing a total of approximately 1.86 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -75,7 +70,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999434/12_oe8zz4.png',
         'stone_by_color': 'Red Ruby',
         'price': 4800,
-        'description': '5 pear-shaped diamonds weighing a total of approximately 2.03 carats with 3 round rubies weighing a total of approximately 1.88 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -88,7 +82,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999466/14_p0w173.png',
         'stone_by_color': 'Red Ruby',
         'price': 2800,
-        'description': '13 round brilliant diamonds weighing a total of approximately 0.64 carats with 13 round rubies weighing a total of approximately 0.81 carats, prong-set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -101,7 +94,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999503/16_t8nnpy.png',
         'stone_by_color': 'Blue Sapphire',
         'price': 2600,
-        'description': '13 round brilliant diamonds weighing a total of approximately 0.64 carats with 13 round sapphires weighing a total of approximately 0.81 carats, prong-set in platinum.',
         'target_gender': 'F',
     },
     # FORGET ME NOT
@@ -115,7 +107,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999528/18_zagfeq.png',
         'stone_by_color': 'Blue Sapphire',
         'price': 5200,
-        'description': '45 pear-shaped and round brilliant sapphires weighing a total of approximately 4.17 carats and 33 pear-shaped, marquise and round brilliant diamonds weighing a total of approximately 4.24 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -128,7 +119,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999556/20_tlfzzw.png',
         'stone_by_color': 'Red Ruby',
         'price': 5400,
-        'description': '45 pear-shaped and round rubies weighing a total of approximately 4.43 carats and 33 pear-shaped, marquise and round brilliant diamonds weighing a total of approximately 4.37 carats, set in platinum. ',
         'target_gender': 'F',
     },
     {
@@ -141,7 +131,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999594/22_povdm3.png',
         'stone_by_color': 'Pink Sapphire',
         'price': 5100,
-        'description': '45 pear-shaped and round brilliant pink sapphires weighing a total of approximately 4.36 carats and 33 pear-shaped, marquise and round brilliant diamonds weighing a total of approximately 4.24 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -154,7 +143,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999618/23_bldvfs.png',
         'stone_by_color': 'Pink Sapphire',
         'price': 2800,
-        'description': '12 pear-shaped pink sapphires weighing a total of approximately 2.20 carats and 2 round brilliant diamonds weighing a total of approximately 0.07 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -167,7 +155,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999649/26_udfae8.png',
         'stone_by_color': 'White Diamond',
         'price': 4100,
-        'description': '12 pear-shaped diamonds and 2 round brilliant diamonds weighing a total of approximately 1.70 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -180,7 +167,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999676/28_v57kfh.png',
         'stone_by_color': 'Blue Sapphire',
         'price': 3800,
-        'description': '12 pear-shaped sapphires weighing a total of approximately 2.10 carats and 2 round brilliant diamonds weighing a total of approximately 0.07 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -193,7 +179,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999783/36_frholk.png',
         'stone_by_color': 'Pink Sapphire',
         'price': 6700,
-        'description': '6 pear-shaped pink sapphires weighing a total of approximately 1.44 carats and 1 round brilliant diamond weighing approximately 0.04 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -206,7 +191,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999808/38_wonrzb.png',
         'stone_by_color': 'Blue Sapphire',
         'price': 6700,
-        'description': '6 pear-shaped sapphires weighing a total of approximately 1.41 carats and 1 round brilliant diamond weighing approximately 0.04 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -219,7 +203,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999837/39_y0kotd.png',
         'stone_by_color': 'White Diamond',
         'price': 7000,
-        'description': '6 pear-shaped and 1 round brilliant diamond weighing a total of approximately 1.07 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -232,7 +215,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999871/42_udbhpc.png',
         'stone_by_color': 'Red Ruby',
         'price': 6800,
-        'description': '6 pear-shaped rubies weighing a total of approximately 1.68 carats and 1 round brilliant diamond weighing a total of approximately 0.04 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -245,7 +227,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999898/44_mhomxp.png',
         'stone_by_color': 'Pink Sapphire',
         'price': 8400,
-        'description': '78 pear-shaped and round brilliant pink sapphires weighing a total of approximately 8.61 carats and 99 marquise and round brilliant diamonds weighing a total of approximately 8.60 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -258,7 +239,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1756999925/46_s81hnp.png',
         'stone_by_color': 'Blue Sapphire',
         'price': 8400,
-        'description': '78 pear-shaped and round brilliant sapphires weighing a total of approximately 8.61 carats and 99 marquise and round brilliant diamonds weighing a total of approximately 8.37 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -271,7 +251,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757000082/48_cy2dv3.png',
         'stone_by_color': 'White Diamond',
         'price': 8700,
-        'description': '177 pear-shaped, marquise, and round brilliant diamonds, weighing a total of approximately 15.35 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -284,7 +263,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757000118/50_b8qsvx.png',
         'stone_by_color': 'Red Ruby',
         'price': 8500,
-        'description': '78 pear-shaped and round rubies weighing a total of approximately 9.13 carats and 99 marquise and round brilliant diamonds weighing a total of approximately 8.51 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -297,7 +275,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757000318/52_bf6elp.png',
         'stone_by_color': 'Pink Sapphire',
         'price': 4400,
-        'description': '6 pear-shaped pink sapphires weighing a total of approximately 2.22 carats and 1 round brilliant diamond weighing approximately 0.05 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -310,7 +287,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757000378/54_speiwj.png',
         'stone_by_color': 'Blue Sapphire',
         'price': 4400,
-        'description': '6 pear-shaped sapphires weighing a total of approximately 2.15 carats and 1 round brilliant diamond weighing approximately 0.05 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -323,7 +299,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757000404/56_b7tgqt.png',
         'stone_by_color': 'White Diamond',
         'price': 4600,
-        'description': '6 pear-shaped and 1 round brilliant diamond, weighing a total of approximately 1.66 carats, set in platinum.',
         'target_gender': 'F',
     },
     # GERBERA
@@ -337,7 +312,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757000432/58_djnwe9.png',
         'stone_by_color': 'White Diamond',
         'price': 3400,
-        'description': '29 round brilliant diamonds weighing a total of approximately 0.29 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -350,7 +324,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757000458/60_fcu3bc.png',
         'stone_by_color': 'White Diamond',
         'price': 3200,
-        'description': '29 round brilliant diamonds weighing a total of approximately 0.29 carats, set in 18K rose gold.',
         'target_gender': 'F',
     },
     {
@@ -363,7 +336,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757000484/62_fsyj4c.png',
         'stone_by_color': 'White Diamond',
         'price': 3200,
-        'description': '29 round brilliant diamonds weighing a total of approximately 0.29 carats, set in 18K yellow gold.',
         'target_gender': 'F',
     },
     {
@@ -376,7 +348,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757000511/64_bouiuk.png',
         'stone_by_color': 'White Diamond',
         'price': 1600,
-        'description': '58 round brilliant diamonds weighing a total of approximately 0.43 carats, set in 18K rose gold.',
         'target_gender': 'F',
     },
     {
@@ -389,7 +360,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757000542/66_dkq1m7.png',
         'stone_by_color': 'White Diamond',
         'price': 1600,
-        'description': '58 round brilliant diamonds weighing a total of approximately 0.43 carats, set in 18K yellow gold.',
         'target_gender': 'F',
     },
     {
@@ -402,7 +372,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757000567/68_jun1ca.png',
         'stone_by_color': 'White Diamond',
         'price': 1900,
-        'description': '58 round brilliant diamonds weighing a total of approximately 0.43 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -415,7 +384,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757000595/70_sx61dv.png',
         'stone_by_color': 'White Diamond',
         'price': 2600,
-        'description': '29 round brilliant diamonds weighing a total of approximately 0.29 carats, set in 18K rose gold.',
         'target_gender': 'F',
     },
     {
@@ -428,7 +396,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757000621/72_yqk8vt.png',
         'stone_by_color': 'White Diamond',
         'price': 2600,
-        'description': '29 round brilliant diamonds weighing a total of approximately 0.29 carats, set in 18K yellow gold.',
         'target_gender': 'F',
     },
     {
@@ -441,7 +408,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757000652/74_bemglu.png',
         'stone_by_color': 'White Diamond',
         'price': 2900,
-        'description': '29 round brilliant diamonds weighing a total of approximately 0.29 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -454,7 +420,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757000683/76_fgwpqa.png',
         'stone_by_color': 'White Diamond',
         'price': 1900,
-        'description': '31 round brilliant diamonds weighing a total of approximately 0.40 carats, set in 18K rose gold.',
         'target_gender': 'F',
     },
     {
@@ -467,7 +432,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757000709/78_tlhs0b.png',
         'stone_by_color': 'White Diamond',
         'price': 1900,
-        'description': '31 round brilliant diamonds weighinga total of approximately 0.40 carats, set in 18K yellow gold.',
         'target_gender': 'F',
     },
     {
@@ -480,7 +444,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757000740/80_iwmerz.png',
         'stone_by_color': 'White Diamond',
         'price': 2100,
-        'description': '31 round brilliant diamonds weighing a total of approximately 0.40 carats, set in platinum.',
         'target_gender': 'F',
     },
     # LEAF
@@ -494,7 +457,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757000769/82_cr8aim.png',
         'stone_by_color': 'White Diamond',
         'price': 3300,
-        'description': '37 round brilliant diamonds weighing a total of approximately 0.19 carats, set in 18K yellow gold.',
         'target_gender': 'F',
     },
     {
@@ -507,7 +469,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757001270/84_y5isbo.png',
         'stone_by_color': 'White Diamond',
         'price': 3500,
-        'description': '37 round brilliant diamonds weighing a total of approximately 0.19 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -520,7 +481,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757001270/86_slgr0s.png',
         'stone_by_color': 'White Diamond',
         'price': 4300,
-        'description': '619 round brilliant diamonds weighing a total of approximately 5.33 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -533,7 +493,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757001372/88_jxyrvl.png',
         'stone_by_color': 'White Diamond',
         'price': 4100,
-        'description': '619 round brilliant diamonds weighing a total of approximately 5.33 carats, set in 18K yellow gold.',
         'target_gender': 'F',
     },
     {
@@ -546,7 +505,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757001399/90_xhrb1t.png',
         'stone_by_color': 'White Diamond',
         'price': 2700,
-        'description': '37 round brilliant diamonds weighing a total of approximately 0.18 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -559,7 +517,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757001424/92_mczbml.png',
         'stone_by_color': 'White Diamond',
         'price': 2400,
-        'description': '37 round brilliant diamonds weighing a total of approximately 0.18 carats, set in 18K yellow gold.',
         'target_gender': 'F',
     },
     # LILY
@@ -573,7 +530,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757001450/94_i3mjzq.png',
         'stone_by_color': 'White Diamond',
         'price': 2900,
-        'description': '75 round brilliant diamonds set in warm 18k yellow gold, this timeless piece captures one of nature’s most beautiful blooms.',
         'target_gender': 'F',
     },
     {
@@ -586,7 +542,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757001476/96_e9jeav.png',
         'stone_by_color': 'White Diamond',
         'price': 3100,
-        'description': '75 round brilliant diamonds, each masterfully set in lustrous platinum.',
         'target_gender': 'F',
     },
     # Drop
@@ -600,7 +555,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002055/110_ucgjbz.png',
         'stone_by_color': 'Blue Aquamarine',
         'price': 7100,
-        'description': '2 round sapphires weighing a total of approximately 0.98 carats, 1 round and 1 pear-shaped aquamarine weighing a total of approximately 0.23 carats, and 7 round brilliant and pear-shaped diamonds weighing a total of approximately 1.20 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -613,7 +567,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002252/112_hyn5zo.png',
         'stone_by_color': 'White Diamond',
         'price': 7900,
-        'description': '9 round brilliant and 2 pear-shaped diamonds weighing a total of approximately 2.28 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -626,7 +579,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002313/116_hte7cm.png',
         'stone_by_color': 'Blue Aquamarine',
         'price': 8800,
-        'description': '25 round and pear-shaped sapphires weighing a total of approximately 4.45 carats, 23 round aquamarines weighing a total of approximately 2.80 carats, and 130 round brilliant and pear-shaped diamonds weighing a total of approximately 8.73 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -639,7 +591,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002350/118_htsvth.png',
         'stone_by_color': 'Blue Aquamarine',
         'price': 6900,
-        'description': '1 pear-shaped and 2 round sapphires weighing a total of approximately 1.08 carats, 2 round aquamarines weighing a total of approximately 0.38 carats, and 7 round brilliant and pear-shaped diamonds weighing a total of approximately 1.19 carats, set in platinum.',
         'target_gender': 'F',
     },
     # LOTUS
@@ -653,7 +604,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002397/122_jc1mfh.png',
         'stone_by_color': 'Green Emerald',
         'price': 4200,
-        'description': '6 marquise and pear-shaped emeralds weighing a total of approximately 2.65 carats and 8 marquise and pear-shaped diamonds weighing a total of approximately 2.88 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -666,7 +616,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002421/124_y2p2sr.png',
         'stone_by_color': 'Blue Sapphire',
         'price': 4400,
-        'description': '6 marquise and pear-shaped sapphires weighing a total of approximately 3.20 carats and 8 marquise and pear-shaped diamonds weighing a total of approximately 2.88 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -679,7 +628,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002450/126_zlk30o.png',
         'stone_by_color': 'Red Ruby',
         'price': 6600,
-        'description': '6 marquise and pear-shaped rubies weighing a total of approximately 3.50 carats and 8 marquise and pear-shaped diamonds weighing a total of approximately 2.92 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -692,7 +640,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002560/128_rbejmw.png',
         'stone_by_color': 'Red Ruby',
         'price': 7600,
-        'description': '3 marquise and pear-shaped rubies weighing a total of approximately 2.50 carats and 4 marquise and pear-shaped diamonds weighing a total of approximately 2.21 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -705,7 +652,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002636/130_pntjid.png',
         'stone_by_color': 'Pink Sapphire',
         'price': 7400,
-        'description': '3 marquise and pear-shaped pink sapphires weighing a total of approximately 2.61 carats and 2 pear-shaped and 2 marquise diamonds weighing a total of approximately 2.28 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -718,7 +664,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002658/132_ogpib4.png',
         'stone_by_color': 'Green Emerald',
         'price': 7200,
-        'description': '3 marquise and pear-shaped emeralds weighing a total of approximately 2.00 carats and 4 marquise and pear-shaped diamonds weighing a total of approximately 2.15 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -731,7 +676,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002690/134_r8m7rc.png',
         'stone_by_color': 'Blue Sapphire',
         'price': 7400,
-        'description': '3 marquise and pear-shaped sapphires weighing a total of 2.50 carats and 4 marquise and pear-shaped diamonds weighing a total of approximately 2.15 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -744,7 +688,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002713/136_lmyu4r.png',
         'stone_by_color': 'Blue Sapphire',
         'price': 5200,
-        'description': '3 marquise and pear-shaped sapphires weighing a total of approximately 2.81 carats and 4 marquise and pear-shaped diamonds weighing a total of approximately 2.10 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -757,7 +700,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002736/138_tutgan.png',
         'stone_by_color': 'Red Ruby',
         'price': 5400,
-        'description': '3 marquise and pear-shaped rubies weighing a total of approximately 2.41 carats and 4 marquise and pear-shaped diamonds weighing a total of approximately 2.10 carats, set in platinum.',
         'target_gender': 'F',
     },
     # SUNFLOWER
@@ -771,7 +713,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002758/140_e2lwna.png',
         'stone_by_color': 'Red Ruby',
         'price': 2100,
-        'description': '16 round brilliant diamonds weighing a total of approximately 0.90 carats with round ruby center stones of approximately 0.44 carats each, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -784,7 +725,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002783/142_q8rqd4.png',
         'stone_by_color': 'Blue Sapphire',
         'price': 1900,
-        'description': '16 round brilliant diamonds weighing a total of approximately 0.90 carats with round sapphire center stones of approximately 0.44 carats each, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -797,7 +737,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002807/144_bycodn.png',
         'stone_by_color': 'White Diamond',
         'price': 2200,
-        'description': '18 round brilliant diamonds weighing a total of approximately 1.60 carats, center stones are approximately 0.30 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -810,7 +749,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002835/146_jja0do.png',
         'stone_by_color': 'Red Ruby',
         'price': 3300,
-        'description': '18 round brilliant diamonds, weighing a total of approximately 0.58 carats with a round ruby center stone of approximately 0.44 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -823,7 +761,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002860/148_zjkx4e.png',
         'stone_by_color': 'Blue Sapphire',
         'price': 3100,
-        'description': '18 round brilliant diamonds, weighing a total of approximately 0.58 carats with a round sapphire center stone of approximately 0.44 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -836,7 +773,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002887/149_rjdc8v.png',
         'stone_by_color': 'Green Emerald',
         'price': 5200,
-        'description': 'Elegantly wrapping the wrist, this bracelet`s delicate size celebrates the enduring beauty of flowers and incredible gemstones.',
         'target_gender': 'F',
     },
     {
@@ -849,7 +785,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002923/152_ffol8f.png',
         'stone_by_color': 'Green Emerald',
         'price': 3900,
-        'description': 'Inspired by the graceful geometry of a sunflower, this fashion ring features an emerald center stone and 18 sparkling diamonds. A bold, yet elegant statement piece, it brings nature`s beauty to the hand.',
         'target_gender': 'F',
     },
     {
@@ -862,7 +797,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002946/154_xfk2ol.png',
         'stone_by_color': 'Green Emerald',
         'price': 10200,
-        'description': 'This stunning necklace encompasses the neck with the radiant glow of a sunflower in full bloom. Featuring a harmonious composition of emeralds and round brilliant diamonds, this necklace celebrates the enduring beauty of nature`s greatest gifts.',
         'target_gender': 'F',
     },
     {
@@ -875,7 +809,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757002971/156_kstixd.png',
         'stone_by_color': 'Green Emerald',
         'price': 6100,
-        'description': 'This pendant unites a vibrant round emerald with eight radiant round brilliant diamonds set in platinum. Inspired by the symmetry and spirit of sunflowers, it brings a burst of color and natural elegance to the neckline—perfectly suited for effortless wear from day to night.',
         'target_gender': 'F',
     },
     {
@@ -888,7 +821,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003001/158_b7rpga.png',
         'stone_by_color': 'Green Emerald',
         'price': 2900,
-        'description': 'A pair of beautiful earrings that delicately accent the ear, with an emerald green center stone accented by round brilliant diamonds. Recalling a sunflower in full bloom, these earrings make a statement for any occasion - day or night.',
         'target_gender': 'F',
     },
     # Daisy
@@ -902,7 +834,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003020/160_sazqoz.png',
         'stone_by_color': 'Pink Sapphire',
         'price': 1500,
-        'description': '8 pear-shaped pink sapphires weighing a total of approximately 1.61 carats and 58 round brilliant diamonds weighing a total of approximately 2.66 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -915,20 +846,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003043/162_os0d30.png',
         'stone_by_color': 'Red Ruby',
         'price': 1700,
-        'description': '8 pear-shaped rubies weighing a total of approximately 1.83 carats and 58 round brilliant diamonds weighing a total of approximately 2.66 carats, set in platinum.',
-        'target_gender': 'F',
-    },
-    {
-        'category': 'Earring',
-        'collection': 'Daisy',
-        'material': 'Platinum',
-        'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121009/13_mjvoux.webp',
-        'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121008/14_rvbedu.webp',
-        'third_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003063/163_dynuk9.png',
-        'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003064/164_r5ppwj.png',
-        'stone_by_color': 'Yellow Sapphire',
-        'price': 1500,
-        'description': '8 pear-shaped yellow sapphires weighing a total of approximately 1.66 carats and 58 round brilliant diamonds weighing a total of approximately 2.66 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -941,20 +858,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003103/166_z13fnz.png',
         'stone_by_color': 'Blue Aquamarine',
         'price': 1500,
-        'description': '8 pear-shaped aquamarines weighing a total of approximately 1.21 carats and 58 round brilliant diamonds weighing a total of approximately 2.66 carats, set in platinum.',
-        'target_gender': 'F',
-    },
-    {
-        'category': 'Pendant',
-        'collection': 'Daisy',
-        'material': 'Platinum',
-        'first_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121005/5_mvon0h.webp',
-        'second_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1746121006/6_hr6odl.avif',
-        'third_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003126/167_oe5jwo.png',
-        'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003127/168_zf1us0.png',
-        'stone_by_color': 'Yellow Sapphire',
-        'price': 4400,
-        'description': '4 pear-shaped yellow sapphires weighing a total of approximately 0.85 carats and 29 round brilliant diamonds weighing a total of approximately 1.33 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -967,7 +870,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003151/170_ecadeu.png',
         'stone_by_color': 'Blue Aquamarine',
         'price': 4400,
-        'description': '4 pear-shaped aquamarines weighing a total of approximately 0.60 carats and 29 round brilliant diamonds weighing a total of approximately 1.33 carats, set in platinum.',
         'target_gender': 'F',
     },
     {
@@ -980,7 +882,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003174/172_f5h0hq.png',
         'stone_by_color': 'Pink Sapphire',
         'price': 4400,
-        'description': '4 pear-shaped pink sapphires weighing a total of approximately 0.77 carats and 29 round brilliant diamonds weighing a total of approximately 1.33 carats, set in platinum.',
         'target_gender': 'F',
     },
     # Braceletes
@@ -994,7 +895,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003210/174_paltxf.png',
         'stone_by_color': 'Green Emerald',
         'price': 14100,
-        'description': 'Adorned with intense green tones, diamonds and mother-of-pearl.',
         'target_gender': 'F',
     },
     {
@@ -1007,7 +907,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003286/176_h7c9yy.png',
         'stone_by_color': 'Red Ruby',
         'price': 14500,
-        'description': 'Adorned with intense red tones, diamonds and mother-of-pearl.',
         'target_gender': 'F',
     },
     {
@@ -1020,7 +919,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003310/178_gq3fn4.png',
         'stone_by_color': 'Pink Sapphire',
         'price': 14900,
-        'description': 'Adorned with soft pink tones, diamonds and mother-of-pearl.',
         'target_gender': 'F',
     },
     {
@@ -1033,7 +931,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003335/180_ia4r2a.png',
         'stone_by_color': 'Blue Aquamarine',
         'price': 14900,
-        'description': 'Adorned with soft blue tones, diamonds and mother-of-pearl.',
         'target_gender': 'F',
     },
     {
@@ -1046,7 +943,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003359/182_w1htrx.png',
         'stone_by_color': 'White Diamond',
         'price': 14900,
-        'description': 'Adorned with diamonds and mother-of-pearl.',
         'target_gender': 'F',
     },
     # Classics
@@ -1060,7 +956,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003380/184_lwowna.png',
         'stone_by_color': 'Green Emerald',
         'price': 16200,
-        'description': 'Adorned with intense green tones, diamonds and mother-of-pearl.',
         'target_gender': 'F',
     },
     {
@@ -1073,7 +968,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003398/186_v3uoa9.png',
         'stone_by_color': 'Red Ruby',
         'price': 17300,
-        'description': 'Adorned with intense red tones, diamonds and mother-of-pearl.',
         'target_gender': 'F',
     },
     {
@@ -1086,7 +980,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003421/188_mxclph.png',
         'stone_by_color': 'Blue Aquamarine',
         'price': 16100,
-        'description': 'Adorned with soft blue tones, diamonds and mother-of-pearl.',
         'target_gender': 'F',
     },
     {
@@ -1099,7 +992,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003532/190_z7tamj.png',
         'stone_by_color': 'Pink Sapphire',
         'price': 16100,
-        'description': 'Adorned with soft pink tones, diamonds and mother-of-pearl.',
         'target_gender': 'F',
     },
 
@@ -1114,7 +1006,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003583/192_yiwhjw.png',
         'stone_by_color': 'Green Emerald',
         'price': 21700,
-        'description': 'Embellished with a vibrantly colored mother-of-pearl dial and a refreshing splash of gemstones, the watch features a green genuine leather strap.',
         'target_gender': 'M',
     },
     {
@@ -1127,7 +1018,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003606/194_ncdwhl.png',
         'stone_by_color': 'White Diamond',
         'price': 21700,
-        'description': 'Embellished with a vibrantly colored mother-of-pearl dial and a refreshing splash of gemstones, the watch features a navy blue genuine leather strap.',
         'target_gender': 'M',
     },
     {
@@ -1140,7 +1030,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003631/196_yedbqv.png',
         'stone_by_color': 'White Diamond',
         'price': 21200,
-        'description': 'Embellished with black onxy and sparkling diamonds, the watch features a black genuine leather strap.',
         'target_gender': 'M',
     },
     {
@@ -1153,7 +1042,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003664/198_ovbswh.png',
         'stone_by_color': 'White Diamond',
         'price': 21200,
-        'description': 'Embellished with a vibrantly colored mother-of-pearl dial and diamonds, the watch features a brown genuine leather strap.',
         'target_gender': 'M',
     },
     {
@@ -1166,7 +1054,6 @@ products_data = [
         'fourth_image': 'https://res.cloudinary.com/dpgvbozrb/image/upload/v1757003748/200_vhdbbv.png',
         'stone_by_color': 'White Diamond',
         'price': 21200,
-        'description': 'Embellished with a vibrantly colored mother-of-pearl dial and diamonds, the watch features a navy blue genuine leather strap.',
         'target_gender': 'M',
     },
 ]

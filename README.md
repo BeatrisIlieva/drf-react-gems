@@ -12,8 +12,16 @@
 [![Cloudinary](https://img.shields.io/badge/Cloudinary-teal.svg)](https://cloudinary.com/)
 [![Firebase](https://img.shields.io/badge/Firebase-orange.svg)](https://firebase.google.com/)
 [![Sentry](https://img.shields.io/badge/Sentry-purple.svg)](https://sentry.io/)
+[![LangChain](https://img.shields.io/badge/LangChain-brightgreen.svg)](https://langchain.com/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-black.svg)](https://openai.com/)
+[![Pinecone](https://img.shields.io/badge/Pinecone-blueviolet.svg)](https://www.pinecone.io/)
+[![LangGraph](https://img.shields.io/badge/LangGraph-darkgreen.svg)](https://langchain-ai.github.io/langgraph/)
+[![Pydantic](https://img.shields.io/badge/Pydantic-pink.svg)](https://pydantic.dev/)
+[![LangSmith](https://img.shields.io/badge/LangSmith-orange.svg)](https://smith.langchain.com/)
 
-A full-stack e-commerce platform built with Django REST Framework (DRF) backend and React frontend. Implements user authentication, shopping cart and wishlist functionality, payment processing, order history and asynchronous email notifications using Celery and Redis.
+A full-stack luxury jewelry e-commerce platform built with Django REST Framework (DRF) backend and React frontend. The platform implements JTW authentication, shopping cart and wishlist management, payment processing, order history, and asynchronous email notifications using Celery and Redis.
+
+An AI-powered jewelry consultation system that serves as an intelligent virtual consultant, guides customers through personalized product discovery and recommendation processes. Built using technologies such as LangChain, OpenAI GPT-4, Pinecone vector database, LangGraph, and Pydantic validation models, the chatbot combines luxury retail expertise with sophisticated conversation management to deliver tailored jewelry recommendations based on customer preferences and available inventory.
 
 **Live Application: [https://drf-react-gems.web.app](https://drf-react-gems.web.app/)**
 
@@ -37,6 +45,15 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   [Django Framework Implementation](#django-framework-implementation)
 -   [Database Service](#database-service)
 -   [Frontend Implementation](#frontend-implementation)
+-   [AI-Powered Jewelry Consultation System](#ai-powered-jewelry-consultation-system)
+    -   [Setup Vector Store Command](#setup-vector-store-command)
+    -   [Prompts](#prompts)
+    -   [Adapters](#adapters)
+    -   [Mixins](#mixins)
+    -   [Models](#models)
+    -   [Services](#services)
+    -   [Strategies](#strategies)
+    -   [Conversation Flow](#conversation-flow)
 -   [Authentication Functionality](#authentication-functionality)
 -   [Password Reset System](#password-reset-system)
 -   [Access Control](#access-control)
@@ -63,7 +80,7 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 
 -   Complete Django configuration with DRF, JWT, CORS, and database settings: [server/src/settings.py](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/settings.py)
 
--   [The application has 16 independent class-based views](https://github.com/beatrisilieva/drf-react-gems/blob/main/docs/views.md)
+-   [The application has 17 independent class-based views](https://github.com/beatrisilieva/drf-react-gems/blob/main/docs/views.md)
 
 -   [The application has 12 independent models](https://github.com/beatrisilieva/drf-react-gems/blob/main/docs/models.md)
 
@@ -100,6 +117,152 @@ A full-stack e-commerce platform built with Django REST Framework (DRF) backend 
 -   **User Interface:** Fully responsive UI, adapting to various screen sizes with reusable React components
 
 -   **User Experience:** Accessible navigation and consistent interactive elements (buttons, forms, popups)
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
+### AI-Powered Jewelry Consultation System
+
+#### Setup Vector Store Command
+
+The [setup_vectorstore](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/chatbot/management/commands/setup_vectorstore.py) management command initializes and populates the `Pinecone` vector database with jewelry catalog and company information from PDF documents.
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
+#### Prompts
+
+Contains [prompt templates](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/chatbot/prompts) that define the chatbot's personality, expertise, and conversation flow. The prompts establish the luxury jewelry consultant persona and guide various stages of customer interaction.
+
+**Context & Role Definition**:
+
+-   Establishes the chatbot as a luxury jewelry consultant at DRF React Gems
+
+**Customer Persona**:
+
+-   Defines sophisticated customer profile with high-income demographics and luxury expectations
+
+**Intent Analysis**:
+
+-   System messages for determining customer intentions (product inquiry vs. general information)
+
+**Preference Discovery**:
+
+-   Prompts for extracting customer preferences about gender, category, metal, and stone types
+
+**Search Optimization**:
+
+-   Templates for creating optimized vector database queries
+
+**Inventory Validation**:
+
+-   Prompts for checking product availability against customer preferences
+
+**Navigation Guidance**:
+
+-   Templates for directing customers toward available alternatives when exact matches aren't found
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
+#### Adapters
+
+Implements the [Adapter](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/chatbot/adapters.py) pattern to provide consistent interfaces for external services using singleton design pattern for resource efficiency.
+
+##### Components:
+
+-   `LLMAdapter`: Manages OpenAI ChatGPT model instances (standard and streaming)
+-   `MemoryAdapter`: Handles conversation memory using LangGraph's MemorySaver and StateGraph
+-   `VectorStoreAdapter`: Manages Pinecone vector database connections and validates environment setup
+
+##### Features:
+
+-   Singleton pattern ensures single instance across application lifecycle
+-   Automatic environment validation
+-   Streaming and non-streaming LLM configurations
+-   Conversation state management with persistent memory
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
+#### Mixins
+
+Provides modular functionality through [mixin](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/chatbot/mixins.py) classes that can be combined to create specialized chatbot behaviors.
+
+##### Components:
+
+-   `GeneralInfoMixin`: Handles non-product related queries (policies, care instructions, brand information)
+-   `JewelryConsultationMixin`: Manages complex product discovery and recommendation workflows
+
+##### Key Features:
+
+-   **Conditional Chain Building**: Creates dynamic conversation flows based on customer intent and preference completion status
+-   **Preference Extraction Pipeline**: Systematic discovery of customer requirements using Pydantic models
+-   **Product Matching Logic**: Individual product validation against customer preferences using regex extraction
+-   **Recommendation Flow**: Branches between continued discovery and final product recommendations
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
+#### Models
+
+Defines Pydantic [models](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/chatbot/models.py) for structured data validation and type safety throughout the conversation flow.
+
+##### Model Categories:
+
+-   `CustomerIntent`: Enum-based intent classification (sizing help, pricing, product info, etc.)
+-   `Preference Models`: Structured models for customer requirements
+    -   `WearerGender`: Target gender for jewelry recipient
+    -   `CategoryType`: Jewelry categories (earrings, necklaces, rings, etc.)
+    -   `MetalType`: Available metals (Rose Gold, Yellow Gold, Platinum)
+    -   `StoneType`: Available stones (Diamond, Ruby, Emerald, Sapphires, etc.)
+
+##### Benefits:
+
+-   Type safety and validation
+-   Clear data structure definitions
+-   Consistent preference handling across the application
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
+#### Services
+
+The core orchestration layer that combines all components into a cohesive conversation management system.
+
+[ChatbotService Class](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/chatbot/services.py):
+
+-   **Response Generation**: Manages streaming response delivery to frontend
+-   **Chain Orchestration**: Builds and executes LangChain processing pipelines
+-   **Session Management**: Handles conversation state and memory persistence
+-   **Intent-Based Routing**: Directs conversations between general information and product consultation flows
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
+#### Strategies
+
+Implements [strategic patterns](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/chatbot/strategies.py) for systematic customer preference discovery.
+
+##### PreferenceDiscoveryStrategy:
+
+-   **Sequential Discovery**: Ordered preference collection (gender → category → metal → stone)
+-   **Context-Aware Questioning**: Dynamic question generation based on available inventory
+-   **Luxury-Aligned Communication**: Maintains premium brand voice throughout discovery process
+
+##### Discovery Sequence:
+
+-   Target gender identification using luxury terminology
+-   Product category selection from available inventory
+-   Metal type preference with bold highlighting
+-   Stone type preference aligned with available options
+
+<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
+
+#### Conversation Flow
+
+1. **Intent Analysis**: Determines if customer seeks general information or product consultation
+
+2. **Preference Discovery**: Systematic collection of customer requirements using strategic questioning
+
+3. **Query Optimization**: Creates vector database queries optimized for semantic search
+
+4. **Inventory Validation**: Checks product availability against collected preferences
+
+5. **Response Generation**: Either provides product recommendations or guides toward available alternatives
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -229,11 +392,11 @@ All admin groups and their associated users are created automatically by a manag
 
 ### Testing
 
--   **66 Unit & Integration tests with [74% coverage report](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)**
+-   **66 Unit & Integration tests with [70% coverage report](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)**
 
     (`coverage run manage.py test && coverage report`)
 
-    [![Coverage](https://img.shields.io/badge/coverage-74%25-green.svg)](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)
+    [![Coverage](https://img.shields.io/badge/coverage-70%25-green.svg)](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -293,6 +456,10 @@ All admin groups and their associated users are created automatically by a manag
 
 -   Git
 
+-   OpenAI API Key
+
+-   Pinecone API Key
+
 ### Installation
 
 #### 1. Clone and setup
@@ -336,6 +503,12 @@ DB_PORT=5432                                       # OK for local
 CLOUD_NAME=your_cloud_name                         # REQUIRED: From your Cloudinary account
 CLOUD_API_KEY=your_api_key                         # REQUIRED: From your Cloudinary account
 CLOUD_API_SECRET=your_api_secret                   # REQUIRED: From your Cloudinary account
+
+OPENAI_API_KEY=your_open_ai_api_key
+LANGSMITH_API_KEY=your_langsmith_api_key
+
+PINECONE_API_KEY=your_pinecone_api_key
+PINECONE_INDEX_NAME=your_pinecone_index_name
 
 # Redis (Celery)
 CELERY_BROKER_URL=redis://localhost:6379/0         # OK for local
@@ -423,6 +596,12 @@ The `python manage.py setup_database` command (run during installation) will:
 -   Add customer reviews with ratings and comments
 -   Create admin users with different roles and permissions
 -   Create a superuser with full system access
+
+The `python manage.py generate_boutique_info` command generates PDF document containing general brand information
+
+The `python manage.py generate_product_catalog` command generates PDF containing product catalog
+
+The `python manage.py setup_vectorstore` command initializes and populates the Pinecone vector database with jewelry catalog and company information from PDF documents.
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
