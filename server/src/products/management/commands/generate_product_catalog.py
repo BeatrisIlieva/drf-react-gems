@@ -107,7 +107,7 @@ class Command(BaseCommand):
                 # Basic product information - each property on new line
                 basic_info = f"""
                 Collection: {product.collection.name};
-                Stone: {product.color.name if (product.color.name not in ['White', 'Green', 'Red'] and product.stone.name != 'Aquamarine') else ''} {product.stone.name};
+                Stone: {product.color.name} {product.stone.name};
                 Metal: {product.metal.name};
                 Category: {category_name};
                 Product ID: {product.id};
