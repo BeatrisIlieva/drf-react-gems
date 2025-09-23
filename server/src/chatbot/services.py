@@ -1,79 +1,124 @@
 import json
 
-from langchain.schema.runnable import RunnablePassthrough, RunnableLambda, RunnableBranch
+from src.chatbot.config import TOP_N_RESULTS
+from src.chatbot.prompts.jewelry_consultation import (
+    HUMAN_MESSAGE_JEWELRY_CONSULTANT,
+    SYSTEM_MESSAGE_JEWELRY_CONSULTANT
+)
+from src.chatbot.prompts.query_for_search_optimizer import (
+    HUMAN_MESSAGE_QUERY_FOR_SEARCH_OPTIMIZER,
+    SYSTEM_MESSAGE_QUERY_FOR_SEARCH_OPTIMIZER
+)
+from langchain.prompts import ChatPromptTemplate
+from langchain.prompts import (
+    SystemMessagePromptTemplate,
+    HumanMessagePromptTemplate,
+)
 
-from src.chatbot.mixins import JewelryConsultationMixin, GeneralInfoMixin
-from src.chatbot.models import CustomerIntentEnum
-from src.chatbot.utils import build_conversation_history
-from src.chatbot.handlers import HANDLERS_MAPPER
 
-
-class ChatbotService(GeneralInfoMixin, JewelryConsultationMixin):
+class ChatbotService:
     """Core service for generating chatbot responses."""
 
-    def __init__(self, session_id, vector_store, memory, app, llm, streaming_llm, customer_query):
+    def __init__(self, session_id, vector_store, memory, llm, streaming_llm, customer_query):
         self.session_id = session_id
         self.vector_store = vector_store
         self.conversation_memory = memory
-        self.app = app
         self.llm = llm
-        self.streaming_llm = streaming_llm,
+        self.streaming_llm = streaming_llm
         self.customer_query = customer_query
-        self.config = {
-            'configurable': {'thread_id': session_id}
-        }
-        conversation_state = self.conversation_memory.get(
-            self.config
-        )
-        self.conversation_history = build_conversation_history(
-            customer_query, conversation_state
-        )
 
     def generate_response_stream(self):
         """Generate streaming response for the customer query."""
-        # Yield session_id first
+        # Yield session_id
         yield f"data: {json.dumps({'session_id': self.session_id})}\n\n"
 
         try:
-            # Build and execute the main chain
-            chain = self._build_main_chain()
+            memory_vars = self.conversation_memory.load_memory_variables({})
+            conversation_history = memory_vars.get('conversation_memory', '')
 
-            system_message, human_message = chain.invoke({
-                "conversation_history": self.conversation_history,
-                "customer_query": self.customer_query,
-            })
+            # Step 1: Optimize query for search (NON-STREAMING)
+            optimized_query = self._generate_non_streaming_response(
+                SYSTEM_MESSAGE_QUERY_FOR_SEARCH_OPTIMIZER,
+                HUMAN_MESSAGE_QUERY_FOR_SEARCH_OPTIMIZER,
+                customer_query=self.customer_query,
+                conversation_history=conversation_history,
+            )
+            
+            print(optimized_query)
 
-            # Stream the response
-            for event in self.app.stream(
-                {"messages": [system_message, human_message]},
-                self.config,
-                stream_mode="updates"
+            # Step 2: Retrieve relevant content
+            context = self._retrieve_relevant_content(optimized_query)
+
+            # Step 3: Generate and stream final response (STREAMING)
+            accumulated_response = ""
+
+            for chunk in self._generate_streaming_response(
+                SYSTEM_MESSAGE_JEWELRY_CONSULTANT,
+                HUMAN_MESSAGE_JEWELRY_CONSULTANT,
+                context=context,
+                customer_query=self.customer_query,
+                conversation_history=conversation_history,
             ):
-                ai_response = event['model']['messages'].content
-                for chunk in ai_response:
-                    yield f"data: {json.dumps({'chunk': chunk})}\n\n"
+                accumulated_response += chunk
+                yield f"data: {json.dumps({'chunk': chunk})}\n\n"
+
+            # Step 4: Save complete response to memory
+            self.conversation_memory.save_context(
+                {"input": self.customer_query},
+                {"response": accumulated_response}
+            )
 
         except Exception as e:
+            print(f"Error in generate_response_stream: {e}")
             yield f"data: {json.dumps({'error': 'Something went wrong. Please try again.'})}\n\n"
 
-    def _build_main_chain(self):
-        """Build the main processing chain."""
-        return (
-            RunnablePassthrough.assign(
-                customer_intent=RunnableLambda(
-                    lambda inputs: HANDLERS_MAPPER['extract_customer_intent'](
-                        self.llm,
-                        conversation_history=inputs["conversation_history"],
-                    )
-                )
-            )
-            | RunnableBranch(
-                (
-                    # Check if customer intent is product-related
-                    lambda x: x['customer_intent'] == CustomerIntentEnum.PRODUCTS_INFO,
-                    self._build_jewelry_consultation_chain()
-                ),
-                # Default: general information
-                self._build_general_info_chain()
-            )
+    def _generate_non_streaming_response(self, system_message, human_message, **kwargs):
+        """Generate non-streaming AI response - returns string directly."""
+        messages = self._format_messages(
+            system_message,
+            human_message,
+            **kwargs,
         )
+
+        return self.llm.invoke(messages).content
+
+    def _generate_streaming_response(self, system_message, human_message, **kwargs):
+        """Generate streaming AI response - returns generator."""
+        messages = self._format_messages(
+            system_message,
+            human_message,
+            **kwargs,
+        )
+
+        for chunk in self.streaming_llm.stream(messages):
+            if chunk.content:
+                yield chunk.content
+
+    def _format_messages(
+        self,
+        system_message,
+        human_message,
+        **kwargs
+    ):
+        prompt = ChatPromptTemplate.from_messages([
+            SystemMessagePromptTemplate.from_template(
+                system_message
+            ),
+            HumanMessagePromptTemplate.from_template(
+                human_message
+            ),
+        ])
+
+        return prompt.format_messages(**kwargs)
+
+    def _retrieve_relevant_content(self, query, k=TOP_N_RESULTS):
+        results = self.vector_store.similarity_search(
+            query,
+            k=k
+        )
+
+        context = '\n'.join(
+            result.page_content for result in results
+        )
+
+        return context.strip()

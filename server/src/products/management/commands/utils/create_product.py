@@ -33,6 +33,8 @@ def create_product(product_data):
     fourth_image = product_data['fourth_image']
 
     target_gender = product_data['target_gender']
+    
+    description = product_data['description']
 
     stone = product_data['stone_by_color']
     color_name, stone_name = stone.split(' ')
@@ -55,6 +57,7 @@ def create_product(product_data):
         color=color,
         stone=stone,
         target_gender=target_gender,
+        description=description
     )
 
     sizes = Size.objects.all()

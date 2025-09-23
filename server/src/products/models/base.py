@@ -64,5 +64,10 @@ class BaseProduct(models.Model):
         blank=True,
     )
 
+    description = models.TextField(
+        null=True,
+        blank=True,
+    )
+
     def __str__(self):
         return f'{self.collection} {self.__class__.__name__}'
