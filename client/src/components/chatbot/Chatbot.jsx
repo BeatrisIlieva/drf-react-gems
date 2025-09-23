@@ -44,14 +44,14 @@ export const Chatbot = () => {
         }
     }, [loading]);
 
-    const renderThinkingText = (text) => {
+    const renderThinkingText = text => {
         return (
             <span className={styles['thinking-text']}>
                 {text.split('').map((char, index) => (
-                    <span 
-                        key={index} 
+                    <span
+                        key={index}
                         className={styles['thinking-char']}
-                        style={{ 
+                        style={{
                             animationDelay: `${index * 0.1}s`,
                         }}
                     >
@@ -195,8 +195,7 @@ export const Chatbot = () => {
                                 updated[updated.length - 1] = {
                                     ...updated[updated.length - 1],
                                     content:
-                                        updated[updated.length - 1].content +
-                                        `\nError: ${data.error}`,
+                                        updated[updated.length - 1].content + `\n${data.error}`,
                                     role: 'error',
                                     timestamp: getTimestamp(),
                                 };
@@ -329,7 +328,9 @@ export const Chatbot = () => {
                                                                     }) => {
                                                                         // Internal link
                                                                         if (
-                                                                            href.startsWith('/products')
+                                                                            href.startsWith(
+                                                                                '/products'
+                                                                            )
                                                                         ) {
                                                                             return (
                                                                                 <Link
@@ -358,7 +359,8 @@ export const Chatbot = () => {
                                                                 {msg.content}
                                                             </ReactMarkdown>
                                                         ) : (
-                                                            loading && renderThinkingText('Thinking...')
+                                                            loading &&
+                                                            renderThinkingText('Thinking...')
                                                         )}
                                                     </div>
                                                     <span className={styles['time-span']}>
@@ -401,7 +403,7 @@ export const Chatbot = () => {
                                             : `${styles['send-button']}`
                                     }
                                 >
-                                    <Icon name="send" callbackHandler={sendMessageHandler}/>
+                                    <Icon name="send" callbackHandler={sendMessageHandler} />
                                 </span>
                             </div>
                         </>
