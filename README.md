@@ -15,13 +15,11 @@
 [![LangChain](https://img.shields.io/badge/LangChain-brightgreen.svg)](https://langchain.com/)
 [![OpenAI](https://img.shields.io/badge/OpenAI-black.svg)](https://openai.com/)
 [![Pinecone](https://img.shields.io/badge/Pinecone-blueviolet.svg)](https://www.pinecone.io/)
-[![LangGraph](https://img.shields.io/badge/LangGraph-darkgreen.svg)](https://langchain-ai.github.io/langgraph/)
-[![Pydantic](https://img.shields.io/badge/Pydantic-pink.svg)](https://pydantic.dev/)
 [![LangSmith](https://img.shields.io/badge/LangSmith-orange.svg)](https://smith.langchain.com/)
 
 A full-stack luxury jewelry e-commerce platform built with Django REST Framework (DRF) backend and React frontend. The platform implements JTW authentication, shopping cart and wishlist management, payment processing, order history, and asynchronous email notifications using Celery and Redis.
 
-An AI-powered jewelry consultation system that serves as an intelligent virtual consultant, guides customers through personalized product discovery and recommendation processes. Built using technologies such as LangChain, OpenAI GPT-4, Pinecone vector database, LangGraph, and Pydantic validation models, the chatbot combines luxury retail expertise with sophisticated conversation management to deliver tailored jewelry recommendations based on customer preferences and available inventory.
+An AI-powered jewelry consultation system that serves as an intelligent virtual consultant, guides customers through personalized product discovery. Built using technologies such as LangChain, OpenAI GPT-5, Pinecone vector database, the chatbot combines luxury retail expertise to deliver tailored jewelry recommendations based on customer preferences and available inventory.
 
 **Live Application: [https://drf-react-gems.web.app](https://drf-react-gems.web.app/)**
 
@@ -49,11 +47,7 @@ An AI-powered jewelry consultation system that serves as an intelligent virtual 
     -   [Setup Vector Store Command](#setup-vector-store-command)
     -   [Prompts](#prompts)
     -   [Adapters](#adapters)
-    -   [Mixins](#mixins)
-    -   [Models](#models)
     -   [Services](#services)
-    -   [Strategies](#strategies)
-    -   [Conversation Flow](#conversation-flow)
 -   [Authentication Functionality](#authentication-functionality)
 -   [Password Reset System](#password-reset-system)
 -   [Access Control](#access-control)
@@ -140,25 +134,9 @@ Contains [prompt templates](https://github.com/beatrisilieva/drf-react-gems/blob
 
 -   Defines sophisticated customer profile with high-income demographics and luxury expectations
 
-**Intent Analysis**:
-
--   System messages for determining customer intentions (product inquiry vs. general information)
-
-**Preference Discovery**:
-
--   Prompts for extracting customer preferences about gender, category, metal, and stone types
-
 **Search Optimization**:
 
--   Templates for creating optimized vector database queries
-
-**Inventory Validation**:
-
--   Prompts for checking product availability against customer preferences
-
-**Navigation Guidance**:
-
--   Templates for directing customers toward available alternatives when exact matches aren't found
+-   Template for creating optimized vector database queries
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
@@ -169,7 +147,7 @@ Implements the [Adapter](https://github.com/beatrisilieva/drf-react-gems/blob/ma
 ##### Components:
 
 -   `LLMAdapter`: Manages OpenAI ChatGPT model instances (standard and streaming)
--   `MemoryAdapter`: Handles conversation memory using LangGraph's MemorySaver and StateGraph
+-   `MemoryAdapter`: Handles conversation memory using ConversationBufferMemory
 -   `VectorStoreAdapter`: Manages Pinecone vector database connections and validates environment setup
 
 ##### Features:
@@ -181,44 +159,6 @@ Implements the [Adapter](https://github.com/beatrisilieva/drf-react-gems/blob/ma
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
-#### Mixins
-
-Provides modular functionality through [mixin](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/chatbot/mixins.py) classes that can be combined to create specialized chatbot behaviors.
-
-##### Components:
-
--   `GeneralInfoMixin`: Handles non-product related queries (policies, care instructions, brand information)
--   `JewelryConsultationMixin`: Manages complex product discovery and recommendation workflows
-
-##### Key Features:
-
--   **Conditional Chain Building**: Creates dynamic conversation flows based on customer intent and preference completion status
--   **Preference Extraction Pipeline**: Systematic discovery of customer requirements using Pydantic models
--   **Product Matching Logic**: Individual product validation against customer preferences using regex extraction
--   **Recommendation Flow**: Branches between continued discovery and final product recommendations
-
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
-
-#### Models
-
-Defines Pydantic [models](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/chatbot/models.py) for structured data validation and type safety throughout the conversation flow.
-
-##### Model Categories:
-
--   `CustomerIntent`: Enum-based intent classification (sizing help, pricing, product info, etc.)
--   `Preference Models`: Structured models for customer requirements
-    -   `WearerGender`: Target gender for jewelry recipient
-    -   `CategoryType`: Jewelry categories (earrings, necklaces, rings, etc.)
-    -   `MetalType`: Available metals (Rose Gold, Yellow Gold, Platinum)
-    -   `StoneType`: Available stones (Diamond, Ruby, Emerald, Sapphires, etc.)
-
-##### Benefits:
-
--   Type safety and validation
--   Clear data structure definitions
--   Consistent preference handling across the application
-
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
 #### Services
 
@@ -229,40 +169,6 @@ The core orchestration layer that combines all components into a cohesive conver
 -   **Response Generation**: Manages streaming response delivery to frontend
 -   **Chain Orchestration**: Builds and executes LangChain processing pipelines
 -   **Session Management**: Handles conversation state and memory persistence
--   **Intent-Based Routing**: Directs conversations between general information and product consultation flows
-
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
-
-#### Strategies
-
-Implements [strategic patterns](https://github.com/beatrisilieva/drf-react-gems/blob/main/server/src/chatbot/strategies.py) for systematic customer preference discovery.
-
-##### PreferenceDiscoveryStrategy:
-
--   **Sequential Discovery**: Ordered preference collection (gender → category → metal → stone)
--   **Context-Aware Questioning**: Dynamic question generation based on available inventory
--   **Luxury-Aligned Communication**: Maintains premium brand voice throughout discovery process
-
-##### Discovery Sequence:
-
--   Target gender identification using luxury terminology
--   Product category selection from available inventory
--   Metal type preference with bold highlighting
--   Stone type preference aligned with available options
-
-<p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
-
-#### Conversation Flow
-
-1. **Intent Analysis**: Determines if customer seeks general information or product consultation
-
-2. **Preference Discovery**: Systematic collection of customer requirements using strategic questioning
-
-3. **Query Optimization**: Creates vector database queries optimized for semantic search
-
-4. **Inventory Validation**: Checks product availability against collected preferences
-
-5. **Response Generation**: Either provides product recommendations or guides toward available alternatives
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 
