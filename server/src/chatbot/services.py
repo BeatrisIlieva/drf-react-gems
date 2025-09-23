@@ -43,8 +43,6 @@ class ChatbotService:
                 customer_query=self.customer_query,
                 conversation_history=conversation_history,
             )
-            
-            print(optimized_query)
 
             # Step 2: Retrieve relevant content
             context = self._retrieve_relevant_content(optimized_query)
