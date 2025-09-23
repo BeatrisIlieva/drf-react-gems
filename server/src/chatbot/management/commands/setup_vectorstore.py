@@ -208,7 +208,7 @@ class Command(BaseCommand):
 
         # Extract product blocks using regex
         product_blocks = re.findall(
-            r"Stone:.*?stars;", full_text, re.DOTALL
+            r"Collection:.*?stars;", full_text, re.DOTALL
         )
 
         if not product_blocks:

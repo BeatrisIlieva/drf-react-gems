@@ -10,8 +10,7 @@ class ChatbotServiceFactory:
         return ChatbotService(
             session_id=session_id,
             vector_store=VectorStoreAdapter.get_vectorstore(),
-            memory=MemoryAdapter.get_memory(),
-            app=MemoryAdapter.get_app(),
+            memory=MemoryAdapter.get_memory(session_id),
             llm=LLMAdapter.get_llm(),
             streaming_llm=LLMAdapter.get_streaming_llm(),
             customer_query=customer_query,

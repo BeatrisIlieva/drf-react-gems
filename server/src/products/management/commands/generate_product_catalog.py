@@ -5,6 +5,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
+from src.products.models.review import Review
 from src.products.models.inventory import Inventory
 from src.products.models.product import Bracelet, Earring, Necklace, Pendant, Ring, Watch
 import os
@@ -87,16 +88,34 @@ class Command(BaseCommand):
                         sizes += f"Size: {inventory.size.name} - Price: ${inventory.price},"
                     else:
                         sizes += f"Size: {inventory.size.name} - Price: ${inventory.price}"
+                        
+                average_rating = ''
+
+                reviews = Review.objects.filter(
+                    content_type=content_type,
+                    object_id=product.id,
+                    approved=True
+                ).select_related('user')
+
+                if reviews:
+                    # Calculate average rating
+                    total_rating = sum([review.rating for review in reviews])
+                    avg_rating = total_rating / len(reviews)
+
+                    average_rating = f'{avg_rating:.1f}/5 stars'
 
                 # Basic product information - each property on new line
                 basic_info = f"""
+                Collection: {product.collection.name};
                 Stone: {product.color.name if (product.color.name not in ['White', 'Green', 'Red'] and product.stone.name != 'Aquamarine') else ''} {product.stone.name};
                 Metal: {product.metal.name};
                 Category: {category_name};
                 Product ID: {product.id};
                 Image URL: {product.first_image};
                 Sizes: {sizes};
-                Target Gender: {'F(Female, Woman, Girl)' if product.target_gender == 'F' else 'M(Male, Man, Boy)'}stars;
+                Target Gender: {'F(Female, Woman, Girl)' if product.target_gender == 'F' else 'M(Male, Man, Boy)'};
+                Description: {product.description};
+                Average Rating: {average_rating};
                 """
                 story.append(Paragraph(basic_info, normal_style))
                 story.append(Spacer(1, 8))

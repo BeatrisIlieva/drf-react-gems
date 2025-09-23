@@ -3,9 +3,8 @@ import os
 from pinecone import Pinecone as PineconeClient
 from langchain_pinecone import Pinecone
 from langchain_openai import ChatOpenAI
-from langgraph.checkpoint.memory import MemorySaver
-from langgraph.graph import START, MessagesState, StateGraph
 from langchain_openai import OpenAIEmbeddings
+from langchain.memory import ConversationBufferMemory
 
 from src.chatbot.config import (
     DIMENSIONS,
@@ -64,40 +63,17 @@ class LLMAdapter:
 
 
 class MemoryAdapter:
-    _instance = None
-
-    def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-
-            cls._initialize()
-
-        return cls._instance
+    _sessions = {}
 
     @classmethod
-    def _initialize(cls):
-        cls._instance.memory = MemorySaver()
-        cls._instance.workflow = StateGraph(state_schema=MessagesState)
-        cls._instance.workflow.add_edge(START, "model")
-        cls._instance.workflow.add_node("model", cls._instance._call_model)
-        cls._instance.app = cls._instance.workflow.compile(
-            checkpointer=cls._instance.memory)
-
-    @classmethod
-    def get_memory(cls):
-        return cls().memory
-
-    @classmethod
-    def get_app(cls):
-        return cls().app
-
-    @classmethod
-    def _call_model(cls, state: MessagesState):
-
-        llm = LLMAdapter.get_llm()
-        response = llm.invoke(state["messages"])
-
-        return {"messages": response}
+    def get_memory(cls, session_id):
+        if session_id not in cls._sessions:
+            cls._sessions[session_id] = ConversationBufferMemory(
+                memory_key="conversation_memory",
+                return_messages=True,
+                output_key="response"
+            )
+        return cls._sessions[session_id]
 
 
 class VectorStoreAdapter:
