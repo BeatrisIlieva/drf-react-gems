@@ -5,7 +5,6 @@ EMBEDDING_MODEL = 'text-embedding-3-small'
 # Generation Parameters
 MAX_TOKENS = 250
 TEMPERATURE = 0
-TOP_P = 0
 FREQUENCY_PENALTY = 1.0
 PRESENCE_PENALTY = 1.0
 
