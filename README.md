@@ -19,7 +19,7 @@
 
 A full-stack luxury jewelry e-commerce platform built with Django REST Framework (DRF) backend and React frontend. The platform implements JTW authentication, shopping cart and wishlist management, payment processing, order history, and asynchronous email notifications using Celery and Redis.
 
-An AI-powered jewelry consultation system that serves as an intelligent virtual consultant, guides customers through personalized product discovery. Built using technologies such as LangChain, OpenAI GPT-5, Pinecone vector database, the chatbot combines luxury retail expertise to deliver tailored jewelry recommendations based on customer preferences and available inventory.
+An AI-powered jewelry consultation system that serves as an intelligent virtual consultant, guides customers through personalized product discovery. Built using technologies such as LangChain, OpenAI GPT-4.1, Pinecone vector database, the chatbot combines luxury retail expertise to deliver tailored jewelry recommendations based on customer preferences and available inventory.
 
 **Live Application: [https://drf-react-gems.web.app](https://drf-react-gems.web.app/)**
 
