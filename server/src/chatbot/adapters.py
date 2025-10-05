@@ -69,9 +69,9 @@ class MemoryAdapter:
     def get_memory(cls, session_id):
         if session_id not in cls._sessions:
             cls._sessions[session_id] = ConversationBufferMemory(
-                memory_key="conversation_memory",
+                memory_key='conversation_memory',
                 return_messages=True,
-                output_key="response"
+                output_key='response'
             )
         return cls._sessions[session_id]
 
@@ -95,17 +95,17 @@ class VectorStoreAdapter:
     def _initialize(cls):
         """Initialize connection to existing Pinecone index."""
         # Validate environment variables
-        api_key = os.getenv("PINECONE_API_KEY")
+        api_key = os.getenv('PINECONE_API_KEY')
         if not api_key:
             raise ValueError(
-                "PINECONE_API_KEY environment variable is required")
+                'PINECONE_API_KEY environment variable is required')
 
-        openai_api_key = os.getenv("OPENAI_API_KEY")
+        openai_api_key = os.getenv('OPENAI_API_KEY')
         if not openai_api_key:
-            raise ValueError("OPENAI_API_KEY environment variable is required")
+            raise ValueError('OPENAI_API_KEY environment variable is required')
 
         # Get index name
-        index_name = os.getenv("PINECONE_INDEX_NAME", "drf-react-gems-index")
+        index_name = os.getenv('PINECONE_INDEX_NAME', 'drf-react-gems-index')
 
         # Initialize Pinecone client and check if index exists
         pc = PineconeClient(api_key=api_key)
@@ -126,7 +126,7 @@ class VectorStoreAdapter:
         vectorstore = Pinecone.from_existing_index(
             index_name=index_name,
             embedding=embedding_model,
-            text_key="text"
+            text_key='text'
         )
 
         return vectorstore

@@ -28,11 +28,11 @@ An AI-powered jewelry consultation system that serves as an intelligent virtual 
 **API documentation: [https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net](https://drf-react-gems-f6escmbga4gkbgeu.italynorth-01.azurewebsites.net)**
 
 <p align="center">
-  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.45.11_e0m7vo.png" width="260" />
+  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1759659371/Screenshot_2025-10-05_at_13.14.07_kctdjp.png" width="260" />
   &nbsp;
-  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.50.53_opvgpj.png" width="260"/>
+  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1759659371/Screenshot_2025-10-05_at_13.13.32_yldthw.png" width="260" />
   &nbsp;
-  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1752676884/Screenshot_2025-07-15_at_20.54.43_cfyql5.png" width="260"/>
+  <img src="https://res.cloudinary.com/dpgvbozrb/image/upload/v1759659372/Screenshot_2025-10-05_at_13.11.27_eok6mv.png" width="260" />
   &nbsp;
 </p>
 
@@ -298,11 +298,11 @@ All admin groups and their associated users are created automatically by a manag
 
 ### Testing
 
--   **66 Unit & Integration tests with [70% coverage report](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)**
+-   **80 Unit & Integration tests with [71% coverage report](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)**
 
     (`coverage run manage.py test && coverage report`)
 
-    [![Coverage](https://img.shields.io/badge/coverage-70%25-green.svg)](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)
+    [![Coverage](https://img.shields.io/badge/coverage-71%25-green.svg)](https://beatrisilieva.github.io/drf-react-gems/coverage-report/index.html)
 
 <p align="right" dir="auto"><a href="#drf-react-gems">Back To Top</a></p>
 

@@ -22,10 +22,10 @@ class ChatResponseSerializer(serializers.Serializer):
         help_text="Chatbot's response",
     )
     success = serializers.BooleanField(
-        help_text="Whether the request was successful",
+        help_text='Whether the request was successful',
     )
     error = serializers.CharField(
         required=False,
         allow_blank=True,
-        help_text="Error message if any",
+        help_text='Error message if any',
     )
