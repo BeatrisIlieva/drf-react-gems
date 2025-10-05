@@ -30,7 +30,7 @@ class ChatbotService:
     def generate_response_stream(self):
         """Generate streaming response for the customer query."""
         # Yield session_id
-        yield f"data: {json.dumps({'session_id': self.session_id})}\n\n"
+        yield f'data: {json.dumps({'session_id': self.session_id})}\n\n'
 
         try:
             memory_vars = self.conversation_memory.load_memory_variables({})
@@ -48,7 +48,7 @@ class ChatbotService:
             context = self._retrieve_relevant_content(optimized_query)
 
             # Step 3: Generate and stream final response (STREAMING)
-            accumulated_response = ""
+            accumulated_response = ''
 
             for chunk in self._generate_streaming_response(
                 SYSTEM_MESSAGE_JEWELRY_CONSULTANT,
@@ -58,17 +58,17 @@ class ChatbotService:
                 conversation_history=conversation_history,
             ):
                 accumulated_response += chunk
-                yield f"data: {json.dumps({'chunk': chunk})}\n\n"
+                yield f'data: {json.dumps({'chunk': chunk})}\n\n'
 
             # Step 4: Save complete response to memory
             self.conversation_memory.save_context(
-                {"input": self.customer_query},
-                {"response": accumulated_response}
+                {'input': self.customer_query},
+                {'response': accumulated_response}
             )
 
         except Exception as e:
-            print(f"Error in generate_response_stream: {e}")
-            yield f"data: {json.dumps({'error': 'Something went wrong. Please try again.'})}\n\n"
+            print(f'Error in generate_response_stream: {e}')
+            yield f'data: {json.dumps({'error': 'Something went wrong. Please try again.'})}\n\n'
 
     def _generate_non_streaming_response(self, system_message, human_message, **kwargs):
         """Generate non-streaming AI response - returns string directly."""
