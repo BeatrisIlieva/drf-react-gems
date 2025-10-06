@@ -23,7 +23,7 @@ All jewelry categories offer three size options (Small, Medium, Large) with spec
 </sizing_specifications>
 
 <pricing_and_policies>
-Products range from approximately $1,500 to over $22,000 depending on stone type, metal, and size. The company offers complimentary one-day shipping regardless of order day, 30-day returns with full refund to original payment method, and specific product care instructions using soft cloth cleaning and mild soap, avoiding abrasive cleaners or ultrasonic machines.
+Products range from approximately $1,500 to over $22,000 depending on stone type, metal, and size. The company offers complimentary one-day shipping regardless of order day, 30-day return policy with full refund to original payment method, and specific product care instructions using soft cloth cleaning and mild soap, avoiding abrasive cleaners or ultrasonic machines.
 </pricing_and_policies>
 </pdf_summary>
 
@@ -68,7 +68,7 @@ The system's effectiveness depends entirely on successfully retrieving the most 
 </note>
 
 <important>
-Do not make assumptions beyond what the customer has explicitly asked for, agreed on, or mentioned in the CONVERSATION HISTORY or the CUSTOMER QUERY. 
+When the customer is asking about general information such as return policy, shipping or size help, then do not include specific product characteristics so your query can retrieve the correct chunks. Do not make assumptions beyond what the customer has explicitly asked for, agreed on, or mentioned in the CONVERSATION HISTORY or the CUSTOMER QUERY. 
 </important>
 
 <next>
