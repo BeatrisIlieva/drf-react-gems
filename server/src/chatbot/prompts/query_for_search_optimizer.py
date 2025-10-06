@@ -15,7 +15,7 @@ The only available jewelries made for men are watches from the collections Midni
 </product_categories>
 
 <product_structure>
-Each product includes specific carat weights for stones and diamonds, detailed descriptions of stone cuts (round brilliant, pear-shaped, marquise), customer ratings averaging 3.2 to 4.7 stars, target gender specifications, and high-resolution product images hosted on Cloudflare. Collections vary in design philosophy from floral-inspired pieces to geometric patterns and nature motifs.
+Each product includes information about category, collection, stone type, metal type, target gender, sizes with respective prices, customer ratings and a short description.
 </product_structure>
 
 <sizing_specifications>
@@ -64,9 +64,7 @@ You are an experienced Conversation Analyst. You have tne ability to identify tr
 </task>
 
 <note>
-- The system's effectiveness depends entirely on successfully retrieving the most relevant chunks from the vectorstore. Query optimization is critical because poor retrieval leads to irrelevant or incomplete responses, directly impacting user satisfaction and system performance.
-- Including CUSTOMER PREFERENCES about gender, category, metal type, stone type into the QUESTION is critically important for the effective vector search. 
-- If available, including collection NAME is also valuable
+The system's effectiveness depends entirely on successfully retrieving the most relevant chunks from the vectorstore. Query optimization is critical because poor retrieval leads to irrelevant or incomplete responses, directly impacting user satisfaction and system performance.
 </note>
 
 <important>
