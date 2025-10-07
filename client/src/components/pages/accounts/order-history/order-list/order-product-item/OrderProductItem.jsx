@@ -50,7 +50,7 @@ export const OrderProductItem = ({ product }) => {
     };
 
     const navigateToProductItem = useCallback(() => {
-        navigate(`/products/${productInfo.category.toLowerCase() + 's'}/${productInfo.productId}`);
+        navigate(`/products/${productInfo.category.toLowerCase() != 'watch' ? productInfo.category.toLowerCase() + 's' : productInfo.category.toLowerCase() + 'es'}/${productInfo.productId}`);
     }, [navigate, productInfo.category, productInfo.productId]);
 
     return (
